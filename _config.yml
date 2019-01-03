@@ -5,15 +5,15 @@
 # Site
 title: 4Ark' Blog
 subtitle:
-description:
-keywords:
+description: 这是 4ark 的个人博客
+keywords: 4Ark WEB 前端 个人博客
 author: 4Ark
 language:
 timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://yoursite.com
+url: https://gd4ark.github.io
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
