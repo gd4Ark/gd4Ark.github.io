@@ -72,16 +72,106 @@ foo(); // <-- foo 的调用位置
 
 这是最常见的函数调用类型：**独立函数调用**：
 
-> 对函数直接使用而不带任何修饰的函数引用进行调用，简单点一个函数直接是`func()`这样调用，不同于通过对象属性调用例如`obj.func()`，也没有通过new关键字`new Function()`，也没有通过`apply`、`bind`、`call`强制改变`this`指向。
->
-> 当被用作独立函数调用时（不论这个函数在哪被调用，不管全局还是其他函数内），`this`默认指向到`Window`。（**注意：在严格模式下`this`不再默认指向全局，而是`undefined**`）。
+对函数直接使用而不带任何修饰的函数引用进行调用，简单点一个函数直接是`func()`这样调用，不同于通过对象属性调用例如`obj.func()`，也没有通过new关键字`new Function()`，也没有通过`apply`、`call`、`bind`强制改变`this`指向。
+
+当被用作独立函数调用时（不论这个函数在哪被调用，不管全局还是其他函数内），`this`默认指向到`Window`。（**注意：在严格模式下`this`不再默认指向全局，而是`undefined**`）。
+
+示例代码：
+
+```javascript
+function foo(){
+    console.log(this.name);
+}
+var name = "window";
+foo(); // window
+```
 
 #### **隐式绑定**
 
-如果被调用函数是某个对象下的属性（方法），那就是**隐式绑定**：
+函数被某个对象拥有或者包含，也就是函数被作为对象的属性所引用，例如`obj.func()`，此时`this`会绑定到该对象上，这就是隐式绑定。
 
-> 函数被某个对象拥有或者包含，也就是函数被作为对象的属性所引用，例如`obj.func()`，此时`this`会绑定到该对象上。
+示例代码：
+
+```javascript
+var obj = {
+    name : "obj",
+    foo : function(){
+        console.log(this.name);
+    }
+}
+obj.foo(); // obj
+```
 
 **隐式丢失**：
 
-隐式丢失是一个最常见`this`绑定问题，
+大部分的`this`绑定问题就是被“隐式绑定”的函数会丢失绑定对象，也就是说它会应用“默认绑定”，从而把`this`绑定到`Window`或`undefined`上，这取决于是否是严格模式。
+
+最常见的情况就是把对象方法作为回调函数进行传递时：
+
+```javascript
+var obj = {
+    name : "obj",
+    foo : function(){
+        console.log(this.name);
+    }
+}
+var name = "window";
+setTimeout(obj.foo,1000); // 一秒后输出 window
+```
+
+#### **显式绑定**
+
+我们可以通过`apply`、`call`、`bind`方法来显示地修改`this`的指向。
+
+关于这三个方法的定义：
+
+1. `apply`：调用函数，第一个参数接受`this`的绑定对象，第二个参数传入一个参数数组。
+2. `call`：调用函数，第一个参数接受`this`的绑定对象，其余参数正常传递。
+3. `bind`，返回一个已经绑定`this`的函数，第一个参数接受`this`的绑定对象，其余参数正常传递。
+
+比如我们可以使用`bind`方法解决上一节“隐式丢失”中的例子：
+
+```javascript
+var obj = {
+    name : "obj",
+    foo : function(){
+        console.log(this.name);
+    }
+}
+var name = "window";
+setTimeout(obj.foo.bind(obj),1000); // 一秒后输出 obj
+```
+
+### new 绑定
+
+使用 new 来调用函数，或者说发生构造函数调用时，会自动执行下面的操作：
+
+1. 创建(或者说构造)一个全新的对象。
+2. 这个新对象会被执行[[原型]]连接。
+3. 这个新对象会绑定到函数调用的`this`。
+4. 如果函数没有返回其他对象，那么`new`表达式中的函数调用会自动返回这个新对象。
+
+示例代码：
+
+```javascript
+function foo(a) { 
+  this.a = a;
+}
+var bar = new foo(2); 
+console.log( bar.a ); // 2
+```
+
+### 优先级
+
+直接上结论:
+
+> new绑定=显示绑定>隐式绑定>默认绑定
+
+**判断this:**
+ 现在我们可以根据优先级来判断函数在某个调用位置应用的是哪条规则。可以按照下面的顺序来进行判断：
+
+1. 使用new绑定，`this`绑定的是新创建的对象。` var bar = new foo()`
+2. 通过`call`之类的显式绑定，`this`绑定的是指定的对象。`var bar = foo.call(obj2)`。
+3. 在某个上下文对象中调用(隐式绑定)，this 绑定的是那个上下文对象。`var bar = obj1.foo()`
+4. 如果都不是的话，使用默认绑定。`this`绑定到`Window`或`undefined`上，这取决于是否是严格模式。`var bar = foo()`
+
