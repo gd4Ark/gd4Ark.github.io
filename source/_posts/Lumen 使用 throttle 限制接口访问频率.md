@@ -64,7 +64,7 @@ class ThrottleException extends Exception{
 }
 ```
 
-在``app/Exceptions/Handler.php`捕获该抛出异常，在`render`方法增加以下判断：
+在`app/Exceptions/Handler.php`捕获该抛出异常，在`render`方法增加以下判断：
 
 ```php
 if ($exception instanceof ThrottleException) {
