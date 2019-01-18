@@ -92,7 +92,7 @@ protected function buildException($key, $maxAttempts){
 
 > 需在文件头部中添加这一行：`use App\Exceptions\ThrottleException;`
 
-### ws,.lewaA注册中间件
+### 注册中间件
 
 在`bootstrap/app.php`中注册：
 
