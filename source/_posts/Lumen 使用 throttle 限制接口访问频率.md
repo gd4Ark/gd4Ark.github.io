@@ -77,7 +77,7 @@ if ($exception instanceof ThrottleException) {
 
 修改`ThrottleRequests.php`文件中的`buildException`方法：
 
-```javascript
+```php
 protected function buildException($key, $maxAttempts){
 	$retryAfter = $this->getTimeUntilNextRetry($key);
 	$headers = $this->getHeaders(
