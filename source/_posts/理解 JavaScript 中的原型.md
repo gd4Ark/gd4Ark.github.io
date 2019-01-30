@@ -148,4 +148,3 @@ console.log( Object.prototype.__proto__ === null )
 
 当访问一个对象的属性时，Javascript  会从对象本身开始往上遍历整个原型链，直到找到对应属性为止。如果此时到达了原型链的顶部，也就是上例中的 `Object.prototype`，仍然未发现需要查找的属性，那么 Javascript 就会返回 `undefined`值。
 
-> 注：此文为原创文章，如需转载，请注明出处。

@@ -27,4 +27,3 @@ https://support.managed.com/kb/a433/bug-ip-addresses-do-not-save-and-always-rese
 4. 打开 `运行`，输入 `ncpa.cpl`，进入网络连接
 5. 本地连接 - 右键 - 属性 - 确定
 
-> 注：此文为原创文章，如需转载，请注明出处。
