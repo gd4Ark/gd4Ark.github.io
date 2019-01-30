@@ -1,10 +1,11 @@
 ---
 title: CSS题目系列（3）- 实现文字切割效果
-date: 2018-11-26 22:57:06
 categories:
- 	- 前端
-tags: 
-	- 前端
+  - 前端
+tags:
+  - 前端
+abbrlink: bdd845bb
+date: 2018-11-26 22:57:06
 ---
 
 ## 描述

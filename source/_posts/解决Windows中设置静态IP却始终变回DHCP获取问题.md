@@ -1,10 +1,11 @@
 ---
 title: 解决 Windows 中设置静态 IP 却始终变回 DHCP 获取问题
-date: 2018-11-13 22:45:06
 categories:
- - 系统
+  - 系统
 tags:
- - 系统
+  - 系统
+abbrlink: 28baf5fd
+date: 2018-11-13 22:45:06
 ---
 
 ## 问题描述

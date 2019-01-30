@@ -1,10 +1,11 @@
 ---
 title: CSS题目系列（1） - 可滚动的Table
-date: 2018-11-25 17:06:50
 categories:
- 	- 前端
-tags: 
-	- 前端
+  - 前端
+tags:
+  - 前端
+abbrlink: abb77fd2
+date: 2018-11-25 17:06:50
 ---
 
 ## 描述

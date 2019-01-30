@@ -1,10 +1,11 @@
 ---
 title: Lumen 使用 throttle 限制接口访问频率
-date: 2019-1-18 18:22:31
 categories:
- 	- 后端
-tags: 
-	- 后端
+  - 后端
+tags:
+  - 后端
+abbrlink: 618b271f
+date: 2019-01-18 18:22:31
 ---
 
 ## 前言

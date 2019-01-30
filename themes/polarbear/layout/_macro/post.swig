@@ -43,7 +43,7 @@
   </li>
   <li class="post-copyright-link">
     <span>本文链接：</span>
-    <a href="{{ url_for(page.path) }}" title="{{ page.title }}">{{ page.path }}</a>
+    <a href="{{ theme.url }}/{{ url_for(page.path) }}" title="{{ page.title }}">{{ theme.url }}/{{ page.path }}</a>
   </li>
   <li class="post-copyright-license">
     <span>版权： </span>

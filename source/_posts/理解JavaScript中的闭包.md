@@ -1,10 +1,11 @@
 ---
 title: 理解 JavaScript 中的闭包
-date: 2019-1-11 09:47:07
 categories:
- 	- 前端
-tags: 
-	- 前端
+  - 前端
+tags:
+  - 前端
+abbrlink: b5597874
+date: 2019-01-11 09:47:07
 ---
 
 ## 前言

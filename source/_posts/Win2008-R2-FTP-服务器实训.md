@@ -1,10 +1,11 @@
 ---
 title: Win2008 R2 FTP 服务器实训
-date: 2018-11-13 22:45:06
 categories:
- - 网络
+  - 网络
 tags:
- - 网络
+  - 网络
+abbrlink: e751de68
+date: 2018-11-13 22:45:06
 ---
 
 ## 题目
