@@ -72,8 +72,10 @@ public function pagination($request, $list) {
 // 获取用户列表
 public function getUser(Request $request) {
     $list = User::query();
-    // 这里可以对 list 做一些查询之类的操作
-	return $this->pagination($request, $list);
+    /*
+    	这里可以做一些查询之类的操作
+    */
+    return $this->pagination($request, $list);
 }
 ```
 
@@ -158,7 +160,7 @@ export default new vuex.Store({
 
 ### 公用分页组件
 
-```vue
+```html
 <template>
   <el-Pagination
     background
@@ -194,7 +196,7 @@ export default {
 
 ### 使用分页组件
 
-```vue
+```html
 <template>
   <div class="container">
 	<el-table
