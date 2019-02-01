@@ -11,7 +11,7 @@
 
 [在线预览](https://gd4ark.github.io/)
 
-![](http://ww1.sinaimg.cn/large/9892fa7fgy1fzqw2m6ji8j211y0lc74y.jpg)
+![](http://ww1.sinaimg.cn/large/006mS5wEgy1fzrh2egp1ij311y0lc750.jpg)
 
 ## 安装使用（Installation）
 
