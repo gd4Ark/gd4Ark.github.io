@@ -13,8 +13,9 @@
       <div id="content">
         {% block content %}{% endblock %}
       </div>
-      {% include '_script/comments.swig' %}
-
+      {% if page.comments and not is_home() %}
+        {% include '_script/comments.swig' %}
+      {% endif %}
       <footer id="colophon">
         {%- include '_partial/footer.swig' %}
       </footer>
