@@ -8,6 +8,12 @@ abbrlink: abb77fd2
 date: 2018-11-25 17:06:50
 ---
 
+<div class="excerpt">
+    <img src="https://ws1.sinaimg.cn/large/006mS5wEgy1fxkew5j851j30e307cdft.jpg"/>
+</div>
+
+<!-- more -->
+
 ## 描述
 
 在开发中，有这样一个需求，`Table`的表头不动，表身可以滚动，效果请点击以下链接查看：

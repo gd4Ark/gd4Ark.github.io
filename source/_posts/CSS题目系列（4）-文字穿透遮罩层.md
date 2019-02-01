@@ -8,6 +8,12 @@ abbrlink: 105732a8
 date: 2018-11-26 22:58:06
 ---
 
+<div class="excerpt">
+    <img src="https://ws1.sinaimg.cn/large/006mS5wEgy1fxlh53ze9sj31es0lmq6s.jpg" />
+</div>
+
+<!-- more -->
+
 ## 描述
 
 在我刚开始学习前端开发不久的时候，曾在一个网站看到过一个效果，当时费尽脑筋，又是`Canvas`、又是`SVG`，还是无法实现（其实`SVG`好像是有办法可以实现的，但当时觉得麻烦就没弄）。

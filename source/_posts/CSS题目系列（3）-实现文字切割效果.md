@@ -8,6 +8,11 @@ abbrlink: bdd845bb
 date: 2018-11-26 22:57:06
 ---
 
+<div class="excerpt">
+    <img src="https://ww1.sinaimg.cn/mw690/9892fa7fgy1fzrd0pb21lj211y0lc4nr.jpg" />
+</div>
+<!-- more -->
+
 ## 描述
 
 有一天逛 [Codepen](https://codepen.io/) 的时候，看到这么一个效果：将文字上下切开两半。

@@ -10,7 +10,7 @@
       </h1>
 
       <time class="post-time">
-          {{ full_date(post.date, 'MMM DD YYYY') }}
+          {{ full_date(post.date, 'YYYY-MM-DD') }}
       </time>
     </header>
 
@@ -38,18 +38,18 @@
     {% if not is_home() %}
       <footer class="post-footer">
       <ul class="post-copyright">
-  <li class="post-copyright-author">
-      <span>本文作者：</span>{{ theme.author }}
-  </li>
-  <li class="post-copyright-link">
-    <span>本文链接：</span>
-    <a href="{{ theme.url }}/{{ url_for(page.path) }}" title="{{ page.title }}">{{ theme.url }}/{{ page.path }}</a>
-  </li>
-  <li class="post-copyright-license">
-    <span>版权： </span>
-    本站文章均采用 <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0 CN</a> 许可协议，请勿用于商业，转载注明出处！
-  </li>
-</ul>
+        <li class="post-copyright-author">
+            <span>本文作者：</span>{{ theme.author }}
+        </li>
+        <li class="post-copyright-link">
+          <span>本文链接：</span>
+          <a href="{{ theme.url }}/{{ url_for(page.path) }}" title="{{ page.title }}">{{ theme.url }}/{{ page.path }}</a>
+        </li>
+        <li class="post-copyright-license">
+          <span>版权： </span>
+          本站文章均采用 <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0 CN</a> 许可协议，请勿用于商业，转载注明出处！
+        </li>
+      </ul>
 		{% if post.tags and post.tags.length %}
 		<div class="post-tags">
 		  {% for tag in post.tags %}
