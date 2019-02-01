@@ -13,6 +13,7 @@
       <div id="content">
         {% block content %}{% endblock %}
       </div>
+      {% include '_script/comments.swig' %}
 
       <footer id="colophon">
         {%- include '_partial/footer.swig' %}
@@ -22,7 +23,6 @@
         <i class="iconfont icon-up"></i>
       </div>
     </div>
-    {% include '_script/comments.swig' %}
     {% include '_script/libs.swig' %}
     {% include '_script/theme.swig' %}
   </body>

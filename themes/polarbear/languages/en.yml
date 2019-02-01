@@ -30,3 +30,5 @@ counter:
     zero: No Categories
     one: 1 Category In Total
     other: "%d Categories In Total"
+
+gitmentbutton: Show comments from Gitment
