@@ -40,8 +40,8 @@ widget:
   Custom: true
 
 widget_custom:
-    title: About
-    content: <p>这是 4ark 的个人博客</p>
+    title: Believe
+    content: <p>Programming is an art form.</p>
 
 # ===========================================
 # Theme Settings
