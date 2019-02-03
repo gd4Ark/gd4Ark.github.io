@@ -12,14 +12,16 @@
     list-style: none;
 }
 
-#colophon{
+#colophon {
     font-size: 13px;
+    text-align: center;
+    width: 100%;
 }
 
-.post-content .excerpt{
+.post-content .excerpt {
     display: none;
 }
 
-.excerpt img{
+.excerpt img {
     max-width: 300px;
 }
