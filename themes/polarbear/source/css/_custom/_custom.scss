@@ -2,14 +2,9 @@
 // Custom style
 // ==============================
 // You can override the variables in _variables.scss to customize the style
-.post-copyright {
-    margin: 2em 0;
-    padding-left: 10px;
-    position: relative;
-    color: rgba(0, 0, 0, 0.6);
-    background-color: #fff;
-    border-left: 2px solid #aaa;
-    list-style: none;
+
+body {
+    color: #333;
 }
 
 #colophon {
@@ -24,4 +19,31 @@
 
 .excerpt img {
     max-width: 300px;
+}
+
+code,
+.post .post-content code {
+    padding: 0px 4px;
+    color: #4e5980;
+    background: #f8f8f8;
+    border-radius: 4px;
+    font-size: .9em;
+    font-family: $code-font-family;
+}
+
+.post-copyright {
+    margin: 2em 0;
+    padding-left: 10px;
+    position: relative;
+    border-left: 2px solid #aaa;
+    list-style: none;
+}
+
+.post-content p {
+    margin: 22px 0;
+}
+
+.gitment-comments-init-btn:disabled,
+.gitment-editor-submit:disabled {
+    background: #21a3f5;
 }
