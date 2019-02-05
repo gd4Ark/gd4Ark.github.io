@@ -29,6 +29,7 @@
   <link rel="stylesheet" type="text/css" href="{{ url_for('lib/fancybox/jquery.fancybox.css') }}" />
 {% endif %}
 
+
 {# Theme Configuration #}
 {% include "../_script/config.swig" %}
 
@@ -36,3 +37,5 @@
 {% if not env.debug %}
   {% include "../_script/analytics.swig" %}
 {% endif %}
+
+<link href="/plugins/prettify/prettify.css" rel="stylesheet">

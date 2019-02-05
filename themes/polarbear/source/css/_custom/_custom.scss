@@ -21,14 +21,44 @@ body {
     max-width: 300px;
 }
 
-code,
-.post .post-content code {
-    padding: 0px 4px;
-    color: #4e5980;
-    background: #f8f8f8;
-    border-radius: 4px;
+code {
     font-size: .9em;
     font-family: $code-font-family;
+}
+
+.excerpt code,
+.post .post-content code:not([class]) {
+    padding: 0px 4px;
+    background: #f8f8f8;
+    color: #4e5980;
+    border-radius: 4px;
+}
+
+.prettyprint {
+    position: relative;
+    background: #f8f8f8 !important;
+}
+
+.prettyprint code {
+    font-size: 1em;
+    display: block;
+    overflow-x: auto;
+    padding: 18px 15px 12px;
+}
+
+@media screen and (max-width:600px) {
+    .prettyprint code {
+        font-size: .8em;
+    }
+}
+
+.prettyprint code::before {
+    content: attr(class);
+    position: absolute;
+    top: 0;
+    right: 5px;
+    color: #ccc;
+    font-size: 1em;
 }
 
 .post-copyright {
