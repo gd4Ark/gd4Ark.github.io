@@ -38,4 +38,6 @@
   {% include "../_script/analytics.swig" %}
 {% endif %}
 
-<link href="/plugins/prettify/prettify.css" rel="stylesheet">
+{% if config.prettify.enable %}
+  <link href="/plugins/prettify/{{ config.prettify.theme }}.css" rel="stylesheet">
+{% endif %}

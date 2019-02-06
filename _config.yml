@@ -44,11 +44,22 @@ render_drafts: false
 post_asset_folder: false
 relative_link: false
 future: true
+
+
+# prettify 插件位置
+# enable 启用和不启用
+# theme 使用prettify高亮主题名称
+prettify:
+   enable: true
+   theme: "prettify"
+
+#默认代码高亮插件
 highlight:
   enable: false
-  line_number: false
-  auto_detect: false
-  tab_replace:
+  _enable: 'false' # （BUG?）scss 中只能获取字符串
+  line_number: true
+  auto_detect: true
+  tab_replace:    
   
 # Home page setting
 # path: Root path for your blogs index page. (default = '')

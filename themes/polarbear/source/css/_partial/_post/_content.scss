@@ -46,6 +46,7 @@
     color: rgba(0, 0, 0, 0.6);
     background-color: #fff;
     border-left: 2px solid #aaa;
+
     p {
       margin: 0;
     }
@@ -56,19 +57,20 @@
     max-width: 100%;
   }
 
-  > table {
+  >table {
     max-width: 100%;
     margin: 10px 0;
     border-spacing: 0;
 
-    th, td {
+    th,
+    td {
       padding: 5px 15px;
       border: 1px double $content-table-border-color;
       text-align: left;
     }
   }
 
-  // @import 'code';
+  @import 'code';
 
   .read-more {
     .read-more-link {

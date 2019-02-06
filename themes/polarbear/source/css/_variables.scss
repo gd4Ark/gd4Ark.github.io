@@ -6,6 +6,8 @@
 // Theme color config from `polarbear/_config.yml`
 $theme-color-config: hexo-theme-config('theme.color');
 
+$highlight: hexo-config('highlight._enable');
+
 // Default theme color map
 $theme-color-map: (
   'Default': #4D89FB #F8F8F8,
