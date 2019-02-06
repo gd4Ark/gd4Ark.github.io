@@ -20,7 +20,7 @@ comments: false
 
 - GitHub： [gd4ark](https://github.com/gd4Ark)
 - Email： gd.4ark@gmail.com
-- VX：d8i66666
+- WeChat：d8i66666
 - QQ：1806804351
 - 掘金、知乎、简书、v2ex等用户名均为：4Ark
 
