@@ -10,7 +10,7 @@
 6. 加入了另一个代码高亮插件：code-prettify
 7. 一些样式的优化
 
-[在线预览](https://gd4ark.github.io/)
+[在线预览](https://4ark.me)
 
 ![](https://ws1.sinaimg.cn/large/006mS5wEgy1fzxzwoxnp1j31200n3mz5.jpg)
 
