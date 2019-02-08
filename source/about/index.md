@@ -7,13 +7,12 @@ comments: false
 >
 > 目前在校，将于2019年6月中旬离校实习。
 >
-> 求职意向：广州、WEB前端、税前5k+。
+> 求职中，[简历](https://4ark.me/resume)。
 
 ## 基本信息
 
 - 性别：男
 - 年龄：18
-- 学校：清远市技师学院
 - 学历：大专
 
 ## 社交信息
@@ -23,15 +22,6 @@ comments: false
 - WeChat：d8i66666
 - QQ：1806804351
 - 掘金、知乎、简书、v2ex等用户名均为：4Ark
-
-## 技术栈
-
-- 前端
-  - HTML、CSS、JavaScript
-  - Vue、Scss
-- 后端
-  - PHP、MySQL
-  - Laravel
 
 ## 关于本站
 
