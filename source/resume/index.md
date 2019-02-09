@@ -1,8 +1,10 @@
 ---
-title: 广州-WEB前端-税前5k+
+title: 广州-WEB前端-蔡红辉
 date: 2018-10-23 22:53:13
 comments: false
 ---
+
+> 本人于2019年6月中旬离校
 
 # 联系方式
 
@@ -17,6 +19,26 @@ comments: false
 -   技术博客：https://4ark.me
 -   GitHub：https://github.com/gd4Ark
 
+# 开源项目和作品
+
+## 开源项目
+
+### 1. 清技背单词
+
+基于 Vue 全家桶、Element-Ui、SCSS、Lumen 开发的一款背单词应用，分为用户界面和管理界面，实现了单词本（单词）管理、多个单词复习模块、排行榜、等功能。
+
+使用 2 个星期完成主体功能，通过本项目，我学习了 Vue、Element-Ui、SCSS、Lumen、Git 的基本使用；学习了前后端分离时的数据交互；
+
+GitHub：[链接](https://github.com/gd4Ark/learn_english)。
+
+### 2. 星际大战
+
+使用原生 JavaScript（ES6）、Canvas 开发的一款类似雷电战机的HTML5游戏。
+
+使用 3 天完成主体功能，通过本项目，我学习了面向对象编程、对 JS 较复杂的概念有了更深一步的理解。
+
+GitHub：[链接](https://github.com/gd4Ark/Star_Battle)。
+
 # 校园经历
 
 ## 获奖经历
@@ -26,31 +48,27 @@ comments: false
 -   第 10 届清远市技师学院技能赛《网站设计与开发》第二名。
 -   连续多次获得奖学金。
 
-## 网站工作室组长
+# 掌握技能
 
-主要帮助其他成员解决学习上的问题，为他们提供思路。积极推动成员进行技术分享、学习新知识、提高自学能力。
-期间也为学校开发一些提高工作效率的工具，如工作室管理系统、教师评分系统、课后单词小游戏等。
+## HTML/CSS
 
-# 开源项目和作品
+熟练使用 HTML5、CSS3，能够编写语义化的 HTML，模块化的 CSS，能够完成比较复杂的布局。
 
-## 开源项目
+熟悉 SCSS、Bootstrap、Element-Ui 等 CSS预处理器和 UI 框架。
 
--   [清技背单词](https://github.com/gd4Ark/learn_english)：Vue + Element-ui + Lumen 开发的背单词单页应用。
--   [星际大战](https://github.com/gd4Ark/Star_Battle)：JavaScript 开发的一个类似雷电战机的 HTML5 游戏。
+## JavaScript
 
-## 技术文章
+熟练使用原生 JavaScript、ES6 能够运用模块化的方式编程。
 
--   [一个前端在校生的 2018 年终总结](https://4ark.me/post/5330f5ce.html)
--   [《程序员的自我修养》-读书笔记](https://4ark.me/post/2a0a222a.html)
+熟悉 Vue、Vuex 的使用，并有相关开发经验。
 
-# 技能清单
+## 其他
 
--   前端
-    -   HTML、CSS、JavaScript
-    -   Vue、Scss
--   后端
-    -   PHP、MySQL
-    -   Laravel
+了解 Webpack 前端自动化工具，熟悉 Git 版本管理工具。
+
+了解 PHP，能够使用 Laravel 框架进行基本 API 开发。
+
+了解常见 WEB 安全漏洞，有过相关攻防经验（竞赛）。
 
 # 致谢
 
