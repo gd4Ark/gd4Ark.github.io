@@ -10,8 +10,6 @@ date: 2018-11-05 23:01:43
 
 ## 前言
 
-在经历了前两天的折腾后（见 [一个密码引发的惨案](https://gd4ark.github.io/2018/11/04/%E4%B8%80%E4%B8%AA%E5%AF%86%E7%A0%81%E5%BC%95%E5%8F%91%E7%9A%84%E6%83%A8%E6%A1%88/) 这篇文章），总算是进入了正式的学习状态，今天我们来配置一下锐捷的AP。
-
 ### 版本说明
 
 我的AP型号为： RG-AP220-SE
@@ -220,11 +218,11 @@ Ruijie(config-wlansec)#security wpa ciphers aes enable
 
 ## 参考链接
 
-http://www.ruijiery.com/uploadfile/2016/0621/20160621124933455.pdf
+- http://www.ruijiery.com/uploadfile/2016/0621/20160621124933455.pdf
 
-https://blog.csdn.net/u012318074/article/details/52599540
+- https://blog.csdn.net/u012318074/article/details/52599540
 
-https://wenku.baidu.com/view/ab3addf8af1ffc4ffe47ac93.html
+- https://wenku.baidu.com/view/ab3addf8af1ffc4ffe47ac93.html
 
-https://wenku.baidu.com/view/fcc1dda9d0d233d4b14e6973.html
+- https://wenku.baidu.com/view/fcc1dda9d0d233d4b14e6973.html
 
