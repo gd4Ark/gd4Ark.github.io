@@ -23,21 +23,17 @@ comments: false
 
 ## 开源项目
 
-### 1. 清技背单词
+### [清技背单词](https://github.com/gd4Ark/learn-english)
 
 基于 Vue 全家桶、Element-Ui、SCSS、Lumen 开发的一款背单词应用，分为用户界面和管理界面，实现了单词本（单词）管理、多个单词复习模块、排行榜、等功能。
 
 使用 2 个星期完成主体功能，通过本项目，我学习了 Vue、Element-Ui、SCSS、Lumen、Git 的基本使用；学习了前后端分离时的数据交互；
 
-GitHub：[链接](https://github.com/gd4Ark/learn_english)。
-
-### 2. 星际大战
+### [星际大战](https://github.com/gd4Ark/star-battle)
 
 使用原生 JavaScript（ES6）、Canvas 开发的一款类似雷电战机的HTML5游戏。
 
 使用 3 天完成主体功能，通过本项目，我学习了面向对象编程、对 JS 较复杂的概念有了更深一步的理解。
-
-GitHub：[链接](https://github.com/gd4Ark/Star_Battle)。
 
 # 校园经历
 
