@@ -6,14 +6,18 @@
 title: 4Ark' Blog
 subtitle:
 description: 4ark 的个人博客
-keywords: 4Ark WEB 前端 个人博客
+keywords: 4Ark gd4ark WEB 前端 个人博客 hexo 博客 蔡红辉
 author: 4Ark
 language:
 timezone:
+sitemap: 
+  path: sitemap.xml
+baidusitemap:
+  path: baidusitemap.xml  
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: https://gd4ark.github.io
+url: https://4ark.me
 root: /
 # permalink: :year/:month/:day/:title/
 #permalink: :urlname
@@ -98,3 +102,4 @@ deploy:
   type: git 
   repo : git@github.com:gd4Ark/gd4Ark.github.io.git
   branch : master
+
