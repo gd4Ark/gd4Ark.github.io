@@ -1,5 +1,5 @@
 ---
-title: 装了这些 Chrome 扩展，让你成为这条Gai最靓的仔
+title: 分享一些好用的 Chrome 扩展
 categories:
   - 分享
 tags:
