@@ -1,5 +1,5 @@
 ---
-title: 有了这些 Chrome 扩展，让你成为这条Gai最靓的仔
+title: 装了这些 Chrome 扩展，让你成为这条Gai最靓的仔
 categories:
   - 分享
 tags:
