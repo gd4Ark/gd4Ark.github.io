@@ -12,16 +12,14 @@ comments: false
 ## 基本信息
 
 - 性别：男
-- 年龄：18
-- 学历：大专
+- 年龄：19
 
 ## 社交信息
 
 - GitHub： [gd4ark](https://github.com/gd4Ark)
-- Email： gd.4ark@gmail.com
+- E-mail： gd4ark@gmail.com
 - WeChat：d8i66666
-- QQ：1806804351
-- 掘金、知乎、简书、v2ex等用户名均为：4Ark
+- 掘金、知乎、V2EX等用户名均为：4Ark
 
 ## 关于本站
 

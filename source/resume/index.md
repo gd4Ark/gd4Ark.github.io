@@ -8,16 +8,15 @@ comments: false
 
 # 联系方式
 
--   手机：178-2046-0723
--   Email：gd4ark@gmail.com
--   QQ：1806804351
+-   手机：178-2046-0723（微信同步）
+-   E-mail：gd4ark@gmail.com
 
 # 个人信息
 
 -   蔡红辉/男/2000
--   大专/清远市技师学院计算机专业
--   技术博客：https://4ark.me
--   GitHub：https://github.com/gd4Ark
+-   大专/清远市技师学院-计算机专业
+-   Blog：[4ark.me](https://4ark.me)
+-   GitHub：[gd4Ark](https://github.com/gd4Ark)
 
 # 开源项目和作品
 
@@ -25,15 +24,15 @@ comments: false
 
 ### [清技背单词](https://github.com/gd4Ark/learn-english)
 
-基于 Vue 全家桶、Element-Ui、SCSS、Lumen 开发的一款背单词应用，分为用户界面和管理界面，实现了单词本（单词）管理、多个单词复习模块、排行榜、等功能。
+基于 Vue 全家桶、Element-Ui、SCSS、Lumen、MySQL 开发的一款背单词 WebApp，分为用户界面和管理界面，实现了单词本（单词）管理、多个单词复习模块、排行榜等功能。
 
-使用 2 个星期完成主体功能，通过本项目，我学习了 Vue、Element-Ui、SCSS、Lumen、Git 的基本使用；学习了前后端分离时的数据交互；
+使用 2 个星期完成主体功能。
 
 ### [星际大战](https://github.com/gd4Ark/star-battle)
 
-使用原生 JavaScript（ES6）、Canvas 开发的一款类似雷电战机的HTML5游戏。
+使用原生 JavaScript（ES6）、Canvas 开发的一款飞船射击类的 HTML5 游戏。
 
-使用 3 天完成主体功能，通过本项目，我学习了面向对象编程、对 JS 较复杂的概念有了更深一步的理解。
+使用 3 天完成主体功能。
 
 # 校园经历
 
