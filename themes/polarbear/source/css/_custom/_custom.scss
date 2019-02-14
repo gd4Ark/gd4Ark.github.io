@@ -83,3 +83,9 @@ code {
 .gitment-editor-submit:disabled {
     background: #21a3f5;
 }
+
+#gitalk-container {
+    width: 85%;
+    max-width: 1000px;
+    margin: 0 auto;
+}

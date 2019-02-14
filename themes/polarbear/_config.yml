@@ -69,13 +69,23 @@ disqus_shortname:
 # Gitment
 # Introduction: https://imsun.net/posts/gitment-introduction/
 gitment:
-    enable: true                                             # gitment评论系统开关
+    enable: false                                             # gitment评论系统开关
     owner: gd4Ark                                        # GitHub用户名
     repo: gd4Ark.github.io                               # 存储评论数据的GitHub仓库的仓库名
-    client_id: 0932bc5490c08092fd50                          # OAuth Application的Client ID
-    client_secret: fc51ec2b7ed5367bccfd806b982bf8d5d741c2fd  # OAuth Application的Client Secret
+    client_id: ca4ae20760cf27ad5c6c                          # OAuth Application的Client ID
+    client_secret: 671788fb8d6aed08906b70340a8ba3088ec03f39  # OAuth Application的Client Secret
     lazy: false                                               # 评论懒加载开关
-  
+
+# Gitalk
+# Introduction: https://github.com/gitalk/gitalk
+gitalk:
+    enable : true
+    owner: gd4Ark                                        # GitHub用户名
+    repo: gd4Ark.github.io                               # 存储评论数据的GitHub仓库的仓库名
+    client_id: ca4ae20760cf27ad5c6c                          # OAuth Application的Client ID
+    client_secret: 671788fb8d6aed08906b70340a8ba3088ec03f39  # OAuth Application的Client Secret
+    admin: ['gd4Ark']
+    distractionFreeMode: false
 # ===========================================
 # Version
 # ===========================================
