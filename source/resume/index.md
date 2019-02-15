@@ -32,7 +32,7 @@ comments: false
 
 使用原生 JavaScript（ES6）、Canvas 开发的一款飞船射击类的 HTML5 游戏。
 
-使用 3 天完成主体功能。
+使用  1 个星期完成主体功能。
 
 # 校园经历
 

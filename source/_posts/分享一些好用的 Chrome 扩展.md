@@ -31,7 +31,7 @@ date: 2019-2-13 15:22:39
 
 **注**：装了这个就可以访问之后介绍的扩展链接了。
 
-> 链接：[XX访问助手](http://www.ggfwzs.com/)
+> 链接：[访问助手](http://www.ggfwzs.com/)
 
 ### 2. 新浪微博图床
 
@@ -157,7 +157,7 @@ date: 2019-2-13 15:22:39
 
 这个扩展可以很炫酷地展示 GitHub 中任意一个文件的历史修改情况。
 
-![](https://user-images.githubusercontent.com/1911623/52460615-f3899d80-2b49-11e9-8c21-06af4097a527.gif)
+![](https://ws1.sinaimg.cn/large/006mS5wEgy1g0527m41elg31qi0vwqvb.gif)
 
 > 链接：[Git History](https://chrome.google.com/webstore/detail/git-history-browser-exten/laghnmifffncfonaoffcndocllegejnf)
 
