@@ -168,6 +168,7 @@ $code-highlight-color: (
 $code-type-list: (
   html: "HTML",
   js: "JavaScript",
+  javascript: "JavaScript",
   bash: "Bash",
   css: "CSS",
   scss: "Scss",
@@ -183,7 +184,8 @@ $code-type-list: (
   scheme: "Scheme",
   objectivec: "Objective-C",
   yml: "YAML",
-  stylus: "Stylus"
+  stylus: "Stylus",
+  shell: "Shell"
 ) !default;
 
 // Color of the code background.

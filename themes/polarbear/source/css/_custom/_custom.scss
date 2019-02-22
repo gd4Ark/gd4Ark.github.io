@@ -53,8 +53,18 @@ code {
     }
 }
 
+
+
+.prettyprint code{
+    @each $sign,
+    $text in $code-type-list {
+        &.#{$sign}::before {
+            content: $text;
+        }
+    }
+}
+
 .prettyprint code::before {
-    content: attr(class);
     position: absolute;
     top: 0px;
     right: 5px;
