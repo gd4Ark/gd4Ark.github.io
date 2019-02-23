@@ -1,12 +1,12 @@
 ## 我的个人博客
 
-基于 hexo [polarbear](https://github.com/frostfan/hexo-theme-polarbear) 主题改造，进行了如下扩展：
+基于 Hexo [Polarbear](https://github.com/frostfan/hexo-theme-polarbear) 主题改造，进行了如下扩展：
 
 1. 首页文章列表显示摘要
-2. 使用 hexo-abbrlink 进行文章链接持久化
+2. 使用 Hexo-abbrlink 进行文章链接持久化
 3. 文章底部自动添加版权信息
 4. 支持评论插件（ Gitment 和 Gitalk）
-5. 加入了另一个代码高亮插件：code-prettify
+5. 加入了另一个代码高亮插件：Code-prettify
 6. 一些样式的优化
 
 ## 预览
