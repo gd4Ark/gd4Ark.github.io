@@ -21,7 +21,7 @@ date: 2018-11-26 22:57:06
 
 你可以点下方链接查看效果：
 
-https://gd4ark.github.io/blog_demos/2018-11-26/01.html
+https://gd4ark.github.io/blog-demos/2018-11-26/01.html
 
 ## 正文
 
@@ -110,7 +110,7 @@ h1::before{
 
 
 
-完整代码：https://github.com/gd4Ark/blog_demos/blob/master/2018-11-26/01.html
+完整代码：https://github.com/gd4Ark/blog-demos/blob/master/2018-11-26/01.html
 
 
 

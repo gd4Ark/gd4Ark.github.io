@@ -18,7 +18,7 @@ date: 2018-11-25 17:06:50
 
 在开发中，有这样一个需求，`Table`的表头不动，表身可以滚动，效果请点击以下链接查看：
 
-https://gd4ark.github.io/blog_demos/2018-11-25/01.html
+https://gd4ark.github.io/blog-demos/2018-11-25/01.html
 
 ## 正文
 
@@ -73,7 +73,7 @@ tbody tr {
 
 ![](https://ws1.sinaimg.cn/large/006mS5wEgy1fxkew5j851j30e307cdft.jpg)
 
-完整代码：https://github.com/gd4Ark/blog_demos/blob/master/2018-11-25/01.html
+完整代码：https://github.com/gd4Ark/blog-demos/blob/master/2018-11-25/01.html
 
 ## 后记
 
