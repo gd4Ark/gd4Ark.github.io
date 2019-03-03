@@ -40,9 +40,8 @@ widget:
   Custom: true
 
 widget_custom:
-    title: Belief
-    content: <p>Programming is an art form.</p>
-             <p>编程是一种艺术形式。</p>   
+    title: LifeMotto
+    content: <p>Because we can</p>
 
 # ===========================================
 # Theme Settings
