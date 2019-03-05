@@ -40,7 +40,7 @@ widget:
   Custom: true
 
 widget_custom:
-    title: LifeMotto
+    title: Slogan
     content: <p>Because we can</p>
 
 # ===========================================

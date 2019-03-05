@@ -3,11 +3,9 @@ title: 关于我
 date: 2018-10-23 22:53:13
 comments: false
 ---
-> 您好，我是4Ark（蔡红辉），是一名WEB开发工作人员，热爱计算机技术、崇尚极客精神。
->
-> 目前在校，将于2019年6月中旬离校工作。
->
-> 求职中，[简历](https://4ark.me/resume)。
+
+您好，我是4Ark，是一名WEB开发者，热爱计算机技术、崇尚极客精神。
+目前在校，将于2019年6月中旬离校实习，求职中，[简历](https://4ark.me/resume/)。
 
 ## 基本信息
 
@@ -18,10 +16,10 @@ comments: false
 
 - GitHub： [gd4ark](https://github.com/gd4Ark)
 - E-mail： gd4ark@gmail.com
-- 掘金、知乎、V2EX等用户名均为：4Ark
+- Social：[掘金](https://juejin.im/user/5a4f6e2c6fb9a01cb508a127) | [知乎](https://www.zhihu.com/people/cai-hong-hui-2/activities) | [V2EX](https://www.v2ex.com/member/4ark)
 
 ## 关于本站
 
 本站基于 Hexo + GitHub Page 搭建，采用 [Polar Bear](https://github.com/frostfan/hexo-theme-polarbear) 主题。
 
-此博客仓库地址：[链接](https://github.com/gd4Ark/gd4Ark.github.io)。
+博客源码：[链接](https://github.com/gd4Ark/gd4Ark.github.io)。
