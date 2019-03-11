@@ -3,7 +3,7 @@
   <section id="archive" class="archive">
     {% if not page.prev %}
       {% if page.tag %}
-        <div class="archive-title tag">
+        <div class="archive-title">
           <h2 class="archive-name">{{ page.tag }}</h2>
         </div>
       {% elif page.category %}
