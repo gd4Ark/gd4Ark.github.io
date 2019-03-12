@@ -22,7 +22,7 @@ body {
 }
 
 code {
-    font-size: .9em;
+    font-size: 0.9em;
     font-family: $code-font-family;
 }
 
@@ -47,17 +47,14 @@ code {
     margin-top: 7px;
 }
 
-@media screen and (max-width:600px) {
+@media screen and (max-width: 600px) {
     .prettyprint code {
-        font-size: .8em;
+        font-size: 0.8em;
     }
 }
 
-
-
-.prettyprint code{
-    @each $sign,
-    $text in $code-type-list {
+.prettyprint code {
+    @each $sign, $text in $code-type-list {
         &.#{$sign}::before {
             content: $text;
         }
@@ -98,4 +95,7 @@ code {
     width: 85%;
     max-width: 1000px;
     margin: 0 auto;
+    .gt-initing-text {
+        text-align: center;
+    }
 }
