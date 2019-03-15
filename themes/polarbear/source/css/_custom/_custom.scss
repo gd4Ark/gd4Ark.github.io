@@ -29,22 +29,23 @@ code {
 .excerpt code,
 .post .post-content code:not([class]) {
     padding: 0px 4px;
-    background: #f8f8f8;
-    color: #4e5980;
+    background: rgba(27,31,35,.05);
     border-radius: 4px;
 }
 
 .prettyprint {
     position: relative;
-    background: #f8f8f8 !important;
 }
 
 .prettyprint code {
-    font-size: 1em;
     display: block;
     overflow-x: auto;
-    padding: 12px 8px 6px;
-    margin-top: 7px;
+    padding: 12px;
+    border: 1px solid #e7eaed;
+    background: #f6f8fa;
+    border-radius: 4px;
+    font-size: 85%;
+    line-height: 1.7;
 }
 
 @media screen and (max-width: 600px) {
@@ -53,21 +54,21 @@ code {
     }
 }
 
-.prettyprint code {
-    @each $sign, $text in $code-type-list {
-        &.#{$sign}::before {
-            content: $text;
-        }
-    }
-}
+// .prettyprint code {
+//     @each $sign, $text in $code-type-list {
+//         &.#{$sign}::before {
+//             content: $text;
+//         }
+//     }
+// }
 
-.prettyprint code::before {
-    position: absolute;
-    top: 0px;
-    right: 5px;
-    color: #ccc;
-    font-size: 1em;
-}
+// .prettyprint code::before {
+//     position: absolute;
+//     top: 0px;
+//     right: 5px;
+//     color: #ccc;
+//     font-size: 1em;
+// }
 
 .post-copyright {
     margin: 2em 0;

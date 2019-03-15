@@ -151,7 +151,7 @@ $code-color: #000 !default;
 $code-font-size: 15px !default;
 
 // Font family of the code.
-$code-font-family: Menlo,Monaco,Consolas,"Courier New",monospace !default;
+$code-font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,Courier,monospace !default;
 
 // Color of code highlight, solarized.
 $code-highlight-color: (
@@ -185,7 +185,6 @@ $code-type-list: (
   objectivec: "Objective-C",
   yml: "YAML",
   stylus: "Stylus",
-  shell: "Shell"
 ) !default;
 
 // Color of the code background.
