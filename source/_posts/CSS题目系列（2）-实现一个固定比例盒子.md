@@ -11,8 +11,6 @@ date: 2018-11-26 22:55:06
 <div class="excerpt">
     <img src="https://ws1.sinaimg.cn/large/006mS5wEgy1fxl6othpvtg31af0pxgtv.gif" />
 </div>
-<!-- more -->
-
 ## 描述
 
 在开发过程中，会有这么一个情况，需要将一个盒子的尺寸定义为固定比例，且尺寸需根据视图的尺寸来进行缩放，也就是响应式，常见的多如有矩形、圆形等。
