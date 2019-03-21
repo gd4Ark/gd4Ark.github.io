@@ -1,9 +1,9 @@
 ---
 title: 分享一些好用的 Chrome 扩展
 categories:
-  - 分享
+  - 工具资源
 tags:
-  - 分享
+  - 工具资源
 abbrlink: 549a6198
 date: 2019-2-13 15:22:39
 ---
