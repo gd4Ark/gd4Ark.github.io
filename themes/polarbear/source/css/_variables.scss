@@ -33,7 +33,7 @@ $deputy-color: nth($theme-color-list, 2) !default;
 
 // ========== Color ========== //
 $black: #0a0a0a !default;
-$white: #fefefe !default;
+$white: #fff !default;
 $light-gray: #eee !default;
 $gray: #cacaca !default;
 $dark-gray: #aaa !default;
@@ -41,13 +41,13 @@ $dark-gray: #aaa !default;
 
 // ========== Global ========== //
 // Text color of the body.
-$global-font-color: rgba(0, 0, 0, 0.75) !default;
+$global-font-color: #34495e !default;
 
 // Font size attribute applied to '<html>' and '<body>'.
-$global-font-size: 16px !default;
+$global-font-size: 15px !default;
 
 // Global width of '<body>'.
-$global-body-width: 1000px !default;
+$global-body-width: 900px !default;
 
 // Global width of '<content>'.
 $global-content-width: 750px !default;
@@ -63,7 +63,8 @@ $global-content-margin: 0 auto !default;
 $global-lineheight: 1.5 !default;
 
 // Font family of the site.
-$global-font-family: "Open Sans","PingFang SC","Hiragino Sans GB","Microsoft Yahei","Microsoft Jhenghei",sans-serif !default;
+// $global-font-family: "Open Sans","PingFang SC","Hiragino Sans GB","Microsoft Yahei","Microsoft Jhenghei",sans-serif !default;
+$global-font-family: 'sourcesanspro', 'Helvetica Neue', Arial, sans-serif;
 
 // Background color of the site.
 $global-background: $white !default;
@@ -95,7 +96,7 @@ $site-header-height: 65px !default;
 $post-list-margin-bottom: 20px !default;
 
 // Padding of the post.
-$post-padding: 40px 0 !default;
+$post-padding: 30px 0 !default;
 
 // Border top of the post + post.
 $post-border: 1px solid $light-gray !default;
@@ -148,7 +149,7 @@ $content-margin-bottom: 40px !default;
 $code-color: #000 !default;
 
 // Font size of code.
-$code-font-size: 15px !default;
+$code-font-size: .9em !default;
 
 // Font family of the code.
 $code-font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,Courier,monospace !default;

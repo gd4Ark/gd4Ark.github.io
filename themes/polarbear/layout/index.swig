@@ -2,7 +2,7 @@
 {% import '_macro/post.swig' as post_template %}
 
 
-{% block title %} {{ config.title }}  {{ config.description }} - {{ config.keywords }} {% endblock %}
+{% block title %} {{ config.title }} {% endblock %}
 
 {% block content %}
     <div id="primary" class="home">
