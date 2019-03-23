@@ -11,7 +11,7 @@ date: 2019-01-16 17:21:24
 <div class="excerpt">
     理解`this`是我们要深入理解 JavaScript 中必不可少的一个步骤，同时只有理解了 `this`，你才能更加清晰地写出与自己预期一致的 JavaScript 代码。
 </div>
-
+<!-- more -->
 
 ## 前言
 
