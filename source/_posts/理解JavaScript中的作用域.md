@@ -8,11 +8,12 @@ abbrlink: b845344a
 date: 2019-01-09 20:56:32
 ---
 
-
 <div class="excerpt">
     学习 JavaScript 也有一段时间，今天抽空总结一下作用域，也方便自己以后翻阅。
 </div>
+
 <!-- more -->
+
 ## 前言
 
 学习 JavaScript 也有一段时间，今天抽空总结一下作用域，也方便自己以后翻阅。
