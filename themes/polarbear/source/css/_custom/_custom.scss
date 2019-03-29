@@ -9,16 +9,31 @@
     width: 100%;
 }
 
-#content{
+#content {
     width: 93%;
 }
 
-.post .post-content blockquote{
-    color: inherit;
-    border-left : 3px solid #42b983;
+
+#page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    #primary {
+        max-width: none;
+    }
+
+    #content {
+        flex: 1;
+    }
 }
 
-.post-content br:nth-of-type(1){
+.post .post-content blockquote {
+    color: inherit;
+    border-left: 3px solid #42b983;
+}
+
+.post-content br:nth-of-type(1) {
     display: none;
 }
 
@@ -34,7 +49,8 @@ code {
     font-family: $code-font-family;
 }
 
-.excerpt code,.post-content code{
+.excerpt code,
+.post-content code {
     padding: 0px 4px;
     background: #f6f8fa;
     color: #0086b3;
@@ -62,7 +78,9 @@ code {
 }
 
 .prettyprint code {
-    @each $sign, $text in $code-type-list {
+
+    @each $sign,
+    $text in $code-type-list {
         &.#{$sign}::before {
             content: $text;
         }
@@ -81,12 +99,16 @@ code {
     margin: 2em 0;
     padding-left: 10px;
     position: relative;
-    border-left: 2px solid #aaa;
+    border-left: 3px solid #42b983;
     list-style: none;
 }
 
 .post-content p {
     margin: 22px 0;
+}
+
+.post-content table {
+    width: 100%;
 }
 
 .post-content a {
@@ -101,8 +123,9 @@ code {
 
 #gitalk-container {
     width: 85%;
-    max-width: 1000px;
+    max-width: $global-body-width;
     margin: 0 auto;
+
     .gt-initing-text {
         text-align: center;
     }
