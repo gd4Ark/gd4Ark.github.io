@@ -4,9 +4,7 @@ date: 2018-10-23 22:53:13
 comments: false
 ---
 
-您好，我是4Ark，是一名WEB开发者，热爱计算机技术、崇尚极客精神。  
-
-目前在校，将于2019年6月中旬离校实习，求职中，[简历](../resume/)。
+您好，我是4Ark，是一名WEB开发者，热爱计算机技术、崇尚极客精神
 
 ## 基本信息
 
@@ -21,6 +19,6 @@ comments: false
 
 ## 关于本站
 
-本站基于 Hexo + GitHub Page 搭建，采用 [Polar Bear](https://github.com/frostfan/hexo-theme-polarbear) 主题。
+本站基于 Hexo + GitHub Page 搭建，采用 [Polar Bear](https://github.com/frostfan/hexo-theme-polarbear) 主题
 
-博客源码：[链接](https://github.com/gd4Ark/gd4Ark.github.io)。
+博客源码：[链接](https://github.com/gd4Ark/gd4Ark.github.io)
