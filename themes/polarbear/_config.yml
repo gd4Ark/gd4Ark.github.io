@@ -17,8 +17,9 @@ rss: default
 # Menu Settings
 # ===========================================
 menu:
-  Archives: /archives
-  About: /about
+  归档: /archives
+  订阅: /atom.xml
+  关于: /about
 
 archive_generator:
     per_page: 0
@@ -37,7 +38,7 @@ archive_generator:
 widget:
   Tags: true
   Categories: false
-  Custom: true
+  Custom: false
 
 widget_custom:
     title: Slogan

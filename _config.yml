@@ -3,17 +3,17 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: 4Ark' Blog
-subtitle:
+title: 4Ark
+subtitle: 4ark的个人博客
 description: 4ark 的个人博客
 keywords: 4Ark gd4ark WEB 前端 个人博客 hexo 博客 蔡红辉
 author: 4Ark
-language:
+language: zh-cn
 timezone:
-sitemap: 
+sitemap:
   path: sitemap.xml
 baidusitemap:
-  path: baidusitemap.xml  
+  path: baidusitemap.xml
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
@@ -23,8 +23,8 @@ root: /
 #permalink: :urlname
 permalink: post/:abbrlink.html
 abbrlink:
-  alg: crc32  # 算法：crc16(default) and crc32
-  rep: hex    # 进制：dec(default) and hex
+    alg: crc32 # 算法：crc16(default) and crc32
+    rep: hex # 进制：dec(default) and hex
 permalink_defaults:
 
 # Directory
@@ -36,7 +36,7 @@ category_dir: categories
 code_dir: downloads/code
 i18n_dir: :lang
 skip_render:
-  - "plugins/**"
+    - "plugins/**"
 
 # Writing
 new_post_name: :title.md # File name of new posts
@@ -49,31 +49,30 @@ post_asset_folder: false
 relative_link: false
 future: true
 
-
 # prettify 插件位置
 # enable 启用和不启用
 # theme 使用prettify高亮主题名称
 prettify:
-   enable: true
-   theme: "prettify"
+    enable: true
+    theme: "prettify"
 
 #默认代码高亮插件
 highlight:
-  enable: false
-  _enable: 'false' # （BUG?）scss 中只能获取字符串
-  line_number: true
-  auto_detect: true
-  tab_replace:    
-  
+    enable: false
+    _enable: "false" # （BUG?）scss 中只能获取字符串
+    line_number: true
+    auto_detect: true
+    tab_replace:
+
 # Home page setting
 # path: Root path for your blogs index page. (default = '')
 # per_page: Posts displayed per page. (0 = disable pagination)
 # order_by: Posts order. (Order by date descending by default)
 index_generator:
-  path: ''
-  per_page: 10
-  order_by: -date
-  
+    path: ""
+    per_page: 10
+    order_by: -date
+
 # Category & Tag
 default_category: uncategorized
 category_map:
@@ -83,7 +82,7 @@ tag_map:
 ## Hexo uses Moment.js to parse and display date
 ## You can customize the date format as defined in
 ## http://momentjs.com/docs/#/displaying/format/
-date_format: 
+date_format:
 time_format: HH:mm:ss
 
 # Pagination
@@ -99,7 +98,6 @@ theme: polarbear
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
-  type: git 
-  repo : git@github.com:gd4Ark/gd4Ark.github.io.git
-  branch : master
-
+  type: git
+  repo: git@github.com:gd4Ark/gd4Ark.github.io.git
+  branch: master

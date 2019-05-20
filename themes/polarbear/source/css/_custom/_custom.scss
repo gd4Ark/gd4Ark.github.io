@@ -37,11 +37,11 @@
     display: none;
 }
 
-.post-content .excerpt {
+.post-content .excerpt{
     display: none;
 }
 
-.excerpt img {
+.post-excerpt img {
     max-width: 300px;
 }
 
@@ -49,7 +49,7 @@ code {
     font-family: $code-font-family;
 }
 
-.excerpt code,
+.post-excerpt code,
 .post-content code {
     padding: 0px 4px;
     background: #f6f8fa;
@@ -129,4 +129,15 @@ code {
     .gt-initing-text {
         text-align: center;
     }
+}
+
+.post .toc{
+    list-style: none;
+    li{
+        list-style: initial;
+    }
+}
+
+.post .toc a{
+    color: $theme-color;
 }

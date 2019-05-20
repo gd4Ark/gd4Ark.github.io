@@ -40,13 +40,13 @@ $dark-gray: #aaa !default;
 
 // ========== Global ========== //
 // Text color of the body.
-$global-font-color: #34495e !default;
+$global-font-color: rgba(0,0,0,.75) !default;
 
 // Font size attribute applied to '<html>' and '<body>'.
-$global-font-size: 15px !default;
+$global-font-size: 16px !default;
 
 // Global width of '<body>'.
-$global-body-width: 900px !default;
+$global-body-width: 1000px !default;
 
 // Global width of '<content>'.
 $global-content-width: 750px !default;
@@ -63,10 +63,7 @@ $global-lineheight: 1.5 !default;
 
 // Font family of the site.
 // $global-font-family: "Open Sans","PingFang SC","Hiragino Sans GB","Microsoft Yahei","Microsoft Jhenghei",sans-serif !default;
-$global-font-family: 'sourcesanspro',
-'Helvetica Neue',
-Arial,
-sans-serif;
+$global-font-family: notoserif, "Helvetica Neue",Arial,sourcehansans,"Hiragino Sans GB","Hiragino Sans GB W3","Microsoft YaHei","Wenquanyi Micro Hei",sans-serif;
 
 // Background color of the site.
 $global-background: $white !default;
