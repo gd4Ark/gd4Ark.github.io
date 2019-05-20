@@ -2,18 +2,19 @@
 
 基于 Hexo [Polarbear](https://github.com/frostfan/hexo-theme-polarbear) 主题改造，进行了如下扩展：
 
-1. 首页文章列表显示摘要
-2. 使用 Hexo-abbrlink 进行文章链接持久化
-3. 文章底部自动添加版权信息
-4. 支持评论插件（ Gitment 和 Gitalk）
-5. 加入了另一个代码高亮插件：Code-prettify
-6. 一些样式的优化
+1. 添加文章目录
+2. 首页文章列表显示摘要
+3. 使用 Hexo-abbrlink 进行文章链接持久化
+4. 文章底部自动添加版权信息
+5. 支持评论插件（ Gitment 和 Gitalk）
+6. 加入了另一个代码高亮插件：Code-prettify
+7. 一些样式的优化
 
 ## 预览
 
 在线预览：[Demo](https://4ark.me)
 
-![](https://ws1.sinaimg.cn/large/006mS5wEgy1g060hzpz9dj31460lmwgh.jpg)
+![](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/下载.png)
 
 ## 一些问题
 
