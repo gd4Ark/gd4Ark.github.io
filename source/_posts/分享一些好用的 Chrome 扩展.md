@@ -10,8 +10,9 @@ date: 2019-2-13 15:22:39
 
 <div class="excerpt">
     使用浏览器扩展程序可以使你的工作效率提高数倍不止，那么下面我就向大家分享一下我日常使用的扩展，可能大多数扩展大家都已经在使用了，不过也难免有一两个是你不知道的。
-    <img src="https://ws1.sinaimg.cn/large/006mS5wEgy1g04uhwp8ozj30hs0b4aal.jpg">
+    <img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/006mS5wEgy1g04uhwp8ozj30hs0b4aal.jpg">
 </div>
+
 
 <!-- more -->
 
@@ -37,7 +38,7 @@ date: 2019-2-13 15:22:39
 
 感谢新浪微博提供的免费图床（对外链无限制），以及吊炸天的 cdn 图片加速服务，从此妈妈再也不用担心我的图床不能用了，另外还支持在网页图片右键菜单中一键上传。
 
-![](https://ws1.sinaimg.cn/large/006mS5wEgy1g04uhwp8ozj30hs0b4aal.jpg)
+![](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/006mS5wEgy1g04uhwp8ozj30hs0b4aal.jpg)
 
 > 链接：[新浪微博图床](https://chrome.google.com/webstore/detail/%E6%96%B0%E6%B5%AA%E5%BE%AE%E5%8D%9A%E5%9B%BE%E5%BA%8A/fdfdnfpdplfbbnemmmoklbfjbhecpnhf)
 
@@ -45,7 +46,7 @@ date: 2019-2-13 15:22:39
 
 最受欢迎的 Chrome 扩展，拥有超过 6000 万用户！拦截网页上的广告。
 
-![](https://ws1.sinaimg.cn/large/006mS5wEgy1g04un3rn1fj30hs0b4ac4.jpg)
+![](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/006mS5wEgy1g04un3rn1fj30hs0b4ac4.jpg)
 
 > 链接：[AdBlock](https://chrome.google.com/webstore/detail/adblock/gighmmpiobklfepjocnamgkkbiglidom)
 
@@ -53,7 +54,7 @@ date: 2019-2-13 15:22:39
 
 前端神器，包括 JSON 格式化、二维码生成与解码、信息编解码、代码压缩、美化、页面取色、Markdown与HTML互转、网页滚动截屏、正则表达式、时间转换工具、编码规范检测、页面性能检测、Ajax接口调试、密码生成器、JSON 比对工具、网页编码设置、便签笔记。
 
-![](https://ws1.sinaimg.cn/mw690/006mS5wEgy1g04zik8xc7j31460lm41y.jpg)
+![](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/006mS5wEgy1g04zik8xc7j31460lm41y.jpg)
 
 > 链接：[WEB前端助手](https://chrome.google.com/webstore/detail/pkgccpejnmalmdinmhkkfafefagiiiad)
 
@@ -61,7 +62,7 @@ date: 2019-2-13 15:22:39
 
 前面介绍的 WEB 前端工具也有 JSON 查看工具，但是它那个太丑了，所以我用这个，内置多种主题，是我见过最好看的 JSON 查看工具。
 
-![](https://ws1.sinaimg.cn/mw690/006mS5wEgy1g04z6k4eubj31460lm76k.jpg)
+![](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/006mS5wEgy1g04z6k4eubj31460lm76k.jpg)
 
 > 链接：[JSON Viewer](https://chrome.google.com/webstore/detail/json-viewer/gbmdgpbipfallnflgajpaliibnhdgobh)
 
@@ -69,7 +70,7 @@ date: 2019-2-13 15:22:39
 
 一个非常好用的截图扩展，自动加上 macOS 的标题栏、以及阴影，配合微博图床一键上传根本不用保存在本地。
 
-![](https://ws1.sinaimg.cn/mw690/006mS5wEgy1g04v1q134fj31460lmzlf.jpg)
+![](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/006mS5wEgy1g04v1q134fj31460lmzlf.jpg)
 
 > 链接：[Standardized Screenshot](https://chrome.google.com/webstore/detail/pabdhaakclnechgfhmnhkcbmjobeoope)
 
@@ -77,7 +78,7 @@ date: 2019-2-13 15:22:39
 
 在某些系统中并不能显示 Emoji 表情，安装此扩展后就能在浏览器中显示和输入，你也能选择显示 Apple 或 Google 风格的 Emoji。
 
-![](https://ws1.sinaimg.cn/mw690/006mS5wEgy1g04x45wnh6j31460lmjvq.jpg)
+![](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/006mS5wEgy1g04x45wnh6j31460lmjvq.jpg)
 
 > 链接：[Chromoji - Emoji](https://chrome.google.com/webstore/detail/chromoji-emoji-for-google/cahedbegdkagmcjfolhdlechbkeaieki)
 
@@ -85,7 +86,7 @@ date: 2019-2-13 15:22:39
 
 如果你是前端开发人员，调试时需要经常清空浏览器缓存，以往我们需要经过几个步骤才能完成动作，现在只需单击一下按钮即可清除缓存和浏览数据。
 
-![](https://ws1.sinaimg.cn/mw690/006mS5wEgy1g04w1j4tumj31460lmwg3.jpg)
+![](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/006mS5wEgy1g04w1j4tumj31460lmwg3.jpg)
 
 > 链接：[Clear Cache](https://chrome.google.com/webstore/detail/clear-cache/cppjkneekbjaeellbfkmgnhonkkjfpdn)
 
@@ -93,7 +94,7 @@ date: 2019-2-13 15:22:39
 
 把当前页面或者你输入的任何内容转化成二维码，生成后的二维码可以保存，并且无需联网，谁用谁知道。
 
-![](https://ws1.sinaimg.cn/mw690/006mS5wEgy1g04wsm1d8yj31460lmdhx.jpg)
+![](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/006mS5wEgy1g04wsm1d8yj31460lmdhx.jpg)
 
 > 链接：[二维码生成器](https://chrome.google.com/webstore/detail/quick-qr-code-generator/afpbjjgbdimpioenaedcjgkaigggcdpp?hl=zh-CN)
 
@@ -101,7 +102,7 @@ date: 2019-2-13 15:22:39
 
 这是我用了众多翻译扩展后最喜欢的一个，貌似之前的作者已经不再维护了，现在由网友接手，挺好的，从此不再需要打开谷歌翻译网站。
 
-![](https://ws1.sinaimg.cn/mw690/006mS5wEgy1g04xejq3ocj31460lmajm.jpg)
+![](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/006mS5wEgy1g04xejq3ocj31460lmajm.jpg)
 
 > 链接：[翻译侠](https://chrome.google.com/webstore/detail/translate-man/fnjoonbenhhijnoegpfkpagjamomgjjm/related?hl=zh-CN)
 
@@ -111,7 +112,7 @@ date: 2019-2-13 15:22:39
 
 让我们打开知乎问题《[平常人可以*漂亮*到什么程度？](https://www.zhihu.com/question/50426133/answer/243675284)》，查看全部答案，开启图流，你会发现。
 
-![](https://ws1.sinaimg.cn/mw690/006mS5wEgy1g04xrb65foj31460lm7wh.jpg)
+![](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/006mS5wEgy1g04xrb65foj31460lm7wh.jpg)
 
 另外它还支持轮播展示，如果你经常逛一些你懂得网站，那它简直是老司机神器。
 
@@ -123,7 +124,7 @@ date: 2019-2-13 15:22:39
 
 唯一美中不足之处就是在阅读模式下无法选中文字（更不能使用划词翻译）。
 
-![](https://ws1.sinaimg.cn/mw690/006mS5wEgy1g04y2ubyw8j31460lm76c.jpg)
+![](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/006mS5wEgy1g04y2ubyw8j31460lm76c.jpg)
 
 > 链接：[阅读模式](https://chrome.google.com/webstore/detail/reader-view/iibolhpkjjmoepndefdmdlmbpfhlgjpl)
 
@@ -131,7 +132,7 @@ date: 2019-2-13 15:22:39
 
 这个估计不少人知道，它可以在 GitHub 左侧显示当前项目的目录结构，能轻松找到代码的位置。
 
-![](https://ws1.sinaimg.cn/mw690/006mS5wEgy1g04ybfedo9j31460lmwhn.jpg)
+![](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/006mS5wEgy1g04ybfedo9j31460lmwhn.jpg)
 
 > 链接：[Octotree](https://chrome.google.com/webstore/detail/octotree/bkhaagjahfmjljalopjnoealnfndnagc)
 
@@ -139,7 +140,7 @@ date: 2019-2-13 15:22:39
 
 这个可以在 GitHub 中显示仓库大小，每个文件的大小，下载链接和复制文件内容的选项。
 
-![](https://ws1.sinaimg.cn/mw690/006mS5wEgy1g04yg4kl8pj31460lm76j.jpg)
+![](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/006mS5wEgy1g04yg4kl8pj31460lm76j.jpg)
 
 要是能够支持单文件夹下载那就更好了。
 
@@ -149,15 +150,13 @@ date: 2019-2-13 15:22:39
 
 装X神器，值得拥有。这里放上我心中的偶像 Linus 的贡献图。
 
-![](https://ws1.sinaimg.cn/mw690/006mS5wEgy1g04ylt3ugmj31460lmtay.jpg)
+![](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/006mS5wEgy1g04ylt3ugmj31460lmtay.jpg)
 
 > 链接：[Isometric Contributions](https://chrome.google.com/webstore/detail/isometric-contributions/mjoedlfflcchnleknnceiplgaeoegien)
 
 ### 16. Git History
 
 这个扩展可以很炫酷地展示 GitHub 中任意一个文件的历史修改情况。
-
-![](https://ws1.sinaimg.cn/large/006mS5wEgy1g0527m41elg31qi0vwqvb.gif)
 
 > 链接：[Git History](https://chrome.google.com/webstore/detail/git-history-browser-exten/laghnmifffncfonaoffcndocllegejnf)
 
@@ -176,7 +175,7 @@ date: 2019-2-13 15:22:39
 
 而 Stylus 就不会。
 
-![](https://ws1.sinaimg.cn/mw690/006mS5wEgy1g051rdn2pqj31460lmjtk.jpg)
+![](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/006mS5wEgy1g051rdn2pqj31460lmjtk.jpg)
 
 > 链接：[Stylus](https://chrome.google.com/webstore/detail/stylus/clngdbkpkpeebahjckkjfobafhncgmne)
 

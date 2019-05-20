@@ -9,8 +9,9 @@ date: 2018-11-26 22:57:06
 ---
 
 <div class="excerpt">
-    <img src="https://ww1.sinaimg.cn/mw690/9892fa7fgy1fzrd0pb21lj211y0lc4nr.jpg" />
+    <img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/9892fa7fgy1fzrd0pb21lj211y0lc4nr.jpg" />
 </div>
+
 
 <!-- more -->
 
@@ -68,7 +69,7 @@ h1::after {
 
 这时候的效果是这样的，所以我们要把剩余部分的文字进行底部对齐。
 
-![](https://ws1.sinaimg.cn/mw690/006mS5wEgy1fxlfhxdtoyj30xa0h474y.jpg)
+![](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/006mS5wEgy1fxlfhxdtoyj30xa0h474y.jpg)
 
 这里使用`flex`布局对齐，剩余部分改为：
 
@@ -84,7 +85,7 @@ h1::after{
 
 这时候：
 
-![](https://ws1.sinaimg.cn/mw690/006mS5wEgy1fxlfobhqnbj30wj0eyaap.jpg)
+![](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/006mS5wEgy1fxlfobhqnbj30wj0eyaap.jpg)
 
 到现在，就已经做好，只要在切割部分上应用动画，即可实现炫酷的切割效果：
 

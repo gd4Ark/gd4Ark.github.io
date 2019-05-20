@@ -267,8 +267,6 @@ export default {
 
 将一些常用的功能抽象出来，打造一个自己的工具库，从而使开发效率更高。
 
-最后，贴上刚放假时立的 Flag：[寒假待写文章](https://gd4ark.github.io/post/c2d2a6d1.html)。
-
-最后的最后，安利一下文章开头说的项目：[清技背单词](https://github.com/gd4Ark/learn_english)，上面的代码就是从这个项目中`copy`出来后略作修改的。
+最后，安利一下文章开头说的项目：[清技背单词](https://github.com/gd4Ark/learn_english)，上面的代码就是从这个项目中`copy`出来后略作修改的。
 
 感谢观看，希望我的文章能对您有一些帮助！

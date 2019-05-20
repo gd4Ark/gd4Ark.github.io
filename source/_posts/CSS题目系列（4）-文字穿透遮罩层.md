@@ -9,8 +9,9 @@ date: 2018-11-26 22:58:06
 ---
 
 <div class="excerpt">
-    <img src="https://ws1.sinaimg.cn/large/006mS5wEgy1fxlh53ze9sj31es0lmq6s.jpg" />
+    <img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/006mS5wEgy1fxlh53ze9sj31es0lmq6s.jpg" />
 </div>
+
 
 
 <!-- more -->
@@ -22,7 +23,7 @@ date: 2018-11-26 22:58:06
 
 效果就是这样的：
 
-![](https://ws1.sinaimg.cn/large/006mS5wEgy1fxlh53ze9sj31es0lmq6s.jpg)
+![](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/006mS5wEgy1fxlh53ze9sj31es0lmq6s.jpg)
 
 这个效果的难点在于，如何让文字穿透过遮罩层，但是这样好像很难。
 
