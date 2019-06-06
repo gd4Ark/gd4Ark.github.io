@@ -1,0 +1,14 @@
+.gitment-comments-init-btn:disabled,
+.gitment-editor-submit:disabled {
+    background: #21a3f5;
+}
+
+#gitalk-container {
+    width: 85%;
+    max-width: $global-body-width;
+    margin: 0 auto;
+
+    .gt-initing-text {
+        text-align: center;
+    }
+}

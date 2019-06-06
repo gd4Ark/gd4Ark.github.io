@@ -4,21 +4,23 @@
 
 // ========== Theme Color ========== //
 // Theme color config from `polarbear/_config.yml`
-$theme-color-config: hexo-theme-config('theme.color');
+$theme-color-config: hexo-theme-config("theme.color");
 
-$highlight: hexo-config('highlight._enable');
+$highlight: hexo-config("highlight._enable");
 
 // Default theme color map
-$theme-color-map: ('Default': #4D89FB #F8F8F8,
-'Mint Green': #16982B #f5f5f5,
-'Cobalt Blue': #0047AB #f0f2f5,
-'Hot Pink': #FF69B4 #f8f5f5,
-'Dark Violet': #9932CC #f5f4fa);
+$theme-color-map: (
+    "Default": #4d89fb #f8f8f8,
+    "Mint Green": #16982b #f5f5f5,
+    "Cobalt Blue": #0047ab #f0f2f5,
+    "Hot Pink": #ff69b4 #f8f5f5,
+    "Dark Violet": #9932cc #f5f4fa
+);
 
 // Check theme color config.
 // if it does not exist, use default theme color.
 @if not(map-has-key($theme-color-map, $theme-color-config)) {
-  $theme-color-config: 'Default';
+    $theme-color-config: "Default";
 }
 
 $theme-color-list: map-get($theme-color-map, $theme-color-config);
@@ -29,7 +31,6 @@ $theme-color: nth($theme-color-list, 1) !default;
 // Deputy theme color of the site.
 $deputy-color: nth($theme-color-list, 2) !default;
 
-
 // ========== Color ========== //
 $black: #0a0a0a !default;
 $white: #fff !default;
@@ -37,20 +38,18 @@ $light-gray: #eee !default;
 $gray: #cacaca !default;
 $dark-gray: #aaa !default;
 
-
 // ========== Global ========== //
 // Text color of the body.
-$global-font-color: rgba(0,0,0,.75) !default;
+$global-font-color: rgba(0, 0, 0, 0.75) !default;
 
 // Font size attribute applied to '<html>' and '<body>'.
 $global-font-size: 16px !default;
 
 // Global width of '<body>'.
-$global-body-width: 1000px !default;
+$global-body-width: 900px !default;
 
 // Global width of '<content>'.
 $global-content-width: 750px !default;
-
 
 // Padding of container main
 $global-container-padding: 0 20px !default;
@@ -63,19 +62,22 @@ $global-lineheight: 1.5 !default;
 
 // Font family of the site.
 // $global-font-family: "Open Sans","PingFang SC","Hiragino Sans GB","Microsoft Yahei","Microsoft Jhenghei",sans-serif !default;
-$global-font-family: notoserif, "Helvetica Neue",Arial,sourcehansans,"Hiragino Sans GB","Hiragino Sans GB W3","Microsoft YaHei","Wenquanyi Micro Hei",sans-serif;
+$global-font-family: notoserif, "Helvetica Neue", Arial, sourcehansans,
+    "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei",
+    "Wenquanyi Micro Hei", sans-serif;
 
 // Background color of the site.
 $global-background: $white !default;
 
 // Headings font size of the site.
-$global-headings: (h1: 1.5rem,
-h2: 1.4rem,
-h3: 1.3rem,
-h4: 1.2rem,
-h5: 1.1rem,
-h6: 1rem) !default;
-
+$global-headings: (
+    h1: 1.5rem,
+    h2: 1.4rem,
+    h3: 1.3rem,
+    h4: 1.2rem,
+    h5: 1.1rem,
+    h6: 1rem
+) !default;
 
 // ========== Header ========== //
 // Padding of the site header.
@@ -85,8 +87,7 @@ $header-padding: 20px 20px !default;
 $site-title-size: 24px !default;
 
 // Header-height.
-$site-header-height: 65px !default;
-
+$site-header-height: 50px !default;
 
 // ========== Post ========== //
 // Margin bottom of post list.
@@ -134,7 +135,9 @@ $content-link-border: 1px solid $theme-color !default;
 $content-blockquote-backgroud: rgba($theme-color, 0.05) !default;
 
 // Border left of the blockquote.
-$content-blockquote-border-left: 3px solid rgba($theme-color, 0.3) !default;
+$content-blockquote-border-left: 3px solid #ccc !default;
+
+$content-blockquote-color: #555;
 
 // Border color of the table.
 $content-table-border-color: darken($deputy-color, 3%) !default;
@@ -146,50 +149,48 @@ $content-margin-bottom: 40px !default;
 $code-color: #000 !default;
 
 // Font size of code.
-$code-font-size: .9em !default;
+$code-font-size: 0.9em !default;
 
 // Font family of the code.
-$code-font-family: SFMono-Regular,
-Consolas,
-Liberation Mono,
-Menlo,
-Courier,
-monospace !default;
+$code-font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier,
+    monospace !default;
 
 // Color of code highlight, solarized.
-$code-highlight-color: (comment: #93a1a1,
-keyword: #859900,
-number: #2aa198,
-name: #268bd2,
-attribute: #b58900,
-symbol: #cb4b16,
-built_in: #dc322f) !default;
+$code-highlight-color: (
+    comment: #93a1a1,
+    keyword: #859900,
+    number: #2aa198,
+    name: #268bd2,
+    attribute: #b58900,
+    symbol: #cb4b16,
+    built_in: #dc322f
+) !default;
 
 // Code type list.
-$code-type-list: (html: "HTML",
-js: "JavaScript",
-javascript: "JavaScript",
-bash: "Bash",
-css: "CSS",
-scss: "Scss",
-java: "Java",
-xml: "XML",
-python: "Python",
-json: "JSON",
-swift: "Swift",
-ruby: "Ruby",
-php: "PHP",
-c: "C",
-cpp: "C++",
-scheme: "Scheme",
-objectivec: "Objective-C",
-yml: "YAML",
-stylus: "Stylus",
+$code-type-list: (
+    html: "HTML",
+    js: "JavaScript",
+    javascript: "JavaScript",
+    bash: "Bash",
+    css: "CSS",
+    scss: "Scss",
+    java: "Java",
+    xml: "XML",
+    python: "Python",
+    json: "JSON",
+    swift: "Swift",
+    ruby: "Ruby",
+    php: "PHP",
+    c: "C",
+    cpp: "C++",
+    scheme: "Scheme",
+    objectivec: "Objective-C",
+    yml: "YAML",
+    stylus: "Stylus"
 ) !default;
 
 // Color of the code background.
 $code-background: $deputy-color !default;
-
 
 // ========== Pagination ========== //
 // Padding of the pagination.
@@ -197,7 +198,6 @@ $pagination-padding: 1.2em !default;
 
 // Font size of the pagination (Without post, post pagination see line 140).
 $pagination-font-size: 16px !default;
-
 
 // ========== Footer ========== //
 // Margin top of the footer.
@@ -235,7 +235,6 @@ $archive-post-hover-transition: 0.2s ease-out !default;
 // Transform of the archive post when hover it.
 $archive-post-hover-transform: translateX(4px) !default;
 
-
 // ========== Tags ========== //
 // Font soze of the tag cloud title.
 $tag-cloud-title-size: 18px !default;
@@ -245,7 +244,6 @@ $tag-cloud-title-border-bottom: 2px solid $theme-color !default;
 
 // Margin of the tag cloud tags link.
 $tag-cloud-tags-link-margin: 5px 10px !default;
-
 
 // ========== Categories ========== //
 // Font soze of the categories title.
@@ -259,3 +257,8 @@ $categories-tags-link-margin: 5px 10px !default;
 
 // Font size of the category count
 $category-count-font-size: 12px !default;
+
+// Post excerpt
+$post-excerpt-color: rgba(0, 0, 0, 0.7);
+$post-excerpt-font-size: 0.95rem;
+$post-excerpt-padding-bottom: 10px;

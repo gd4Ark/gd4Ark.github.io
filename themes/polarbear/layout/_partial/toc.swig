@@ -1,6 +1,5 @@
 {% if toc(page.content) != "" %}
-  <div class="toc-wrap">
-     <span>目录</span>
+  <div class="toc-container">
     {{ toc(page.content,{
         list_number : false
     }) }}

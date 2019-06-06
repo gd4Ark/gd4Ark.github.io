@@ -1,62 +1,66 @@
-@import '_common/normalize';
+@import "_common/normalize";
+
+* {
+    box-sizing: border-box;
+}
 
 html {
-  font-size: $global-font-size;
-  box-sizing: border-box;
+    font-size: $global-font-size;
+    box-sizing: border-box;
 }
 
 body {
-  padding: 0;
-  margin: 0;
-  font-family: $global-font-family;
-  font-weight: 400;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  line-height: $global-lineheight;
-  color: $global-font-color;
-  background: $global-background;
-  scroll-behavior: smooth;
-  vertical-align: baseline;
+    padding: 0;
+    margin: 0;
+    font-family: $global-font-family;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: $global-lineheight;
+    color: $global-font-color;
+    background: $global-background;
+    scroll-behavior: smooth;
+    vertical-align: baseline;
 }
 
 img {
-  max-width: 100%;
-  height: auto;
-  display: inline-block;
-  vertical-align: middle;
+    max-width: 100%;
+    height: auto;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 a {
-  color: $global-font-color;
-  text-decoration: none;
+    color: inherit;
+    text-decoration: none;
 }
 
 @each $header, $size in $global-headings {
-  #{$header} {
-    font-size: $size;
-    font-family: $global-font-family;
-  }
+    #{$header} {
+        font-size: $size;
+        font-family: $global-font-family;
+    }
 }
 
 .content-wrapper {
-  padding: $global-container-padding;
+    padding: $global-container-padding;
 }
 
 // make video fluid:
 // https://css-tricks.com/NetMag/FluidWidthVideo/Article-FluidWidthVideo.php
 // class video-container is the wrapper used by hexo youtube tag plugin
 .video-container {
-	position: relative;
-	padding-bottom: 56.25%; /* 16:9 */
-	padding-top: 25px;
-	height: 0;
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+    padding-top: 25px;
+    height: 0;
 }
 .video-container iframe {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 .btn {

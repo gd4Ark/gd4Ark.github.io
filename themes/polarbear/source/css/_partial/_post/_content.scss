@@ -3,84 +3,84 @@
 // ==============================
 
 .post-content {
-  margin-bottom: $content-margin-bottom;
+    margin-bottom: $content-margin-bottom;
 
-  @for $i from 1 through 6 {
-    h#{$i} {
-      font-size: 1.3em;
-      font-weight: 400;
-      font-family: $global-font-family;
-      margin-top: 1.2em;
-    }
-  }
-
-  .headerlink {
-    &:hover {
-      border-bottom: 0;
+    @for $i from 1 through 6 {
+        h#{$i} {
+            font-size: 1.3em;
+            font-weight: 400;
+            font-family: $global-font-family;
+            margin-top: 1.2em;
+        }
     }
 
-    &::before {
-      margin-right: 5px;
-      font-size: 1.1em;
-      color: $theme-color;
-    }
-  }
+    .headerlink {
+        &:hover {
+            border-bottom: 0;
+        }
 
-  a {
-    color: $theme-color;
-    word-break: break-all;
-
-    &:hover {
-      border-bottom: $content-link-border;
+        &::before {
+            margin-right: 5px;
+            font-size: 1.1em;
+            color: $theme-color;
+        }
     }
 
-    &.fancybox {
-      border: 0;
+    a {
+        color: $theme-color;
+        word-break: break-all;
+
+        &:hover {
+            border-bottom: $content-link-border;
+        }
+
+        &.fancybox {
+            border: 0;
+        }
     }
-  }
 
-  blockquote {
-    margin: 2em 0;
-    padding-left: 10px;
-    position: relative;
-    color: rgba(0, 0, 0, 0.6);
-    background-color: #fff;
-    border-left: 2px solid #aaa;
-
-    p {
-      margin: 0;
+    blockquote {
+        margin: 2em 0;
+        padding-left: 10px;
+        position: relative;
+        background-color: #fff;
+        border-left: 2px solid #aaa;
+        color: $content-blockquote-color;
+        p {
+            margin: 0;
+            color: inherit;
+        }
     }
-  }
 
-  img {
-    display: inline-block;
-    max-width: 100%;
-  }
-
-  >table {
-    max-width: 100%;
-    margin: 10px 0;
-    border-spacing: 0;
-
-    th,
-    td {
-      padding: 5px 15px;
-      border: 1px double $content-table-border-color;
-      text-align: left;
+    img {
+        display: inline-block;
+        max-width: 100%;
     }
-  }
 
-  @import 'code';
+    > table {
+        max-width: 100%;
+        margin: 10px 0;
+        border-spacing: 0;
 
-  .read-more {
-    .read-more-link {
-      color: $theme-color;
-      font-size: 1.1em;
-      font-family: $global-font-family;
-
-      &:hover {
-        border-bottom: $post-readMore-border-bottom;
-      }
+        th,
+        td {
+            padding: 5px 15px;
+            border: 1px double $content-table-border-color;
+            text-align: left;
+        }
     }
-  }
+
+    @import "code";
+
+    .read-more {
+        .read-more-link {
+            color: $theme-color;
+            font-size: 1.1em;
+            font-family: $global-font-family;
+
+            &:hover {
+                border-bottom: $post-readMore-border-bottom;
+            }
+        }
+    }
 }

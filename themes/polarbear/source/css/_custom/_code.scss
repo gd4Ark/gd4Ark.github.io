@@ -1,0 +1,47 @@
+code {
+    font-family: $code-font-family;
+}
+
+.post-excerpt code,
+.post-content code {
+    padding: 0px 4px;
+    background: #f6f8fa;
+    color: #0086b3;
+    border-radius: 4px;
+}
+
+.prettyprint {
+    position: relative;
+}
+
+.prettyprint code {
+    padding: 12px;
+    display: block;
+    overflow-x: auto;
+    border: 1px solid #e7eaed;
+    background: #f6f8fa;
+    font-size: 85%;
+    line-height: 1.7;
+}
+
+@media screen and (max-width: 600px) {
+    .prettyprint code {
+        font-size: 0.8em;
+    }
+}
+
+.prettyprint code {
+    @each $sign, $text in $code-type-list {
+        &.#{$sign}::before {
+            content: $text;
+        }
+    }
+}
+
+.prettyprint code::before {
+    position: absolute;
+    top: 0px;
+    right: 5px;
+    color: #ccc;
+    font-size: 1em;
+}
