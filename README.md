@@ -14,7 +14,7 @@
 
 在线预览：[Demo](https://4ark.me)
 
-![](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/下载.png)
+![](https://i.loli.net/2019/06/20/5d0afcac1804e11572.png)
 
 ## 一些问题
 
