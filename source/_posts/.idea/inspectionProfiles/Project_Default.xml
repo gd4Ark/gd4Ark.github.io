@@ -1,0 +1,17 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="MessDetectorValidationInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="CODESIZE" value="true" />
+      <option name="CONTROVERSIAL" value="true" />
+      <option name="DESIGN" value="true" />
+      <option name="UNUSEDCODE" value="true" />
+      <option name="NAMING" value="true" />
+    </inspection_tool>
+    <inspection_tool class="PhpCSValidationInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="CODING_STANDARD" value="PSR2" />
+      <option name="WARNING_HIGHLIGHT_LEVEL_NAME" value="ERROR" />
+      <option name="EXTENSIONS" value="php,js,css,inc" />
+    </inspection_tool>
+  </profile>
+</component>
