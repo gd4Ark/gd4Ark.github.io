@@ -4,7 +4,7 @@
         <ul class="friend-list">
         {% for title,link in theme.friend_list %}
             <li class="friend-list-item">
-                <a href="{{ link }}" class="friend-list-link">{{ title }}</a>
+                <a href="{{ link }}" target="_blank" class="friend-list-link">{{ title }}</a>
             </li>
         {% endfor %}
         </ul>
