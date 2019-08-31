@@ -6,28 +6,28 @@
     width: 19%;
     float: right;
     padding-top: 40px;
-	color: rgba(0, 0, 0, 0.6);
+    color: rgba(0, 0, 0, 0.6);
 
-    ol, ul {
+    ol,
+    ul {
         list-style: none;
     }
-
 }
 
 .widget-area {
     font-size: 14px;
 
-    ul{
-    	padding-left: 0;
+    ul {
+        padding-left: 0;
     }
 
-    h3{
+    h3 {
         margin-top: 0;
         color: #000;
     }
 
     .widget-title {
-    	font-size: 16px;
+        font-size: 16px;
         letter-spacing: 1px;
         padding-bottom: 5px;
         font-weight: 300;
@@ -62,7 +62,6 @@
 }
 
 .widget_tags {
-
     .tag-list-item {
         padding: 0 10px 7px 0;
         font-size: 14px;
@@ -72,14 +71,29 @@
         background: #fff;
 
         .tag-list-link {
-            color: rgba(0,0,0,.6);
+            color: rgba(0, 0, 0, 0.6);
         }
     }
 
     .tag-list-count {
         vertical-align: super;
-        font-size: .6em;
-        opacity: .6;
+        font-size: 0.6em;
+        opacity: 0.6;
         top: -0.5em;
+    }
+}
+
+.widget_friends {
+    .friend-list-item {
+        padding: 0 10px 7px 0;
+        font-size: 14px;
+        text-transform: uppercase;
+        border: 1px solid #fff;
+        display: inline-block;
+        background: #fff;
+
+        .friend-list-link {
+            color: rgba(0, 0, 0, 0.6);
+        }
     }
 }

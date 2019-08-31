@@ -9,10 +9,11 @@
 5. 支持评论插件（ Gitment 和 Gitalk）
 6. 加入了另一个代码高亮插件：Code-prettify
 7. 一些样式的优化
+8. 增加友情链接
 
 ## 预览
 
-在线预览：[Demo](https://4ark.me)
+在线预览：[4ark’ Blog](https://4ark.me)
 
 ![](https://i.loli.net/2019/06/20/5d0afcac1804e11572.png)
 
@@ -26,7 +27,7 @@
 /* 文章信息 */
 
 <div class="excerpt">
-    这里写你的文章摘要，只会在首页展示，进入文章页后自动隐藏，可以添加图片。
+    这里写你的文章摘要，只会在首页展示，进入文章页后自动隐藏。
 </div>
 
 <!-- more -->
