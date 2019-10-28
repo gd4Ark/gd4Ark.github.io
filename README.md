@@ -1,5 +1,7 @@
 ## 我的个人博客
 
+[![Build Status](https://travis-ci.org/gd4Ark/gd4Ark.github.io.svg?branch=hexo)](https://travis-ci.org/gd4Ark/gd4Ark.github.io)
+
 基于 Hexo [Polarbear](https://github.com/frostfan/hexo-theme-polarbear) 主题改造，进行了如下扩展：
 
 1. 添加文章目录
@@ -24,7 +26,7 @@
 在`md`文件中这样添加：
 
 ```markdown
-/* 文章信息 */
+/_ 文章信息 _/
 
 <div class="excerpt">
     这里写你的文章摘要，只会在首页展示，进入文章页后自动隐藏。
@@ -32,7 +34,7 @@
 
 <!-- more -->
 
-/* 文章内容 */
+/_ 文章内容 _/
 ```
 
 ### 2. 评论插件
@@ -48,4 +50,4 @@ npm install
 
 ## 最后
 
-如果觉得我的项目还不错的话👏 ，就给个 star ⭐ 鼓励一下吧~
+如果觉得我的项目还不错的话 👏 ，就给个 star ⭐ 鼓励一下吧~

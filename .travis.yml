@@ -1,0 +1,9 @@
+language: node_js
+node_js: --lts
+before_script:
+    - git config user.name "gd4ark"
+    - git config user.email "gd4ark@gmail.com"
+    - sed -i'' "s~https://github.com/<gd4ark>/<gd4Ark.github.io>.git~https://${ACCESS_TOKEN}@github.com/<gd4ark>/<gd4Ark.github.io>.git~" _config.yml
+script:
+    - hexo g
+    - hexo d
