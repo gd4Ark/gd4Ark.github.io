@@ -1,9 +1,28 @@
 language: node_js
-node_js: --lts
-before_script:
+sudo: required
+node_js:
+    - 7.9.0
+cache:
+    directories:
+        - node_modules
+
+branches:
+    only:
+        - hexo
+
+before_install:
+    - npm install -g hexo-cli
+
+install:
+    - npm install
+    - npm install hexo-deployer-git --save
+
+script:
+    - hexo clean
+    - hexo generate
+
+after_script:
     - git config user.name "gd4ark"
     - git config user.email "gd4ark@gmail.com"
-    - sed -i'' "s~https://github.com/<gd4ark>/<gd4Ark.github.io>.git~https://${ACCESS_TOKEN}@github.com/<gd4ark>/<gd4Ark.github.io>.git~" _config.yml
-script:
-    - hexo g
-    - hexo d
+    - sed -i'' "s~git@github.com:gd4Ark/gd4Ark.github.io.git~https://${ACCESS_TOKEN}@github.com/gd4Ark/gd4Ark.github.io.git~" _config.yml
+    - hexo deploy

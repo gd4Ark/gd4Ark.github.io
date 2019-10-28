@@ -1,6 +1,7 @@
 ## 我的个人博客
 
 [![Build Status](https://travis-ci.org/gd4Ark/gd4Ark.github.io.svg?branch=hexo)](https://travis-ci.org/gd4Ark/gd4Ark.github.io)
+[![NPM](https://img.shields.io/npm/l/gd4Ark.github.io)](https://github.com/gd4Ark/gd4Ark.github.io/blob/hexo/LICENSE)
 
 基于 Hexo [Polarbear](https://github.com/frostfan/hexo-theme-polarbear) 主题改造，进行了如下扩展：
 
