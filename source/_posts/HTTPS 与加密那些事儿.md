@@ -152,7 +152,7 @@ TLS 握手协议还能细分为 5 个子协议：
 
 TLS/SSL 可以查看以下流程：
 
-![](https://i.loli.net/2019/11/04/yufc2SxJHjFDoek.png)
+![](https://i.loli.net/2019/11/05/ALpa2NBYJfsgi3c.png)
 
 ### 握手失败
 
