@@ -1,7 +1,7 @@
 {% if theme.gitalk.enable %}
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
-    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.2/dist/gitalk.min.js"></script>
 
     {% set owner = theme.gitalk.owner %}
     {% set repo = theme.gitalk.repo %}
