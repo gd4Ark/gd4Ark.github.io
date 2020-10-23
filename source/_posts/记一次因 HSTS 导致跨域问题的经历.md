@@ -11,15 +11,15 @@ date: 2020-10-17 12:56:49
 ---
 
 <div class="excerpt">
-    生产上多次出现上面这个奇怪的跨域问题，但神奇的是强刷新后或者使用无痕模式打开就正常了。<br />到底是哪里出了问题呢？本文将一探究竟。<br />
+    <p>生产上多次出现上面这个奇怪的跨域问题，但神奇的是强刷新后或者使用无痕模式打开就正常了。</p>
+    到底是哪里出了问题呢？本文将一探究竟。
 </div>
 
 <!-- more -->
-
 ## 背景
 > Access to XMLHttpRequest at 'http://a.com/api' from origin 'http://b.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: Redirect is not allowed for a preflight request.
 
-
+![]()
 
 生产上多次出现上面这个奇怪的跨域问题，但神奇的是强刷新后或者使用无痕模式打开就正常了。<br />到底是哪里出了问题呢？本文将一探究竟。<br />
 
