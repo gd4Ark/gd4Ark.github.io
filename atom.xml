@@ -45,10 +45,14 @@ layout: compress
   {% endif %}
 
 
-  <summary>
-    {% include no-linenos.html content=post.content %}
-    {{ content  }}
-  </summary>
+  {% if post.summary %}
+    <summary>{{ post.summary | strip }}</summary>
+  {% else %}
+    <summary>
+      {% include no-linenos.html content=post.content %}
+      {{ content  | strip_html | truncate: 400 }}
+    </summary>
+  {% endif %}
 
   </entry>
 {% endfor %}
