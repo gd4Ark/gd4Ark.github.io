@@ -164,7 +164,7 @@ export default defineComponent({
 3. 等执行完 `setup()` 后，又将 `currentInstance` 重置回 null 去了（注意是同步执行 `setup()`
 4. 后面 `setup()` 内部的异步代码再去调用 `getCurrentInstance()` ，其实已经是 `null` 了
 
-如果还不太理解的同学，建议先补一下 JavaScript 的：事件循环、同步、异步（分为宏任务、微任务）这些概念。
+如果还不太理解的同学，建议先补一下 JavaScript 的：事件循环、同步、异步、宏任务、微任务这些概念。
 
 ## 总结
 
