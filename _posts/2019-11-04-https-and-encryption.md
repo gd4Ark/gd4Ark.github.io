@@ -18,7 +18,7 @@ HTTPS 在我们日常中经常能用到，我们经常说 HTTPS 安全，那么�
 
 ## HTTP
 
-在说 HTTPS 之前，我们需要先知道 HTTP，HTTP 是基于 TCP 协议的一个无状态协议，如果你不是很懂欢迎阅读我上一篇文章，[在浏览器输入 URL 回车之后发生了什么](https://4ark.me/posts/在浏览器输入-URL-回车之后发生了什么-超详细版/)，此文讲解了一个 HTTP 请求的过程。
+在说 HTTPS 之前，我们需要先知道 HTTP，HTTP 是基于 TCP 协议的一个无状态协议，如果你不是很懂欢迎阅读我上一篇文章，[在浏览器输入 URL 回车之后发生了什么](https://4ark.me/posts/what-happened-after-entering-the-URL-in-the-browser-and-hitting-enter)，此文讲解了一个 HTTP 请求的过程。
 
 缺点：
 
@@ -30,7 +30,7 @@ HTTPS 在我们日常中经常能用到，我们经常说 HTTPS 安全，那么�
 
 HTTPS 并不是一个新协议，而是 HTTP 先和 [SSL/TLS](SSL/TLS)，再由 SSL/TLS 和 TCP 通信。也就是说 HTTPS 使用了隧道进行通信。
 
-为什么不直接对 HTTP 报文进行加密，而是多加一层 SSL/TLS  呢？因为 HTTP 报文分为报文首部和报文主体，如果只对发送内容进行加密（也就是报文主体），而未加密的报文首部信息也会导致信息不安全。
+为什么不直接对 HTTP 报文进行加密，而是多加一层 SSL/TLS 呢？因为 HTTP 报文分为报文首部和报文主体，如果只对发送内容进行加密（也就是报文主体），而未加密的报文首部信息也会导致信息不安全。
 
 在开始讲之前我们需要介绍一下加密算法。
 
@@ -45,13 +45,13 @@ HTTPS 并不是一个新协议，而是 HTTP 先和 [SSL/TLS](SSL/TLS)，再由 
 一般的对称加密算法是使用 XOR（异或） 这个特点，例如：
 
 ```js
-var a = 5201314 // 明文
-var b = 123456 // 密钥
-var c = a ^ b // 加密
-var d = c ^ b // 解密 => 5201314
+var a = 5201314; // 明文
+var b = 123456; // 密钥
+var c = a ^ b; // 加密
+var d = c ^ b; // 解密 => 5201314
 ```
 
-> 如果对按位操作符感兴趣可以阅读我之前的文章：[深入理解按位操作符](https://4ark.me/posts/深入理解按位操作符/)
+> 如果对按位操作符感兴趣可以阅读我之前的文章：[深入理解按位操作符](https://4ark.me/posts/learn-bitwise-operators/)
 
 #### 一次性加密
 
@@ -59,7 +59,7 @@ var d = c ^ b // 解密 => 5201314
 
 #### DES 加密
 
-DES 是 1977年美国联邦信息处理标准中采用的一种对称加密算法，但是在 1998 年已经被成功破解，耗时紧紧22小时，目前不再推荐使用。
+DES 是 1977 年美国联邦信息处理标准中采用的一种对称加密算法，但是在 1998 年已经被成功破解，耗时紧紧 22 小时，目前不再推荐使用。
 
 它是一种把 64 位明文加密成 64 位密文的对称加密算法，也就是一次性只能加密 64 位，如果超过了 64 位，就需要进行分组加密。
 
@@ -79,11 +79,11 @@ DES 是 1977年美国联邦信息处理标准中采用的一种对称加密算�
 
 ### 非对称加密算法
 
-> 1977年，三位数学家Rivest、Shamir 和 Adleman 设计了一种算法，可以实现非对称加密。这种算法用他们三个人的名字命名，叫做[RSA算法](http://zh.wikipedia.org/zh-cn/RSA加密算法)。
+> 1977 年，三位数学家 Rivest、Shamir 和 Adleman 设计了一种算法，可以实现非对称加密。这种算法用他们三个人的名字命名，叫做[RSA 算法](http://zh.wikipedia.org/zh-cn/RSA加密算法)。
 
 非对称加密有公钥和私钥，也就是私钥加密的密文只有公钥才能解密，公钥加密的密文只有私钥才能解密。
 
-关于原理部分我认为阮一峰老师的这篇文章[RSA算法原理](http://www.ruanyifeng.com/blog/2013/06/rsa_algorithm_part_one.html)已经讲得很通俗易懂了，这里不再赘述。
+关于原理部分我认为阮一峰老师的这篇文章[RSA 算法原理](http://www.ruanyifeng.com/blog/2013/06/rsa_algorithm_part_one.html)已经讲得很通俗易懂了，这里不再赘述。
 
 #### 非对称加密的缺点
 
@@ -161,4 +161,3 @@ TLS/SSL 可以查看以下流程：
 - 《深入浅出 HTTPS》
 - [HTTPS 温故知新](https://halfrost.com/https-begin/)
 - [漫游对称加密算法](https://halfrost.com/symmetric_encryption/)
-

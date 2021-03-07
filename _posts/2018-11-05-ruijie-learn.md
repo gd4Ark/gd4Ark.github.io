@@ -12,37 +12,37 @@ date: 2018-11-05 23:01:43
 
 ### 版本说明
 
-我的AP型号为： RG-AP220-SE
+我的 AP 型号为： RG-AP220-SE
 
-系统版本为： RGOS 11.1(5)B8 
+系统版本为： RGOS 11.1(5)B8
 
 ### 需求
 
 本次实训目的是创建一个热点，需求如下：
 
-- 创建一个 SSID 为 `ruijie` 的WLAN
-- 能够自动获取IP地址（DHCP）
+- 创建一个 SSID 为 `ruijie` 的 WLAN
+- 能够自动获取 IP 地址（DHCP）
 - 为 WLAN 添加一种加密方式
 
 ## 正文
 
 ### 准备
 
-首先，我们要先把AP切换到胖模式
+首先，我们要先把 AP 切换到胖模式
 
 ```shell
 Ruijie# ap-mode fat
 ```
 
-可以用以下命令查看AP当前的模式
+可以用以下命令查看 AP 当前的模式
 
-```shell 
+```shell
 Ruijie# show ap-mode
 ```
 
 接着开启一下无线广播转发
 
-```shell 
+```shell
 Ruijie(config)# data-plane wireless-broadcast enable
 ```
 
@@ -52,22 +52,22 @@ Ruijie(config)# data-plane wireless-broadcast enable
 
 创建一个 VLAN
 
-```shell 
+```shell
 Ruijie(config)# vlan 1
 Ruijie(config-vlan)# ex
 ```
 
 以太网接口封装 VLAN
 
-```shell 
+```shell
 Ruijie(config)# int gigabitEthernet 0/1
 Ruijie(config-if-GigabitEthernet 0/1)# encapsulation dot1Q 1 // 对应 vlan
 Ruijie(config-if-GigabitEthernet 0/1)# ex
 ```
 
-设置一下AP的管理地址（管理地址与网关处于相同网段下）
+设置一下 AP 的管理地址（管理地址与网关处于相同网段下）
 
-```shell 
+```shell
 Ruijie(config)# int bVI 1
 Ruijie(config-if-BVI 1)# ip address 10.10.34.250 255.255.255.0
 Ruijie(config-if-BVI 1)# ex
@@ -77,7 +77,7 @@ Ruijie(config-if-BVI 1)# ex
 
 定义 SSID
 
-```shell 
+```shell
 Ruijie(config)# dot11 wlan 1
 Ruijie(dot11-wlan-config)# vlan 1
 Ruijie(dot11-wlan-config)# broadcast-ssid
@@ -87,7 +87,7 @@ Ruijie(dot11-wlan-config)# ex
 
 创建射频卡子接口
 
-```shell 
+```shell
 Ruijie(config)# int dot11radio 1/0.1
 Ruijie(config-subif-Dot11radio 1/0.1)# encapsulation dot1Q 1 // 对应 vlan
 Ruijie(config-subif-Dot11radio 1/0.1)# ex
@@ -95,7 +95,7 @@ Ruijie(config-subif-Dot11radio 1/0.1)# ex
 
 SSID 和 射频卡进行关联
 
-```shell 
+```shell
 Ruijie(config)# int dot11radio 1/0
 Ruijie(config-if-Dot11radio 1/0)# wlan-id 1 // 对应 wlan-id
 Ruijie(config-if-Dot11radio 1/0)# ex
@@ -105,7 +105,7 @@ Ruijie(config-if-Dot11radio 1/0)# ex
 
 设置 AP 的默认路由（也就是这个局域网的网关）
 
-```shell 
+```shell
 Ruijie(config)# ip route 0.0.0.0 0.0.0.0 10.10.34.254
 ```
 
@@ -113,7 +113,7 @@ Ruijie(config)# ip route 0.0.0.0 0.0.0.0 10.10.34.254
 
 这时，通过手动配置静态 IP，是可以成功连接 WLAN 的。
 
-### DHCP服务
+### DHCP 服务
 
 通常来说，一个网络环境下会有专门的 DHCP 服务器，所以不需要 AP 来分配地址。
 
@@ -121,28 +121,28 @@ Ruijie(config)# ip route 0.0.0.0 0.0.0.0 10.10.34.254
 
 首先，开启 DHCP 服务
 
-```shell 
+```shell
 Ruijie(config)# service dhcp
 ```
 
 排除地址，low - high
 
-```shell 
+```shell
 Ruijie(config)# ip dhcp excluded-address 10.10.34.8 10.10.34.254
 ```
 
-> 注：我把 8 - 254 的 IP 排除了，所以剩下的范围就是 1 - 7。 
+> 注：我把 8 - 254 的 IP 排除了，所以剩下的范围就是 1 - 7。
 
 配置地址池，名字为 test，以及地址段、网关、DNS
 
-```shell 
+```shell
 Ruijie(config)# ip dhcp pool test
 Ruijie(dhcp-config)# network 10.10.34.0 255.255.255.0
 Ruijie(dhcp-config)# default-router 10.10.34.254
 Ruijie(dhcp-config)# dns-server 8.8.8.8
 ```
 
-这时，手机上是可以通过 DHCP方式 获取到 IP 地址的。
+这时，手机上是可以通过 DHCP 方式 获取到 IP 地址的。
 
 ## WLAN 加密
 
@@ -156,22 +156,22 @@ Ruijie(dhcp-config)# dns-server 8.8.8.8
 
 配置加密方式都需要进入到相关的 wlan-id 下
 
-```shell 
+```shell
 Ruijie(config)# wlansec 1 // 对应 wlan-id
 ```
 
 ### WEP 方式
 
-```shell 
+```shell
 Ruijie(config-wlansec)# security static-wep-key encryption 40 ascii 1 12345
 Ruijie(config-wlansec)# security static-wep-key authentication  shellare-key
 ```
 
-> 注： 密码长度可选为 （40 | 103），40 = 5个，103 = 13个 
+> 注： 密码长度可选为 （40 | 103），40 = 5 个，103 = 13 个
 
 ### PSK 接入认证 (WPA)
 
-```shell 
+```shell
 Ruijie(config-wlansec)# security wpa enable
 Ruijie(config-wlansec)# security wpa ciphers aes enable
 Ruijie(config-wlansec)# security wpa akm psk enable
@@ -182,7 +182,7 @@ Ruijie(config-wlansec)# security wpa akm psk set-key ascii 123456789
 
 ### PSK 接入认证 (WPA2)
 
-```shell 
+```shell
 Ruijie(config-wlansec)# security rsn enable
 Ruijie(config-wlansec)# security rsn ciphers aes enable
 Ruijie(config-wlansec)# security rsn akm psk enable
@@ -191,9 +191,9 @@ Ruijie(config-wlansec)# security rsn akm psk set-key ascii 123456789
 
 > 注：密码不得少于 8 个 字符
 
-### **802.1x** 接入认证  
+### **802.1x** 接入认证
 
-```shell 
+```shell
 Ruijie(config-wlansec)#security wpa enable
 Ruijie(config-wlansec)#security wpa ciphers aes enable
 ```
@@ -210,7 +210,7 @@ Ruijie(config-wlansec)#security wpa ciphers aes enable
 
 ### 看法
 
-初步看来，可能是因为我机房的二层交换机的所有接口都在 vlan 1下，且没有配置为 trunk 模式，故不能 ping 通。
+初步看来，可能是因为我机房的二层交换机的所有接口都在 vlan 1 下，且没有配置为 trunk 模式，故不能 ping 通。
 
 但是我不知道这个交换机的密码，所以无法取证。
 
@@ -225,4 +225,3 @@ Ruijie(config-wlansec)#security wpa ciphers aes enable
 - https://wenku.baidu.com/view/ab3addf8af1ffc4ffe47ac93.html
 
 - https://wenku.baidu.com/view/fcc1dda9d0d233d4b14e6973.html
-

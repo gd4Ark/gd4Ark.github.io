@@ -12,9 +12,7 @@ date: 2020-11-30 21:38:14
 
 今天打算实践一下 Wordpress 主题开发，但由于电脑上没有 PHP 和 MySQL 的环境，于是折腾了一下，结果发现安装配置过程一堆的坑，虽然最终选择了 Docker 环境开发，但毕竟已经踩坑了，就记录一下。
 
-
 本文讲述如何在 Mac OS 上配置 Ngnix + PHP + MySQL，以及最后如何成功安装 Wordpress。
-
 
 <a name="UovYc"></a>
 
@@ -69,7 +67,7 @@ curl localhost:8080
 
 #### 4. 配置主机
 
-为了方便管理，我们在 nginx 配置目录下的 `servers` 新增一个配置文件：
+为了方便管理，我们在 nginx 配置目录下的 `servers`  新增一个配置文件：
 
 ```bash
 vim /usr/local/etc/nginx/servers/www.conf
@@ -94,8 +92,7 @@ server {
 
 注意：最好每个项目都单独一个配置文件。
 
-
-从上面的配置可以看到我们将项目放在用户下的 `www` 下，在这个目录新建一个 html 文件：
+从上面的配置可以看到我们将项目放在用户下的 `www`  下，在这个目录新建一个 html 文件：
 
 ```bash
 mkdir ~/www
@@ -110,7 +107,6 @@ brew services restart nginx
 
 curl localhost
 ```
-
 
 <a name="Qdk9Q"></a>
 
@@ -166,7 +162,6 @@ sudo killall php-fpm
 sudo php-fpm -D
 ```
 
-
 这时候如果遇到以下报错：
 
 ```bash
@@ -175,7 +170,7 @@ ERROR: failed to load configuration file '/private/etc/php-fpm.conf'
 ERROR: FPM initialization failed
 ```
 
-错误信息显示，不能打开配置文件，`cd /private/etc`，发现没有 **php-fpm.conf** 文件，但是有 **php-fpm.conf.default** 文件。这个文件是默认配置，我们可以复制一份，改名为 **php-fpm.conf**，然后再根据需要改动配置。
+错误信息显示，不能打开配置文件，`cd /private/etc`，发现没有  **php-fpm.conf**  文件，但是有  **php-fpm.conf.default**  文件。这个文件是默认配置，我们可以复制一份，改名为  **php-fpm.conf**，然后再根据需要改动配置。
 
 ```bash
 sudo cp /private/etc/php-fpm.conf.default /private/etc/php-fpm.conf
@@ -183,7 +178,7 @@ sudo cp /private/etc/php-fpm.conf.default /private/etc/php-fpm.conf
 sudo cp /private/etc/php-fpm.d/www.conf.default /private/etc/php-fpm.d/www.conf
 ```
 
-执行 `php-fpm`，再次报错：
+执行  `php-fpm`，再次报错：
 
 ```bash
 ERROR: failed to open error_log (/usr/var/log/php-fpm.log): No such file or directory (2)
@@ -191,7 +186,7 @@ ERROR: failed to post process the configuration
 ERROR: FPM initialization failed
 ```
 
-错误信息显示，不能打开错误日志文件。`cd /usr/var/log` 发现根本没有这个目录，甚至连 **var** 目录都没有，加上为了避免权限问题，干脆配置到 **/usr/local/var/log** 目录。
+错误信息显示，不能打开错误日志文件。`cd /usr/var/log`  发现根本没有这个目录，甚至连  **var**  目录都没有，加上为了避免权限问题，干脆配置到  **/usr/local/var/log**  目录。
 
 ```bash
 vim /private/etc/php-fpm.conf
@@ -200,14 +195,14 @@ vim /private/etc/php-fpm.conf
 error_log = /usr/local/var/log/php-fpm.log
 ```
 
-执行 `sudo php-fpm`，再次报错：
+执行  `sudo php-fpm`，再次报错：
 
 ```bash
 ERROR: unable to bind listening socket for address '127.0.0.1:9000': Address already in use (48)
 ERROR: FPM initialization failed
 ```
 
-说是 9000 端口被占用了，但 `lsof -i:9000` 又看不见，于是只能换个端口：
+说是 9000 端口被占用了，但 `lsof -i:9000`  又看不见，于是只能换个端口：
 
 ```bash
 vim /private/etc/php-fpm.d/www.conf
@@ -217,7 +212,6 @@ listen = 9999
 ```
 
 再执行 `sudo php-fpm -D` ，就能够正常启动了。
-
 
 <a name="Ih0Fu"></a>
 
@@ -319,8 +313,7 @@ Enter password:******  # 登录后进入终端
 mysql> create DATABASE `wordpress-test`;
 ```
 
-然后我们通过浏览器访问 `localhost/wordpress` ，就可以看到一个 Wordpress 的安装界面，输入数据库相关的信息后，本以为可以像往常一样成功进入下一步，结果我看到了这个错误：**WordPress建立数据库连接时出错**。
-
+然后我们通过浏览器访问 `localhost/wordpress` ，就可以看到一个 Wordpress 的安装界面，输入数据库相关的信息后，本以为可以像往常一样成功进入下一步，结果我看到了这个错误：**WordPress 建立数据库连接时出错**。
 
 结果再尝试了几次，确保所有表单都已经填写正确，依然无法正常建立数据库连接，意识到事情可能并没有这么简单， 于是我在网上找到了一个解决方案，大概就是说无法使用 root 进行登录，需要新增一个用户：
 
@@ -366,7 +359,7 @@ define( 'DB_HOST', 'localhost' );
 No such file or directory 建立数据库连接时出错
 ```
 
-其实原因是 PHP 配置中的 `mysql.sock` 与本机的 MySQL 中的路径不一致，可以通过这样查看：
+其实原因是 PHP 配置中的 `mysql.sock`  与本机的 MySQL 中的路径不一致，可以通过这样查看：
 
 ```bash
 vim ~/www/phpinfo.php
@@ -378,8 +371,7 @@ phpinfo();
 
 然后打开 `localhost/phpinfo` ，搜索 `default_socket` 。
 
-
-然后再查看 MySQL 的 `socket` 路径：
+然后再查看 MySQL 的 `socket`  路径：
 
 ```bash
 [root@host]# mysql -u root -p
@@ -409,7 +401,7 @@ Binary data as:		Hexadecimal
 Uptime:			14 hours 59 min 44 sec
 ```
 
-如果与 PHP 中的 `mysql.sock` 路径不一致，则需要修改：
+如果与 PHP 中的 `mysql.sock`  路径不一致，则需要修改：
 
 ```bash
 sudo cp /private/etc/php.ini.default /private/etc/php.ini
@@ -430,7 +422,6 @@ sudo php-fpm -D
 
 再看看 `phpinfo` ，应该就生效了。
 
-
 然后再尝试登录一下 Wordpress，又发现了以下错误：
 
 ```bash
@@ -449,14 +440,10 @@ BY 'your_root_password';
 
 应该就可以了。
 
-
 <a name="rgfRu"></a>
 
 ## 参考链接
 
-- [安装 Nginx + MySQL + PHP 环境（ macOS篇 ）](https://ismdeep.com/posts/2020-04-22-install-nginx-mysql-php-on-macos.html)
+- [安装 Nginx + MySQL + PHP 环境（ macOS 篇 ）](https://ismdeep.com/posts/2020-04-22-install-nginx-mysql-php-on-macos.html)
 - [[开发环境]Mac 配置 php-fpm](https://github.com/musicode/test/issues/5)
 - [PHP with MySQL 8.0+ error: The server requested authentication method unknown to the client [duplicate]](https://stackoverflow.com/questions/52364415/php-with-mysql-8-0-error-the-server-requested-authentication-method-unknown-to)
-
-
-
