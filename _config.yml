@@ -20,7 +20,7 @@ title: 4Ark                          # the main title
 tagline: 独立思考、明辨是非   # it will display as the sub-title
 
 description: >-                        # used by seo meta and the atom feed
-  4Ark gd4ark WEB 前端 个人博客 hexo 博客 蔡红辉
+  4Ark gd4ark WEB 前端 个人博客 hexo 博客
 
 # fill in the protocol & hostname for your site, e.g., 'https://username.github.io'
 url: 'https://4ark.me'
