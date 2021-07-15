@@ -1,11 +1,9 @@
 ---
 title: HTTPS 与加密那些事儿
 categories:
-  - 前端
-tags:
-  - 系统
   - 网络
-  - 前端
+tags:
+  - HTTP
 abbrlink: bebf2aea
 date: 2019-11-04 17:57:45
 ---

@@ -3,7 +3,7 @@ title: 从 Composition API 源码分析 getCurrentInstance() 为何返回 null
 categories:
   - 前端
 tags:
-  - 前端
+  - Vue
 abbrlink: 87ba8d8b
 date: 2021-01-16 22:39:55
 ---
@@ -21,34 +21,38 @@ date: 2021-01-16 22:39:55
 </template>
 
 <script>
-import {defineComponent, ref, getCurrentInstance} from '@vue/composition-api'
+  import {
+    defineComponent,
+    ref,
+    getCurrentInstance,
+  } from "@vue/composition-api";
 
-function useIncrease() {
-  const count = ref(0)
+  function useIncrease() {
+    const count = ref(0);
 
-  function increase() {
-    count.value++
+    function increase() {
+      count.value++;
 
-    // 假设我们还要访问当前实例来做些什么
-    getCurrentInstance().doSomething // 但 getCurrentInstance() 返回的是 null
-  }
-
-  return {
-    count,
-    increase,
-  }
-}
-
-export default defineComponent({
-  setup() {
-    const {count, increase} = useIncrease()
+      // 假设我们还要访问当前实例来做些什么
+      getCurrentInstance().doSomething; // 但 getCurrentInstance() 返回的是 null
+    }
 
     return {
       count,
       increase,
-    }
-  },
-})
+    };
+  }
+
+  export default defineComponent({
+    setup() {
+      const { count, increase } = useIncrease();
+
+      return {
+        count,
+        increase,
+      };
+    },
+  });
 </script>
 复制代码
 ```
@@ -77,7 +81,7 @@ function useIncrease() {
 
 另外其实不止 `getCurrentInstance()` ，还有诸如： `useStore` 、 `useRouter` 这些跟 Vue 实例沾边的都会有这个问题，不过本文只讨论 `getCurrentInstance()`，至于其它这些我不太清楚，所以不敢乱下结论。
 
-我之前对此一直没怎么深究，满足于知道这样做能使它正常工作就足够了。但是，当我今天看到这篇文章《[使用Vue3的CompositionAPI来优化代码量](https://juejin.cn/post/6917592199140458504)》的时候，里面也提到了一样的问题，只是这位同学认为像 `getCurrentInstance()` 方法只能在 `setup()` 中调用，而无法在外部的 `hooks` 方法中调用时，我意识到这个问题必须得讲清楚，否则会造成很多误解。
+我之前对此一直没怎么深究，满足于知道这样做能使它正常工作就足够了。但是，当我今天看到这篇文章《[使用 Vue3 的 CompositionAPI 来优化代码量](https://juejin.cn/post/6917592199140458504)》的时候，里面也提到了一样的问题，只是这位同学认为像 `getCurrentInstance()` 方法只能在 `setup()` 中调用，而无法在外部的 `hooks` 方法中调用时，我意识到这个问题必须得讲清楚，否则会造成很多误解。
 
 但当我想在评论区提醒一波时，我发现其实我也不清楚背后的缘由，索性就趁此机会，好好了解一下为什么会有这么神奇的事情。毕竟，只知道能工作的解决方法是不够的，还要知道它为什么会这样。
 
@@ -110,19 +114,19 @@ function useIncrease() {
 
 ```html
 <script>
-import {defineComponent, getCurrentInstance} from '@vue/composition-api'
+  import { defineComponent, getCurrentInstance } from "@vue/composition-api";
 
-export default defineComponent({
-  setup() {
-    debugger
-    console.log(getCurrentInstance())
+  export default defineComponent({
+    setup() {
+      debugger;
+      console.log(getCurrentInstance());
 
-    setTimeout(() => {
-      debugger
-      console.log(getCurrentInstance())
-    })
-  },
-})
+      setTimeout(() => {
+        debugger;
+        console.log(getCurrentInstance());
+      });
+    },
+  });
 </script>
 复制代码
 ```
@@ -139,7 +143,7 @@ export default defineComponent({
 
 可以看到 `getCurrentInstance()` 的内部非常简单，只是将 `currentInstance` 给返回出来了，而这个变量显然是在外部定义的，那为什么两次调用，它的值就发生了变化呢？
 
-我们留意到断点进来的文件是：vue-composition-api.esm.js，那我们直接在 `node_modules` 下打开这个文件，先搜索一下有哪些地方修改了 `currentInstance` 这个变量，根据上图就能看到是通过 `setCurrentInstance()`   方法来修改，于是我们搜索一下这个方法的调用：
+我们留意到断点进来的文件是：vue-composition-api.esm.js，那我们直接在 `node_modules` 下打开这个文件，先搜索一下有哪些地方修改了 `currentInstance` 这个变量，根据上图就能看到是通过 `setCurrentInstance()` 方法来修改，于是我们搜索一下这个方法的调用：
 
 ![](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210116224450.png)
 
@@ -171,4 +175,3 @@ export default defineComponent({
 至此，整个分析过程就结束了，你可能也会觉得很简单，我觉得你上你也行，所以不要觉得这些底层库的运行原理很难捉摸，出了问题也先别一味抱怨或者尝试各种 HACK，为何不直接看看它的运行逻辑呢？
 
 所以，大胆 debug 吧，少年。
-

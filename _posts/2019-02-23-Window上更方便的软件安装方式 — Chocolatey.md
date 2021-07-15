@@ -1,9 +1,9 @@
 ---
 title: Window上更方便的软件安装方式 — Chocolatey
 categories:
-  - 系统
+  - 网络
 tags:
-  - 系统
+  - Windows
 abbrlink: 8159b49a
 date: 2019-02-23 19:28:07
 ---
@@ -67,7 +67,7 @@ choco install firefox -y
 ### 基本用法
 
 1. 安装 `choco install baretail`
-2. 升级 `choco upgrade  baretail`
+2. 升级 `choco upgrade baretail`
 3. 卸载 `choco uninstall baretail`
 4. 搜索 `choco search something`
 5. 列出已安装 `choco list -lo`

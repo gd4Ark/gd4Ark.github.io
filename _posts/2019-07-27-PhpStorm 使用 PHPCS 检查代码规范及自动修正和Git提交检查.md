@@ -1,16 +1,14 @@
 ---
 title: PhpStorm 使用 PHPCS 检查代码规范及自动修正和Git提交检查
 categories:
-  - 团队开发
-tags:
   - 后端
-  - 团队开发
+tags:
+  - PHP
 abbrlink: 6959bf0
 date: 2019-07-27 00:20:15
 ---
 
 ## 写在前面
-
 
 在团队开发中，每个人的代码风格都不一样，为了日后方便更新和维护，必须考虑协作和编码规范。
 
@@ -18,7 +16,7 @@ date: 2019-07-27 00:20:15
 
 ## 正文
 
-### 安装PHP-CS
+### 安装 PHP-CS
 
 ```
 composer global require "squizlabs/php_codesniffer=*"

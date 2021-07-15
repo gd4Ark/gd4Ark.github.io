@@ -3,7 +3,7 @@ title: 报任少卿书
 categories:
   - 历史
 tags:
-  - 历史
+  - 史记
 date: 2021-02-8 12:02:07
 ---
 

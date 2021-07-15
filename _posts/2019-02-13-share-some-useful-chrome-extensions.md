@@ -1,9 +1,9 @@
 ---
 title: 分享一些好用的 Chrome 扩展
 categories:
-  - 工具资源
+  - 资源分享
 tags:
-  - 工具资源
+  - Chrome 扩展
 abbrlink: 549a6198
 date: 2019-2-13 15:22:39
 ---
@@ -44,11 +44,11 @@ date: 2019-2-13 15:22:39
 
 ### 4. WEB 前端助手
 
-前端神器，包括 JSON 格式化、二维码生成与解码、信息编解码、代码压缩、美化、页面取色、Markdown与HTML互转、网页滚动截屏、正则表达式、时间转换工具、编码规范检测、页面性能检测、Ajax接口调试、密码生成器、JSON 比对工具、网页编码设置、便签笔记。
+前端神器，包括 JSON 格式化、二维码生成与解码、信息编解码、代码压缩、美化、页面取色、Markdown 与 HTML 互转、网页滚动截屏、正则表达式、时间转换工具、编码规范检测、页面性能检测、Ajax 接口调试、密码生成器、JSON 比对工具、网页编码设置、便签笔记。
 
 ![](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/006mS5wEgy1g04zik8xc7j31460lm41y.jpg)
 
-> 链接：[WEB前端助手](https://chrome.google.com/webstore/detail/pkgccpejnmalmdinmhkkfafefagiiiad)
+> 链接：[WEB 前端助手](https://chrome.google.com/webstore/detail/pkgccpejnmalmdinmhkkfafefagiiiad)
 
 ### 5. JSON Viewer
 
@@ -112,7 +112,7 @@ date: 2019-2-13 15:22:39
 
 ### 12. 阅读模式
 
-提供与Safari阅读模式功能一致的插件，浏览文章页时候可进入友好的阅读模式，并自定义阅读功能。
+提供与 Safari 阅读模式功能一致的插件，浏览文章页时候可进入友好的阅读模式，并自定义阅读功能。
 
 唯一美中不足之处就是在阅读模式下无法选中文字（更不能使用划词翻译）。
 
@@ -140,7 +140,7 @@ date: 2019-2-13 15:22:39
 
 ### 15. Isometric Contributions
 
-装X神器，值得拥有。这里放上我心中的偶像 Linus 的贡献图。
+装 X 神器，值得拥有。这里放上我心中的偶像 Linus 的贡献图。
 
 ![](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/006mS5wEgy1g04ylt3ugmj31460lmtay.jpg)
 

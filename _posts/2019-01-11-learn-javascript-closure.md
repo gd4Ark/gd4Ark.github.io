@@ -3,7 +3,7 @@ title: 理解 JavaScript 中的闭包
 categories:
   - 前端
 tags:
-  - 前端
+  - JavaScript
 abbrlink: b5597874
 date: 2019-01-11 09:47:07
 ---
@@ -25,12 +25,12 @@ date: 2019-01-11 09:47:07
 下面用一些代码来解释这个定义：
 
 ```javascript
-function foo(){
-    var a = 2;
-    function bar(){
-        console.log(a); // 2
-    }
-    bar();
+function foo() {
+  var a = 2;
+  function bar() {
+    console.log(a); // 2
+  }
+  bar();
 }
 foo();
 ```
@@ -42,12 +42,12 @@ foo();
 下面再来看这段代码，它清晰地使用了闭包：
 
 ```javascript
-function foo(){
-    var a = 2;
-    function bar(){
-        console.log(a);
-    }
-    return bar;
+function foo() {
+  var a = 2;
+  function bar() {
+    console.log(a);
+  }
+  return bar;
 }
 var baz = foo();
 baz(); // 2 —— 这就是闭包
@@ -68,15 +68,15 @@ baz(); // 2 —— 这就是闭包
 当然，无论使用何种方式对函数类型的值进行传递，当函数在别处被调用时都可以观察到闭包的存在：
 
 ```javascript
-function foo(){
-    var a = 2;
-    function baz(){
-        console.log(a);
-    }
-    bar(baz);
+function foo() {
+  var a = 2;
+  function baz() {
+    console.log(a);
+  }
+  bar(baz);
 }
-function bar(fn){
-    fn(); // 2 —— 这也是闭包
+function bar(fn) {
+  fn(); // 2 —— 这也是闭包
 }
 ```
 
@@ -86,12 +86,12 @@ function bar(fn){
 
 ```javascript
 var fn;
-function foo(){
-    var a = 2;
-    function baz(){
-        console.log(a);
-    }
-    fn = baz;
+function foo() {
+  var a = 2;
+  function baz() {
+    console.log(a);
+  }
+  fn = baz;
 }
 foo();
 fn(); // 2 —— 这也是闭包
@@ -106,10 +106,10 @@ fn(); // 2 —— 这也是闭包
 既然前面说闭包无处不在，那不妨看看几个平时经常看到的片段，看看闭包的妙用。
 
 ```javascript
-function wait(message){
-    setTimeout(function timer(){
-        console.log(message);
-    },1000);
+function wait(message) {
+  setTimeout(function timer() {
+    console.log(message);
+  }, 1000);
 }
 wait("Hello, closure!");
 ```
@@ -119,46 +119,46 @@ wait("Hello, closure!");
 如果你使用过`jQuery`，不难发现下面代码中也使用了闭包：
 
 ```javascript
-function setupBot(name,selector){
-    $(selector).click(function activator(){
-        console.log("Activating:" + name);
-    })
+function setupBot(name, selector) {
+  $(selector).click(function activator() {
+    console.log("Activating:" + name);
+  });
 }
-setupBot("Closure Bot 1","#btn_1");
-setupBot("Closure Bot 2","#btn_2");
+setupBot("Closure Bot 1", "#btn_1");
+setupBot("Closure Bot 2", "#btn_2");
 ```
 
- 本质上无论何时何地，如果将函数（ 访问它们各自的词法作用域）当作第一级的值类型并到处传递， 你就会看到闭包在这些函数中的应用。 在定时器、 事件监听器、Ajax请求、 跨窗口通信、Web Workers或者任何其他的异步（ 或者同步）任务中， 只要使用了回调函数，实际上就是在使用闭包！
+本质上无论何时何地，如果将函数（ 访问它们各自的词法作用域）当作第一级的值类型并到处传递， 你就会看到闭包在这些函数中的应用。 在定时器、 事件监听器、Ajax 请求、 跨窗口通信、Web Workers 或者任何其他的异步（ 或者同步）任务中， 只要使用了回调函数，实际上就是在使用闭包！
 
 再来看一个很经典的闭包面试题：
 
 ```javascript
-for (var i=1; i<=5; i++){
-	setTimeout(function(){
-		console.log(i);
-    },i*1000);
+for (var i = 1; i <= 5; i++) {
+  setTimeout(function () {
+    console.log(i);
+  }, i * 1000);
 }
 ```
 
-正常情况下，我们对这段代码行为的预期是每秒一次输出1~5。
+正常情况下，我们对这段代码行为的预期是每秒一次输出 1~5。
 
-但实际上，这段代码在运行时会以每秒一次的频率输出五次6。
+但实际上，这段代码在运行时会以每秒一次的频率输出五次 6。
 
 为什么？
 
-首先解释6是从哪里来的，这个循环的终止条件是`i`不再`<=5`，所以当条件成立时，`i`等于6。因此，输出显示的是循环结束时`i`的最终值。
+首先解释 6 是从哪里来的，这个循环的终止条件是`i`不再`<=5`，所以当条件成立时，`i`等于 6。因此，输出显示的是循环结束时`i`的最终值。
 
 也就是我们陷入了一个这样的误区：以为循环中每个迭代在运行时都会复制一个`i`的副本，但根据作用域的工作原理，它们都共享同一个全局作用域，因此实际上只有一个`i`。
 
 要使这段代码的运行与我们预期一致，解决方法如下：
 
 ```javascript
-for (var i=1; i<=5; i++){
-    (function(j){
-        setTimeout(function(){
-            console.log(j);
-        },j*1000);
-    })(i)
+for (var i = 1; i <= 5; i++) {
+  (function (j) {
+    setTimeout(function () {
+      console.log(j);
+    }, j * 1000);
+  })(i);
 }
 ```
 
@@ -169,10 +169,10 @@ for (var i=1; i<=5; i++){
 是的，使用 ES6 新出的`let`可以解决这个问题：
 
 ```javascript
-for (let i=1; i<=5; i++){
-	setTimeout(function(){
-		console.log(i);
-    },i*1000);
+for (let i = 1; i <= 5; i++) {
+  setTimeout(function () {
+    console.log(i);
+  }, i * 1000);
 }
 ```
 
@@ -187,24 +187,24 @@ for (let i=1; i<=5; i++){
 
 ```javascript
 var box = {
-    age : 18,
-}
+  age: 18,
+};
 console.log(box.age); // 18
 ```
 
 然而这里有一个问题，那就是属性`age`可以随意改变，如果我们使用闭包，就可以实现私有化，将`age`属性保护起来，只做允许的修改。
 
 ```javascript
-var box = (function (){
-    var age = 18;
-    return {
-        birthday : function(){
-            age++;
-        },
-        sayAge : function(){
-            console.log(age);
-        }
-    }
+var box = (function () {
+  var age = 18;
+  return {
+    birthday: function () {
+      age++;
+    },
+    sayAge: function () {
+      console.log(age);
+    },
+  };
 })();
 box.birthday();
 box.sayAge(); // 19
@@ -235,4 +235,3 @@ box.sayAge(); // 19
 > 2. 调用完毕后将结果输出到控制台。
 
 感谢观看！
-

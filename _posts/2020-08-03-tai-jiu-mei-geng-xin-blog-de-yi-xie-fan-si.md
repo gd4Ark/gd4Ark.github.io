@@ -1,9 +1,9 @@
 ---
 title: 太久没更新博客的原因和反思
 categories:
-  - 随想
+  - 随笔
 tags:
-  - 随想
+  - 反思
 abbrlink: 11fc0df
 date: 2020-08-03 00:00:00
 ---

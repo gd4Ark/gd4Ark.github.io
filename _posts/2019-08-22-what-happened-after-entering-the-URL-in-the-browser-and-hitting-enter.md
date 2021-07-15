@@ -3,7 +3,7 @@ title: 在浏览器输入 URL 回车之后发生了什么（超详细版）
 categories:
   - 前端
 tags:
-  - 系统
+  - HTTP
   - 网络
   - 前端
 abbrlink: b6c7c0a2
@@ -57,7 +57,7 @@ date: 2019-08-22 19:08:15
 
 **2. 操作系统缓存**
 
-操作系统也有自己的 DNS缓存，但在这之前，会向检查域名是否存在本地的 Hosts 文件里，没有则向 DNS 服务器发送查询请求。
+操作系统也有自己的 DNS 缓存，但在这之前，会向检查域名是否存在本地的 Hosts 文件里，没有则向 DNS 服务器发送查询请求。
 
 **3. 路由器缓存**
 
@@ -77,8 +77,8 @@ ISP DNS 就是在客户端电脑上设置的首选 DNS 服务器，它们在大�
 
 **需要注意的点**
 
-1. 递归方式：一路查下去中间不返回，得到最终结果才返回信息（浏览器到本地DNS服务器的过程）
-2. 迭代方式，就是本地DNS服务器到根域名服务器查询的方式。
+1. 递归方式：一路查下去中间不返回，得到最终结果才返回信息（浏览器到本地 DNS 服务器的过程）
+2. 迭代方式，就是本地 DNS 服务器到根域名服务器查询的方式。
 3. 什么是 DNS 劫持
 4. 前端 dns-prefetch 优化
 
@@ -111,9 +111,9 @@ TCP/IP 分为四层，在发送数据时，每层都要对数据进行封装：
 >
 > 1. SYN 泛洪攻击
 
-### **3. 网络层：IP协议查询Mac地址**
+### **3. 网络层：IP 协议查询 Mac 地址**
 
-将数据段打包，并加入源及目标的IP地址，并且负责寻找传输路线。
+将数据段打包，并加入源及目标的 IP 地址，并且负责寻找传输路线。
 
 判断目标地址是否与当前地址处于同一网络中，是的话直接根据 Mac 地址发送，否则使用路由表查找下一跳地址，以及使用 ARP 协议查询它的 Mac 地址。
 
@@ -160,7 +160,7 @@ TCP/IP 分为四层，在发送数据时，每层都要对数据进行封装：
 
 **处理请求**
 
-接受 TCP 报文后，会对连接进行处理，对HTTP协议进行解析（请求方法、域名、路径等），并且进行一些验证：
+接受 TCP 报文后，会对连接进行处理，对 HTTP 协议进行解析（请求方法、域名、路径等），并且进行一些验证：
 
 - 验证是否配置虚拟主机
 - 验证虚拟主机是否接受此方法
@@ -174,7 +174,7 @@ TCP/IP 分为四层，在发送数据时，每层都要对数据进行封装：
 
 **URL 重写**
 
-然后会查看 URL 重写规则，如果请求的文件是真实存在的，比如图片、html、css、js文件等，则会直接把这个文件返回。
+然后会查看 URL 重写规则，如果请求的文件是真实存在的，比如图片、html、css、js 文件等，则会直接把这个文件返回。
 
 否则服务器会按照规则把请求重写到 一个 REST 风格的 URL 上。
 
@@ -192,7 +192,7 @@ TCP/IP 分为四层，在发送数据时，每层都要对数据进行封装：
 
 然后，对响应资源做缓存。
 
-接下来，根据响应资源里的 [MIME](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Basics_of_HTTP/MIME_types) 类型去解析响应内容（比如 HTML、Image各有不同的解析方式）。
+接下来，根据响应资源里的 [MIME](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Basics_of_HTTP/MIME_types) 类型去解析响应内容（比如 HTML、Image 各有不同的解析方式）。
 
 ## 六、渲染页面
 
@@ -214,7 +214,7 @@ TCP/IP 分为四层，在发送数据时，每层都要对数据进行封装：
 
 **1. 解码（encoding）**
 
-传输回来的其实都是一些二进制字节数据，浏览器需要根据文件指定编码（例如UTF-8）转换成字符串，也就是HTML 代码。
+传输回来的其实都是一些二进制字节数据，浏览器需要根据文件指定编码（例如 UTF-8）转换成字符串，也就是 HTML 代码。
 
 **2. 预解析（pre-parsing）**
 
@@ -234,15 +234,15 @@ TCP/IP 分为四层，在发送数据时，每层都要对数据进行封装：
 
 ```html
 <html>
-<head>
+  <head>
     <title>Web page parsing</title>
-</head>
-<body>
+  </head>
+  <body>
     <div>
-        <h1>Web page parsing</h1>
-        <p>This is an example Web page.</p>
+      <h1>Web page parsing</h1>
+      <p>This is an example Web page.</p>
     </div>
-</body>
+  </body>
 </html>
 ```
 
@@ -320,7 +320,7 @@ TCP/IP 分为四层，在发送数据时，每层都要对数据进行封装：
 
 当浏览器发现某个部分发现变化影响了布局时，需要倒回去重新渲染，会从`html`标签开始递归往下，重新计算位置和大小。
 
-reflow基本是无法避免的，因为当你滑动一下鼠标、resize 窗口，页面就会产生变化。
+reflow 基本是无法避免的，因为当你滑动一下鼠标、resize 窗口，页面就会产生变化。
 
 **重绘(repaint)**
 
@@ -385,7 +385,7 @@ JS 有三种运行环境：
 - JS 引擎线程：也叫 JS 内核，负责解析执行 JS 脚本程序的主线程，例如 V8 引擎
 - 事件触发线程：属于浏览器内核线程，主要用于控制事件，例如鼠标、键盘等，当事件被触发时，就会把事件的处理函数推进事件队列，等待 JS 引擎线程执行
 - 定时器触发线程：主要控制`setInterval`和`setTimeout`，用来计时，计时完毕后，则把定时器的处理函数推进事件队列中，等待 JS 引擎线程。
-- HTTP 异步请求线程：通过XMLHttpRequest连接后，通过浏览器新开的一个线程，监控readyState状态变更时，如果设置了该状态的回调函数，则将该状态的处理函数推进事件队列中，等待JS引擎线程执行。
+- HTTP 异步请求线程：通过 XMLHttpRequest 连接后，通过浏览器新开的一个线程，监控 readyState 状态变更时，如果设置了该状态的回调函数，则将该状态的处理函数推进事件队列中，等待 JS 引擎线程执行。
 
 **注：浏览器对同一域名的并发连接数是有限的，通常为 6 个。**
 
@@ -394,11 +394,11 @@ JS 有三种运行环境：
 分为：
 
 - 同步任务：按照顺序执行，只有前一个任务完成后，才能执行后一个任务
-- 异步任务：不直接执行，只有满足触发条件时，相关的线程将该异步任务推进任务队列中，等待JS引擎主线程上的任务执行完毕时才开始执行，例如异步Ajax、DOM事件，setTimeout等。
+- 异步任务：不直接执行，只有满足触发条件时，相关的线程将该异步任务推进任务队列中，等待 JS 引擎主线程上的任务执行完毕时才开始执行，例如异步 Ajax、DOM 事件，setTimeout 等。
 
 **微任务**
 
-微任务是ES6和Node环境下的，主要 API 有：`Promise`，` process.nextTick`。
+微任务是 ES6 和 Node 环境下的，主要 API 有：`Promise`，` process.nextTick`。
 
 微任务的执行在宏任务的同步任务之后，在异步任务之前。
 
@@ -407,20 +407,20 @@ JS 有三种运行环境：
 **代码例子**
 
 ```js
-console.log('1'); // 宏任务 同步
+console.log("1"); // 宏任务 同步
 
-setTimeout(function() {
-    console.log('2'); // 宏任务 异步
-})
+setTimeout(function () {
+  console.log("2"); // 宏任务 异步
+});
 
-new Promise(function(resolve) {
-    console.log('3'); // 宏任务 同步
-    resolve();
-}).then(function() {
-    console.log('4') // 微任务
-})
+new Promise(function (resolve) {
+  console.log("3"); // 宏任务 同步
+  resolve();
+}).then(function () {
+  console.log("4"); // 微任务
+});
 
-console.log('5') // 宏任务 同步
+console.log("5"); // 宏任务 同步
 ```
 
 以上代码输出顺序为：1,3,5,4,2
@@ -432,6 +432,5 @@ console.log('5') // 宏任务 同步
 - [彻底理解浏览器的缓存机制](https://heyingye.github.io/2018/04/16/%E5%BD%BB%E5%BA%95%E7%90%86%E8%A7%A3%E6%B5%8F%E8%A7%88%E5%99%A8%E7%9A%84%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/)
 - [浏览器的工作原理：新式网络浏览器幕后揭秘](https://www.html5rocks.com/zh/tutorials/internals/howbrowserswork/#The_rendering_engine)
 - [深入浅出浏览器渲染原理](https://blog.fundebug.com/2019/01/03/understand-browser-rendering/)
-- [js引擎的执行过程（一）](https://heyingye.github.io/2018/03/19/js%E5%BC%95%E6%93%8E%E7%9A%84%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B%EF%BC%88%E4%B8%80%EF%BC%89/#%E9%A2%84%E7%BC%96%E8%AF%91%E9%98%B6%E6%AE%B5)
+- [js 引擎的执行过程（一）](https://heyingye.github.io/2018/03/19/js%E5%BC%95%E6%93%8E%E7%9A%84%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B%EF%BC%88%E4%B8%80%EF%BC%89/#%E9%A2%84%E7%BC%96%E8%AF%91%E9%98%B6%E6%AE%B5)
 - 还有一些找不到了。。。。。
-

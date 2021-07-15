@@ -1,7 +1,7 @@
 ---
 title: 我为什么会成为一名程序员
 categories:
-  - 总结
+  - 随笔
 tags:
   - 总结
 abbrlink: a1f7df96

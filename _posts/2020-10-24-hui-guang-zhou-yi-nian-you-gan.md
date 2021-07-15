@@ -1,9 +1,9 @@
 ---
 title: 回广州一年有感
 categories:
-  - 总结
+  - 随笔
 tags:
-  - 总结
+  - 生活
 abbrlink: 3ae0ab74
 date: 2020-10-24 00:38:14
 ---

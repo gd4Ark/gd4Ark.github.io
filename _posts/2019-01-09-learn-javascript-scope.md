@@ -3,7 +3,7 @@ title: 理解 JavaScript 中的作用域
 categories:
   - 前端
 tags:
-  - 前端
+  - JavaScript
 abbrlink: b845344a
 date: 2019-01-09 20:56:32
 ---
@@ -37,6 +37,7 @@ var a = 2;
    从头到尾负责整个 JavaScript 程序的编译及执行过程。
 
 2. 编译器（劳工）：
+
    1. 词法分析（分词）
 
       解析成词法单元，`var`、`a`、`=`、`2`。
@@ -57,7 +58,7 @@ var a = 2;
 
 引擎：
 
->  其实这段代码有两个完全不同的声明，`var a`和`a = 2`，一个由编译器在编译时处理，另一个则由引擎在运行时处理。
+> 其实这段代码有两个完全不同的声明，`var a`和`a = 2`，一个由编译器在编译时处理，另一个则由引擎在运行时处理。
 
 编译器：
 
@@ -95,20 +96,20 @@ var a = b;
 
 作用域分为两种：
 
-1. 词法作用域（较为普遍，JavaScript所使用的也是这种）
+1. 词法作用域（较为普遍，JavaScript 所使用的也是这种）
 2. 动态作用域（使用较少，比如 Bash 脚本、Perl 中的一些模式等）
 
->  词法作用域是由你在写代码时将变量和块作用域写在哪里来决定的。
+> 词法作用域是由你在写代码时将变量和块作用域写在哪里来决定的。
 
 看以下代码，这个例子中有三个逐级嵌套的作用域。
 
 ```javascript
 var a = 2; // 作用域1 全局
-function foo(){
-    var b = a * 2; // 作用域2 局部
-    function bar(){
-		var c = a * b; // 作用域3 局部
-    }
+function foo() {
+  var b = a * 2; // 作用域2 局部
+  function bar() {
+    var c = a * b; // 作用域3 局部
+  }
 }
 ```
 
@@ -119,18 +120,18 @@ function foo(){
 
 作用域查找会在找到第一个匹配的标识符时停止，在多层的嵌套作用域中可以定义同名的标识符，这叫做“遮蔽效应”（内部的标识符“遮蔽”了外部的标识符）。也就是说查找时会从运行所在的作用域开始，逐级往上查找，直到遇见第一个标识符为止。
 
-全局变量（全局作用域下定义的变量）会自动变成全局对象（比如浏览器中的 window对象）。
+全局变量（全局作用域下定义的变量）会自动变成全局对象（比如浏览器中的 window 对象）。
 
 ```javascript
 var a = 1;
-function foo(){
-    var a = 2;
-    console.log(a); // 2
-    function bar(){
-        var a = 3;
-        console.log(a); // 3
-        console.log(window.a); // 1
-    }
+function foo() {
+  var a = 2;
+  console.log(a); // 2
+  function bar() {
+    var a = 3;
+    console.log(a); // 3
+    console.log(window.a); // 1
+  }
 }
 ```
 
@@ -150,9 +151,9 @@ function foo(){
 JavaScript 的 `eval`函数可以接受一个字符串参数并作为代码语句来执行， 就好像代码是原本就在那个位置一样，考虑以下代码：
 
 ```javascript
-function foo(str){
-    eval(str) // 欺骗
-    console.log(a);
+function foo(str) {
+  eval(str); // 欺骗
+  console.log(a);
 }
 var a = 1;
 foo("var a = 2;"); // 2
@@ -173,12 +174,12 @@ foo("var a = 2;"); // 2
 使用方法如下：
 
 ```javascript
-var obj1 = { a:1,b:2 };
-function foo(obj){
-    with(obj){
-        a = 2;
-        b = 3;
-    }
+var obj1 = { a: 1, b: 2 };
+function foo(obj) {
+  with (obj) {
+    a = 2;
+    b = 3;
+  }
 }
 foo(obj1);
 console.log(obj1); // {a: 2, b: 3}
@@ -187,13 +188,13 @@ console.log(obj1); // {a: 2, b: 3}
 然而考虑以下代码：
 
 ```javascript
-var obj2 = { a:1,b:2 };
-function foo(obj){
-    with(obj){
-        a = 2;
-        b = 3;
-        c = 4;
-    }
+var obj2 = { a: 1, b: 2 };
+function foo(obj) {
+  with (obj) {
+    a = 2;
+    b = 3;
+    c = 4;
+  }
 }
 foo(obj2);
 console.log(obj2); // {a: 2, b: 3}
@@ -225,10 +226,10 @@ console.log(c); // 4 不好，c被泄露到全局作用域下
   `try/catch` 的 `catch` 分句会创建一个块作用域，其中声明的变量仅在 catch 内部有效。
 
   ```javascript
-  try{
-  	throw 2;
-  }catch(a){
-  	console.log(a);
+  try {
+    throw 2;
+  } catch (a) {
+    console.log(a);
   }
   ```
 
@@ -238,7 +239,7 @@ console.log(c); // 4 不好，c被泄露到全局作用域下
 
   ```javascript
   {
-      let a = 2;
+    let a = 2;
   }
   console.log(a); // ReferenceError: a is not defined
   ```
@@ -250,7 +251,7 @@ console.log(c); // 4 不好，c被泄露到全局作用域下
 考虑这段代码：
 
 ```javascript
-console.log( a );
+console.log(a);
 var a = 2;
 ```
 
@@ -278,23 +279,23 @@ a = 2;
 ```javascript
 foo(); // 1
 var foo;
-function foo(){
-    console.log(1);
+function foo() {
+  console.log(1);
 }
-foo = function(){
-    console.log(2);
-}
+foo = function () {
+  console.log(2);
+};
 ```
 
 因为这个代码片段会被引擎理解为如下形式：
 
 ```javascript
-function foo(){
-    console.log(1);
+function foo() {
+  console.log(1);
 }
 foo(); // 1
-foo = function() {
-  console.log( 2 );
+foo = function () {
+  console.log(2);
 };
 ```
 
@@ -314,4 +315,3 @@ foo = function() {
 最后，我想说的就是，在这个框架工具流行的时代，我们往往会被这些新东西所吸引，却忽略了最本质的东西，诸诸不知，恰恰是这些我们所忽略的东西才是最重要的，所有的 JavaScript 框架工具都是基于这些内容。所以，不妨回过头来看看这些原生的东西，相信你会更上一层楼。
 
 谢谢观看！
-

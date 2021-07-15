@@ -3,7 +3,7 @@ title: 升级 IOS 14 的一些坑
 categories:
   - 折腾
 tags:
-  - 折腾
+  - IOS
 abbrlink: 7b1778ee
 date: 2020-09-19 15:37:23
 ---
@@ -32,9 +32,9 @@ PS：先备份好手机数据，以防万一！
 
 于是我自己在网上找 IOS 14 的固件，最初我打算在官方，想着系统固件还是官方的比较安全，结果发现最新版本还是停留在 IOS 13.7，于是在一个相对比较靠谱的 [异次元](https://www.iplaysoft.com/item/ios-ipsw-download) 里把 IOS 和 iPadOs 固件下载回来。
 
-因为我是在 Windows 下载的，所以也就在 Windows 最新版的 iTunes 上面更新，连接上手机，按住 Shift 点击更新，选择固件，结果出现「未能更新iPhone，发生未知错误53」，在 [这里](https://discussionschinese.apple.com/thread/251504194) 找到了解决方案，主要是电脑上的网络不要连接宽带，而是连接移动网络的热点。
+因为我是在 Windows 下载的，所以也就在 Windows 最新版的 iTunes 上面更新，连接上手机，按住 Shift 点击更新，选择固件，结果出现「未能更新 iPhone，发生未知错误 53」，在 [这里](https://discussionschinese.apple.com/thread/251504194) 找到了解决方案，主要是电脑上的网络不要连接宽带，而是连接移动网络的热点。
 
-结果在更新过程中，一直停留在「正在准备iPhone以进行软件更新」十几分钟，根据以往的折腾经验，准备工作超过十分钟基本就是有问题的了，于是果然在 [这里](https://hcwang.pixnet.net/blog/post/40515550) 找到了解决方案，主要就是：打开 `Service.msc` ，将 `Remote Desktop Services` 设置为启用和自动，重启 iTunes，重新连接手机，这时候终于可以更新了。
+结果在更新过程中，一直停留在「正在准备 iPhone 以进行软件更新」十几分钟，根据以往的折腾经验，准备工作超过十分钟基本就是有问题的了，于是果然在 [这里](https://hcwang.pixnet.net/blog/post/40515550) 找到了解决方案，主要就是：打开 `Service.msc` ，将 `Remote Desktop Services` 设置为启用和自动，重启 iTunes，重新连接手机，这时候终于可以更新了。
 
 ## 写在最后
 

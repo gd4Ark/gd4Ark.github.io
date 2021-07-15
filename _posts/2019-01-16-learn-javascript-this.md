@@ -3,7 +3,7 @@ title: 理解 JavaScript 中的 this
 categories:
   - 前端
 tags:
-  - 前端
+  - JavaScript
 abbrlink: 8b423d03
 date: 2019-01-16 17:21:24
 ---
@@ -49,15 +49,15 @@ date: 2019-01-16 17:21:24
 下面我们来看看到底什么是调用栈和调用位置：
 
 ```javascript
-function foo(){
-    // 当前调用栈是：foo
-    // 因此，当前调用位置是全局作用域
-    console.log("foo");
-    bar(); // <-- bar的调用位置
+function foo() {
+  // 当前调用栈是：foo
+  // 因此，当前调用位置是全局作用域
+  console.log("foo");
+  bar(); // <-- bar的调用位置
 }
-function bar(){
-    // 当前调用栈是foo -> bar
-    console.log("bar");
+function bar() {
+  // 当前调用栈是foo -> bar
+  console.log("bar");
 }
 foo(); // <-- foo 的调用位置
 ```
@@ -73,15 +73,15 @@ foo(); // <-- foo 的调用位置
 
 这是最常见的函数调用类型：**独立函数调用**：
 
-对函数直接使用而不带任何修饰的函数引用进行调用，简单点一个函数直接是`func()`这样调用，不同于通过对象属性调用例如`obj.func()`，也没有通过new关键字`new Function()`，也没有通过`apply`、`call`、`bind`强制改变`this`指向。
+对函数直接使用而不带任何修饰的函数引用进行调用，简单点一个函数直接是`func()`这样调用，不同于通过对象属性调用例如`obj.func()`，也没有通过 new 关键字`new Function()`，也没有通过`apply`、`call`、`bind`强制改变`this`指向。
 
 当被用作独立函数调用时（不论这个函数在哪被调用，不管全局还是其他函数内），`this`默认指向到`Window`。（**注意：在严格模式下`this`不再默认指向全局，而是`undefined`**）。
 
 示例代码：
 
 ```javascript
-function foo(){
-    console.log(this.name);
+function foo() {
+  console.log(this.name);
 }
 var name = "window";
 foo(); // window
@@ -95,11 +95,11 @@ foo(); // window
 
 ```javascript
 var obj = {
-    name : "obj",
-    foo : function(){
-        console.log(this.name);
-    }
-}
+  name: "obj",
+  foo: function () {
+    console.log(this.name);
+  },
+};
 obj.foo(); // obj
 ```
 
@@ -111,13 +111,13 @@ obj.foo(); // obj
 
 ```javascript
 var obj = {
-    name : "obj",
-    foo : function(){
-        console.log(this.name);
-    }
-}
+  name: "obj",
+  foo: function () {
+    console.log(this.name);
+  },
+};
 var name = "window";
-setTimeout(obj.foo,1000); // 一秒后输出 window
+setTimeout(obj.foo, 1000); // 一秒后输出 window
 ```
 
 #### **显式绑定**
@@ -134,13 +134,13 @@ setTimeout(obj.foo,1000); // 一秒后输出 window
 
 ```javascript
 var obj = {
-    name : "obj",
-    foo : function(){
-        console.log(this.name);
-    }
-}
+  name: "obj",
+  foo: function () {
+    console.log(this.name);
+  },
+};
 var name = "window";
-setTimeout(obj.foo.bind(obj),1000); // 一秒后输出 obj
+setTimeout(obj.foo.bind(obj), 1000); // 一秒后输出 obj
 ```
 
 ### new 绑定
@@ -159,19 +159,19 @@ function foo(a) {
   this.a = a;
 }
 var bar = new foo(2);
-console.log( bar.a ); // 2
+console.log(bar.a); // 2
 ```
 
 ### 优先级
 
 直接上结论:
 
-> new绑定=显示绑定>隐式绑定>默认绑定
+> new 绑定=显示绑定>隐式绑定>默认绑定
 
-**判断this：**
- 现在我们可以根据优先级来判断函数在某个调用位置应用的是哪条规则。可以按照下面的顺序来进行判断：
+**判断 this：**
+现在我们可以根据优先级来判断函数在某个调用位置应用的是哪条规则。可以按照下面的顺序来进行判断：
 
-1. 使用new绑定，`this`绑定的是新创建的对象。
+1. 使用 new 绑定，`this`绑定的是新创建的对象。
 
    ```javascript
    var bar = new foo();
@@ -197,11 +197,11 @@ console.log( bar.a ); // 2
 
    对于正常的函数调用来说，理解了这些知识你就可以明白 this 的绑定原理了。
 
-### this词法
+### this 词法
 
 ES6 中介绍了一种无法使用上面四条规则的特殊函数类型：**箭头函数**。
 
-**箭头函数不使用 this 的四种标准规则，而是根据外层(函数或者全局)作用域来决定 this。**(而传统的this与函数作用域没有任何关系,它只与调用位置的上下文对象有关)。
+**箭头函数不使用 this 的四种标准规则，而是根据外层(函数或者全局)作用域来决定 this。**(而传统的 this 与函数作用域没有任何关系,它只与调用位置的上下文对象有关)。
 
 **重要:**
 
@@ -213,13 +213,13 @@ ES6 中介绍了一种无法使用上面四条规则的特殊函数类型：**�
 
 ```javascript
 var obj = {
-    name : "obj",
-    foo : function(){
-        setTimeout(()=>{
-            console.log(console.log(this.name)); // obj
-        },1000);
-    }
-}
+  name: "obj",
+  foo: function () {
+    setTimeout(() => {
+      console.log(console.log(this.name)); // obj
+    }, 1000);
+  },
+};
 obj.foo();
 ```
 
@@ -227,14 +227,14 @@ obj.foo();
 
 ```javascript
 var obj = {
-    name : "obj",
-    foo : function(){
-        var self = this;
-        setTimeout(function(){
-            console.log(console.log(self.name)); // obj
-        },1000);
-    }
-}
+  name: "obj",
+  foo: function () {
+    var self = this;
+    setTimeout(function () {
+      console.log(console.log(self.name)); // obj
+    }, 1000);
+  },
+};
 obj.foo();
 ```
 
@@ -242,11 +242,9 @@ obj.foo();
 
 总之如果要判断一个运行中函数的`this `绑定，就需要找到这个函数的直接调用位置。找到之后就可以顺序应用下面这四条规则来判断`this`的绑定对象。
 
-1. 由new调用？绑定到新创建的对象。
-2. 由call或者apply(或者bind)调用？绑定到指定的对象。
+1. 由 new 调用？绑定到新创建的对象。
+2. 由 call 或者 apply(或者 bind)调用？绑定到指定的对象。
 3. 由上下文对象调用？绑定到那个上下文对象。
 4. 默认:在严格模式下绑定到`undefined`，否则绑定到全局对象。
 
 ES6 中的箭头函数并不会使用四条标准的绑定规则，而是根据当前的词法作用域来决定 `this`，具体来说，箭头函数会继承外层函数调用的 `this `绑定(无论 `this `绑定到什么)。这其实和 ES6 之前代码中的 `self = this` 机制一样。
-
-

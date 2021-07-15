@@ -1,9 +1,9 @@
 ---
 title: Mac 上配置 MNMP 环境
 categories:
-  - 后端
+  - 折腾
 tags:
-  - 后端
+  - MNMP
 abbrlink: 41f45ee
 date: 2020-11-30 21:38:14
 ---

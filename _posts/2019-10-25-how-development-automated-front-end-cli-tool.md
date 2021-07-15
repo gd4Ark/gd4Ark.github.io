@@ -3,11 +3,10 @@ title: 如何打造自动化前端项目CLI 工具
 categories:
   - 前端
 tags:
-  - 前端
+  - CLI
 abbrlink: 2dfd4a9c
 date: 2019-10-25 15:32:11
 ---
-
 
 ## 前言
 
@@ -78,4 +77,3 @@ date: 2019-10-25 15:32:11
 如果有兴趣可以参考一下我的 CLI 实现：[fa-cli](https://github.com/gd4Ark/fa-cli)，项目模板：[fa-web-template](https://github.com/fa-web-template/vue-admin)
 
 感谢观看。
-

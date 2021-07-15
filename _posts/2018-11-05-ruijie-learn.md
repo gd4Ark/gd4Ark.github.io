@@ -3,7 +3,7 @@ title: 锐捷无线AP学习笔记 - 入门篇
 categories:
   - 网络
 tags:
-  - 网络
+  - 无线AP
 abbrlink: d69467be
 date: 2018-11-05 23:01:43
 ---

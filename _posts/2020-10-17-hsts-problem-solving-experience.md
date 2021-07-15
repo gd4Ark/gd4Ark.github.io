@@ -1,11 +1,9 @@
 ---
 title: 记一次因 HSTS 导致跨域问题的经历
 categories:
-    - 网络
-    - 前端
+  - 网络
 tags:
-    - 网络
-    - 前端
+  - 跨域
 abbrlink: bd31093c
 date: 2020-10-17 12:56:49
 ---
@@ -94,7 +92,7 @@ server {
 
 ## 扩展阅读
 
--   [排查 Chrome 网络问题](https://support.google.com/chrome/a/answer/6271171?hl=zh-Hans)
--   [HTTP 访问控制（CORS）](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS)
--   [HTTP Strict Transport Security](https://developer.mozilla.org/zh-CN/docs/Security/HTTP_Strict_Transport_Security)
--   [浏览器跨域问题与服务器中的 CORS](https://juejin.im/post/6866942131777306631)
+- [排查 Chrome 网络问题](https://support.google.com/chrome/a/answer/6271171?hl=zh-Hans)
+- [HTTP 访问控制（CORS）](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS)
+- [HTTP Strict Transport Security](https://developer.mozilla.org/zh-CN/docs/Security/HTTP_Strict_Transport_Security)
+- [浏览器跨域问题与服务器中的 CORS](https://juejin.im/post/6866942131777306631)

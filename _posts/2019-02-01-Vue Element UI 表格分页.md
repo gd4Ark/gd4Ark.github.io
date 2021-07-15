@@ -2,14 +2,12 @@
 title: Vue + Element UI + Lumen 实现通用表格功能 - 分页
 categories:
   - 前端
-  - 后端
 tags:
-  - 前端
-  - 后端
+  - Vue
+  - PHP
 abbrlink: 64f1da47
 date: 2019-02-01 15:19:47
 ---
-
 
 ## 前言
 
@@ -26,7 +24,7 @@ date: 2019-02-01 15:19:47
 
 然后就可以根据这两个参数计算出偏移量，再从数据库中取出相应的数据。
 
-假如现在给出的参数为：`pageSize=10`，`pageIndex = 2`，也就是说每一页要10条记录，要第二页。
+假如现在给出的参数为：`pageSize=10`，`pageIndex = 2`，也就是说每一页要 10 条记录，要第二页。
 
 计算偏移量的公式为：`pageSize * (pageIndex - 1)`。
 
@@ -101,45 +99,42 @@ store.js：
 
 ```javascript
 export default new vuex.Store({
-    state : {
-        user : {
-            list: [],
-            total: 0,
-            pageIndex: 1,
-            pageSize: 10,
-        }
+  state: {
+    user: {
+      list: [],
+      total: 0,
+      pageIndex: 1,
+      pageSize: 10,
     },
-    mutations: {
-		updateUser(state, data) {
-			state.user = {
-				...state.user,
-				...data,
-			}
-		},
+  },
+  mutations: {
+    updateUser(state, data) {
+      state.user = {
+        ...state.user,
+        ...data,
+      };
     },
-    actions: {
-        async getUser({commit,state,getters}) {
-            // $axios 只是我自己封装的一个函数 这里并不重要
-            const res = await $axios.get('/user',getters.requestData(state.user))
-            commit('updateUser',res);
-    	},
+  },
+  actions: {
+    async getUser({ commit, state, getters }) {
+      // $axios 只是我自己封装的一个函数 这里并不重要
+      const res = await $axios.get("/user", getters.requestData(state.user));
+      commit("updateUser", res);
     },
-    getters:{
-        requestData(state) {
-            return (origin) => {
-                const {
-                    pageIndex,
-                    pageSize,
-                } = origin;
-                const data = {
-                    pageIndex,
-                    pageSize,
-                };
-                return data;
-            }
-        },
-    }
-})
+  },
+  getters: {
+    requestData(state) {
+      return (origin) => {
+        const { pageIndex, pageSize } = origin;
+        const data = {
+          pageIndex,
+          pageSize,
+        };
+        return data;
+      };
+    },
+  },
+});
 ```
 
 ### 数据持久化
@@ -147,16 +142,18 @@ export default new vuex.Store({
 现在如何获取数据已经搞定了，数据持久化我使用 [vuex-localstorage](https://github.com/crossjs/vuex-localstorage)，安装后，只需要在上面代码的基础上添加：
 
 ```javascript
-import createPersist from 'vuex-localstorage'
+import createPersist from "vuex-localstorage";
 export default new vuex.Store({
-    // 接着上面的
-    plugins: [createPersist({
-        namespace: 'studio-user',
-        initialState: {},
-        // ONE_WEEK
-        expires: 7 * 24 * 60 * 60 * 1e3
-    })]
-})
+  // 接着上面的
+  plugins: [
+    createPersist({
+      namespace: "studio-user",
+      initialState: {},
+      // ONE_WEEK
+      expires: 7 * 24 * 60 * 60 * 1e3,
+    }),
+  ],
+});
 ```
 
 ### 公用分页组件
@@ -176,22 +173,22 @@ export default new vuex.Store({
   </el-Pagination>
 </template>
 <script>
-export default {
-  props: {
-    module: Object
-  },
-  methods: {
-    getData() {
-      this.$emit("get-data");
+  export default {
+    props: {
+      module: Object,
     },
-    handleCurrentChange() {
-      this.getData();
+    methods: {
+      getData() {
+        this.$emit("get-data");
+      },
+      handleCurrentChange() {
+        this.getData();
+      },
+      handleSizeChange(val) {
+        this.getData();
+      },
     },
-    handleSizeChange(val) {
-      this.getData();
-    }
-  }
-};
+  };
 </script>
 ```
 
@@ -200,59 +197,53 @@ export default {
 ```html
 <template>
   <div class="container">
-	<el-table
-        :data="user.list"
-        style="width: 100%;"
-      >
-        <el-table-column
-          v-for="(item,index) in columns"
-          :key="index"
-          :prop="item.prop"
-          :label="item.label"
-          align="center"
-        />
-      </el-table>
-      <pagination
-        :module="user"
-        @get-data="getData"
+    <el-table :data="user.list" style="width: 100%;">
+      <el-table-column
+        v-for="(item,index) in columns"
+        :key="index"
+        :prop="item.prop"
+        :label="item.label"
+        align="center"
       />
+    </el-table>
+    <pagination :module="user" @get-data="getData" />
   </div>
 </template>
 <script>
-import Pagination from "@/common/components/Pagination";
-import { mapActions, mapState } from "vuex";
-export default {
-  components: {
-    Pagination,
-  },
-  data: () => ({
-    columns: [
-      {
-        prop: "name",
-        label: "姓名"
-      },
-      {
-        prop: "性别",
-        label: "sex"
-      },
-      {
-        prop: "年龄",
-        label: "age"
-      },
-    ]
-  }),
-  created() {
-    this.getData();
-  },
-  methods: {
+  import Pagination from "@/common/components/Pagination";
+  import { mapActions, mapState } from "vuex";
+  export default {
+    components: {
+      Pagination,
+    },
+    data: () => ({
+      columns: [
+        {
+          prop: "name",
+          label: "姓名",
+        },
+        {
+          prop: "性别",
+          label: "sex",
+        },
+        {
+          prop: "年龄",
+          label: "age",
+        },
+      ],
+    }),
+    created() {
+      this.getData();
+    },
+    methods: {
       ...mapActions({
-          getData : "getUser",
-      })
-  },
-  computed: {
-    ...mapState(["user"])
-  }
-};
+        getData: "getUser",
+      }),
+    },
+    computed: {
+      ...mapState(["user"]),
+    },
+  };
 </script>
 ```
 

@@ -3,7 +3,7 @@ title: 解决 Laravel JWT 多表认证时获取不到当前认证用户的问题
 categories:
   - 后端
 tags:
-  - 后端
+  - PHP
 abbrlink: 834cec76
 date: 2019-01-29 14:47:02
 ---
