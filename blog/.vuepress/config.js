@@ -1,6 +1,8 @@
 module.exports = {
   title: '4Ark',
   description: '4Ark gd4ark WEB 前端 个人博客 博客',
+  head: [['link', { rel: 'icon', href: '/favicon.ico' }]],
+
   theme: '@vuepress/theme-blog',
   themeConfig: {
     nav: [
