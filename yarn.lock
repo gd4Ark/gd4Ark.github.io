@@ -903,6 +903,21 @@
     "@babel/helper-validator-identifier" "^7.14.5"
     to-fast-properties "^2.0.0"
 
+"@gd4ark/vuepress-theme-blog@^2.3.4":
+  version "2.3.4"
+  resolved "https://registry.nlark.com/@gd4ark/vuepress-theme-blog/download/@gd4ark/vuepress-theme-blog-2.3.4.tgz?cache=0&sync_timestamp=1626444675728&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40gd4ark%2Fvuepress-theme-blog%2Fdownload%2F%40gd4ark%2Fvuepress-theme-blog-2.3.4.tgz#acbcd2ccff403e4ed579baeaef9c19b3324d9a83"
+  integrity sha1-rLzSzP9APk7Vebrq75wZszJNmoM=
+  dependencies:
+    "@vuepress/plugin-blog" "^1.9.3"
+    "@vuepress/plugin-medium-zoom" "^1.7.1"
+    "@vuepress/plugin-nprogress" "^1.7.1"
+    "@vuepress/plugin-pwa" "^1.7.1"
+    "@vuepress/plugin-search" "^1.7.1"
+    dayjs "^1.8.19"
+    remove-markdown "^0.3.0"
+    vue-feather-icons "^4.21.0"
+    vuepress-plugin-smooth-scroll "^0.0.9"
+
 "@hapi/address@2.x.x":
   version "2.1.4"
   resolved "https://registry.nlark.com/@hapi/address/download/@hapi/address-2.1.4.tgz#5d67ed43f3fd41a69d4b9ff7b56e7c0d1d0a81e5"
@@ -1222,7 +1237,7 @@
   dependencies:
     lodash.debounce "^4.0.8"
 
-"@vuepress/plugin-blog@^1.9.2":
+"@vuepress/plugin-blog@^1.9.3":
   version "1.9.4"
   resolved "https://registry.npm.taobao.org/@vuepress/plugin-blog/download/@vuepress/plugin-blog-1.9.4.tgz#34636d0387d28221c9f2564b6255786da0dd186a"
   integrity sha1-NGNtA4fSgiHJ8lZLYlV4baDdGGo=
@@ -1248,21 +1263,21 @@
   dependencies:
     cross-spawn "^6.0.5"
 
-"@vuepress/plugin-medium-zoom@^1.5.4":
+"@vuepress/plugin-medium-zoom@^1.7.1":
   version "1.8.2"
   resolved "https://registry.nlark.com/@vuepress/plugin-medium-zoom/download/@vuepress/plugin-medium-zoom-1.8.2.tgz#0243dd27edf0c710f9a41a234d253d76ab51e625"
   integrity sha1-AkPdJ+3wxxD5pBojTSU9dqtR5iU=
   dependencies:
     medium-zoom "^1.0.4"
 
-"@vuepress/plugin-nprogress@1.8.2", "@vuepress/plugin-nprogress@^1.5.4":
+"@vuepress/plugin-nprogress@1.8.2", "@vuepress/plugin-nprogress@^1.7.1":
   version "1.8.2"
   resolved "https://registry.nlark.com/@vuepress/plugin-nprogress/download/@vuepress/plugin-nprogress-1.8.2.tgz#dc6c082925420c8c59ecb7fc2d4a9401f6d4664a"
   integrity sha1-3GwIKSVCDIxZ7Lf8LUqUAfbUZko=
   dependencies:
     nprogress "^0.2.0"
 
-"@vuepress/plugin-pwa@^1.5.4":
+"@vuepress/plugin-pwa@^1.7.1":
   version "1.8.2"
   resolved "https://registry.nlark.com/@vuepress/plugin-pwa/download/@vuepress/plugin-pwa-1.8.2.tgz#a82ecaa9f920bfc79f283fb3c224a42540109e19"
   integrity sha1-qC7Kqfkgv8efKD+zwiSkJUAQnhk=
@@ -1278,7 +1293,7 @@
   dependencies:
     "@vuepress/shared-utils" "1.8.2"
 
-"@vuepress/plugin-search@1.8.2", "@vuepress/plugin-search@^1.5.4":
+"@vuepress/plugin-search@1.8.2", "@vuepress/plugin-search@^1.7.1":
   version "1.8.2"
   resolved "https://registry.nlark.com/@vuepress/plugin-search/download/@vuepress/plugin-search-1.8.2.tgz#74b92f663acf6b4560e15dc0442a84c4e874e206"
   integrity sha1-dLkvZjrPa0Vg4V3ARCqExOh04gY=
@@ -1297,21 +1312,6 @@
     semver "^6.0.0"
     toml "^3.0.0"
     upath "^1.1.0"
-
-"@vuepress/theme-blog@^2.3.3":
-  version "2.3.3"
-  resolved "https://registry.nlark.com/@vuepress/theme-blog/download/@vuepress/theme-blog-2.3.3.tgz#de5fa960f4c0eac7a8bb18a0fb1829cfcfe963ba"
-  integrity sha1-3l+pYPTA6seouxig+xgpz8/pY7o=
-  dependencies:
-    "@vuepress/plugin-blog" "^1.9.2"
-    "@vuepress/plugin-medium-zoom" "^1.5.4"
-    "@vuepress/plugin-nprogress" "^1.5.4"
-    "@vuepress/plugin-pwa" "^1.5.4"
-    "@vuepress/plugin-search" "^1.5.4"
-    dayjs "^1.8.19"
-    remove-markdown "^0.3.0"
-    vue-feather-icons "^4.21.0"
-    vuepress-plugin-smooth-scroll "^0.0.9"
 
 "@vuepress/theme-default@1.8.2":
   version "1.8.2"
@@ -5028,6 +5028,11 @@ lodash.padstart@^4.6.1:
   version "4.6.1"
   resolved "https://registry.npm.taobao.org/lodash.padstart/download/lodash.padstart-4.6.1.tgz#d2e3eebff0d9d39ad50f5cbd1b52a7bce6bb611b"
   integrity sha1-0uPuv/DZ05rVD1y9G1KnvOa7YRs=
+
+lodash.reverse@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.nlark.com/lodash.reverse/download/lodash.reverse-4.0.1.tgz#1f2afedace2e16e660f3aa7c59d3300a6f25d13c"
+  integrity sha1-Hyr+2s4uFuZg86p8WdMwCm8l0Tw=
 
 lodash.sortby@^4.7.0:
   version "4.7.0"

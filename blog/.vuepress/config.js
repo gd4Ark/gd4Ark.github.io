@@ -1,3 +1,6 @@
+const _reverse = require('lodash.reverse')
+const _sortBy = require('lodash.sortby')
+
 module.exports = {
   title: '4Ark',
   description: '4Ark gd4ark WEB 前端 个人博客 博客',
@@ -10,7 +13,7 @@ module.exports = {
       }
     ]
   ],
-  theme: '@vuepress/theme-blog',
+  theme: '@gd4ark/vuepress-theme-blog',
   themeConfig: {
     nav: [
       {
@@ -46,6 +49,23 @@ module.exports = {
       ]
     },
 
+    feed: {
+      canonical_base: 'https://4ark.me/',
+      posts_directories: ['/_posts/'],
+      feeds: {
+        atom1: {
+          enable: true,
+          file_name: 'atom.xml',
+          head_link: {
+            enable: true,
+            type: 'application/atom+xml',
+            title: '%%site_title%% Atom Feed'
+          }
+        }
+      },
+      sort: (entries) => _reverse(_sortBy(entries, 'date'))
+    },
+
     sitemap: {
       hostname: 'https://4ark.me/'
     },
@@ -53,11 +73,6 @@ module.exports = {
     comment: {
       service: 'disqus',
       shortname: 'https-4ark-me'
-    },
-
-    feed: {
-      canonical_base: 'https://4ark.me/',
-      posts_directories: ['/_posts/']
     }
   }
 }
