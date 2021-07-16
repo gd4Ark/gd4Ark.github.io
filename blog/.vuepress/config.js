@@ -35,7 +35,7 @@ module.exports = {
         },
         {
           type: 'mail',
-          link: 'gd4ark@gmail.com'
+          link: 'mailto:gd4ark@gmail.com'
         }
       ],
       copyright: [
