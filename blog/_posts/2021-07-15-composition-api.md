@@ -1,10 +1,11 @@
 ---
 title: composition-api 源码解析
 date: 2021-07-15
+permalink: /post/composition-api-score-code
 tags:
   - 前端
   - Vue
-  - composition-api
+  - 源码解析
 ---
 
 ## 一、安装过程

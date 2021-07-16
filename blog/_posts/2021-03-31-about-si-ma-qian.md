@@ -1,6 +1,7 @@
 ---
 title: 司马迁是一个什么样的人？
 date: 2021-03-31
+permalink: /post/about-si-ma-qian
 tags:
   - 历史
   - 史记
