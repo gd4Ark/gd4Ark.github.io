@@ -8,6 +8,10 @@ tags:
   - 源码解析
 ---
 
+## 版本说明
+
+本文是针对 composition-api [v1.0.0-rc.6](https://github.com/vuejs/composition-api/releases/tag/v1.0.0-rc.6) 版本的一次源码解析。
+
 ## 一、安装过程
 
 ### 1. 检测是否已安装
@@ -234,7 +238,7 @@ export function createObserver() {
 }
 ```
 
-首先通过 `createObserver` 拿到一个把空对象经过 Vue.Observer 后的 `__ob__` 属性，其实就是当前 `Observer` 实例对象，关于 Vue Observer 原理这里不深入讲，可以看这里 [数据对象的 ](http://caibaojian.com/vue-design/art/7vue-reactive.html#%E6%95%B0%E6%8D%AE%E5%AF%B9%E8%B1%A1%E7%9A%84-ob-%E5%B1%9E%E6%80%A7)`[__ob__](http://caibaojian.com/vue-design/art/7vue-reactive.html#%E6%95%B0%E6%8D%AE%E5%AF%B9%E8%B1%A1%E7%9A%84-ob-%E5%B1%9E%E6%80%A7)`[ 属性](http://caibaojian.com/vue-design/art/7vue-reactive.html#%E6%95%B0%E6%8D%AE%E5%AF%B9%E8%B1%A1%E7%9A%84-ob-%E5%B1%9E%E6%80%A7)。
+首先通过 `createObserver` 拿到一个把空对象经过 Vue.Observer 后的 `__ob__` 属性，其实就是当前 `Observer` 实例对象，关于 Vue Observer 原理这里不深入讲，可以看这里 [数据对象的 ](http://caibaojian.com/vue-design/art/7vue-reactive.html#%E6%95%B0%E6%8D%AE%E5%AF%B9%E8%B1%A1%E7%9A%84-ob-%E5%B1%9E%E6%80%A7)。
 
 然后给 `props` 新增一个 `__ob_` 属性，指向前面拿到的这个 `__ob__` ，这样做的目的后面再说。
 

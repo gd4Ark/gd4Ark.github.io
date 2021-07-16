@@ -1,32 +1,17 @@
-<h1 align="center">Welcome to vuepress-blog-template 👋</h1>
-<p>
-  <a href="#" target="_blank">
-    <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
-  </a>
-</p>
+## 我的个人博客
 
-> VuePress default blog theme template for quick start
+[![Gem Version](https://img.shields.io/gem/v/jekyll-theme-chirpy?color=brightgreen)](https://rubygems.org/gems/jekyll-theme-chirpy)
+[![Build Status](https://github.com/gd4Ark/gd4ark.github.io/workflows/build/badge.svg?branch=jekyll&event=push)](https://github.com/gd4Ark/gd4ark.github.io/actions?query=branch%3Ajekyll+event%3Apush)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8220b926db514f13afc3f02b7f884f4b)](https://app.codacy.com/manual/gd4Ark/gd4ark.github.io?utm_source=github.com&utm_medium=referral&utm_content=gd4Ark/gd4ark.github.io&utm_campaign=Badge_Grade_Dashboard)
+[![GitHub license](https://img.shields.io/github/license/gd4Ark/gd4ark.github.io.svg)](https://github.com/gd4Ark/gd4ark.github.io/blob/jekyll/LICENSE)
+[![996.icu](https://img.shields.io/badge/link-996.icu-%23FF4D5B.svg)](https://996.icu)
 
-## Install
+如果你要找使用 Hexo 的旧版本博客，请切换到这个分支：[Hexo](https://github.com/gd4Ark/gd4Ark.github.io/tree/hexo)
 
-```sh
-yarn install
-```
+## 预览
 
-## Usage
+在线预览：[4ark’ Blog](https://4ark.me)
 
-```sh
-yarn dev   # development
-yarn build # production
-```
+## 最后
 
-## Author
-
-👤 **Billyyyyy3320**
-
-- Website: [billyyyyy3320.com](https://billyyyyy3320.com)
-- Github: [@newsbielt703](https://github.com/newsbielt703)
-
----
-
-_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
+如果觉得我的项目还不错的话 👏 ，就给个 star ⭐ 鼓励一下吧~

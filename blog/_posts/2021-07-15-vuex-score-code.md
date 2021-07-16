@@ -8,6 +8,10 @@ tags:
   - 源码解析
 ---
 
+## 版本说明
+
+本文是针对 vuex [v3.6.2](https://github.com/vuejs/vuex/releases/tag/v3.6.2) 版本的一次源码解析。
+
 ## 一、初始化过程
 
 ```javascript

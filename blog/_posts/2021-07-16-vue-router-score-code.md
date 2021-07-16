@@ -8,6 +8,10 @@ tags:
   - 源码解析
 ---
 
+## 版本说明
+
+本文是针对 vue-router [v3.5.2](https://github.com/vuejs/vue-router/releases/tag/v3.5.2) 版本的一次源码解析。
+
 ## 一、 new Router 时发生了什么？
 
 对应源码在 [src/index.js](https://github1s.com/vuejs/vue-router/blob/HEAD/src/index.js)，下面讲一下它做了哪些操作：
