@@ -16,7 +16,7 @@
     "vuepress": "^1.8.2"
   },
   "dependencies": {
-    "@gd4ark/vuepress-theme-blog": "^2.3.4",
+    "@gd4ark/vuepress-theme-blog": "^2.3.6",
     "lodash.reverse": "^4.0.1",
     "lodash.sortby": "^4.7.0"
   }

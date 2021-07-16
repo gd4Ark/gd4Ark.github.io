@@ -903,10 +903,10 @@
     "@babel/helper-validator-identifier" "^7.14.5"
     to-fast-properties "^2.0.0"
 
-"@gd4ark/vuepress-theme-blog@^2.3.4":
-  version "2.3.4"
-  resolved "https://registry.nlark.com/@gd4ark/vuepress-theme-blog/download/@gd4ark/vuepress-theme-blog-2.3.4.tgz?cache=0&sync_timestamp=1626444675728&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40gd4ark%2Fvuepress-theme-blog%2Fdownload%2F%40gd4ark%2Fvuepress-theme-blog-2.3.4.tgz#acbcd2ccff403e4ed579baeaef9c19b3324d9a83"
-  integrity sha1-rLzSzP9APk7Vebrq75wZszJNmoM=
+"@gd4ark/vuepress-theme-blog@^2.3.6":
+  version "2.3.6"
+  resolved "https://registry.nlark.com/@gd4ark/vuepress-theme-blog/download/@gd4ark/vuepress-theme-blog-2.3.6.tgz?cache=0&sync_timestamp=1626450244578&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40gd4ark%2Fvuepress-theme-blog%2Fdownload%2F%40gd4ark%2Fvuepress-theme-blog-2.3.6.tgz#845c03e4f6627063c9c81273b2ed5e902beb04cb"
+  integrity sha1-hFwD5PZicGPJyBJzsu1ekCvrBMs=
   dependencies:
     "@vuepress/plugin-blog" "^1.9.3"
     "@vuepress/plugin-medium-zoom" "^1.7.1"
