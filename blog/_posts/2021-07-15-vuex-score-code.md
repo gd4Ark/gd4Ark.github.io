@@ -19,7 +19,7 @@ tags:
 
 ## 一、初始化过程
 
-我们平时使用 vuex 的时候需要先通过 new 一个 `Vuex.Store` 来创建一个 store，下面我们就看看在构造一个 store 时需要经过哪些操作，我们先来看看它的构造函数，它的源码在 src/store.js：
+我们平时使用 vuex 的时候需要先通过 new 一个 `Vuex.Store` 来创建一个 store，下面我们就看看在构造一个 store 时需要经过哪些操作，我们先来看看它的构造函数，它的源码在 [src/store.js](https://github1s.com/vuejs/vuex/blob/HEAD/src/store.js)：
 
 ```javascript
 let Vue // bind on install
@@ -129,7 +129,7 @@ export function install(_Vue) {
 
 `new Store` 的时候如果还未安装，并且已经有全局引入 Vue 的情况下，就会自动安装，但如果已经安装，则无需再次安装。
 
-安装的时候会执行一下 `applyMixin` ，它的源码位在 src/mixin.js：
+安装的时候会执行一下 `applyMixin` ，它的源码位在 [src/mixin.js](https://github1s.com/vuejs/vuex/blob/HEAD/src/mixin.js)：
 
 ```javascript
 export default function(Vue) {
@@ -722,7 +722,7 @@ export const mapActions = normalizeNamespace((namespace, actions) => {}
 所以这个方法的实现就简单了，只需要判断第一个参数是否为字符串，如果是的话则把它当成 map 处理，否则正常处理，并且在最后加上一个 `/` ，这个在前面初始化命名空间模块时就有提到。
 
 ```javascript
-function normalizeNamespace (fn) {
+function normalizeNamespace(fn) {
   return (namespace, map) => {
     if (typeof namespace !== 'string') {
       map = namespace
@@ -741,10 +741,12 @@ function normalizeNamespace (fn) {
 export const mapState = normalizeNamespace((namespace, states) => {
   const res = {}
   if (__DEV__ && !isValidMap(states)) {
-    console.error('[vuex] mapState: mapper parameter must be either an Array or an Object')
+    console.error(
+      '[vuex] mapState: mapper parameter must be either an Array or an Object'
+    )
   }
   normalizeMap(states).forEach(({ key, val }) => {
-    res[key] = function mappedState () {
+    res[key] = function mappedState() {
       let state = this.$store.state
       let getters = this.$store.getters
       if (namespace) {
@@ -766,7 +768,7 @@ export const mapState = normalizeNamespace((namespace, states) => {
 })
 ```
 
-其核心原理就是将传入的 `states` 进行序列化，然后在当前命名空间对应的模块中获取到这些值，其中还要判断一下是否为函数，是的话则调用该函数并且传入当前模块中的 `state` 和 `getters`，将函数的返回存入对象中，最后返回。 
+其核心原理就是将传入的 `states` 进行序列化，然后在当前命名空间对应的模块中获取到这些值，其中还要判断一下是否为函数，是的话则调用该函数并且传入当前模块中的 `state` 和 `getters`，将函数的返回存入对象中，最后返回。
 
 ## 参考链接
 

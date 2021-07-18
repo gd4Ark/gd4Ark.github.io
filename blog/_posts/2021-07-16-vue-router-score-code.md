@@ -8,9 +8,11 @@ tags:
   - 源码解析
 ---
 
-## 版本说明
+## 前言
 
-本文是针对 vue-router [v3.5.2](https://github.com/vuejs/vue-router/releases/tag/v3.5.2) 版本的一次源码解析。
+本文是针对 vue-router [v3.5.2](https://github.com/vuejs/vue-router/releases/tag/v3.5.2) 版本的一次源码解析，由于笔者水平有限，有些地方写得比较混乱，还望多多包涵。
+
+希望本文能够给那些想阅读 vue-router 源代码却又不知从何上手的同学们给予一些帮助。
 
 ## 一、 new Router 时发生了什么？
 
@@ -593,7 +595,7 @@ match (raw: RawLocation, current?: Route, redirectedFrom?: Location): Route {
 }
 ```
 
-而它实际上是调用了 `matcher` 的 `match` 方法，这个方法我们之前在 [创建 match](https://www.yuque.com/qtr5wf/vue/pg1mek#zZiNT) 这一小节有提到过，下面是它的实现：
+而它实际上是调用了 `matcher` 的 `match` 方法，这个方法我们之前在 [创建 match](#_2-创建-matcher) 这一小节有提到过，下面是它的实现：
 
 ```jsx
 function match(
@@ -660,7 +662,7 @@ function match(
 }
 ```
 
-如果是通过 `path` 的方式跳转，由于 `path` 可能会携带一些 `params` 的信息，前面我们已经提到过[初始化路由](https://www.yuque.com/qtr5wf/vue/pg1mek)信息时，会为每条路由生成一个正则表达式，所以这里就可以根据这个正则来检查是否符合当前路由，也就是上面提到 `matchRoute` 作用，下面是它的实现：
+如果是通过 `path` 的方式跳转，由于 `path` 可能会携带一些 `params` 的信息，前面我们已经提到过[初始化路由](#一、-new-router-时发生了什么)信息时，会为每条路由生成一个正则表达式，所以这里就可以根据这个正则来检查是否符合当前路由，也就是上面提到 `matchRoute` 作用，下面是它的实现：
 
 ```jsx
 function matchRoute(regex: RouteRegExp, path: string, params: Object): boolean {
@@ -691,7 +693,7 @@ function matchRoute(regex: RouteRegExp, path: string, params: Object): boolean {
 
 ##### 3. 调用 confirmTransition 方法
 
-前面我们在 [5. 调用 confirmTransition 方法](https://www.yuque.com/qtr5wf/vue/cl9nlu#be56bdea) 时讲到它拿到匹配的路由之后，就会调用 `confirmTransition` 方法，下面是它的实现：
+前面我们在 [1. 调用 transitionTo 方法](#_1-调用-transitionto-方法) 时讲到它拿到匹配的路由之后，就会调用 `confirmTransition` 方法，下面是它的实现：
 
 ```jsx
 // 因为待跳转路由有可能是一个异步组件，所以设计成有回调的方法
@@ -826,7 +828,7 @@ confirmTransition(route: Route, onComplete: Function, onAbort?: Function) {
 我们知道在切换路由时需要执行一系列的导航守卫和路由相关的生命周期，下面就讲讲它的实现，其实也是在 `confirmTransition` 这个方法中。
 ​
 
-第一步就是构造队列，关于它们执行的顺序可以看回 [完整的导航解析流程](https://www.yuque.com/qtr5wf/vue/xgpkgb#371cff94) 这里 。
+第一步就是构造队列，关于它们执行的顺序可以看回文档。
 
 ```jsx
 // 一个队列，存放各种组件生命周期和导航守卫
@@ -1110,7 +1112,7 @@ export function runQueue(
 ```jsx
 // 执行队列
 // queue 就是上面那个队列
-// iterator 前面讲过了，就是传入 to、from、next，只有执行 next 才会进入下一项
+// iterator 传入 to、from、next，只有执行 next 才会进入下一项
 // cb 回调函数，当执行完整个队列后调用
 runQueue(queue, iterator, () => {
   // wait until async components are resolved before
@@ -1132,7 +1134,7 @@ runQueue(queue, iterator, () => {
 })
 ```
 
-`iterator` 的定义在 [5. 调用 confirmTransition 方法](https://www.yuque.com/qtr5wf/vue/cl9nlu#be56bdea) 这一小节中已经讲过了，这里拷贝一份过来：
+`iterator` 的定义在 [1. 调用 transitionTo 方法](#_1-调用-transitionto-方法) 这一小节中已经有提到了，这里拷贝一份过来：
 
 ```jsx
 // 迭代器，每次执行一个钩子，调用 next 时才会进行下一项
@@ -1185,7 +1187,7 @@ const iterator = (hook: NavigationGuard, next) => {
 }
 ```
 
-但是我们留意到这里其实是嵌套执行了两次 `runQueue` ，这是因为我们前面构造的 `queue` 只是 [完整的导航解析流程](https://www.yuque.com/qtr5wf/vue/xgpkgb#371cff94) 中的 第 2~6 步，而接下来就要执行第 7~9 步：
+但是我们留意到这里其实是嵌套执行了两次 `runQueue` ，这是因为我们前面构造的 `queue` 只是 vue-router 完整的导航解析流程中的 第 2~6 步，而接下来就要执行第 7~9 步：
 
 ```jsx
 // 这时候异步组件已经解析完成
@@ -1212,7 +1214,7 @@ runQueue(queue, iterator, () => {
 
 ##### 6. 执行 `confirmTransition` 后的操作
 
-到这里 `confirmTransition` 方法就已经执行完了，最后会调用 `transitionTo` 传入的 `onComplete` 方法，之前就有讲过：
+到这里 `confirmTransition` 方法就已经执行完了，最后会调用 `transitionTo` 传入的 `onComplete` 方法，之前就有提到：
 
 ```jsx
 // 更新到当前路由信息 (current)，下面会讲
@@ -1284,7 +1286,7 @@ listen (cb: Function) {
 }
 ```
 
-而哪里调用了这个 `listen` 方法呢？我们看回之前在 [安装 Router](https://www.yuque.com/qtr5wf/vue/se58c1#soVvB) 时初始化那里的一段代码：
+而哪里调用了这个 `listen` 方法呢？我们看回之前在 [2. 安装 Router](#_2-安装-router) 时初始化那里的一段代码：
 
 ```javascript
 // 监听路由变化，在所有 app 实例中设置当前路由
@@ -1505,14 +1507,14 @@ render(_, { props, children, parent, data }) {
 }
 ```
 
-可以看到 `router-view` 是通过 `$route` 变量来获取当前组件的，而在前面 [9. 更新路由信息](https://www.yuque.com/qtr5wf/vue/cl9nlu#Kr1p2) 时已经讲过会更新 `_route` 变量，而它在 [2. 安装 Router](https://www.yuque.com/qtr5wf/vue/se58c1#soVvB) 时就已经用 `$route` 包装成响应式了，这里自然也就可以渲染对应的组件了。
+可以看到 `router-view` 是通过 `$route` 变量来获取当前组件的，而在前面 [7. 更新路由信息](#_7-更新路由信息) 时有提到会更新 `_route` 变量，而它在 [2. 安装 Router](#_2-安装-router) 时就已经用 `$route` 包装成响应式了，这里自然也就可以渲染对应的组件了。
 
 ## 四、 动态添加路由实现
 
 我们在开发时可能会遇到一些比较复杂的场景，需要动态添加路由，最常见的例子就是根据后端返回的不同用户角色去配置不同的前端路由，那下面就讲讲它在 vue-router 内部是如何实现的。
 ​
 
-我们只需要使用 `router.addRoute`方法就能新增一条路由记录，之前我们在讲 [2. 创建 matcher](https://www.yuque.com/qtr5wf/vue/pg1mek#zZiNT) 有看到这个方法的定义，下面是它的实现：
+我们只需要使用 `router.addRoute`方法就能新增一条路由记录，之前我们在讲 [2. 创建 matcher](#_2-创建-matcher) 有看到这个方法的定义，下面是它的实现：
 
 ```javascript
 function addRoute(parentOrRoute, route) {
@@ -1536,7 +1538,7 @@ function addRoute(parentOrRoute, route) {
 }
 ```
 
-这里比较重要的是调用 `createRouteMap`来创建路由，它的实现之前在 [3. 根据路由配置生成三张表](https://www.yuque.com/qtr5wf/vue/pg1mek#Jh7Md) 有讲过，不过当时只关注它如何生成三张表，在现在这种情况下调用它的区别在于：
+这里比较重要的是调用 `createRouteMap`来创建路由，它的实现之前在 [3. 根据路由配置生成三张表](#_3-根据路由配置生成三张表) 有提到，不过当时只关注它如何生成三张表，在现在这种情况下调用它的区别在于：
 
 ```javascript
 // 这三张表都无需新增，直接拿之前的
@@ -1549,7 +1551,7 @@ const nameMap: Dictionary<RouteRecord> = oldNameMap || Object.create(null)
 
 ## 五、 三种路由模式的实现
 
-vue-router 的核心逻辑已经讲得差不多了，就剩下三种路由模式之间的差异，这一篇就来仔细讲讲它们各自的内部实现。
+vue-router 的核心逻辑已经讲得差不多了，就剩下三种路由模式之间的差异，这一小节就来仔细讲讲它们各自的内部实现。
 ​
 
 #### 相同的部分
@@ -1562,7 +1564,7 @@ vue-router 的核心逻辑已经讲得差不多了，就剩下三种路由模式
 - confirmTransition
 - updateRoute
 
-其实这些方法在前文中已经或多或少讲过了，其余的那些也只是做一些更新变量的操作，这里也不谈了。
+其实这些方法在前文中已经或多或少有提到了，其余的那些也只是做一些更新变量的操作，这里也不谈了。
 
 其实还有一个非常重要的就是构造函数，它主要是做一些实例变量的初始化，这里混个眼熟就好：
 
@@ -1667,7 +1669,7 @@ function ensureSlash(): boolean {
 
 ##### push 和 replace
 
-`hash` 模式的 `push` 方法我们在 [切换路由时发生了什么](https://www.yuque.com/qtr5wf/vue/cl9nlu) 这一篇已经讲过了，其实 `replace` 也是大同小异，下面是这两个方法的实现：
+`hash` 模式的 `push` 方法我们在 [三、 切换路由时发生了什么](#三、-切换路由时发生了什么) 这一小节已经提到过了，其实 `replace` 也是大同小异，下面是这两个方法的实现：
 
 ```javascript
 push (location: RawLocation, onComplete?: Function, onAbort?: Function) {
@@ -1753,7 +1755,7 @@ go (n: number) {
 
 ##### setupListeners
 
-还记得在 [切换路由时发生了什么](https://www.yuque.com/qtr5wf/vue/cl9nlu) 这一篇的 `init` 方法里有这么一段代码：
+还记得在 [三、 切换路由时发生了什么](#三、-切换路由时发生了什么) 这一小节的 `init` 方法里有这么一段代码：
 
 ```javascript
 // 在浏览器环境下初始化时根据当前路由位置做路由跳转
@@ -1975,3 +1977,5 @@ export class AbstractHistory extends History {
   }
 }
 ```
+
+本文完，感谢阅读。
