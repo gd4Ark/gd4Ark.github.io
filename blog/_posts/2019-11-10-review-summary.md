@@ -3,7 +3,7 @@ title: 面试总结
 tags:
   - 随笔
   - 总结
-permalink: /post/27a6e4df.html
+permalink: /posts/review-summary
 date: 2019-11-10 23:58:55
 ---
 

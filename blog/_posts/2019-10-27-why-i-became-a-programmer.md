@@ -3,7 +3,7 @@ title: 我为什么会成为一名程序员
 tags:
   - 随笔
   - 总结
-permalink: /post/a1f7df96.html
+permalink: /posts/why-i-became-a-programmer
 date: 2019-10-27 16:18:43
 ---
 

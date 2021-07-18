@@ -3,7 +3,7 @@ title: 回广州一年有感
 tags:
   - 随笔
   - 生活
-permalink: /post/3ae0ab74.html
+permalink: /posts/hui-guang-zhou-yi-nian-you-gan
 date: 2020-10-24 00:38:14
 ---
 

@@ -10,9 +10,16 @@ tags:
 
 ## 版本说明
 
-本文是针对 vuex [v3.6.2](https://github.com/vuejs/vuex/releases/tag/v3.6.2) 版本的一次源码解析。
+本文是针对 vuex [v3.6.2](https://github.com/vuejs/vuex/releases/tag/v3.6.2) 版本的一次源码解析，主要是想研究以下几点：
+
+1. vuex 的初始化过程
+2. vuex 的数据状态如何存放
+3. 调用一个 mutation 时做了什么
+4. mapState、mapActions 这些绑定函数的实现
 
 ## 一、初始化过程
+
+我们平时使用 vuex 的时候需要先通过 new 一个 `Vuex.Store` 来创建一个 store，下面我们就看看在构造一个 store 时需要经过哪些操作，我们先来看看它的构造函数，它的源码在 src/store.js：
 
 ```javascript
 let Vue // bind on install
@@ -88,7 +95,7 @@ export class Store {
 }
 ```
 
-代码不是很长，下面我们逐段分析一下这过程做了什么。
+代码不是很长，下面我们逐段分析一下这个构造函数中做了哪些操作。
 
 ### 1. 自动安装
 
@@ -569,7 +576,7 @@ plugins.forEach((plugin) => plugin(this))
 
 ### 7. devtools
 
-最后是判断浏览器是否使用了 vue devtools，如果使用了就在关键时刻调用一些 devtool 的钩子：
+最后是一些 vue devtools 相关的代码：
 
 ```javascript
 const useDevtools =
@@ -699,6 +706,68 @@ function enableStrictMode(store) {
 }
 ```
 
-## 参考文章
+## 三、mapState、mapActions 这些绑定函数的实现
+
+先来看看这四个方法的定义，它们的源码都在 src/helpers.js 中：
+
+```javascript
+export const mapState = normalizeNamespace((namespace, states) => {}
+export const mapMutations = normalizeNamespace((namespace, mutations) => {}
+export const mapGetters = normalizeNamespace((namespace, getters) => {}
+export const mapActions = normalizeNamespace((namespace, actions) => {}
+```
+
+它们都先经过一个叫 `normalizeNamespace` 的方法处理，顾名思义这个方法是解析命名空间的，我们知道 `mapXXX` 这些方法可以接受一个或者两个参数，正常情况下第一个参数为 state module 的命名空间，第二个参数则是需要获取的内容，但是也支持只传入第一个参数，则这时候命名空间为 root。
+
+所以这个方法的实现就简单了，只需要判断第一个参数是否为字符串，如果是的话则把它当成 map 处理，否则正常处理，并且在最后加上一个 `/` ，这个在前面初始化命名空间模块时就有提到。
+
+```javascript
+function normalizeNamespace (fn) {
+  return (namespace, map) => {
+    if (typeof namespace !== 'string') {
+      map = namespace
+      namespace = ''
+    } else if (namespace.charAt(namespace.length - 1) !== '/') {
+      namespace += '/'
+    }
+    return fn(namespace, map)
+  }
+}
+```
+
+其实这四个方法的实现都大同小异，这里就只记录 `mapState` 的实现：
+
+```js
+export const mapState = normalizeNamespace((namespace, states) => {
+  const res = {}
+  if (__DEV__ && !isValidMap(states)) {
+    console.error('[vuex] mapState: mapper parameter must be either an Array or an Object')
+  }
+  normalizeMap(states).forEach(({ key, val }) => {
+    res[key] = function mappedState () {
+      let state = this.$store.state
+      let getters = this.$store.getters
+      if (namespace) {
+        const module = getModuleByNamespace(this.$store, 'mapState', namespace)
+        if (!module) {
+          return
+        }
+        state = module.context.state
+        getters = module.context.getters
+      }
+      return typeof val === 'function'
+        ? val.call(this, state, getters)
+        : state[val]
+    }
+    // mark vuex getter for devtools
+    res[key].vuex = true
+  })
+  return res
+})
+```
+
+其核心原理就是将传入的 `states` 进行序列化，然后在当前命名空间对应的模块中获取到这些值，其中还要判断一下是否为函数，是的话则调用该函数并且传入当前模块中的 `state` 和 `getters`，将函数的返回存入对象中，最后返回。 
+
+## 参考链接
 
 - [vuex 源码解析](https://liyucang-git.github.io/2019/07/21/vuex%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/)

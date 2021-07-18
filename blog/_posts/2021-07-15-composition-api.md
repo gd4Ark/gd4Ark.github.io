@@ -10,7 +10,7 @@ tags:
 
 ## 版本说明
 
-本文是针对 composition-api [v1.0.0-rc.6](https://github.com/vuejs/composition-api/releases/tag/v1.0.0-rc.6) 版本的一次源码解析，主要是针对以下几点：
+本文是针对 composition-api [v1.0.0-rc.6](https://github.com/vuejs/composition-api/releases/tag/v1.0.0-rc.6) 版本的一次源码解析，主要是想探析以下两点：
 
 1. Vue 在安装 composition-api 时做了些什么？
 2. Vue 在执行每个组件的 `setup` 方法时做了什么？

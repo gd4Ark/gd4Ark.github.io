@@ -15,7 +15,7 @@ HTTPS 在我们日常中经常能用到，我们经常说 HTTPS 安全，那么�
 
 ## HTTP
 
-在说 HTTPS 之前，我们需要先知道 HTTP，HTTP 是基于 TCP 协议的一个无状态协议，如果你不是很懂欢迎阅读我上一篇文章，[在浏览器输入 URL 回车之后发生了什么](https://4ark.me/posts/what-happened-after-entering-the-URL-in-the-browser-and-hitting-enter)，此文讲解了一个 HTTP 请求的过程。
+在说 HTTPS 之前，我们需要先知道 HTTP，HTTP 是基于 TCP 协议的一个无状态协议，如果你不是很懂欢迎阅读我上一篇文章，[在浏览器输入 URL 回车之后发生了什么](https://4ark.me/post/b6c7c0a2.html)，此文讲解了一个 HTTP 请求的过程。
 
 缺点：
 
@@ -48,7 +48,7 @@ var c = a ^ b // 加密
 var d = c ^ b // 解密 => 5201314
 ```
 
-> 如果对按位操作符感兴趣可以阅读我之前的文章：[深入理解按位操作符](https://4ark.me/posts/learn-bitwise-operators/)
+> 如果对按位操作符感兴趣可以阅读我之前的文章：[深入理解按位操作符](https://4ark.me/post/learn-bitwise-operators/)
 
 #### 一次性加密
 

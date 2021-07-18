@@ -3,7 +3,7 @@ title: 记一次因 HSTS 导致跨域问题的经历
 tags:
   - 网络
   - 跨域
-permalink: /post/bd31093c.html
+permalink: /posts/hsts-problem-solving-experience
 date: 2020-10-17 12:56:49
 ---
 

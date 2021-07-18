@@ -3,7 +3,7 @@ title: 深入理解按位操作符
 tags:
   - 算法
   - 位操作符
-permalink: /post/3953655a.html
+permalink: /post/learn-bitwise-operators
 date: 2019-03-15 14:57:43
 ---
 
