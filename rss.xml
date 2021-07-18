@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>4Ark</title>
+        <link>https://4ark.me/</link>
+        <description>4Ark gd4ark WEB 前端 个人博客 博客</description>
+        <lastBuildDate>Sun, 18 Jul 2021 15:10:22 GMT</lastBuildDate>
+        <docs>http://blogs.law.harvard.edu/tech/rss</docs>
+        <generator>https://github.com/webmasterish/vuepress-plugin-feed</generator>
+        <atom:link href="https://4ark.me/atom.xml" rel="self" type="application/rss+xml"/>
+        <item>
+            <title><![CDATA[vue-router 源码解析]]></title>
+            <link>https://4ark.me/post/vue-router-score-code/</link>
+            <guid>https://4ark.me/post/vue-router-score-code/</guid>
+            <pubDate>Fri, 16 Jul 2021 00:00:00 GMT</pubDate>
+            <description><![CDATA[本文是针对 vue-router v3.5.2 版本的一次源码解析，由于笔者水平有限，有些地方写得比较混乱，还望多多包涵。
+
+希望本文能够给那些想阅读 vue-router 源代码却又不知从何上手的同学们给予一些帮助。
+
+一、 new Router 时发生了什么？
+
+对应 ...]]></description>
+        </item>
+        <item>
+            <title><![CDATA[composition-api 源码解析]]></title>
+            <link>https://4ark.me/post/composition-api-score-code/</link>
+            <guid>https://4ark.me/post/composition-api-score-code/</guid>
+            <pubDate>Thu, 15 Jul 2021 00:00:00 GMT</pubDate>
+            <description><![CDATA[本文是针对 composition-api v1.0.0-rc.6 版本的一次源码解析，主要是想探析以下两点：
+
+Vue 在安装 composition-api 时做了些什么？
+Vue 在执行每个组件的 setup 方法时做了什么？
+
+好了， ...]]></description>
+        </item>
+        <item>
+            <title><![CDATA[vuex 源码解析]]></title>
+            <link>https://4ark.me/post/vuex-score-code/</link>
+            <guid>https://4ark.me/post/vuex-score-code/</guid>
+            <pubDate>Thu, 15 Jul 2021 00:00:00 GMT</pubDate>
+            <description><![CDATA[本文是针对 vuex v3.6.2 版本的一次源码解析，主要是想研究以下几点：
+
+vuex 的初始化过程
+vuex 的数据状态如何存放
+调用一个 mutation 时做了什么
+mapState、mapActions 这些绑定函数的实现
+
+一、初始化过程
+
+我们 ...]]></description>
+        </item>
+        <item>
+            <title><![CDATA[司马迁是一个什么样的人？]]></title>
+            <link>https://4ark.me/post/about-si-ma-qian/</link>
+            <guid>https://4ark.me/post/about-si-ma-qian/</guid>
+            <pubDate>Wed, 31 Mar 2021 00:00:00 GMT</pubDate>
+            <description><![CDATA[孟子有这么一句话：“颂其诗，读其书，不知其人可乎？是以论其世也，是尚友也。”
+
+所以在阅读《史记》之前，应该要好好了解一下司马迁这个人的一生，知道他是一个什么样的人，身处在一个什么样的环境之中，这样才能理解他为什么要写《史记》，以及《史记》这本书到底有什么不同，为什么后世对这本书的评价如此之高，乃至于被鲁迅誉为：史家之绝唱，无韵之离骚。
+
+我们可以通过阅读《史记》中的最后一篇[《太史公自序第七十》 ...]]></description>
+        </item>
+        <item>
+            <title><![CDATA[三月总结]]></title>
+            <link>https://4ark.me/2021/03/30/_2021-mar-summary/</link>
+            <guid>https://4ark.me/2021/03/30/_2021-mar-summary/</guid>
+            <pubDate>Tue, 30 Mar 2021 23:49:42 GMT</pubDate>
+            <description><![CDATA[这是我去年在工作中使用 uni-app 和 uView 踩的一些坑，虽然大部分通过搜索引擎能够找到解决方法，但这些记录更为深入的探究了背后的原因，主要是途径就是看 uni-app 的源码或者分析编译后的代码，本着共享精神，也希望大家不要重复踩坑，相信能够对大家有所帮助。
+
+另外由于在语雀上也能支持互联网索引，也就没必要再搬过来了，且在语雀上的阅读体验要更好。
+
+这是链接：[uni-app 踩坑 ...]]></description>
+        </item>
+        <item>
+            <title><![CDATA[二月总结]]></title>
+            <link>https://4ark.me/2021/03/03/_2020-feb-summary/</link>
+            <guid>https://4ark.me/2021/03/03/_2020-feb-summary/</guid>
+            <pubDate>Wed, 03 Mar 2021 19:16:16 GMT</pubDate>
+            <description><![CDATA[从思辨中学历史
+
+找工作
+
+因为上家公司经营不佳，所以被通知年后不用复工了，于是我开始了找工作的日子。说实话我挺喜欢小城市的生活节奏的，不太愿意回到广州这种一线城市。一线城市的人总是匆匆忙忙的，小城市虽然人少，但更有人情味，而在一线城市，哪怕挤地铁时别人就贴在自己身边，但其实出了 ...]]></description>
+            <enclosure url="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210304220338.png">
+            </enclosure>
+        </item>
+        <item>
+            <title><![CDATA[从思辨中学历史]]></title>
+            <link>https://4ark.me/posts/cong-si-bina-xue-xi-li-shi/</link>
+            <guid>https://4ark.me/posts/cong-si-bina-xue-xi-li-shi/</guid>
+            <pubDate>Tue, 02 Mar 2021 19:16:15 GMT</pubDate>
+            <description><![CDATA[首先介绍一下吕世浩这个人：他是国立台湾大学历史博士、北京大学考古学及博物馆学博士，曾于台湾大学历史学系任教。我前段时间学习了他的公开课：《中国古代历史与人物 —— 秦始皇》以及《史记二》，感兴趣的同学可以在互联网上免费进行观看。
+
+他讲得非常好，「思辨」二字，就是他开这个课程的主要目的，学历史就是要锻炼你的思辨能力。何谓思辨？思辨是指思考辨别，哲学上指运用逻辑推导进行理论上的思考。既然是思辨，自然 ...]]></description>
+        </item>
+        <item>
+            <title><![CDATA[一月总结]]></title>
+            <link>https://4ark.me/post/c0e3674b.html</link>
+            <guid>https://4ark.me/post/c0e3674b.html</guid>
+            <pubDate>Wed, 10 Feb 2021 12:02:07 GMT</pubDate>
+            <description><![CDATA[呼~ 最近实在忙，都没时间写上个月的总结，现在都 2 月 10 号了，还有两天就过年啦，得赶紧把一月份的总结写了。
+
+总得来说上个月还是过得比较充实的，前半月工作上比较闲，比较多私人时间来做自己的事，下半月赶了个项目，整整两个星期都在日夜赶进度，完全没有私人时间，好在现在已经调整回来。
+
+英语
+
+把你的英语用起来
+
+> 透析法读原著，原地复活你放下多年的英语！ 本书彻底解救一直想学英 ...]]></description>
+        </item>
+        <item>
+            <title><![CDATA[报任少卿书]]></title>
+            <link>https://4ark.me/posts/bao-ren-shao-qing-shu/</link>
+            <guid>https://4ark.me/posts/bao-ren-shao-qing-shu/</guid>
+            <pubDate>Mon, 08 Feb 2021 12:02:07 GMT</pubDate>
+            <description><![CDATA[在这里先安利一个电台《软件那些事儿》，该电台专门讲一些科技史，主播是北大的研究生，白天打羽毛球，晚上开滴滴，偶尔在电台吹吹牛逼，风格幽默，是我在互联网上认识为数不多的有趣的灵魂，他最近开始”不务正业“讲起史记来了，刚好我最近也在读史记，自然是要收听的，他现在在讲《报任少卿书》 ...]]></description>
+        </item>
+        <item>
+            <title><![CDATA[从 Composition API 源码分析 getCurrentInstance() 为何返回 null]]></title>
+            <link>https://4ark.me/post/87ba8d8b.html</link>
+            <guid>https://4ark.me/post/87ba8d8b.html</guid>
+            <pubDate>Sat, 16 Jan 2021 22:39:55 GMT</pubDate>
+            <description><![CDATA[如果同学们已经开始使用 Composition API，那么我们可能都会遇到类似的问题，那就是有时候我们调用 getCurrentInstance() ，它返回的居然是 null ，举个例子：
+
+    {{ count }}
+    Increase]]></description>
+            <enclosure url="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/image.png">
+            </enclosure>
+        </item>
+        <item>
+            <title><![CDATA[2020 年度总结]]></title>
+            <link>https://4ark.me/posts/2020-summary/</link>
+            <guid>https://4ark.me/posts/2020-summary/</guid>
+            <pubDate>Fri, 01 Jan 2021 15:23:42 GMT</pubDate>
+            <description><![CDATA[2020 年，是奇幻的一年，我们共抗疫情，见证了太多太多。对于我来说，2020 年也是非常不寻常的一年，在这一年中，既有收获，也有失去，那么就以本文来总结一下 2020 年我做了哪些事情，收获了什么，同时也是给自己一个交代，有习惯则继续保持，不好的习惯则应戒掉。
+
+博客
+
+关于写文章
+
+说来惭愧，在今年，我整整大半年没有更新博客，于是八月份的时候我在《[太久没更新博客的原因和反思 ...]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Mac 上配置 MNMP 环境]]></title>
+            <link>https://4ark.me/post/41f45ee.html</link>
+            <guid>https://4ark.me/post/41f45ee.html</guid>
+            <pubDate>Mon, 30 Nov 2020 21:38:14 GMT</pubDate>
+            <description><![CDATA[今天打算实践一下 Wordpress 主题开发，但由于电脑上没有 PHP 和 MySQL 的环境，于是折腾了一下，结果发现安装配置过程一堆的坑，虽然最终选择了 Docker 环境开发，但毕竟已经踩坑了，就记录一下。
+
+本文讲述如何在 Mac OS 上配置 Ngnix + PHP + MySQL，以及最后如何成功安装 Wordpress。
+
+过程 ...]]></description>
+        </item>
+        <item>
+            <title><![CDATA[十月总结]]></title>
+            <link>https://4ark.me/post/edb9a744.html</link>
+            <guid>https://4ark.me/post/edb9a744.html</guid>
+            <pubDate>Tue, 03 Nov 2020 21:49:33 GMT</pubDate>
+            <description><![CDATA[记一次因 HSTS 导致跨域问题的经历
+浏览器通知推送服务选型
+[回广州一年有感](https://4ark.me/posts/hui-guang-zhou-yi-nian-you-g ...]]></description>
+            <enclosure url="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20201103220016.jpg">
+            </enclosure>
+        </item>
+        <item>
+            <title><![CDATA[回广州一年有感]]></title>
+            <link>https://4ark.me/posts/hui-guang-zhou-yi-nian-you-gan/</link>
+            <guid>https://4ark.me/posts/hui-guang-zhou-yi-nian-you-gan/</guid>
+            <pubDate>Sat, 24 Oct 2020 00:38:14 GMT</pubDate>
+            <description><![CDATA[在去年的这个时候，我写了一篇《我为什么会成为一名程序员》，记录了我为什么会进入软件开发这个行业，以及我对当时现状的忧虑、反思我成为程序员的初心是什么。
+
+那么，一年过去了，我现在是怎么样的呢？我还是曾经那个少年吗？
+
+我回广州了
+
+是的，我写了那篇文章后，我决定离开当时的公司，离开那个城 ...]]></description>
+        </item>
+        <item>
+            <title><![CDATA[记一次因 HSTS 导致跨域问题的经历]]></title>
+            <link>https://4ark.me/posts/hsts-problem-solving-experience/</link>
+            <guid>https://4ark.me/posts/hsts-problem-solving-experience/</guid>
+            <pubDate>Sat, 17 Oct 2020 12:56:49 GMT</pubDate>
+            <description><![CDATA[Access to XMLHttpRequest at 'http://a.com/api' from origin 'http://b.com' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: Redirect is not allowed ...]]></description>
+            <enclosure url="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/image_1.png">
+            </enclosure>
+        </item>
+        <item>
+            <title><![CDATA[九月总结]]></title>
+            <link>https://4ark.me/post/d33db2d3.html</link>
+            <guid>https://4ark.me/post/d33db2d3.html</guid>
+            <pubDate>Sat, 03 Oct 2020 01:15:52 GMT</pubDate>
+            <description><![CDATA[前言
+
+今天已经是十月三号了，本来 30 号那天就想着写总结，但是被其它事情耽误（下面说的 ttrss 的事），所以直到今天才有空好好写一下总结。
+
+公众号文章抄袭申诉
+
+有一天晚上我像往常一样刷 RSS，结果发现有一篇文章抄袭我一年前写的《在浏览器输入 URL 回车之后发生了什么（超详细版）》，还在多个平 ...]]></description>
+        </item>
+        <item>
+            <title><![CDATA[升级 IOS 14 的一些坑]]></title>
+            <link>https://4ark.me/post/7b1778ee.html</link>
+            <guid>https://4ark.me/post/7b1778ee.html</guid>
+            <pubDate>Sat, 19 Sep 2020 15:37:23 GMT</pubDate>
+            <description><![CDATA[IOS 14 正式版已经发布差不多一个星期了，也看到社区不少人开始讨论新特性，我当然也要跟上脚步，于是也开始把我的 iPhone 和 iPad 更新了，但这过程中却是踩了不少的坑，先记录下来，让后来者少花一些时间。
+
+先说结论
+
+我最终成功更新的过程是：
+
+在 Windows 下载最新版本的 iTunes
+在 [异次元](https://www.iplaysoft.com/i ...]]></description>
+        </item>
+        <item>
+            <title><![CDATA[八月总结]]></title>
+            <link>https://4ark.me/post/f05d518.html</link>
+            <guid>https://4ark.me/post/f05d518.html</guid>
+            <pubDate>Fri, 28 Aug 2020 00:05:48 GMT</pubDate>
+            <description><![CDATA[image.png
+
+月初发现这个软件，发现比我之前使用过的所有背单词软件都好用，基于艾宾浩斯记忆曲线，我的方法是同时打开三个软件：
+
+List 背单词（上图软件
+欧路词典（用来练发音
+词根词缀字典（用来记词根，同时还有一个“不拘一格背单词”模块，有趣还方便记忆
+
+每天晚上抽 ...]]></description>
+            <enclosure url="https://i.loli.net/2020/08/28/OCf79JkXbP4vQUw.png">
+            </enclosure>
+        </item>
+        <item>
+            <title><![CDATA[《八佰》观后感]]></title>
+            <link>https://4ark.me/posts/ba-bai-review/</link>
+            <guid>https://4ark.me/posts/ba-bai-review/</guid>
+            <pubDate>Fri, 28 Aug 2020 00:03:45 GMT</pubDate>
+            <description><![CDATA[这几天在很多社区网站都看到关于《八佰》的评论，趁着周末和女朋友去观看，也算了却她一直说今年因为疫情期间没有去看过电影的遗憾。
+
+其实在之前有了解过这部电影，主要讲述的是 1937 年淞沪会战的最后一役，“八百壮士”奉命坚守上海四行仓库，以少敌多顽强抵抗四天四夜的这段真实历史事件。
+
+因为总所周知的原因，这部电影从去年一直拖到今年才终于上映，最后不可避免地要做一些妥协，但是就上映后的剧情来说还是可以 ...]]></description>
+        </item>
+        <item>
+            <title><![CDATA[我以为我不会成为那样的煞笔]]></title>
+            <link>https://4ark.me/post/834cbf1e.html</link>
+            <guid>https://4ark.me/post/834cbf1e.html</guid>
+            <pubDate>Wed, 12 Aug 2020 00:37:51 GMT</pubDate>
+            <description><![CDATA[多年前在帝吧看过一篇文章，题目大概的意思就是本文的标题，作者貌似叫操笔帝，但不知道是不是我记忆错乱还是怎么的，我居然没有在互联网上找到这篇文章，今晚突然想起了这篇文章， 觉得很适合此刻的心情，就来写一篇差不多的吧。
+
+当我小时候看到别人家里吵架，我心想我以后一定不会像他们这么煞笔，直到我现在为夹在她们中间而感到心累。
+
+当我小时候看到别人脾气暴躁，我心想我以后一定不会像他们这么煞笔，直到我现在还经 ...]]></description>
+        </item>
+    </channel>
+</rss>
