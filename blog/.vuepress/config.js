@@ -5,14 +5,11 @@ module.exports = {
   title: '4Ark',
   description: '4Ark gd4ark WEB 前端 个人博客 博客',
   head: [['link', { rel: 'icon', href: '/favicon.ico' }]],
-  plugins: [
-    [
-      '@vuepress/google-analytics',
-      {
-        ga: 'UA-190615898-1'
-      }
-    ]
-  ],
+  plugins: {
+    '@vuepress/google-analytics': {
+      ga: 'UA-190615898-1'
+    }
+  },
   theme: '@gd4ark/vuepress-theme-blog',
   themeConfig: {
     nav: [

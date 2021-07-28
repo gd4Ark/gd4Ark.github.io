@@ -12,11 +12,11 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@vuepress/plugin-google-analytics": "^1.8.2",
     "vuepress": "^1.8.2"
   },
   "dependencies": {
     "@gd4ark/vuepress-theme-blog": "^2.3.6",
+    "@vuepress/plugin-google-analytics": "^1.8.2",
     "lodash.reverse": "^4.0.1",
     "lodash.sortby": "^4.7.0"
   }
