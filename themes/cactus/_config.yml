@@ -122,7 +122,7 @@ page_width: 55
 ##############################################################################
 
 # Enable or disable the RSS feed.
-rss: atom.xml
+rss:
 
 # Turn your web pages into graph objects (see http://ogp.me).
 open_graph:
