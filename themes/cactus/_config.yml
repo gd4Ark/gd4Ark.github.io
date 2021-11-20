@@ -15,7 +15,7 @@ direction: ltr
 # languages/*.yml
 nav:
   home: /
-  about: /about/
+  about: /about
   articles: /archives/
   search: /search/
   # projects: http://github.com/gd4Ark
