@@ -1,0 +1,20 @@
+name: 'build'
+
+on:
+  push:
+    branches:
+      - hexo-cactus
+
+env:
+  GIT_USER: gd4Ark
+  GIT_EMAIL: gd.4ark@gmail.com
+  THEME_REPO: gd4Ark/gd4Ark.github.io
+  THEME_BRANCH: hexo-cactus
+  DEPLOY_REPO: gd4Ark/gd4Ark.github.io
+  DEPLOY_BRANCH: master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2

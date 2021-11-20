@@ -102,4 +102,6 @@ theme: cactus
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
-  type: ''
+  type: git
+  repo: git@github.com:gd4Ark/gd4Ark.github.io.git
+  branch: master
