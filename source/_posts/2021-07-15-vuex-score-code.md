@@ -2,8 +2,7 @@
 title: vuex 源码解析
 date: 2021-07-15
 permalink: /post/vuex-score-code.html
-tags:
-  - 前端
+tags: + 前端
   - Vue
   - 源码解析
 ---
@@ -25,78 +24,73 @@ tags:
 let Vue // bind on install
 
 export class Store {
-    constructor(options = {}) {
-        // Auto install if it is not done yet and `window` has `Vue`.
-        // To allow users to avoid auto-installation in some cases,
-        // this code should be placed here. See #731
-        if (!Vue && typeof window !== 'undefined' && window.Vue) {
-            install(window.Vue)
-        }
-
-        if (__DEV__) {
-            assert(Vue, `must call Vue.use(Vuex) before creating a store instance.`)
-            assert(
-                typeof Promise !== 'undefined',
-                `vuex requires a Promise polyfill in this browser.`
-            )
-            assert(
-                this instanceof Store,
-                `store must be called with the new operator.`
-            )
-        }
-
-        const {
-            plugins = [], strict = false
-        } = options
-
-        // store internal state
-        this._committing = false
-        this._actions = Object.create(null)
-        this._actionSubscribers = []
-        this._mutations = Object.create(null)
-        this._wrappedGetters = Object.create(null)
-        this._modules = new ModuleCollection(options)
-        this._modulesNamespaceMap = Object.create(null)
-        this._subscribers = []
-        this._watcherVM = new Vue()
-        this._makeLocalGettersCache = Object.create(null)
-
-        // bind commit and dispatch to self
-        const store = this
-        const {
-            dispatch,
-            commit
-        } = this
-        this.dispatch = function boundDispatch(type, payload) {
-            return dispatch.call(store, type, payload)
-        }
-        this.commit = function boundCommit(type, payload, options) {
-            return commit.call(store, type, payload, options)
-        }
-
-        // strict mode
-        this.strict = strict
-
-        const state = this._modules.root.state
-
-        // init root module.
-        // this also recursively registers all sub-modules
-        // and collects all module getters inside this._wrappedGetters
-        installModule(this, state, [], this._modules.root)
-
-        // initialize the store vm, which is responsible for the reactivity
-        // (also registers _wrappedGetters as computed properties)
-        resetStoreVM(this, state)
-
-        // apply plugins
-        plugins.forEach((plugin) => plugin(this))
-
-        const useDevtools =
-            options.devtools !== undefined ? options.devtools : Vue.config.devtools
-        if (useDevtools) {
-            devtoolPlugin(this)
-        }
+  constructor(options = {}) {
+    // Auto install if it is not done yet and `window` has `Vue`.
+    // To allow users to avoid auto-installation in some cases,
+    // this code should be placed here. See #731
+    if (!Vue && typeof window !== 'undefined' && window.Vue) {
+      install(window.Vue)
     }
+
+    if (__DEV__) {
+      assert(Vue, `must call Vue.use(Vuex) before creating a store instance.`)
+      assert(
+        typeof Promise !== 'undefined',
+        `vuex requires a Promise polyfill in this browser.`
+      )
+      assert(
+        this instanceof Store,
+        `store must be called with the new operator.`
+      )
+    }
+
+    const { plugins = [], strict = false } = options
+
+    // store internal state
+    this._committing = false
+    this._actions = Object.create(null)
+    this._actionSubscribers = []
+    this._mutations = Object.create(null)
+    this._wrappedGetters = Object.create(null)
+    this._modules = new ModuleCollection(options)
+    this._modulesNamespaceMap = Object.create(null)
+    this._subscribers = []
+    this._watcherVM = new Vue()
+    this._makeLocalGettersCache = Object.create(null)
+
+    // bind commit and dispatch to self
+    const store = this
+    const { dispatch, commit } = this
+    this.dispatch = function boundDispatch(type, payload) {
+      return dispatch.call(store, type, payload)
+    }
+    this.commit = function boundCommit(type, payload, options) {
+      return commit.call(store, type, payload, options)
+    }
+
+    // strict mode
+    this.strict = strict
+
+    const state = this._modules.root.state
+
+    // init root module.
+    // this also recursively registers all sub-modules
+    // and collects all module getters inside this._wrappedGetters
+    installModule(this, state, [], this._modules.root)
+
+    // initialize the store vm, which is responsible for the reactivity
+    // (also registers _wrappedGetters as computed properties)
+    resetStoreVM(this, state)
+
+    // apply plugins
+    plugins.forEach((plugin) => plugin(this))
+
+    const useDevtools =
+      options.devtools !== undefined ? options.devtools : Vue.config.devtools
+    if (useDevtools) {
+      devtoolPlugin(this)
+    }
+  }
 }
 ```
 
@@ -108,27 +102,27 @@ export class Store {
 let Vue // bind on install
 
 export class Store {
-    constructor(options = {}) {
-        // Auto install if it is not done yet and `window` has `Vue`.
-        // To allow users to avoid auto-installation in some cases,
-        // this code should be placed here. See #731
-        if (!Vue && typeof window !== 'undefined' && window.Vue) {
-            install(window.Vue)
-        }
+  constructor(options = {}) {
+    // Auto install if it is not done yet and `window` has `Vue`.
+    // To allow users to avoid auto-installation in some cases,
+    // this code should be placed here. See #731
+    if (!Vue && typeof window !== 'undefined' && window.Vue) {
+      install(window.Vue)
     }
+  }
 }
 
 export function install(_Vue) {
-    if (Vue && _Vue === Vue) {
-        if (__DEV__) {
-            console.error(
-                '[vuex] already installed. Vue.use(Vuex) should be called only once.'
-            )
-        }
-        return
+  if (Vue && _Vue === Vue) {
+    if (__DEV__) {
+      console.error(
+        '[vuex] already installed. Vue.use(Vuex) should be called only once.'
+      )
     }
-    Vue = _Vue
-    applyMixin(Vue)
+    return
+  }
+  Vue = _Vue
+  applyMixin(Vue)
 }
 ```
 
@@ -137,37 +131,37 @@ export function install(_Vue) {
 安装的时候会执行一下 `applyMixin` ，它的源码位在 [src/mixin.js](https://github1s.com/vuejs/vuex/blob/HEAD/src/mixin.js)：
 
 ```javascript
-export default function(Vue) {
-    const version = Number(Vue.version.split('.')[0])
+export default function (Vue) {
+  const version = Number(Vue.version.split('.')[0])
 
-    if (version >= 2) {
-        Vue.mixin({
-            beforeCreate: vuexInit
-        })
-    } else {
-        // override init and inject vuex init procedure
-        // for 1.x backwards compatibility.
-        const _init = Vue.prototype._init
-        Vue.prototype._init = function(options = {}) {
-            options.init = options.init ? [vuexInit].concat(options.init) : vuexInit
-            _init.call(this, options)
-        }
+  if (version >= 2) {
+    Vue.mixin({
+      beforeCreate: vuexInit
+    })
+  } else {
+    // override init and inject vuex init procedure
+    // for 1.x backwards compatibility.
+    const _init = Vue.prototype._init
+    Vue.prototype._init = function (options = {}) {
+      options.init = options.init ? [vuexInit].concat(options.init) : vuexInit
+      _init.call(this, options)
     }
+  }
 
-    /**
-     * Vuex init hook, injected into each instances init hooks list.
-     */
+  /**
+   * Vuex init hook, injected into each instances init hooks list.
+   */
 
-    function vuexInit() {
-        const options = this.$options
-        // store injection
-        if (options.store) {
-            this.$store =
-                typeof options.store === 'function' ? options.store() : options.store
-        } else if (options.parent && options.parent.$store) {
-            this.$store = options.parent.$store
-        }
+  function vuexInit() {
+    const options = this.$options
+    // store injection
+    if (options.store) {
+      this.$store =
+        typeof options.store === 'function' ? options.store() : options.store
+    } else if (options.parent && options.parent.$store) {
+      this.$store = options.parent.$store
     }
+  }
 }
 ```
 
@@ -179,12 +173,12 @@ export default function(Vue) {
 
 ```javascript
 if (__DEV__) {
-    assert(Vue, `must call Vue.use(Vuex) before creating a store instance.`)
-    assert(
-        typeof Promise !== 'undefined',
-        `vuex requires a Promise polyfill in this browser.`
-    )
-    assert(this instanceof Store, `store must be called with the new operator.`)
+  assert(Vue, `must call Vue.use(Vuex) before creating a store instance.`)
+  assert(
+    typeof Promise !== 'undefined',
+    `vuex requires a Promise polyfill in this browser.`
+  )
+  assert(this instanceof Store, `store must be called with the new operator.`)
 }
 ```
 
@@ -193,9 +187,7 @@ if (__DEV__) {
 然后定义了一系列内部变量，这些变量后面都会讲到的：
 
 ```javascript
-const {
-    plugins = [], strict = false
-} = options
+const { plugins = [], strict = false } = options
 
 // store internal state
 this._committing = false
@@ -211,15 +203,12 @@ this._makeLocalGettersCache = Object.create(null)
 
 // bind commit and dispatch to self
 const store = this
-const {
-    dispatch,
-    commit
-} = this
+const { dispatch, commit } = this
 this.dispatch = function boundDispatch(type, payload) {
-    return dispatch.call(store, type, payload)
+  return dispatch.call(store, type, payload)
 }
 this.commit = function boundCommit(type, payload, options) {
-    return commit.call(store, type, payload, options)
+  return commit.call(store, type, payload, options)
 }
 
 // strict mode
@@ -291,15 +280,12 @@ this._modules = new ModuleCollection(options)
 ```javascript
 // bind commit and dispatch to self
 const store = this
-const {
-    dispatch,
-    commit
-} = this
+const { dispatch, commit } = this
 this.dispatch = function boundDispatch(type, payload) {
-    return dispatch.call(store, type, payload)
+  return dispatch.call(store, type, payload)
 }
 this.commit = function boundCommit(type, payload, options) {
-    return commit.call(store, type, payload, options)
+  return commit.call(store, type, payload, options)
 }
 ```
 
@@ -324,60 +310,60 @@ installModule(this, state, [], this._modules.root)
 
 ```javascript
 function installModule(store, rootState, path, module, hot) {
-    const isRoot = !path.length
-    const namespace = store._modules.getNamespace(path)
+  const isRoot = !path.length
+  const namespace = store._modules.getNamespace(path)
 
-    // register in namespace map
-    if (module.namespaced) {
-        if (store._modulesNamespaceMap[namespace] && __DEV__) {
-            console.error(
-                `[vuex] duplicate namespace ${namespace} for the namespaced module ${path.join(
+  // register in namespace map
+  if (module.namespaced) {
+    if (store._modulesNamespaceMap[namespace] && __DEV__) {
+      console.error(
+        `[vuex] duplicate namespace ${namespace} for the namespaced module ${path.join(
           '/'
         )}`
-            )
-        }
-        store._modulesNamespaceMap[namespace] = module
+      )
     }
+    store._modulesNamespaceMap[namespace] = module
+  }
 
-    // set state
-    if (!isRoot && !hot) {
-        const parentState = getNestedState(rootState, path.slice(0, -1))
-        const moduleName = path[path.length - 1]
-        store._withCommit(() => {
-            if (__DEV__) {
-                if (moduleName in parentState) {
-                    console.warn(
-                        `[vuex] state field "${moduleName}" was overridden by a module with the same name at "${path.join(
+  // set state
+  if (!isRoot && !hot) {
+    const parentState = getNestedState(rootState, path.slice(0, -1))
+    const moduleName = path[path.length - 1]
+    store._withCommit(() => {
+      if (__DEV__) {
+        if (moduleName in parentState) {
+          console.warn(
+            `[vuex] state field "${moduleName}" was overridden by a module with the same name at "${path.join(
               '.'
             )}"`
-                    )
-                }
-            }
-            Vue.set(parentState, moduleName, module.state)
-        })
-    }
-
-    const local = (module.context = makeLocalContext(store, namespace, path))
-
-    module.forEachMutation((mutation, key) => {
-        const namespacedType = namespace + key
-        registerMutation(store, namespacedType, mutation, local)
+          )
+        }
+      }
+      Vue.set(parentState, moduleName, module.state)
     })
+  }
 
-    module.forEachAction((action, key) => {
-        const type = action.root ? key : namespace + key
-        const handler = action.handler || action
-        registerAction(store, type, handler, local)
-    })
+  const local = (module.context = makeLocalContext(store, namespace, path))
 
-    module.forEachGetter((getter, key) => {
-        const namespacedType = namespace + key
-        registerGetter(store, namespacedType, getter, local)
-    })
+  module.forEachMutation((mutation, key) => {
+    const namespacedType = namespace + key
+    registerMutation(store, namespacedType, mutation, local)
+  })
 
-    module.forEachChild((child, key) => {
-        installModule(store, rootState, path.concat(key), child, hot)
-    })
+  module.forEachAction((action, key) => {
+    const type = action.root ? key : namespace + key
+    const handler = action.handler || action
+    registerAction(store, type, handler, local)
+  })
+
+  module.forEachGetter((getter, key) => {
+    const namespacedType = namespace + key
+    registerGetter(store, namespacedType, getter, local)
+  })
+
+  module.forEachChild((child, key) => {
+    installModule(store, rootState, path.concat(key), child, hot)
+  })
 }
 ```
 
@@ -392,24 +378,24 @@ const local = (module.context = makeLocalContext(store, namespace, path))
 接着会处理当前模块的 `mutations` 、 `actions` 、 `getters` ，以及如果有子模块的话就递归调用 `installModule` 对子模块进行相同的处理：
 
 ```javascript
-module.forEachMutation(function(mutation, key) {
-    var namespacedType = namespace + key
-    registerMutation(store, namespacedType, mutation, local)
+module.forEachMutation(function (mutation, key) {
+  var namespacedType = namespace + key
+  registerMutation(store, namespacedType, mutation, local)
 })
 
-module.forEachAction(function(action, key) {
-    var type = action.root ? key : namespace + key
-    var handler = action.handler || action
-    registerAction(store, type, handler, local)
+module.forEachAction(function (action, key) {
+  var type = action.root ? key : namespace + key
+  var handler = action.handler || action
+  registerAction(store, type, handler, local)
 })
 
-module.forEachGetter(function(getter, key) {
-    var namespacedType = namespace + key
-    registerGetter(store, namespacedType, getter, local)
+module.forEachGetter(function (getter, key) {
+  var namespacedType = namespace + key
+  registerGetter(store, namespacedType, getter, local)
 })
 
-module.forEachChild(function(child, key) {
-    installModule(store, rootState, path.concat(key), child, hot)
+module.forEachChild(function (child, key) {
+  installModule(store, rootState, path.concat(key), child, hot)
 })
 ```
 
@@ -420,22 +406,22 @@ module.forEachChild(function(child, key) {
 ```javascript
 // set state
 if (!isRoot && !hot) {
-    var parentState = getNestedState(rootState, path.slice(0, -1))
-    var moduleName = path[path.length - 1]
-    store._withCommit(function() {
-        if (process.env.NODE_ENV !== 'production') {
-            if (moduleName in parentState) {
-                console.warn(
-                    '[vuex] state field "' +
-                    moduleName +
-                    '" was overridden by a module with the same name at "' +
-                    path.join('.') +
-                    '"'
-                )
-            }
-        }
-        Vue.set(parentState, moduleName, module.state)
-    })
+  var parentState = getNestedState(rootState, path.slice(0, -1))
+  var moduleName = path[path.length - 1]
+  store._withCommit(function () {
+    if (process.env.NODE_ENV !== 'production') {
+      if (moduleName in parentState) {
+        console.warn(
+          '[vuex] state field "' +
+            moduleName +
+            '" was overridden by a module with the same name at "' +
+            path.join('.') +
+            '"'
+        )
+      }
+    }
+    Vue.set(parentState, moduleName, module.state)
+  })
 }
 ```
 
@@ -479,8 +465,8 @@ if (module.namespaced) {
 
 ```javascript
 module.forEachMutation((mutation, key) => {
-    const namespacedType = namespace + key
-    registerMutation(store, namespacedType, mutation, local)
+  const namespacedType = namespace + key
+  registerMutation(store, namespacedType, mutation, local)
 })
 ```
 
@@ -488,10 +474,10 @@ module.forEachMutation((mutation, key) => {
 
 ```javascript
 function registerMutation(store, type, handler, local) {
-    const entry = store._mutations[type] || (store._mutations[type] = [])
-    entry.push(function wrappedMutationHandler(payload) {
-        handler.call(store, local.state, payload)
-    })
+  const entry = store._mutations[type] || (store._mutations[type] = [])
+  entry.push(function wrappedMutationHandler(payload) {
+    handler.call(store, local.state, payload)
+  })
 }
 ```
 
@@ -513,53 +499,53 @@ resetStoreVM(this, state)
 
 ```javascript
 function resetStoreVM(store, state, hot) {
-    const oldVm = store._vm
+  const oldVm = store._vm
 
-    // bind store public getters
-    store.getters = {}
-    // reset local getters cache
-    store._makeLocalGettersCache = Object.create(null)
-    const wrappedGetters = store._wrappedGetters
-    const computed = {}
-    forEachValue(wrappedGetters, (fn, key) => {
-        // use computed to leverage its lazy-caching mechanism
-        // direct inline function use will lead to closure preserving oldVm.
-        // using partial to return function with only arguments preserved in closure environment.
-        computed[key] = partial(fn, store)
-        Object.defineProperty(store.getters, key, {
-            get: () => store._vm[key],
-            enumerable: true // for local getters
-        })
+  // bind store public getters
+  store.getters = {}
+  // reset local getters cache
+  store._makeLocalGettersCache = Object.create(null)
+  const wrappedGetters = store._wrappedGetters
+  const computed = {}
+  forEachValue(wrappedGetters, (fn, key) => {
+    // use computed to leverage its lazy-caching mechanism
+    // direct inline function use will lead to closure preserving oldVm.
+    // using partial to return function with only arguments preserved in closure environment.
+    computed[key] = partial(fn, store)
+    Object.defineProperty(store.getters, key, {
+      get: () => store._vm[key],
+      enumerable: true // for local getters
     })
+  })
 
-    // use a Vue instance to store the state tree
-    // suppress warnings just in case the user has added
-    // some funky global mixins
-    const silent = Vue.config.silent
-    Vue.config.silent = true
-    store._vm = new Vue({
-        data: {
-            $$state: state
-        },
-        computed
-    })
-    Vue.config.silent = silent
+  // use a Vue instance to store the state tree
+  // suppress warnings just in case the user has added
+  // some funky global mixins
+  const silent = Vue.config.silent
+  Vue.config.silent = true
+  store._vm = new Vue({
+    data: {
+      $$state: state
+    },
+    computed
+  })
+  Vue.config.silent = silent
 
-    // enable strict mode for new vm
-    if (store.strict) {
-        enableStrictMode(store)
+  // enable strict mode for new vm
+  if (store.strict) {
+    enableStrictMode(store)
+  }
+
+  if (oldVm) {
+    if (hot) {
+      // dispatch changes in all subscribed watchers
+      // to force getter re-evaluation for hot reloading.
+      store._withCommit(() => {
+        oldVm._data.$$state = null
+      })
     }
-
-    if (oldVm) {
-        if (hot) {
-            // dispatch changes in all subscribed watchers
-            // to force getter re-evaluation for hot reloading.
-            store._withCommit(() => {
-                oldVm._data.$$state = null
-            })
-        }
-        Vue.nextTick(() => oldVm.$destroy())
-    }
+    Vue.nextTick(() => oldVm.$destroy())
+  }
 }
 ```
 
@@ -575,10 +561,10 @@ function resetStoreVM(store, state, hot) {
 const silent = Vue.config.silent
 Vue.config.silent = true
 store._vm = new Vue({
-    data: {
-        $$state: state
-    },
-    computed
+  data: {
+    $$state: state
+  },
+  computed
 })
 Vue.config.silent = silent
 ```
@@ -595,14 +581,14 @@ store._makeLocalGettersCache = Object.create(null)
 const wrappedGetters = store._wrappedGetters
 const computed = {}
 forEachValue(wrappedGetters, (fn, key) => {
-    // use computed to leverage its lazy-caching mechanism
-    // direct inline function use will lead to closure preserving oldVm.
-    // using partial to return function with only arguments preserved in closure environment.
-    computed[key] = partial(fn, store)
-    Object.defineProperty(store.getters, key, {
-        get: () => store._vm[key],
-        enumerable: true // for local getters
-    })
+  // use computed to leverage its lazy-caching mechanism
+  // direct inline function use will lead to closure preserving oldVm.
+  // using partial to return function with only arguments preserved in closure environment.
+  computed[key] = partial(fn, store)
+  Object.defineProperty(store.getters, key, {
+    get: () => store._vm[key],
+    enumerable: true // for local getters
+  })
 })
 ```
 
@@ -621,46 +607,48 @@ plugins.forEach((plugin) => plugin(this))
 
 ```javascript
 const useDevtools =
-    options.devtools !== undefined ? options.devtools : Vue.config.devtools
+  options.devtools !== undefined ? options.devtools : Vue.config.devtools
 if (useDevtools) {
-    devtoolPlugin(this)
+  devtoolPlugin(this)
 }
 
 // src/plugins/devtool.js
 const target =
-    typeof window !== 'undefined' ?
-    window :
-    typeof global !== 'undefined' ?
-    global :
-    {}
+  typeof window !== 'undefined'
+    ? window
+    : typeof global !== 'undefined'
+    ? global
+    : {}
 const devtoolHook = target.__VUE_DEVTOOLS_GLOBAL_HOOK__
 
 export default function devtoolPlugin(store) {
-    if (!devtoolHook) return
+  if (!devtoolHook) return
 
-    store._devtoolHook = devtoolHook
+  store._devtoolHook = devtoolHook
 
-    devtoolHook.emit('vuex:init', store)
+  devtoolHook.emit('vuex:init', store)
 
-    devtoolHook.on('vuex:travel-to-state', (targetState) => {
-        store.replaceState(targetState)
-    })
+  devtoolHook.on('vuex:travel-to-state', (targetState) => {
+    store.replaceState(targetState)
+  })
 
-    store.subscribe(
-        (mutation, state) => {
-            devtoolHook.emit('vuex:mutation', mutation, state)
-        }, {
-            prepend: true
-        }
-    )
+  store.subscribe(
+    (mutation, state) => {
+      devtoolHook.emit('vuex:mutation', mutation, state)
+    },
+    {
+      prepend: true
+    }
+  )
 
-    store.subscribeAction(
-        (action, state) => {
-            devtoolHook.emit('vuex:action', action, state)
-        }, {
-            prepend: true
-        }
-    )
+  store.subscribeAction(
+    (action, state) => {
+      devtoolHook.emit('vuex:action', action, state)
+    },
+    {
+      prepend: true
+    }
+  )
 }
 ```
 
@@ -678,7 +666,7 @@ this.$store.commit('subModule1/increment')
 
 ```javascript
 this.commit = function boundCommit(type, payload, options) {
-    return commit.call(store, type, payload, options)
+  return commit.call(store, type, payload, options)
 }
 ```
 
@@ -739,22 +727,23 @@ _withCommit(fn) {
 
 ```javascript
 function enableStrictMode(store) {
-    store._vm.$watch(
-        function() {
-            return this._data.$$state
-        },
-        () => {
-            if (__DEV__) {
-                assert(
-                    store._committing,
-                    `do not mutate vuex store state outside mutation handlers.`
-                )
-            }
-        }, {
-            deep: true,
-            sync: true
-        }
-    )
+  store._vm.$watch(
+    function () {
+      return this._data.$$state
+    },
+    () => {
+      if (__DEV__) {
+        assert(
+          store._committing,
+          `do not mutate vuex store state outside mutation handlers.`
+        )
+      }
+    },
+    {
+      deep: true,
+      sync: true
+    }
+  )
 }
 ```
 
@@ -764,9 +753,9 @@ function enableStrictMode(store) {
 
 ```javascript
 export const mapState = normalizeNamespace((namespace, states) => {}
-        export const mapMutations = normalizeNamespace((namespace, mutations) => {}
-                export const mapGetters = normalizeNamespace((namespace, getters) => {}
-                        export const mapActions = normalizeNamespace((namespace, actions) => {}
+export const mapMutations = normalizeNamespace((namespace, mutations) => {}
+export const mapGetters = normalizeNamespace((namespace, getters) => {}
+export const mapActions = normalizeNamespace((namespace, actions) => {}
 ```
 
 它们都先经过一个叫 `normalizeNamespace` 的方法处理，顾名思义这个方法是解析命名空间的，我们知道 `mapXXX` 这些方法可以接受一个或者两个参数，正常情况下第一个参数为 state module 的命名空间，第二个参数则是需要获取的内容，但是也支持只传入第一个参数，则这时候命名空间为 root。
@@ -775,15 +764,15 @@ export const mapState = normalizeNamespace((namespace, states) => {}
 
 ```javascript
 function normalizeNamespace(fn) {
-    return (namespace, map) => {
-        if (typeof namespace !== 'string') {
-            map = namespace
-            namespace = ''
-        } else if (namespace.charAt(namespace.length - 1) !== '/') {
-            namespace += '/'
-        }
-        return fn(namespace, map)
+  return (namespace, map) => {
+    if (typeof namespace !== 'string') {
+      map = namespace
+      namespace = ''
+    } else if (namespace.charAt(namespace.length - 1) !== '/') {
+      namespace += '/'
     }
+    return fn(namespace, map)
+  }
 }
 ```
 
@@ -791,35 +780,32 @@ function normalizeNamespace(fn) {
 
 ```js
 export const mapState = normalizeNamespace((namespace, states) => {
-    const res = {}
-    if (__DEV__ && !isValidMap(states)) {
-        console.error(
-            '[vuex] mapState: mapper parameter must be either an Array or an Object'
-        )
-    }
-    normalizeMap(states).forEach(({
-        key,
-        val
-    }) => {
-        res[key] = function mappedState() {
-            let state = this.$store.state
-            let getters = this.$store.getters
-            if (namespace) {
-                const module = getModuleByNamespace(this.$store, 'mapState', namespace)
-                if (!module) {
-                    return
-                }
-                state = module.context.state
-                getters = module.context.getters
-            }
-            return typeof val === 'function' ?
-                val.call(this, state, getters) :
-                state[val]
+  const res = {}
+  if (__DEV__ && !isValidMap(states)) {
+    console.error(
+      '[vuex] mapState: mapper parameter must be either an Array or an Object'
+    )
+  }
+  normalizeMap(states).forEach(({ key, val }) => {
+    res[key] = function mappedState() {
+      let state = this.$store.state
+      let getters = this.$store.getters
+      if (namespace) {
+        const module = getModuleByNamespace(this.$store, 'mapState', namespace)
+        if (!module) {
+          return
         }
-        // mark vuex getter for devtools
-        res[key].vuex = true
-    })
-    return res
+        state = module.context.state
+        getters = module.context.getters
+      }
+      return typeof val === 'function'
+        ? val.call(this, state, getters)
+        : state[val]
+    }
+    // mark vuex getter for devtools
+    res[key].vuex = true
+  })
+  return res
 })
 ```
 
@@ -827,4 +813,4 @@ export const mapState = normalizeNamespace((namespace, states) => {
 
 ## 参考链接
 
-* [vuex 源码解析](https://liyucang-git.github.io/2019/07/21/vuex%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/)
+- [vuex 源码解析](https://liyucang-git.github.io/2019/07/21/vuex%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/)

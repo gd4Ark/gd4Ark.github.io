@@ -48,7 +48,7 @@ var c = a ^ b // 加密
 var d = c ^ b // 解密 => 5201314
 ```
 
-> 如果对按位操作符感兴趣可以阅读我之前的文章：[深入理解按位操作符](https://4ark.me/post/learn-bitwise-operators/)
+> 如果对按位操作符感兴趣可以阅读我之前的文章：[深入理解按位操作符](https://4ark.me/post/learn-bitwise-operators.html)
 
 #### 一次性加密
 

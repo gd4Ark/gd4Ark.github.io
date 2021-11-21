@@ -25,12 +25,12 @@ tags:
 // src/install.ts
 
 if (isVueRegistered(Vue)) {
-    if (__DEV__) {
-        warn(
-            '[vue-composition-api] already installed. Vue.use(VueCompositionAPI) should be called only once.'
-        )
-    }
-    return
+  if (__DEV__) {
+    warn(
+      '[vue-composition-api] already installed. Vue.use(VueCompositionAPI) should be called only once.'
+    )
+  }
+  return
 }
 ```
 
@@ -42,7 +42,7 @@ if (isVueRegistered(Vue)) {
 const PluginInstalledFlag = '__composition_api_installed__'
 
 export function isVueRegistered(Vue: VueConstructor) {
-    return hasOwn(Vue, PluginInstalledFlag)
+  return hasOwn(Vue, PluginInstalledFlag)
 }
 ```
 
@@ -54,15 +54,15 @@ export function isVueRegistered(Vue: VueConstructor) {
 
 ```javascript
 if (__DEV__) {
-    if (Vue.version) {
-        if (Vue.version[0] !== '2' || Vue.version[1] !== '.') {
-            warn(
-                `[vue-composition-api] only works with Vue 2, v${Vue.version} found.`
-            )
-        }
-    } else {
-        warn('[vue-composition-api] no Vue version found')
+  if (Vue.version) {
+    if (Vue.version[0] !== '2' || Vue.version[1] !== '.') {
+      warn(
+        `[vue-composition-api] only works with Vue 2, v${Vue.version} found.`
+      )
     }
+  } else {
+    warn('[vue-composition-api] no Vue version found')
+  }
 }
 ```
 
@@ -71,16 +71,16 @@ if (__DEV__) {
 ### 3. 添加 setup 这个 option api
 
 ```javascript
-Vue.config.optionMergeStrategies.setup = function(
-    parent: Function,
-    child: Function
+Vue.config.optionMergeStrategies.setup = function (
+  parent: Function,
+  child: Function
 ) {
-    return function mergedSetupFn(props: any, context: any) {
-        return mergeData(
-            typeof parent === 'function' ? parent(props, context) || {} : undefined,
-            typeof child === 'function' ? child(props, context) || {} : undefined
-        )
-    }
+  return function mergedSetupFn(props: any, context: any) {
+    return mergeData(
+      typeof parent === 'function' ? parent(props, context) || {} : undefined,
+      typeof child === 'function' ? child(props, context) || {} : undefined
+    )
+  }
 }
 ```
 
@@ -96,16 +96,16 @@ ps：是否还有同学不知道我们可以自定义 Vue 的 options 呢？可�
 const PluginInstalledFlag = '__composition_api_installed__'
 
 export function setVueConstructor(Vue: VueConstructor) {
-    // @ts-ignore
-    if (__DEV__ && vueConstructor && Vue.__proto__ !== vueConstructor.__proto__) {
-        warn('[vue-composition-api] another instance of Vue installed')
-    }
-    vueConstructor = Vue
-    Object.defineProperty(Vue, PluginInstalledFlag, {
-        configurable: true,
-        writable: true,
-        value: true
-    })
+  // @ts-ignore
+  if (__DEV__ && vueConstructor && Vue.__proto__ !== vueConstructor.__proto__) {
+    warn('[vue-composition-api] another instance of Vue installed')
+  }
+  vueConstructor = Vue
+  Object.defineProperty(Vue, PluginInstalledFlag, {
+    configurable: true,
+    writable: true,
+    value: true
+  })
 }
 ```
 
@@ -115,8 +115,8 @@ export function setVueConstructor(Vue: VueConstructor) {
 
 ```javascript
 Vue.mixin({
-    beforeCreate: functionApiInit
-    // ... other
+  beforeCreate: functionApiInit
+  // ... other
 })
 ```
 
@@ -132,8 +132,8 @@ Vue.mixin({
 
 ```javascript
 Vue.mixin({
-    beforeCreate: functionApiInit
-    // ... other
+  beforeCreate: functionApiInit
+  // ... other
 })
 ```
 
@@ -146,16 +146,13 @@ Vue.mixin({
 ```javascript
 const vm = this
 const $options = vm.$options
-const {
-    setup,
-    render
-} = $options
+const { setup, render } = $options
 
 if (render) {
-    // keep currentInstance accessible for createElement
-    $options.render = function(...args: any): any {
-        return activateCurrentInstance(vm, () => render.apply(this, args))
-    }
+  // keep currentInstance accessible for createElement
+  $options.render = function (...args: any): any {
+    return activateCurrentInstance(vm, () => render.apply(this, args))
+  }
 }
 ```
 
@@ -169,16 +166,16 @@ ps：值得说明的是即便我们写的是 `template` ，但到了目前这个
 
 ```javascript
 if (!setup) {
-    return
+  return
 }
 if (typeof setup !== 'function') {
-    if (__DEV__) {
-        warn(
-            'The "setup" option should be a function that returns a object in component definitions.',
-            vm
-        )
-    }
-    return
+  if (__DEV__) {
+    warn(
+      'The "setup" option should be a function that returns a object in component definitions.',
+      vm
+    )
+  }
+  return
 }
 ```
 
@@ -303,13 +300,13 @@ const methodReturnVoid = ['emit']
 
 ```javascript
 propsPlain.forEach((key) => {
-    let srcKey = `$${key}`
-    proxy(ctx, key, {
-        get: () => vm[srcKey],
-        set() {
-            warn(`Cannot assign to '${key}' because it is a read-only property`, vm)
-        }
-    })
+  let srcKey = `$${key}`
+  proxy(ctx, key, {
+    get: () => vm[srcKey],
+    set() {
+      warn(`Cannot assign to '${key}' because it is a read-only property`, vm)
+    }
+  })
 })
 ```
 
@@ -324,7 +321,7 @@ def(props, '__ob__', createObserver())
 
 // src/reactivity/reactive.ts
 export function createObserver() {
-    return observe < any > {}.__ob__
+  return observe < any > {}.__ob__
 }
 ```
 
@@ -382,8 +379,8 @@ export function resolveScopedSlots(
 
 ```javascript
 activateCurrentInstance(vm, () => {
-    // make props to be fake reactive, this is for `toRefs(props)`
-    binding = setup(props, ctx)
+  // make props to be fake reactive, this is for `toRefs(props)`
+  binding = setup(props, ctx)
 })
 ```
 
@@ -403,15 +400,15 @@ activateCurrentInstance(vm, () => {
 
 ```javascript
 if (isFunction(binding)) {
-    // keep typescript happy with the binding type.
-    const bindingFunc = binding
-    // keep currentInstance accessible for createElement
-    vm.$options.render = () => {
-        // @ts-expect-error
-        resolveScopedSlots(vm, ctx.slots)
-        return activateCurrentInstance(vm, () => bindingFunc())
-    }
-    return
+  // keep typescript happy with the binding type.
+  const bindingFunc = binding
+  // keep currentInstance accessible for createElement
+  vm.$options.render = () => {
+    // @ts-expect-error
+    resolveScopedSlots(vm, ctx.slots)
+    return activateCurrentInstance(vm, () => bindingFunc())
+  }
+  return
 }
 ```
 

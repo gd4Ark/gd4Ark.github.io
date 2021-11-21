@@ -2,8 +2,7 @@
 title: vue-router 源码解析
 date: 2021-07-16
 permalink: /post/vue-router-score-code.html
-tags:
-  - 前端
+tags: + 前端
   - Vue
   - 源码解析
 ---
@@ -320,7 +319,7 @@ export function install(Vue) {
 
 ```jsx
 init (app: any /* Vue component instance */) {
-		// 开发环境下检查是否已安装
+	    // 开发环境下检查是否已安装
     process.env.NODE_ENV !== 'production' &&
       assert(
         install.installed,
@@ -328,7 +327,7 @@ init (app: any /* Vue component instance */) {
           `before creating root instance.`
       )
 
-		// 保存当前 app 实例
+    // 保存当前 app 实例
     this.apps.push(app)
 
     // 当前 app 销毁时需要在 apps 中移除，由 issue #2639 提出
@@ -350,10 +349,10 @@ init (app: any /* Vue component instance */) {
 
     this.app = app
 
-		// 当前的 history，由之前 new Router 时根据不同 mode 来创建
+    // 当前的 history，由之前 new Router 时根据不同 mode 来创建
     const history = this.history
 
-		// 在浏览器环境下初始化时根据当前路由位置做路由跳转
+    // 在浏览器环境下初始化时根据当前路由位置做路由跳转
     if (history instanceof HTML5History || history instanceof HashHistory) {
       const handleInitialScroll = routeOrError => {
         const from = history.current
@@ -368,7 +367,7 @@ init (app: any /* Vue component instance */) {
         history.setupListeners()
         handleInitialScroll(routeOrError)
       }
-			// 切换路由的方法，这个方法后面会讲
+      // 切换路由的方法，这个方法后面会讲
       history.transitionTo(
         history.getCurrentLocation(),
         setupListeners,
@@ -376,8 +375,8 @@ init (app: any /* Vue component instance */) {
       )
     }
 
-		// 监听路由变化，在所有 app 实例中设置当前路由
-		// 所以我们一直可以通过 this.$route 拿到当前路由
+    // 监听路由变化，在所有 app 实例中设置当前路由
+    // 所以我们一直可以通过 this.$route 拿到当前路由
     history.listen(route => {
       this.apps.forEach(app => {
         app._route = route
@@ -404,13 +403,13 @@ init (app: any /* Vue component instance */) {
 
 只要我们更新了 `URL` ，vue-router 都会相应执行切换路由的逻辑，能更新 `URL` 操作有以下：
 
-* 如支持 `history` api
-  + history.pushState
-  + history.replaceState
-  + history.back
-  + history.go
-* `location.href = 'xxx'`
-* `location.hash = 'xxx'`
+- 如支持 `history` api
+  - history.pushState
+  - history.replaceState
+  - history.back
+  - history.go
+- `location.href = 'xxx'`
+- `location.hash = 'xxx'`
 
 vue-router 是如何监听这些操作的呢？其实只要监听 `popstate` 或者 `hashchange` 就可以了，不过这部分留到后面讲 `history` 实现时再仔细讲，这里先略过。
 
@@ -744,7 +743,7 @@ confirmTransition(route: Route, onComplete: Function, onAbort?: Function) {
     route.matched
   )
   // 一个队列，存放各种组件生命周期和导航守卫
-	// 这里的顺序可以看回前面讲的完整的导航解析流程，具体实现下面会讲
+  // 这里的顺序可以看回前面讲的完整的导航解析流程，具体实现下面会讲
   const queue: Array<?NavigationGuard> = [].concat(
     // in-component leave guards
     extractLeaveGuards(deactivated),
@@ -757,55 +756,55 @@ confirmTransition(route: Route, onComplete: Function, onAbort?: Function) {
     // async components
     resolveAsyncComponents(activated)
   )
-	// 迭代器，每次执行一个钩子，调用 next 时才会进行下一项
+  // 迭代器，每次执行一个钩子，调用 next 时才会进行下一项
   const iterator = (hook: NavigationGuard, next) => {
-		// 在当前导航还没有完成之前又有了一个新的导航。
-		// 比如，在等待导航守卫的过程中又调用了 router.push
-		// 这时候需要报一个 cancel 错误
+    // 在当前导航还没有完成之前又有了一个新的导航。
+    // 比如，在等待导航守卫的过程中又调用了 router.push
+    // 这时候需要报一个 cancel 错误
     if (this.pending !== route) {
       return abort(createNavigationCancelledError(current, route))
     }
-		// 执行当前钩子，但用户传入的导航守卫有可能会出错，需要 try 一下
+    // 执行当前钩子，但用户传入的导航守卫有可能会出错，需要 try 一下
     try {
-			// 这就是路由钩子的参数：to、from、next
+      // 这就是路由钩子的参数：to、from、next
       hook(route, current, (to: any) => {
-				// 我们可以通过 next('/login') 这样的方式来重定向
-				// 如果传入 false 则中断当前的导航，并将 URL 重置到 from 路由对应的地址
+        // 我们可以通过 next('/login') 这样的方式来重定向
+        // 如果传入 false 则中断当前的导航，并将 URL 重置到 from 路由对应的地址
         if (to === false) {
           // next(false) -> abort navigation, ensure current URL
           this.ensureURL(true)
           abort(createNavigationAbortedError(current, route))
-				// 如果传入 next 的参数是一个 Error 实例
-				// 则导航会被终止且该错误会被传递给 router.onError() 注册过的回调。
+        // 如果传入 next 的参数是一个 Error 实例
+        // 则导航会被终止且该错误会被传递给 router.onError() 注册过的回调。
         } else if (isError(to)) {
           this.ensureURL(true)
           abort(to)
         } else if (
-					// 判断传入的参数是否符合要求
+          // 判断传入的参数是否符合要求
           typeof to === 'string' ||
           (typeof to === 'object' &&
             (typeof to.path === 'string' || typeofto.name === 'string'))
         ) {
           // next('/') or next({ path: '/' }) -> redirect
           abort(createNavigationRedirectedError(current, route))
-					// 判断切换类型
+          // 判断切换类型
           if (typeof to === 'object' && to.replace) {
             this.replace(to)
           } else {
             this.push(to)
           }
         } else {
-					// 不符合则跳转至 to
+          // 不符合则跳转至 to
           // confirm transition and pass on the value
           next(to)
         }
       })
-		// 出错时执行 abort 回调
+    // 出错时执行 abort 回调
     } catch (e) {
       abort(e)
     }
   }
-	// 执行队列，下面仔细讲
+  // 执行队列，下面仔细讲
   runQueue(queue, iterator, () => {
     // wait until async components are resolved before
     // extracting in-component enter guards
@@ -928,79 +927,79 @@ activated.map((m) => m.beforeEnter)
 5. 调用 `resolveAsyncComponents(activated)` 来解析异步组件：
 
 ```javascript
-export function resolveAsyncComponents(matched: Array < RouteRecord > ): Function {
-    // 返回一个队列钩子函数
-    return (to, from, next) => {
-        // 用于标记是否异步组件
-        let hasAsync = false
-        // 待加载的组件数量
-        let pending = 0
-        // 是否加载错误
-        let error = null
+export function resolveAsyncComponents(matched: Array<RouteRecord>): Function {
+  // 返回一个队列钩子函数
+  return (to, from, next) => {
+    // 用于标记是否异步组件
+    let hasAsync = false
+    // 待加载的组件数量
+    let pending = 0
+    // 是否加载错误
+    let error = null
 
-        // 这个方法下面会讲，主要作用是依次遍历传入的 matched 数组相关的 component
-        flatMapComponents(matched, (def, _, match, key) => {
-            // 判断是否异步组件
-            if (typeof def === 'function' && def.cid === undefined) {
-                hasAsync = true
-                pending++
+    // 这个方法下面会讲，主要作用是依次遍历传入的 matched 数组相关的 component
+    flatMapComponents(matched, (def, _, match, key) => {
+      // 判断是否异步组件
+      if (typeof def === 'function' && def.cid === undefined) {
+        hasAsync = true
+        pending++
 
-                // webpack 加载这个异步组件的 chunk 后执行
-                const resolve = once((resolvedDef) => {
-                    if (isESModule(resolvedDef)) {
-                        resolvedDef = resolvedDef.default
-                    }
-                    // 将它变成一个 vue 组件
-                    // save resolved on async factory in case it's used elsewhere
-                    def.resolved =
-                        typeof resolvedDef === 'function' ?
-                        resolvedDef :
-                        _Vue.extend(resolvedDef)
-                    // 把解析好的组件更新到当前路由记录中
-                    match.components[key] = resolvedDef
-                    pending--
-                    // 如果已经加载完则调用 next 进入下一个队列
-                    if (pending <= 0) {
-                        next()
-                    }
-                })
-
-                // webpack 加载这个异步组件失败后执行
-                const reject = once((reason) => {
-                    // 报个错
-                    const msg = `Failed to resolve async component ${key}: ${reason}`
-                    process.env.NODE_ENV !== 'production' && warn(false, msg)
-                    if (!error) {
-                        error = isError(reason) ? reason : new Error(msg)
-                        next(error)
-                    }
-                })
-
-                let res
-                try {
-                    // 这里是调用 webpack 方法加载这个组件，返回的是一个 Promise
-                    res = def(resolve, reject)
-                } catch (e) {
-                    reject(e)
-                }
-                if (res) {
-                    // 这里才真正加载这个组件
-                    if (typeof res.then === 'function') {
-                        res.then(resolve, reject)
-                    } else {
-                        // new syntax in Vue 2.3
-                        const comp = res.component
-                        if (comp && typeof comp.then === 'function') {
-                            comp.then(resolve, reject)
-                        }
-                    }
-                }
-            }
+        // webpack 加载这个异步组件的 chunk 后执行
+        const resolve = once((resolvedDef) => {
+          if (isESModule(resolvedDef)) {
+            resolvedDef = resolvedDef.default
+          }
+          // 将它变成一个 vue 组件
+          // save resolved on async factory in case it's used elsewhere
+          def.resolved =
+            typeof resolvedDef === 'function'
+              ? resolvedDef
+              : _Vue.extend(resolvedDef)
+          // 把解析好的组件更新到当前路由记录中
+          match.components[key] = resolvedDef
+          pending--
+          // 如果已经加载完则调用 next 进入下一个队列
+          if (pending <= 0) {
+            next()
+          }
         })
 
-        // 不是异步则直接 next
-        if (!hasAsync) next()
-    }
+        // webpack 加载这个异步组件失败后执行
+        const reject = once((reason) => {
+          // 报个错
+          const msg = `Failed to resolve async component ${key}: ${reason}`
+          process.env.NODE_ENV !== 'production' && warn(false, msg)
+          if (!error) {
+            error = isError(reason) ? reason : new Error(msg)
+            next(error)
+          }
+        })
+
+        let res
+        try {
+          // 这里是调用 webpack 方法加载这个组件，返回的是一个 Promise
+          res = def(resolve, reject)
+        } catch (e) {
+          reject(e)
+        }
+        if (res) {
+          // 这里才真正加载这个组件
+          if (typeof res.then === 'function') {
+            res.then(resolve, reject)
+          } else {
+            // new syntax in Vue 2.3
+            const comp = res.component
+            if (comp && typeof comp.then === 'function') {
+              comp.then(resolve, reject)
+            }
+          }
+        }
+      }
+    })
+
+    // 不是异步则直接 next
+    if (!hasAsync) next()
+  }
 }
 ```
 
@@ -1296,9 +1295,9 @@ listen(cb: Function) {
 // 监听路由变化，在所有 app 实例中设置当前路由
 // 所以我们一直可以通过 this.$route 拿到当前路由
 history.listen((route) => {
-    this.apps.forEach((app) => {
-        app._route = route
-    })
+  this.apps.forEach((app) => {
+    app._route = route
+  })
 })
 ```
 
@@ -1339,33 +1338,37 @@ push(location: RawLocation, onComplete ? : Function, onAbort ? : Function) {
 
 ```javascript
 // 位于：src/util/push-state.js
-export function pushState(url ? : string, replace ? : boolean) {
-    saveScrollPosition()
-    // try...catch the pushState call to get around Safari
-    // DOM Exception 18 where it limits to 100 pushState calls
-    const history = window.history
-    try {
-        if (replace) {
-            // preserve existing history state as it could be overriden by the user
-            const stateCopy = extend({}, history.state)
-            stateCopy.key = getStateKey()
-            history.replaceState(stateCopy, '', url)
-        } else {
-            history.pushState({
-                key: setStateKey(genStateKey())
-            }, '', url)
-        }
-    } catch (e) {
-        window.location[replace ? 'replace' : 'assign'](url)
+export function pushState(url?: string, replace?: boolean) {
+  saveScrollPosition()
+  // try...catch the pushState call to get around Safari
+  // DOM Exception 18 where it limits to 100 pushState calls
+  const history = window.history
+  try {
+    if (replace) {
+      // preserve existing history state as it could be overriden by the user
+      const stateCopy = extend({}, history.state)
+      stateCopy.key = getStateKey()
+      history.replaceState(stateCopy, '', url)
+    } else {
+      history.pushState(
+        {
+          key: setStateKey(genStateKey())
+        },
+        '',
+        url
+      )
     }
+  } catch (e) {
+    window.location[replace ? 'replace' : 'assign'](url)
+  }
 }
 
 function pushHash(path) {
-    if (supportsPushState) {
-        pushState(getUrl(path))
-    } else {
-        window.location.hash = path
-    }
+  if (supportsPushState) {
+    pushState(getUrl(path))
+  } else {
+    window.location.hash = path
+  }
 }
 ```
 
@@ -1384,13 +1387,13 @@ ensureURL(push ? : boolean) {
 
 ```javascript
 if (
-    isSameRoute(route, current) &&
-    // in the case the route map has been dynamically appended to
-    lastRouteIndex === lastCurrentIndex &&
-    route.matched[lastRouteIndex] === current.matched[lastCurrentIndex]
+  isSameRoute(route, current) &&
+  // in the case the route map has been dynamically appended to
+  lastRouteIndex === lastCurrentIndex &&
+  route.matched[lastRouteIndex] === current.matched[lastCurrentIndex]
 ) {
-    this.ensureURL()
-    return abort(createNavigationDuplicatedError(current, route))
+  this.ensureURL()
+  return abort(createNavigationDuplicatedError(current, route))
 }
 ```
 
@@ -1534,26 +1537,26 @@ render(_, {
 
 ```javascript
 function addRoute(parentOrRoute, route) {
-    // 判断是否有传入父路由，有则取，无则 undefined
-    const parent =
-        typeof parentOrRoute !== 'object' ? nameMap[parentOrRoute] : undefined
-    // 插入一条路由，由于这里可能只会传入一个参数，所以需要判断一下
-    createRouteMap([route || parentOrRoute], pathList, pathMap, nameMap, parent)
+  // 判断是否有传入父路由，有则取，无则 undefined
+  const parent =
+    typeof parentOrRoute !== 'object' ? nameMap[parentOrRoute] : undefined
+  // 插入一条路由，由于这里可能只会传入一个参数，所以需要判断一下
+  createRouteMap([route || parentOrRoute], pathList, pathMap, nameMap, parent)
 
-    // 有父路由并且父路由存在别名的情况下，需要给这个别名路由也新增一条子路由
-    if (parent) {
-        createRouteMap(
-            // $flow-disable-line route is defined if parent is
-            parent.alias.map((alias) => ({
-                path: alias,
-                children: [route]
-            })),
-            pathList,
-            pathMap,
-            nameMap,
-            parent
-        )
-    }
+  // 有父路由并且父路由存在别名的情况下，需要给这个别名路由也新增一条子路由
+  if (parent) {
+    createRouteMap(
+      // $flow-disable-line route is defined if parent is
+      parent.alias.map((alias) => ({
+        path: alias,
+        children: [route]
+      })),
+      pathList,
+      pathMap,
+      nameMap,
+      parent
+    )
+  }
 }
 ```
 
@@ -1561,9 +1564,9 @@ function addRoute(parentOrRoute, route) {
 
 ```javascript
 // 这三张表都无需新增，直接拿之前的
-const pathList: Array < string > = oldPathList || []
-const pathMap: Dictionary < RouteRecord > = oldPathMap || Object.create(null)
-const nameMap: Dictionary < RouteRecord > = oldNameMap || Object.create(null)
+const pathList: Array<string> = oldPathList || []
+const pathMap: Dictionary<RouteRecord> = oldPathMap || Object.create(null)
+const nameMap: Dictionary<RouteRecord> = oldNameMap || Object.create(null)
 ```
 
 好了，可以看到新增一条路由规则十分简单，只需要对 `pathList` 、 `pathMap` 、 `nameMap` 进行改动就好了。
@@ -1577,11 +1580,11 @@ vue-router 的核心逻辑已经讲得差不多了，就剩下三种路由模式
 
 我们知道三种路由模式都是 `History` 的派生类，源码位置在 [src/history/base.js](https://github1s.com/vuejs/vue-router/blob/HEAD/src/history/base.js)，我们先来看看它们一些比较重要的公用方法：
 
-* onReady
-* onError
-* transitionTo
-* confirmTransition
-* updateRoute
+- onReady
+- onError
+- transitionTo
+- confirmTransition
+- updateRoute
 
 其实这些方法在前文中已经或多或少有提到了，其余的那些也只是做一些更新变量的操作，这里也不谈了。
 
@@ -1631,16 +1634,16 @@ constructor(router: Router, base: ? string, fallback : boolean) {
 
 ```javascript
 function checkFallback(base) {
-    // 这个方法位于 src/history/html5.js，用于获取 URL 中的路径部分
-    // http://a.com/user/routes => /user/routes
-    // http://a.com/#/user/routes => /#/user/routes
-    const location = getLocation(base)
-    // 检查是否以 /## 开头，如果不是，则重定向至以 /## 开头
-    if (!/^\/#/.test(location)) {
-        // http://a.com/user/routes => http://a.com/#/user/routes
-        window.location.replace(cleanPath(base + '/#' + location))
-        return true
-    }
+  // 这个方法位于 src/history/html5.js，用于获取 URL 中的路径部分
+  // http://a.com/user/routes => /user/routes
+  // http://a.com/#/user/routes => /#/user/routes
+  const location = getLocation(base)
+  // 检查是否以 /## 开头，如果不是，则重定向至以 /## 开头
+  if (!/^\/#/.test(location)) {
+    // http://a.com/user/routes => http://a.com/#/user/routes
+    window.location.replace(cleanPath(base + '/#' + location))
+    return true
+  }
 }
 ```
 
@@ -1651,33 +1654,33 @@ function checkFallback(base) {
 ```javascript
 // http://a.com/#/user/routes => /user/routes
 function getHash(): string {
-    // We can't use window.location.hash here because it's not
-    // consistent across browsers - Firefox will pre-decode it!
-    let href = window.location.href
-    const index = href.indexOf('#')
-    // empty path
-    if (index < 0) return ''
+  // We can't use window.location.hash here because it's not
+  // consistent across browsers - Firefox will pre-decode it!
+  let href = window.location.href
+  const index = href.indexOf('#')
+  // empty path
+  if (index < 0) return ''
 
-    href = href.slice(index + 1)
+  href = href.slice(index + 1)
 
-    return href
+  return href
 }
 
 function replaceHash(path) {
-    if (supportsPushState) {
-        replaceState(getUrl(path))
-    } else {
-        window.location.replace(getUrl(path))
-    }
+  if (supportsPushState) {
+    replaceState(getUrl(path))
+  } else {
+    window.location.replace(getUrl(path))
+  }
 }
 
 function ensureSlash(): boolean {
-    const path = getHash()
-    if (path.charAt(0) === '/') {
-        return true
-    }
-    replaceHash('/' + path)
-    return false
+  const path = getHash()
+  if (path.charAt(0) === '/') {
+    return true
+  }
+  replaceHash('/' + path)
+  return false
 }
 ```
 
@@ -1726,37 +1729,41 @@ replace(location: RawLocation, onComplete ? : Function, onAbort ? : Function) {
 
 ```javascript
 function replaceHash(path) {
-    if (supportsPushState) {
-        replaceState(getUrl(path))
-    } else {
-        window.location.replace(getUrl(path))
-    }
+  if (supportsPushState) {
+    replaceState(getUrl(path))
+  } else {
+    window.location.replace(getUrl(path))
+  }
 }
 
 // 以下方法在 src/util/push-state.js 中
-export function pushState(url ? : string, replace ? : boolean) {
-    saveScrollPosition()
-    // try...catch the pushState call to get around Safari
-    // DOM Exception 18 where it limits to 100 pushState calls
-    const history = window.history
-    try {
-        if (replace) {
-            // preserve existing history state as it could be overriden by the user
-            const stateCopy = extend({}, history.state)
-            stateCopy.key = getStateKey()
-            history.replaceState(stateCopy, '', url)
-        } else {
-            history.pushState({
-                key: setStateKey(genStateKey())
-            }, '', url)
-        }
-    } catch (e) {
-        window.location[replace ? 'replace' : 'assign'](url)
+export function pushState(url?: string, replace?: boolean) {
+  saveScrollPosition()
+  // try...catch the pushState call to get around Safari
+  // DOM Exception 18 where it limits to 100 pushState calls
+  const history = window.history
+  try {
+    if (replace) {
+      // preserve existing history state as it could be overriden by the user
+      const stateCopy = extend({}, history.state)
+      stateCopy.key = getStateKey()
+      history.replaceState(stateCopy, '', url)
+    } else {
+      history.pushState(
+        {
+          key: setStateKey(genStateKey())
+        },
+        '',
+        url
+      )
     }
+  } catch (e) {
+    window.location[replace ? 'replace' : 'assign'](url)
+  }
 }
 
-export function replaceState(url ? : string) {
-    pushState(url, true)
+export function replaceState(url?: string) {
+  pushState(url, true)
 }
 ```
 
@@ -1785,25 +1792,25 @@ go(n: number) {
 ```javascript
 // 在浏览器环境下初始化时根据当前路由位置做路由跳转
 if (history instanceof HTML5History || history instanceof HashHistory) {
-    const handleInitialScroll = (routeOrError) => {
-        const from = history.current
-        const expectScroll = this.options.scrollBehavior
-        const supportsScroll = supportsPushState && expectScroll
+  const handleInitialScroll = (routeOrError) => {
+    const from = history.current
+    const expectScroll = this.options.scrollBehavior
+    const supportsScroll = supportsPushState && expectScroll
 
-        if (supportsScroll && 'fullPath' in routeOrError) {
-            handleScroll(this, routeOrError, from, false)
-        }
+    if (supportsScroll && 'fullPath' in routeOrError) {
+      handleScroll(this, routeOrError, from, false)
     }
-    const setupListeners = (routeOrError) => {
-        history.setupListeners()
-        handleInitialScroll(routeOrError)
-    }
-    // 切换路由的方法，这个方法后面会讲
-    history.transitionTo(
-        history.getCurrentLocation(),
-        setupListeners,
-        setupListeners
-    )
+  }
+  const setupListeners = (routeOrError) => {
+    history.setupListeners()
+    handleInitialScroll(routeOrError)
+  }
+  // 切换路由的方法，这个方法后面会讲
+  history.transitionTo(
+    history.getCurrentLocation(),
+    setupListeners,
+    setupListeners
+  )
 }
 ```
 
@@ -1854,12 +1861,12 @@ setupListeners() {
 
 也就是说 vue-router 除了调用 `push` 或者 `replece` 这些方法以外，它也支持通过其它方式来切换路由，只要这个操作会触发 `popstate` 或者 `hashchange` 事件，比如下面这些方式：
 
-* 如支持 `history` api
-  + history.pushState
-  + history.replaceState
-  + history.back
-  + history.go
-* `location.hash = '#/a'`
+- 如支持 `history` api
+  - history.pushState
+  - history.replaceState
+  - history.back
+  - history.go
+- `location.hash = '#/a'`
 
 当然这个事件监听器会在应用实例销毁时取消监听，避免产生副作用：
 
@@ -1931,75 +1938,75 @@ const handleRoutingEvent = () => {
 
 ```javascript
 export class AbstractHistory extends History {
-    index: number
-    stack: Array < Route >
+  index: number
+  stack: Array<Route>
 
-        constructor(router: Router, base: ? string) {
-            super(router, base)
-            // 堆栈，用于维护路由历史
-            this.stack = []
-            // 当前所在路由在 stack 中的索引
-            this.index = -1
+  constructor(router: Router, base: ?string) {
+    super(router, base)
+    // 堆栈，用于维护路由历史
+    this.stack = []
+    // 当前所在路由在 stack 中的索引
+    this.index = -1
+  }
+
+  push(location: RawLocation, onComplete?: Function, onAbort?: Function) {
+    this.transitionTo(
+      location,
+      (route) => {
+        // 将当前跳转的路由存入栈中，index + 1
+        this.stack = this.stack.slice(0, this.index + 1).concat(route)
+        this.index++
+        onComplete && onComplete(route)
+      },
+      onAbort
+    )
+  }
+
+  replace(location: RawLocation, onComplete?: Function, onAbort?: Function) {
+    this.transitionTo(
+      location,
+      (route) => {
+        // 将当前跳转的路由替换之前路由所在的位置，index 不变
+        this.stack = this.stack.slice(0, this.index).concat(route)
+        onComplete && onComplete(route)
+      },
+      onAbort
+    )
+  }
+
+  go(n: number) {
+    const targetIndex = this.index + n
+    if (targetIndex < 0 || targetIndex >= this.stack.length) {
+      return
+    }
+    const route = this.stack[targetIndex]
+    this.confirmTransition(
+      route,
+      () => {
+        const prev = this.current
+        // 将跳转至的路由索引指向 index
+        this.index = targetIndex
+        this.updateRoute(route)
+        this.router.afterHooks.forEach((hook) => {
+          hook && hook(route, prev)
+        })
+      },
+      (err) => {
+        if (isNavigationFailure(err, NavigationFailureType.duplicated)) {
+          this.index = targetIndex
         }
+      }
+    )
+  }
 
-    push(location: RawLocation, onComplete ? : Function, onAbort ? : Function) {
-        this.transitionTo(
-            location,
-            (route) => {
-                // 将当前跳转的路由存入栈中，index + 1
-                this.stack = this.stack.slice(0, this.index + 1).concat(route)
-                this.index++
-                onComplete && onComplete(route)
-            },
-            onAbort
-        )
-    }
+  getCurrentLocation() {
+    const current = this.stack[this.stack.length - 1]
+    return current ? current.fullPath : '/'
+  }
 
-    replace(location: RawLocation, onComplete ? : Function, onAbort ? : Function) {
-        this.transitionTo(
-            location,
-            (route) => {
-                // 将当前跳转的路由替换之前路由所在的位置，index 不变
-                this.stack = this.stack.slice(0, this.index).concat(route)
-                onComplete && onComplete(route)
-            },
-            onAbort
-        )
-    }
-
-    go(n: number) {
-        const targetIndex = this.index + n
-        if (targetIndex < 0 || targetIndex >= this.stack.length) {
-            return
-        }
-        const route = this.stack[targetIndex]
-        this.confirmTransition(
-            route,
-            () => {
-                const prev = this.current
-                // 将跳转至的路由索引指向 index
-                this.index = targetIndex
-                this.updateRoute(route)
-                this.router.afterHooks.forEach((hook) => {
-                    hook && hook(route, prev)
-                })
-            },
-            (err) => {
-                if (isNavigationFailure(err, NavigationFailureType.duplicated)) {
-                    this.index = targetIndex
-                }
-            }
-        )
-    }
-
-    getCurrentLocation() {
-        const current = this.stack[this.stack.length - 1]
-        return current ? current.fullPath : '/'
-    }
-
-    ensureURL() {
-        // noop
-    }
+  ensureURL() {
+    // noop
+  }
 }
 ```
 
