@@ -2,7 +2,8 @@
 title: vue-router 源码解析
 date: 2021-07-16
 permalink: /post/vue-router-score-code.html
-tags: + 前端
+tags: 
+  - 前端
   - Vue
   - 源码解析
 ---

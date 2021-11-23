@@ -1,18 +1,44 @@
 <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
   <header>
-    <%- partial('_partial/post/title', { post: page, index: false, class_name: 'posttitle' }) %>
+    <%- partial('_partial/post/title', { post: page, index: false, class_name:
+    'posttitle' }) %>
     <div class="meta">
-      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
-        <span itemprop="name"><% if (page.author) { %><%- page.author %><% } else { %><%- config.author %><% } %></span>
+      <span
+        class="author"
+        itemprop="author"
+        itemscope
+        itemtype="http://schema.org/Person"
+      >
+        <span itemprop="name"
+          ><% if (page.author) { %><%- page.author %><% } else { %><%-
+          config.author %><% } %></span
+        >
       </span>
-      <%- partial('_partial/post/date', { post: page, class_name: 'postdate' }) %>
-      <%- partial('_partial/post/category') %>
-      <%- partial('_partial/post/tag') %>
+      <%- partial('_partial/post/date', { post: page, class_name: 'postdate' })
+      %> <%- partial('_partial/post/category') %> <%-
+      partial('_partial/post/tag') %>
     </div>
   </header>
   <%- partial('_partial/post/gallery') %>
-  <div class="content" itemprop="articleBody">
-    <%- page.content %>
+  <div class="content" itemprop="articleBody"><%- page.content %></div>
+  <hr class="copy-line" />
+  <div class="post-copyright">
+    <div class="copy-author">
+      <span>作者 :</span>
+      <span
+        ><% if (page.author) { %><%- page.author %><% } else { %><%-
+        config.author %><% } %></span
+      >
+    </div>
+    <div class="copy-url">
+      <span>地址 :</span>
+      <a href="<%- page.permalink %>"><%- page.permalink %></a>
+    </div>
+    <div class="copy-origin">
+      <span>来源 :</span>
+      <a href="<%- config.url %>"><%- config.url %></a>
+    </div>
+    <div class="copy-license">著作权归作者所有，转载请联系作者获得授权。</div>
   </div>
 </article>
 <%- partial('_partial/comments') %>

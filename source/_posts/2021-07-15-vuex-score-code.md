@@ -2,7 +2,8 @@
 title: vuex 源码解析
 date: 2021-07-15
 permalink: /post/vuex-score-code.html
-tags: + 前端
+tags: 
+  - 前端
   - Vue
   - 源码解析
 ---
