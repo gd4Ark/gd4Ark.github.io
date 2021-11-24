@@ -51,6 +51,7 @@
     <title><%= page_title() %></title>
     <!-- styles -->
     <%- css('css/style') %>
+    <script>localStorage.getItem("dark_mode")==="dark"&&document.write(`<link rel="stylesheet" href="${location.origin}/css/dark.css">`)</script>
     <!-- persian styles -->
     <% if (theme.direction && theme.direction === 'rtl') { %>
       <%- css('css/rtl') %>

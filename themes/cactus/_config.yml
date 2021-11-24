@@ -116,7 +116,7 @@ highlight: github-gist
 colorscheme: white
 
 # Maximal width of the page in rem units.
-page_width: 55
+page_width: 48
 
 ##############################################################################
 # Miscellaneous
