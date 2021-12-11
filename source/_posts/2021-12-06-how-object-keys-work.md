@@ -313,9 +313,11 @@ console.log(Object.keys(testObj))
 请认真思考后，在这里核对你的答案是否正确：
 <details>
   <summary>查看结果</summary>
+  
   ```json
   ['1', '2', '-1', '1.1', 'c', 'b', 'a', 'd']
   ```
+  
   是否与你想象的一致？你可能会奇怪为什么没有 `Symbol` 类型。
 
   还记得前面敲黑板让同学们留意的地方吗，因为在 `EnumerableOwnPropertyNames` 的规范中规定了返回值只应包含字符串属性（上面说了数字其实也是字符串）。
