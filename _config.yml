@@ -105,3 +105,11 @@ deploy:
   type: git
   repo: git@github.com:gd4Ark/gd4Ark.github.io.git
   branch: master
+
+feed:
+  type:
+    - atom
+    - rss2
+  path:
+    - atom.xml
+    - rss.xml
