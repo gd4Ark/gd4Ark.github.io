@@ -121,8 +121,8 @@ console.log(Object.keys(sorted)) // 这次又输出什么呢？
 
 ```diff
   Object
-+ .sort((a, b)=> a - b)
   .keys(sorted)
++ .sort((a, b)=> a - b)
   .forEach((top, topIndex) => {
     //  do something
   }
