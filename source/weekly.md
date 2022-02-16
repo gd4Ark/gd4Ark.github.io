@@ -1,3 +1,6 @@
-# Weekly
+---
+title: weekly
+type: weekly
+---
 
-待更新
+待更新.

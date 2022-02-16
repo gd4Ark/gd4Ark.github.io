@@ -19,8 +19,7 @@ nav:
   articles: /archives/
   Weekly: /weekly/
   search: /search/
-  # projects: http://github.com/gd4Ark
-  Movie: https://4ark.notion.site/4b4180c7bf3249c2b47bc9127150b240?v=3df58ff87655451c9873a8aadd9a72db
+  Tags: /tags/
   RSS: /atom.xml
 
 # Links to your social media accounts.

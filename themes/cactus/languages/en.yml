@@ -20,6 +20,7 @@ index:
   enum_and: and
   articles: Writing
   projects: Projects
+  weekly: Weekly
   topics: Topics
   most_recent: Most recent
 
@@ -48,18 +49,18 @@ pagination:
 counter:
   tag_cloud:
     zero: No tags
-    one: ""
-    other: ""
+    one: ''
+    other: ''
 
   categories:
     zero: No categories
-    one: ""
-    other: ""
+    one: ''
+    other: ''
 
   archive_posts:
     zero: No posts.
-    one: ""
-    other: ""
+    one: ''
+    other: ''
 
 comments:
   no_js: Please enable JavaScript to view the comments.
