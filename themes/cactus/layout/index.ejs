@@ -40,8 +40,17 @@
   <span class="widget tagcloud">
     <%- tagcloud(theme.tags_overview) %>
   </span>
-  <span class="h2"><%= __('index.most_recent') %></span>
   <% } %>
+  <ul class="post-list">
+    <% var weekly_posts = page.weeklyPosts %>
+    <% weekly_posts.each(function(post, i){ %>
+      <li class="post-item">
+        <%- partial('_partial/post/date', { post: post, class_name: 'meta' }) %>
+        <span><%- partial('_partial/post/title', { post: post, index: true, class_name: '' }) %></span>
+      </li>
+    <% }); %>
+  </ul>
+  <span class="h2" style="padding-left: 0"><a href="<%- url_for(theme.nav.articles) %>"><%= __('index.most_recent') %></a></span>
   <ul class="post-list">
     <% var field_sort = theme.posts_overview.sort_updated ? 'updated' : 'date' %>
     <% if (theme.posts_overview.show_all_posts) { %>

@@ -3,9 +3,11 @@ nav:
   about: About
   articles: Writing
   tag: Tag
+  tags: Tags
   category: Category
   projects: Projects
   search: Search
+  weekly: Weekly
 
 icons:
   menu: Menu
@@ -22,7 +24,7 @@ index:
   projects: Projects
   weekly: Weekly
   topics: Topics
-  most_recent: Most recent
+  most_recent: Articles
 
 post:
   desktop:

@@ -17,9 +17,9 @@ nav:
   home: /
   about: /about
   articles: /archives/
-  Weekly: /weekly/
+  weekly: /weekly/
+  tags: /tags/
   search: /search/
-  Tags: /tags/
   RSS: /atom.xml
 
 # Links to your social media accounts.

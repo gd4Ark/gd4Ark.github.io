@@ -14,9 +14,16 @@
           config.author %><% } %></span
         >
       </span>
-      <%- partial('_partial/post/date', { post: page, class_name: 'postdate' })
-      %> <%- partial('_partial/post/category') %> <%-
-      partial('_partial/post/tag') %>
+      <%- partial('_partial/post/date', { post: page, class_name: 'postdate' }) %> 
+      <% if (page.type === 'weekly') { %>
+        <div class="article-tag">
+            <i class="fa fa-calendar-week"></i>
+            <a href="<%- url_for(theme.nav.weekly) %>"><%= __('index.weekly') %></a>
+        </div>
+      <% } else { %>
+        <%- partial('_partial/post/category') %> 
+        <%- partial('_partial/post/tag') %>
+      <% } %>
     </div>
   </header>
   <%- partial('_partial/post/gallery') %>
