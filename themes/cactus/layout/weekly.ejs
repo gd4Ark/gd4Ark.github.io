@@ -1,5 +1,8 @@
+<% if (config.weekly_description) { %>
+  <%- markdown(config.weekly_description) %>
+<% } %>
 <ul class="post-list">
-    <span class="h1"><a href="<%- url_for(theme.nav.Weekly) %>"><%= __('index.weekly') %></a></span>
+    <span class="h1" style="margin-top: 1rem"><a href="<%- url_for(theme.nav.Weekly) %>"><%= __('index.weekly') %></a></span>
     <% var field_sort = theme.posts_overview.sort_updated ? 'updated' : 'date' %>
     <% if (theme.posts_overview.show_all_posts) { %>
       <% var show_posts = page.posts.sort(field_sort, 'desc') %>
