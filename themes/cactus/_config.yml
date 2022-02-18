@@ -15,12 +15,11 @@ direction: ltr
 # languages/*.yml
 nav:
   home: /
-  about: /about
   articles: /archives/
   weekly: /weekly/
   tags: /tags/
   search: /search/
-  RSS: /atom.xml
+  about: /about
 
 # Links to your social media accounts.
 # The keys should correspond to Fontawesome icon names
@@ -28,10 +27,11 @@ nav:
 # only 'mail' is an exception.
 social_links:
   github: http://github.com/gd4Ark
-  # twitter: /
-  # facebook: /
-  # linkedin: /
-  mail: gd4ark@gmail.com
+  rss: https://4ark.me/atom.xml
+  V2EX: https://v2ex.com/member/4ark
+  掘金: https://juejin.cn/user/3896324938535639
+  知乎: https://www.zhihu.com/people/cai-hong-hui-2
+  mail: mailto:gd4ark@gmail.com
 
 # Customize the overview with displaying a tagcloud on the index page.
 # Options: https://hexo.io/docs/helpers.html#tagcloud

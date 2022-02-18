@@ -18,9 +18,13 @@
           <a class="icon" target="_blank" rel="noopener" href="<%- theme.social_links[link] %>" aria-label="<%- link %>">
             <i class="fas fa-rss"></i>
           </a>
+        <% } else if (link == 'github') { %>
+          <a class="icon" target="_blank" rel="noopener" href="<%- theme.social_links[link] %>" aria-label="<%- link %>">
+            <i class="fab fa-github"></i>
+          </a>           
         <% } else { %>
           <a class="icon" target="_blank" rel="noopener" href="<%- url_for(theme.social_links[link]) %>" aria-label="<%- link %>">
-            <i class="fab fa-<%= link %>"></i><!--
+            <span style="font-size: 12px"><%= link %></span><!--
       ---></a><!--
     ---><% } %><!--
     ---><%= ( nb_links > 0 && i < nb_links-1 ?
