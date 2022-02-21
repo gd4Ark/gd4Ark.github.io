@@ -16,10 +16,10 @@ direction: ltr
 nav:
   home: /
   about: /about
-  articles: /archives/
-  weekly: /weekly/
-  tags: /tags/
-  search: /search/
+  articles: /archives
+  weekly: /weekly
+  tags: /tags
+  search: /search
 
 # Links to your social media accounts.
 # The keys should correspond to Fontawesome icon names

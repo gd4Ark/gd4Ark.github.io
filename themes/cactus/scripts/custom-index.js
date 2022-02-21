@@ -18,11 +18,11 @@ hexo.extend.generator.register('customIndex', function (locals) {
   const paginationDir = config.pagination_dir || 'page'
   const path = config.index_generator.path || ''
 
-  const weeklyTag = config.weekly_generator?.tag || 'weekly'
+  const weeklyTag = config.weekly_generator?.tag || '前端'
   const weeklyPosts = locals.tags
     .findOne({ name: weeklyTag })
     .posts.sort('date', 'desc')
-    .limit(1)
+    .limit(3)
 
   return pagination(path, postsWithoutWeekly, {
     perPage: config.index_generator.per_page,
