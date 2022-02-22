@@ -21,6 +21,7 @@
         <% } %>
         <li><a class="icon" aria-label="<%- __('post.desktop.back_to_top') %>" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
         <li><a class="icon"><i class="fa fa-moon" id="dark-btn" aria-hidden="true" onmouseover="$('#i-dark').toggle()" onmouseout="$('#i-dark').toggle()"></i></a></li>
+        <li><a class="icon" target="_blank" rel="noopener" href="<%- theme.social_links.rss %>" aria-label="rss"><i class="fas fa-rss"></i></a></li>
         <li><a class="icon" aria-label="<%- __('post.desktop.share') %>" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
       </ul>
       <span id="i-prev" class="info" style="display:none;"><%= __('post.desktop.previous') %></span>
