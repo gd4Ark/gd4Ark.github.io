@@ -21,7 +21,7 @@ date: 2020-10-17 12:56:49
 
 排查后发现，出现这个报错的原因是：**之前使用过 HTTPS 访问页面，所以也请求了 HTTPS 协议的 API，然后 API 的域名被记录在 `HSTS` 列表中，之后使用 HTTP 访问页面，而 API 请求却被重定向到 HTTPS，而因为预检请求(OPTIONS)不能被重定向，所以导致出现 CORS 错误。**<br />
 <br />关于 CORS 更详细的介绍可以点击查看：[HTTP 访问控制（CORS）](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS)<br />
-<br />总得来说原因在于前后端 HTTP 和 HTTPS 混用导致的，正常的情况下如果统一为 HTTP 或者 HTTPS 则不会出现这个问题。<br />
+<br />总的来说原因在于前后端 HTTP 和 HTTPS 混用导致的，正常的情况下如果统一为 HTTP 或者 HTTPS 则不会出现这个问题。<br />
 <br />所以如果要开启 `HSTS` ，请确保前后端都开启，否则就会出现与本文一样的错误。<br />
 <br />那么前端页面要开启 HSTS 的话，需要做哪些操作呢？需要在 web 服务器添加响应头 ，以 Nginx 为例：
 
