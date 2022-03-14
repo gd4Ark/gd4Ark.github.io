@@ -10,7 +10,7 @@
 
 在线预览：[4ark’ Blog](https://4ark.me)
 
-![](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202202171841427.png)
+![](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202203142343833.png?imageMogr2/format/webp)
 
 ## 最后
 
