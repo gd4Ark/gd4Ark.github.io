@@ -56,7 +56,7 @@ server {
 
 ## 使用 Chrome 排查网络问题
 
-既然这样，那就来看看浏览器发送请求的过程中到底发生了什么，于是我通过 [chrome://net-export ]()记录会发生跨域的页面请求日志：<br />![](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/image_3.png)<br />导出日志文件后，发现了一个很奇怪的点：<br />![](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/image_4.png)<br />在上图可以看到，明明请求 HTTP 协议的 API，但是因为 `HSTS` ，将请求重定向到了 HTTPS 协议下。<br />
+既然这样，那就来看看浏览器发送请求的过程中到底发生了什么，于是我通过 chrome://net-export 记录会发生跨域的页面请求日志：<br />![](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/image_3.png)<br />导出日志文件后，发现了一个很奇怪的点：<br />![](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/image_4.png)<br />在上图可以看到，明明请求 HTTP 协议的 API，但是因为 `HSTS` ，将请求重定向到了 HTTPS 协议下。<br />
 <br />简单来说一下 `HSTS` 是什么：
 
 > HTTP Strict Transport Security（通常简称为 HSTS）是一个安全功能，它告诉浏览器只能通过 HTTPS 访问当前资源，而不是 HTTP —— [MDN](https://developer.mozilla.org/zh-CN/docs/Security/HTTP_Strict_Transport_Security)
