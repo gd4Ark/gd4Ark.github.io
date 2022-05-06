@@ -4,7 +4,7 @@ hexo.extend.generator.register('weekly', function (locals) {
   const config = this.config
 
   const weeklyTag = config.weekly_generator?.tag || 'weekly'
-  const posts = locals.tags.findOne({ name: weeklyTag }).posts
+  const posts = locals.tags.findOne({ name: weeklyTag }).posts.reverse()
 
   const paginationDir = config.pagination_dir || 'page'
   const path = config.weekly_generator?.path || '/weekly'
@@ -14,7 +14,7 @@ hexo.extend.generator.register('weekly', function (locals) {
     layout: ['weekly'],
     format: paginationDir + '/%d/',
     data: {
-      __index: true,
-    },
+      __index: true
+    }
   })
 })
