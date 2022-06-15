@@ -663,4 +663,4 @@ export function add(file: string, cmd: string): void {
 ## 结语
 
 
-本文带领大家从 0 到 1 实现了 v4 以及最新版本的 husky，相信大家看完后对 husky 的实现方式也有了一定的了解，在以后的工作中使用它将会更加地得心应手，但如果你所在的项目中不是使用 Git，而是其它版本控制工具，也可以尝试基于 husky 改造，比如笔者就曾尝试将 husky 改造使其[支持 Mercurial](https://github.com/gd4Ark/husky/pull/1)。
+本文带领大家从 0 到 1 实现了 v4 以及最新版本的 husky，相信大家看完后对 husky 的实现方式也有了一定的了解，在以后的工作中使用它将会更加地得心应手，但如果你所在的项目中不是使用 Git，而是其它版本控制工具，也可以尝试基于 husky 改造，比如本人就曾尝试将 husky 改造使其[支持 Mercurial](https://github.com/gd4Ark/husky/pull/1)。

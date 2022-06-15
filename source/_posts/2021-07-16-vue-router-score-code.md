@@ -10,7 +10,7 @@ tags:
 
 ## 前言
 
-本文是针对 vue-router [v3.5.2](https://github.com/vuejs/vue-router/releases/tag/v3.5.2) 版本的一次源码解析，由于笔者水平有限，有些地方写得比较混乱，还望多多包涵。
+本文是针对 vue-router [v3.5.2](https://github.com/vuejs/vue-router/releases/tag/v3.5.2) 版本的一次源码解析，由于水平有限，有些地方写得比较混乱，还望多多包涵。
 
 希望本文能够给那些想阅读 vue-router 源代码却又不知从何上手的同学们给予一些帮助。
 

@@ -54,7 +54,6 @@ date: 2021-01-16 22:39:55
     }
   })
 </script>
-复制代码
 ```
 
 或许有些同学已经知道，只要我们把该方法的调用摆到外面，那它就能正常工作了：
@@ -76,7 +75,6 @@ function useIncrease() {
     increase,
   }
 }
-复制代码
 ```
 
 另外其实不止 `getCurrentInstance()` ，还有诸如： `useStore` 、 `useRouter` 这些跟 Vue 实例沾边的都会有这个问题，不过本文只讨论 `getCurrentInstance()`，至于其它这些我不太清楚，所以不敢乱下结论。
@@ -128,7 +126,6 @@ function useIncrease() {
     }
   })
 </script>
-复制代码
 ```
 
 可以看到，我们在两处调用的地方之前都加了一个断点， 先看看它们执行起来有何不同。
