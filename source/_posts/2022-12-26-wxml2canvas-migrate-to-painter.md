@@ -161,6 +161,8 @@ formatNodes(nodes) {
 
 总而言之，尽管两者最终生成的成品尺寸是一样的，但是 Painter 设置的画布尺寸比 Wxml2Canvas 大了三倍，这样会使用更多的内存，而且微信官方文档也提到：设置过大的宽高会导致 Crash 的问题。
 
-经过这一番操作，鸿蒙和 iPhone 12 也终于服帖了。
+经过这一番操作，鸿蒙和 iPhone 12 也终于服帖了。来晒晒战绩，迁移后生成时间缩短近 50%：
+
+<img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202212300914569.png?imageMogr2/format/webp" style="zoom:50%;" />
 
 综上所述，Wxml2Canvas 在稳定性和可维护性方面都有所欠缺，但也有值得 Painter 借鉴的地方。例如，Wxml2Canvas 的使用方式更直观，不需要设置过大的画布尺寸，从而避免了 Crash 的风险。因此，将两者缝合起来，以最小的成本提高糖纸生成分享海报的效率和稳定性，何乐而不为？
