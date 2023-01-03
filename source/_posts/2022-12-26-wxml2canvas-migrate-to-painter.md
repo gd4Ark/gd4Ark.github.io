@@ -161,7 +161,31 @@ formatNodes(nodes) {
 
 总而言之，尽管两者最终生成的成品尺寸是一样的，但是 Painter 设置的画布尺寸比 Wxml2Canvas 大了三倍，这样会使用更多的内存，而且微信官方文档也提到：设置过大的宽高会导致 Crash 的问题。
 
-经过这一番操作，鸿蒙和 iPhone 12 也终于服帖了。来晒晒战绩，迁移后生成时间缩短近 50%：
+经过这一番操作，鸿蒙和 iPhone 12 也终于服帖了。然而，又有新的问题出现了。当某个页面生成并保存图片后，在滑动该页面时会明显感觉卡顿，对比一下 fps（帧率）的变化，确实离谱。
+<img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202301032334581.png?imageMogr2/format/webp" alt="image-20230103233431180" style="zoom:100%;" />
+
+这种卡顿是肉眼可见的，猜测可能是因为内存泄露造成。在真机上调试分析了一下内存占用情况，未进行生成海报时，CPU 占用率为 2%，内存占用为 872 MB：
+
+![image-20230103235024011](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202301032351510.png?imageMogr2/format/webp)
+
+当生成海报时，CPU 占用率快速飙升到 22%，内存占用 895 MB：
+
+![image-20230103235506588](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202301032355858.png?imageMogr2/format/webp)
+
+随后发现内存占用并没有下降，直到我们离开了当前页面时，占用率才有所下降。
+
+![image-20230103235744395](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202301032358207.png?imageMogr2/format/webp)
+
+既然如此，可以在生成海报之后立即对分享卡片的内存进行回收，最简单的方式就是使用 `wx:if` 控制。
+
+```diff
+<share-card 
++ wx:if="{{showShareCard}}"
+  id='share-card'
+/>
+```
+
+最后来晒晒战绩，迁移后生成时间缩短近 50%：
 
 <img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202212300914569.png?imageMogr2/format/webp" style="zoom:50%;" />
 
