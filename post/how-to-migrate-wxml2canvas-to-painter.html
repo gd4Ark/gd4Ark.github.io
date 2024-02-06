@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="路漫漫其修远兮糖纸苦 Wxml2Canvas 久矣！ 长期以来，糖纸项目使用 Wxml2Canvas 库来生成分享海报。这个库的功能就是将 Wxml 转换成 Canvas，并最终生成一张图片。但是，这个库非常不稳定，经常会出现各种奇怪的 BUG，只能说勉强能用。如果你想了解 Wxml2Canvas 给我们带来的痛苦，可以阅读这篇文章：《一行 Object.keys() 引发的血案》。 因此，我们一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我们如何从 Wxml2Canvas 迁移到 Painter">
+<meta property="og:url" content="https://4ark.me/post/how-to-migrate-wxml2canvas-to-painter.html">
+<meta property="og:site_name" content="4Ark × Blog">
+<meta property="og:description" content="路漫漫其修远兮糖纸苦 Wxml2Canvas 久矣！ 长期以来，糖纸项目使用 Wxml2Canvas 库来生成分享海报。这个库的功能就是将 Wxml 转换成 Canvas，并最终生成一张图片。但是，这个库非常不稳定，经常会出现各种奇怪的 BUG，只能说勉强能用。如果你想了解 Wxml2Canvas 给我们带来的痛苦，可以阅读这篇文章：《一行 Object.keys() 引发的血案》。 因此，我们一">
+<meta property="og:locale">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202212270056681.png?imageMogr2/format/webp">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202212270056939.png?imageMogr2/format/webp">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202212272228830.png?imageMogr2/format/webp">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202212280057359.png?imageMogr2/format/webp">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202212282240876.png?imageMogr2/format/webp">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202212291816047.png?imageMogr2/format/webp">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202212291328173.png?imageMogr2/format/webp">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202301032334581.png?imageMogr2/format/webp">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202301032351510.png?imageMogr2/format/webp">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202301032355858.png?imageMogr2/format/webp">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202301032358207.png?imageMogr2/format/webp">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202212300914569.png?imageMogr2/format/webp">
+<meta property="article:published_time" content="2022-12-26T00:00:00.000Z">
+<meta property="article:modified_time" content="2024-02-06T18:11:56.000Z">
+<meta property="article:author" content="4Ark">
+<meta property="article:tag" content="前端">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202212270056681.png?imageMogr2/format/webp">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>我们如何从 Wxml2Canvas 迁移到 Painter</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script>localStorage.getItem("dark_mode")==="dark"&&document.write(`<link rel="stylesheet" href="${location.origin}/css/dark.css">`)</script>
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+    <meta name="google-site-verification" content="DwDg4EuywHWNZUkTC7sG0WGv_UQekM4uRtOoaGuDJHc" />
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="4Ark × Blog" type="application/atom+xml">
+<link rel="alternate" href="/rss.xml" title="4Ark × Blog" type="application/rss+xml">
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/post/2022-summary.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/post/live-sentiment.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon"><i class="fa fa-moon" id="dark-btn" aria-hidden="true" onmouseover="$('#i-dark').toggle()" onmouseout="$('#i-dark').toggle()"></i></a></li>
+        <li><a class="icon" target="_blank" rel="noopener" href="https://4ark.me/atom.xml" aria-label="rss"><i class="fas fa-rss"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-dark" class="info" style="display: none;">Switch mode</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/how-to-migrate-wxml2canvas-to-painter.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/how-to-migrate-wxml2canvas-to-painter.html&text=我们如何从 Wxml2Canvas 迁移到 Painter"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/how-to-migrate-wxml2canvas-to-painter.html&title=我们如何从 Wxml2Canvas 迁移到 Painter"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/how-to-migrate-wxml2canvas-to-painter.html&is_video=false&description=我们如何从 Wxml2Canvas 迁移到 Painter"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=我们如何从 Wxml2Canvas 迁移到 Painter&body=Check out this article: https://4ark.me/post/how-to-migrate-wxml2canvas-to-painter.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/how-to-migrate-wxml2canvas-to-painter.html&title=我们如何从 Wxml2Canvas 迁移到 Painter"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/how-to-migrate-wxml2canvas-to-painter.html&title=我们如何从 Wxml2Canvas 迁移到 Painter"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/how-to-migrate-wxml2canvas-to-painter.html&title=我们如何从 Wxml2Canvas 迁移到 Painter"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/how-to-migrate-wxml2canvas-to-painter.html&title=我们如何从 Wxml2Canvas 迁移到 Painter"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/how-to-migrate-wxml2canvas-to-painter.html&name=我们如何从 Wxml2Canvas 迁移到 Painter&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/how-to-migrate-wxml2canvas-to-painter.html&t=我们如何从 Wxml2Canvas 迁移到 Painter"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%AF%E6%BC%AB%E6%BC%AB%E5%85%B6%E4%BF%AE%E8%BF%9C%E5%85%AE"><span class="toc-number">1.</span> <span class="toc-text">路漫漫其修远兮</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%BE%E5%B0%86%E4%B8%8A%E4%B8%8B%E8%80%8C%E6%B1%82%E7%B4%A2"><span class="toc-number">2.</span> <span class="toc-text">吾将上下而求索</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B1%B1%E9%87%8D%E6%B0%B4%E5%A4%8D%E7%96%91%E6%97%A0%E8%B7%AF"><span class="toc-number">3.</span> <span class="toc-text">山重水复疑无路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%B3%E6%9A%97%E8%8A%B1%E6%98%8E%E5%8F%88%E4%B8%80%E6%9D%91"><span class="toc-number">4.</span> <span class="toc-text">柳暗花明又一村</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        我们如何从 Wxml2Canvas 迁移到 Painter
+    </h1>
+
+
+
+    <div class="meta">
+      <span
+        class="author"
+        itemprop="author"
+        itemscope
+        itemtype="http://schema.org/Person"
+      >
+        <span itemprop="name"
+          >4Ark</span
+        >
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-12-26T00:00:00.000Z" itemprop="datePublished">2022-12-26</time>
+        
+      
+    </div>
+
+ 
+      
+        
+ 
+        
+    <div class="article-tag">
+        <i class="fas fa-hashtag"></i>
+        <a class="tag-link-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a>
+    </div>
+
+
+      
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody"><h2 id="路漫漫其修远兮"><a href="#路漫漫其修远兮" class="headerlink" title="路漫漫其修远兮"></a>路漫漫其修远兮</h2><p>糖纸苦 Wxml2Canvas 久矣！</p>
+<p>长期以来，糖纸项目使用 <a target="_blank" rel="noopener" href="https://github.com/wg-front/wxml2canvas">Wxml2Canvas</a> 库来生成分享海报。这个库的功能就是将 Wxml 转换成 Canvas，并最终生成一张图片。但是，这个库非常不稳定，经常会出现各种奇怪的 BUG，只能说勉强能用。如果你想了解 Wxml2Canvas 给我们带来的痛苦，可以阅读这篇文章：<a href="https://4ark.me/post/how-object-keys-work.html">《一行 Object.keys() 引发的血案》</a>。</p>
+<p>因此，我们一直希望能找到一个更好的替代方案。在社区搜索后，我们发现 <a target="_blank" rel="noopener" href="https://github.com/Kujiale-Mobile/Painter">Painter</a> 非常不错。然而，它与 Wxml2Canvas 的使用方式有很大的差异，我们的项目中有二十多个地方使用了 Wxml2Canvas，所以迁移起来并不容易。但 2022 即将结束，我们希望能在最后时刻做点事情来让自己找回一丝慰藉，所以才有了这篇文章。</p>
+<p>让我们来看看这两个库的使用方式有什么不同：</p>
+<img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202212270056681.png?imageMogr2/format/webp" alt="image-20221227005600071" style="zoom: 50%;" />
+
+<img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202212270056939.png?imageMogr2/format/webp" alt="image-20221227005620310" style="zoom:50%;" />
+
+<p>Wxml2Canvas 使用方式相对直观，使用 Wxml 和 Wxss 实现，而 Painter 则使用 JSON 配置。如果要将项目迁移到 Painter，就需要手写大量的 JSON 配置，这需要相当多的工作量。</p>
+<h2 id="吾将上下而求索"><a href="#吾将上下而求索" class="headerlink" title="吾将上下而求索"></a>吾将上下而求索</h2><p>俗话说得好：<strong>只要思想不滑坡，办法总比困难多！</strong></p>
+<p>那么，有没有一种方法可以让我们迁移到 Painter，同时又不用重写 JSON 配置呢？</p>
+<p>让我们从不同的角度思考一下：Wxml2Canvas 可以直接将 Wxml 画到 Canvas 上，那么是否也可以将其转换成 JSON 配置呢？这样，我们就可以复用现有的 Wxml 代码，减少迁移的成本。</p>
+<p>大致流程如下：</p>
+<img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202212272228830.png?imageMogr2/format/webp" alt="image-20221227222820467" style="zoom:50%;" />
+
+
+
+<p>总之，我们需要一个转换器来将 Wxml 转换为符合 Painter 使用的 JSON 配置，我愿称之为 Wxml2Json。</p>
+<p>说干就干，我们可以直接照搬 Wxml2Canvas 的做法。首先获取最外层容器的尺寸，用来定义分享海报的宽高。然后，通过 wx.createSelectorQuery().selectAll() 获取所有需要绘制的节点和样式信息。接着，根据不同的节点类型设置对应的属性，最终输出一份 JSON 配置供 Painter 使用。</p>
+<p>其核心方法是 <code>getWxml</code>，大致实现如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">getWxml</span>(<span class="params">&#123;container, className&#125; = &#123;&#125;</span>)</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> getNodes = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</span><br><span class="line">    query</span><br><span class="line">      .selectAll(className)</span><br><span class="line">      .fields(</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="attr">id</span>: <span class="literal">true</span>,</span><br><span class="line">          <span class="attr">dataset</span>: <span class="literal">true</span>,</span><br><span class="line">          <span class="attr">size</span>: <span class="literal">true</span>,</span><br><span class="line">          <span class="attr">rect</span>: <span class="literal">true</span>,</span><br><span class="line">          <span class="attr">computedStyle</span>: COMPOUTED_ELEMENT_STYLE,</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">          resolve(<span class="built_in">this</span>.formatNodes(res))</span><br><span class="line">        &#125;,</span><br><span class="line">      )</span><br><span class="line">      .exec()</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> getContainer = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</span><br><span class="line">    query</span><br><span class="line">      .select(container)</span><br><span class="line">      .fields(</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="attr">dataset</span>: <span class="literal">true</span>,</span><br><span class="line">          <span class="attr">size</span>: <span class="literal">true</span>,</span><br><span class="line">          <span class="attr">rect</span>: <span class="literal">true</span>,</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">          resolve(res)</span><br><span class="line">        &#125;,</span><br><span class="line">      )</span><br><span class="line">      .exec()</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Promise</span>.all([getContainer, getNodes])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>而 <code>formatNodes</code> 方法的职责就是根据需要绘制的节点类型进行格式转换：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">formatNodes</span>(<span class="params">nodes</span>)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> nodes</span><br><span class="line">    .map(<span class="function"><span class="params">node</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> &#123;dataset = &#123;&#125;&#125; = node</span><br><span class="line"></span><br><span class="line">      node = &#123;...node, ...dataset&#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">const</span> n = _.pick(node, [<span class="string">&#x27;type&#x27;</span>, <span class="string">&#x27;text&#x27;</span>, <span class="string">&#x27;url&#x27;</span>])</span><br><span class="line"></span><br><span class="line">      n.css = <span class="built_in">this</span>.getCssByType(node)</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> n</span><br><span class="line">    &#125;)</span><br><span class="line">    .filter(<span class="function"><span class="params">s</span> =&gt;</span> s &amp;&amp; s.type)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>有了这个转换器，我们的迁移工作只需要将 <code>new Wxml2Canvas</code> 替换成 <code>new Wxml2Json</code> ，然后将数据传入 Painter 中即可。因此，一天内完成所有 Wxml2Canvas 迁移到 Painter 的工作将不再是个梦。</p>
+<h2 id="山重水复疑无路"><a href="#山重水复疑无路" class="headerlink" title="山重水复疑无路"></a>山重水复疑无路</h2><p>缝合结束，不出意外的话马上要出意外了，虽然大部分机型都表示情绪稳定，但成功路上注定不会一马平川。</p>
+<p>果不其然，让全网「沸腾」的鸿蒙首当其冲，如下图所示：<br><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202212280057359.png?imageMogr2/format/webp" alt="image-20221228005732730" style="zoom: 20%; text-align: left; margin:0;" /></p>
+<p>然后，测试小姐姐的 iPhone 12 也毫不甘落下风，上来就憋了个大招：微信闪退。</p>
+<p>以上这两个页面都有一个共同点，就是生成的分享海报尺寸非常大，比如说这个：1170 × 17259。</p>
+<p>我去线上看了一下，发现同一个页面上  Wxml2Canvas  却是稳定的，那这个 Painter 为什么这么拉胯？</p>
+<p>开始找茬，分析两者的实现，终于发现了一些端倪：首先是  <code>wx.canvasToTempFilePath</code> 的参数不同：</p>
+<img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202212282240876.png?imageMogr2/format/webp" alt="image-20221228223957183" style="zoom:50%;" />
+
+<p>翻看 <a target="_blank" rel="noopener" href="https://developers.weixin.qq.com/miniprogram/dev/api/canvas/wx.canvasToTempFilePath.html">wx.canvasToTempFilePath</a> 文档，其中 <code>x</code>、<code>y</code> 默认值都是 0，问题不大。</p>
+<p>主要问题在于 <code>width</code> 和 <code>height</code>，我们先来看看 <code>wx.canvasToTempFilePath</code> 这几个参数的作用：</p>
+<ul>
+<li>width，画布的宽度</li>
+<li>height，画布的高度</li>
+<li>destWidth，输出图片的宽度，默认值是 width × dpr</li>
+<li>destHeight，输出图片的高度，默认值是 height × dpr</li>
+</ul>
+<p>然后再梳理一下这两个库中的参数值是多少：</p>
+<ul>
+<li>Wxml2Canvas<ul>
+<li>width：与外层容器的宽度、 canvas 宽度一致</li>
+<li>height：与外层容器的高度、 canvas 高度一致</li>
+<li>destWidth，width × dpr</li>
+<li>destHeight，height × dpr</li>
+</ul>
+</li>
+<li>Painter<ul>
+<li>width：外层容器的宽度 * dpr、 canvas 宽度一致</li>
+<li>height：外层容器的宽度 * dpr、 canvas 高度一致</li>
+<li>destWidth，与 canvas 宽度一致</li>
+<li>destHeight， 与 canvas 高度一致</li>
+</ul>
+</li>
+</ul>
+<p>答案呼之欲出了，我来解释一下：</p>
+<ol>
+<li>Painter 会将所有需要绘制的节点尺寸乘以设备的 dpr。假设我们要生成一张 375 x 800 的海报，其中包含一张 100 x 100 的图片，在当前设备的 dpr 为 3 的情况下，Painter 会创建一张 1125 x 2400 的画布，在画布上绘制一张 300 x 300 的图片。最终在保存图片时，输出的图片尺寸与画布大小完全一致。</li>
+<li>Wxml2Canvas 在绘制时是创建一张 375 x 800 的画布，并在画布上绘制一张 100 x 100 的图片，但是在最终保存图片时，输出的图片尺寸是画布大小乘以 dpr。</li>
+</ol>
+<p>看上去 Painter 的做法似乎并无不妥，因为画布大小和最终成品是 1:1 的；反观 Wxml2Canvas 却是 1:3，难道这样导出的图片不会影响清晰度吗？我们直接来做个实验，分别用 Painter 和 Wxml2Canvas 生成同一张分享海报，对比两张图片的不同，结果发现导出的图片无论尺寸还是文件大小都是一模一样的，如图所示：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202212291816047.png?imageMogr2/format/webp" alt="image-20221229181609765"></p>
+<h2 id="柳暗花明又一村"><a href="#柳暗花明又一村" class="headerlink" title="柳暗花明又一村"></a>柳暗花明又一村</h2><p>既然如此，我们就可以直接将 Wxml2Canvas 的方案移植到 Painter，最终发现这样能 work：</p>
+<img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202212291328173.png?imageMogr2/format/webp" alt="image-20221229132803803" style="zoom:50%;" />
+
+<p>总而言之，尽管两者最终生成的成品尺寸是一样的，但是 Painter 设置的画布尺寸比 Wxml2Canvas 大了三倍，这样会使用更多的内存，而且微信官方文档也提到：设置过大的宽高会导致 Crash 的问题。</p>
+<p>经过这一番操作，鸿蒙和 iPhone 12 也终于服帖了。然而，又有新的问题出现了。当某个页面生成并保存图片后，在滑动该页面时会明显感觉卡顿，对比一下 fps（帧率）的变化，确实离谱。<br><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202301032334581.png?imageMogr2/format/webp" alt="image-20230103233431180" style="zoom:100%;" /></p>
+<p>这种卡顿是肉眼可见的，猜测可能是因为内存泄露造成。在真机上调试分析了一下内存占用情况，未进行生成海报时，CPU 占用率为 2%，内存占用为 872 MB：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202301032351510.png?imageMogr2/format/webp" alt="image-20230103235024011"></p>
+<p>当生成海报时，CPU 占用率快速飙升到 22%，内存占用 895 MB：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202301032355858.png?imageMogr2/format/webp" alt="image-20230103235506588"></p>
+<p>随后发现内存占用并没有下降，直到我们离开了当前页面时，占用率才有所下降。</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202301032358207.png?imageMogr2/format/webp" alt="image-20230103235744395"></p>
+<p>既然如此，可以在生成海报之后立即对分享卡片的内存进行回收，最简单的方式就是使用 <code>wx:if</code> 控制。</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;share-card </span><br><span class="line"><span class="addition">+ wx:if=&quot;&#123;&#123;showShareCard&#125;&#125;&quot;</span></span><br><span class="line">  id=&#x27;share-card&#x27;</span><br><span class="line">/&gt;</span><br></pre></td></tr></table></figure>
+
+<p>最后来晒晒战绩，迁移后生成时间缩短近 50%：</p>
+<img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202212300914569.png?imageMogr2/format/webp" style="zoom:50%;" />
+
+<p>综上所述，Wxml2Canvas 在稳定性和可维护性方面都有所欠缺，但也有值得 Painter 借鉴的地方。例如，Wxml2Canvas 的使用方式更直观，不需要设置过大的画布尺寸，从而避免了 Crash 的风险。因此，将两者缝合起来，以最小的成本提高糖纸生成分享海报的效率和稳定性，何乐而不为？</p>
+</div>
+  <hr class="copy-line" />
+  <div class="post-copyright">
+    <div class="copy-author">
+      <span>作者 :</span>
+      <span
+        >4Ark</span
+      >
+    </div>
+    <div class="copy-url">
+      <span>地址 :</span>
+      <a href="https://4ark.me/post/how-to-migrate-wxml2canvas-to-painter.html">https://4ark.me/post/how-to-migrate-wxml2canvas-to-painter.html</a>
+    </div>
+    <div class="copy-origin">
+      <span>来源 :</span>
+      <a href="https://4ark.me">https://4ark.me</a>
+    </div>
+    <div class="copy-license">著作权归作者所有，转载请联系作者获得授权。</div>
+  </div>
+</article>
+
+<div class="blog-post-comments">
+  <div id="load-disqus">
+    <p onclick="loadDisqus()" style="cursor: pointer; text-align: center">
+      🥳&nbsp;加载 Disqus 评论
+    </p>
+  </div>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments.</noscript>
+  </div>
+</div>
+ 
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Writing</a></li>
+         
+          <li><a href="/weekly">Weekly</a></li>
+         
+          <li><a href="/tags">Tags</a></li>
+         
+          <li><a href="/search">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%AF%E6%BC%AB%E6%BC%AB%E5%85%B6%E4%BF%AE%E8%BF%9C%E5%85%AE"><span class="toc-number">1.</span> <span class="toc-text">路漫漫其修远兮</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%BE%E5%B0%86%E4%B8%8A%E4%B8%8B%E8%80%8C%E6%B1%82%E7%B4%A2"><span class="toc-number">2.</span> <span class="toc-text">吾将上下而求索</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B1%B1%E9%87%8D%E6%B0%B4%E5%A4%8D%E7%96%91%E6%97%A0%E8%B7%AF"><span class="toc-number">3.</span> <span class="toc-text">山重水复疑无路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%B3%E6%9A%97%E8%8A%B1%E6%98%8E%E5%8F%88%E4%B8%80%E6%9D%91"><span class="toc-number">4.</span> <span class="toc-text">柳暗花明又一村</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/how-to-migrate-wxml2canvas-to-painter.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/how-to-migrate-wxml2canvas-to-painter.html&text=我们如何从 Wxml2Canvas 迁移到 Painter"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/how-to-migrate-wxml2canvas-to-painter.html&title=我们如何从 Wxml2Canvas 迁移到 Painter"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/how-to-migrate-wxml2canvas-to-painter.html&is_video=false&description=我们如何从 Wxml2Canvas 迁移到 Painter"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=我们如何从 Wxml2Canvas 迁移到 Painter&body=Check out this article: https://4ark.me/post/how-to-migrate-wxml2canvas-to-painter.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/how-to-migrate-wxml2canvas-to-painter.html&title=我们如何从 Wxml2Canvas 迁移到 Painter"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/how-to-migrate-wxml2canvas-to-painter.html&title=我们如何从 Wxml2Canvas 迁移到 Painter"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/how-to-migrate-wxml2canvas-to-painter.html&title=我们如何从 Wxml2Canvas 迁移到 Painter"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/how-to-migrate-wxml2canvas-to-painter.html&title=我们如何从 Wxml2Canvas 迁移到 Painter"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/how-to-migrate-wxml2canvas-to-painter.html&name=我们如何从 Wxml2Canvas 迁移到 Painter&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/how-to-migrate-wxml2canvas-to-painter.html&t=我们如何从 Wxml2Canvas 迁移到 Painter"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="dark-mobile" class="icon"><i class="fa fa-sun" id="dark-btn" aria-hidden="true"></i> Switch</a>
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    4Ark
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-190615898-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-190615898-1');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<script type="text/javascript">
+  function loadDisqus() {
+    var disqus_shortname = 'https-4ark-me'
+
+    ;(function () {
+      var dsq = document.createElement('script')
+      dsq.type = 'text/javascript'
+      dsq.async = true
+      dsq.src =
+        '//' +
+        disqus_shortname +
+        '.disqus.com/embed.js'
+      ;(
+        document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]
+      ).appendChild(dsq)
+    })()
+
+    $('#load-disqus').hide()
+  }
+</script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

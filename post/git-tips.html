@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="批量删除 git 分支1git branch -a | grep -e &quot;fix&#x2F;&quot; | xargs git branch -D  批量添加匹配文件到暂存区1git status -s -uall | grep .vue | awk &amp;#x27;&amp;#123;print $2&amp;#125;&amp;#x27; | xargs git add  按最后提交日期排序所有远程分支1git bra">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git tips">
+<meta property="og:url" content="https://4ark.me/post/git-tips.html">
+<meta property="og:site_name" content="4Ark × Blog">
+<meta property="og:description" content="批量删除 git 分支1git branch -a | grep -e &quot;fix&#x2F;&quot; | xargs git branch -D  批量添加匹配文件到暂存区1git status -s -uall | grep .vue | awk &amp;#x27;&amp;#123;print $2&amp;#125;&amp;#x27; | xargs git add  按最后提交日期排序所有远程分支1git bra">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-03-02T00:00:00.000Z">
+<meta property="article:modified_time" content="2024-02-06T18:11:56.000Z">
+<meta property="article:author" content="4Ark">
+<meta property="article:tag" content="git">
+<meta property="article:tag" content="vcs">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Git tips</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script>localStorage.getItem("dark_mode")==="dark"&&document.write(`<link rel="stylesheet" href="${location.origin}/css/dark.css">`)</script>
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+    <meta name="google-site-verification" content="DwDg4EuywHWNZUkTC7sG0WGv_UQekM4uRtOoaGuDJHc" />
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="4Ark × Blog" type="application/atom+xml">
+<link rel="alternate" href="/rss.xml" title="4Ark × Blog" type="application/rss+xml">
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/post/weekly-03.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/post/hg-tips.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon"><i class="fa fa-moon" id="dark-btn" aria-hidden="true" onmouseover="$('#i-dark').toggle()" onmouseout="$('#i-dark').toggle()"></i></a></li>
+        <li><a class="icon" target="_blank" rel="noopener" href="https://4ark.me/atom.xml" aria-label="rss"><i class="fas fa-rss"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-dark" class="info" style="display: none;">Switch mode</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/git-tips.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/git-tips.html&text=Git tips"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/git-tips.html&title=Git tips"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/git-tips.html&is_video=false&description=Git tips"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Git tips&body=Check out this article: https://4ark.me/post/git-tips.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/git-tips.html&title=Git tips"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/git-tips.html&title=Git tips"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/git-tips.html&title=Git tips"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/git-tips.html&title=Git tips"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/git-tips.html&name=Git tips&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/git-tips.html&t=Git tips"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%B9%E9%87%8F%E5%88%A0%E9%99%A4-git-%E5%88%86%E6%94%AF"><span class="toc-number">1.</span> <span class="toc-text">批量删除 git 分支</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E5%8C%B9%E9%85%8D%E6%96%87%E4%BB%B6%E5%88%B0%E6%9A%82%E5%AD%98%E5%8C%BA"><span class="toc-number">2.</span> <span class="toc-text">批量添加匹配文件到暂存区</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%89%E6%9C%80%E5%90%8E%E6%8F%90%E4%BA%A4%E6%97%A5%E6%9C%9F%E6%8E%92%E5%BA%8F%E6%89%80%E6%9C%89%E8%BF%9C%E7%A8%8B%E5%88%86%E6%94%AF"><span class="toc-number">3.</span> <span class="toc-text">按最后提交日期排序所有远程分支</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E5%A5%BD%E7%9A%84-git-log"><span class="toc-number">4.</span> <span class="toc-text">更好的 git log</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%97%E5%87%BA%E5%8F%A6%E5%A4%96%E4%B8%80%E4%B8%AA%E5%88%86%E6%94%AF%E6%B2%A1%E6%9C%89%E7%9A%84%E6%8F%90%E4%BA%A4"><span class="toc-number">5.</span> <span class="toc-text">列出另外一个分支没有的提交</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#clone-%E7%89%B9%E5%AE%9A%E5%88%86%E6%94%AF"><span class="toc-number">6.</span> <span class="toc-text">clone 特定分支</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%92%E5%BD%92%E7%A7%BB%E5%8A%A8%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="toc-number">7.</span> <span class="toc-text">递归移动文件夹</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%97%E5%87%BA%E7%89%B9%E5%AE%9A%E5%88%86%E6%94%AF%E7%9A%84%E8%AE%B0%E5%BD%95"><span class="toc-number">8.</span> <span class="toc-text">列出特定分支的记录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E7%89%B9%E5%AE%9A%E6%96%87%E4%BB%B6%E7%9A%84-git-%E8%AE%B0%E5%BD%95"><span class="toc-number">9.</span> <span class="toc-text">查看特定文件的 git 记录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9-git-%E6%8F%90%E4%BA%A4%E4%B8%BA%E4%BB%BB%E4%BD%95%E4%BA%BA"><span class="toc-number">10.</span> <span class="toc-text">修改 git 提交为任何人</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E6%89%80%E6%9C%89%E5%AD%90%E7%9B%AE%E5%BD%95%E7%9A%84-git-%E7%8A%B6%E6%80%81"><span class="toc-number">11.</span> <span class="toc-text">查看当前所有子目录的 git 状态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA-git-%E5%BD%92%E6%A1%A3%E6%97%B6%E5%BF%BD%E7%95%A5%E6%9F%90%E4%BA%9B%E7%9B%AE%E5%BD%95"><span class="toc-number">12.</span> <span class="toc-text">创建 git 归档时忽略某些目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%97%E5%87%BA%E6%9C%AA%E5%8F%91%E5%B8%83%E7%9A%84-commit"><span class="toc-number">13.</span> <span class="toc-text">列出未发布的 commit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%A8%E6%89%80%E6%9C%89-commit-%E4%B8%AD%E5%AF%BB%E6%89%BE%E4%BB%A3%E7%A0%81"><span class="toc-number">14.</span> <span class="toc-text">在所有 commit 中寻找代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%BE%E5%88%B0%E4%B8%80%E4%B8%AA%E6%96%87%E4%BB%B6%E6%98%AF%E4%BD%95%E6%97%B6%E8%A2%AB%E5%88%A0%E6%8E%89%E7%9A%84"><span class="toc-number">15.</span> <span class="toc-text">找到一个文件是何时被删掉的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E8%BF%9C%E7%A8%8B%E5%88%86%E6%94%AF"><span class="toc-number">16.</span> <span class="toc-text">删除远程分支</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A9-git-%E5%8F%AF%E4%BB%A5%E9%80%92%E5%BD%92%E8%B0%83%E7%94%A8"><span class="toc-number">17.</span> <span class="toc-text">让 git 可以递归调用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#revert-cherry-pick"><span class="toc-number">18.</span> <span class="toc-text">revert cherry-pick</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B0%B8%E4%B9%85%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6"><span class="toc-number">19.</span> <span class="toc-text">永久删除文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B0%B8%E4%B9%85%E9%93%BE%E6%8E%A5"><span class="toc-number">20.</span> <span class="toc-text">永久链接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%85%E5%BF%BD%E7%95%A5%E6%9C%AC%E5%9C%B0%E5%89%AF%E6%9C%AC%E7%9A%84%E6%96%87%E4%BB%B6%E6%9B%B4%E6%94%B9"><span class="toc-number">21.</span> <span class="toc-text">仅忽略本地副本的文件更改</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BF%BD%E7%95%A5%E5%B7%B2%E8%B7%9F%E8%B8%AA%E7%9A%84%E6%96%87%E4%BB%B6"><span class="toc-number">22.</span> <span class="toc-text">忽略已跟踪的文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%BD%93%E5%89%8D%E5%88%86%E6%94%AF%E5%90%8D%E7%A7%B0"><span class="toc-number">23.</span> <span class="toc-text">获取当前分支名称</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%9F%90%E4%B8%AA%E7%89%88%E6%9C%AC%E7%9A%84%E7%9B%AE%E5%BD%95%E6%A0%91"><span class="toc-number">24.</span> <span class="toc-text">查看某个版本的目录树</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Git tips
+    </h1>
+
+
+
+    <div class="meta">
+      <span
+        class="author"
+        itemprop="author"
+        itemscope
+        itemtype="http://schema.org/Person"
+      >
+        <span itemprop="name"
+          >4Ark</span
+        >
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-03-02T00:00:00.000Z" itemprop="datePublished">2022-03-02</time>
+        
+      
+    </div>
+
+ 
+      
+        
+ 
+        
+    <div class="article-tag">
+        <i class="fas fa-hashtag"></i>
+        <a class="tag-link-link" href="/tags/git/" rel="tag">git</a>, <a class="tag-link-link" href="/tags/vcs/" rel="tag">vcs</a>
+    </div>
+
+
+      
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody"><h2 id="批量删除-git-分支"><a href="#批量删除-git-分支" class="headerlink" title="批量删除 git 分支"></a>批量删除 git 分支</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -a | grep -e <span class="string">&quot;fix/&quot;</span> | xargs git branch -D</span><br></pre></td></tr></table></figure>
+
+<h2 id="批量添加匹配文件到暂存区"><a href="#批量添加匹配文件到暂存区" class="headerlink" title="批量添加匹配文件到暂存区"></a>批量添加匹配文件到暂存区</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git status -s -uall | grep .vue | awk <span class="string">&#x27;&#123;print $2&#125;&#x27;</span> | xargs git add</span><br></pre></td></tr></table></figure>
+
+<h2 id="按最后提交日期排序所有远程分支"><a href="#按最后提交日期排序所有远程分支" class="headerlink" title="按最后提交日期排序所有远程分支"></a>按最后提交日期排序所有远程分支</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -rv --sort=-committerdate</span><br></pre></td></tr></table></figure>
+
+<p>更多：<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/5188320/how-can-i-get-a-list-of-git-branches-ordered-by-most-recent-commit">How can I get a list of Git branches, ordered by most recent commit?</a></p>
+<h2 id="更好的-git-log"><a href="#更好的-git-log" class="headerlink" title="更好的 git log"></a>更好的 git log</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global alias.lg <span class="string">&quot;log --color --graph --pretty=format:&#x27;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset&#x27; --abbrev-commit&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="列出另外一个分支没有的提交"><a href="#列出另外一个分支没有的提交" class="headerlink" title="列出另外一个分支没有的提交"></a>列出另外一个分支没有的提交</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git cherry -v branch-A branch-B</span><br></pre></td></tr></table></figure>
+
+<h2 id="clone-特定分支"><a href="#clone-特定分支" class="headerlink" title="clone 特定分支"></a>clone 特定分支</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> -b develop git@github.com:user/myproject.git</span><br></pre></td></tr></table></figure>
+
+<h2 id="递归移动文件夹"><a href="#递归移动文件夹" class="headerlink" title="递归移动文件夹"></a>递归移动文件夹</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv bar/&#123;,.&#125;* .</span><br></pre></td></tr></table></figure>
+
+<h2 id="列出特定分支的记录"><a href="#列出特定分支的记录" class="headerlink" title="列出特定分支的记录"></a>列出特定分支的记录</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">log</span> -p branch-name</span><br></pre></td></tr></table></figure>
+
+<h2 id="查看特定文件的-git-记录"><a href="#查看特定文件的-git-记录" class="headerlink" title="查看特定文件的 git 记录"></a>查看特定文件的 git 记录</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">log</span> -p -- filename</span><br></pre></td></tr></table></figure>
+
+<h2 id="修改-git-提交为任何人"><a href="#修改-git-提交为任何人" class="headerlink" title="修改 git 提交为任何人"></a>修改 git 提交为任何人</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git -c user.name=<span class="string">&quot;NEW NAME&quot;</span> -c user.email=<span class="string">&quot;new_email@gmail.com&quot;</span> commit --amend --date=<span class="string">&quot;Tue Nov 20 03:00 2018 +0100&quot;</span> --author=<span class="string">&quot;NEW NAME &lt;new_email@gmail.com&gt;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="查看当前所有子目录的-git-状态"><a href="#查看当前所有子目录的-git-状态" class="headerlink" title="查看当前所有子目录的 git 状态"></a>查看当前所有子目录的 git 状态</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find . -maxdepth 1 -mindepth 1 -<span class="built_in">type</span> d -<span class="built_in">exec</span> sh -c <span class="string">&#x27;(echo &#123;&#125; &amp;&amp; cd &#123;&#125; &amp;&amp; git status -s &amp;&amp; echo)&#x27;</span> \\;</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建-git-归档时忽略某些目录"><a href="#创建-git-归档时忽略某些目录" class="headerlink" title="创建 git 归档时忽略某些目录"></a>创建 git 归档时忽略某些目录</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar cvfz app.tar.gz --exclude <span class="string">&quot;.git/*&quot;</span> --exclude <span class="string">&quot;.git&quot;</span> app/</span><br></pre></td></tr></table></figure>
+
+<h2 id="列出未发布的-commit"><a href="#列出未发布的-commit" class="headerlink" title="列出未发布的 commit"></a>列出未发布的 commit</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">log</span> @&#123;u&#125;..</span><br></pre></td></tr></table></figure>
+
+<h2 id="在所有-commit-中寻找代码"><a href="#在所有-commit-中寻找代码" class="headerlink" title="在所有 commit 中寻找代码"></a>在所有 commit 中寻找代码</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rev-list --all | xargs git grep</span><br></pre></td></tr></table></figure>
+
+<h2 id="找到一个文件是何时被删掉的"><a href="#找到一个文件是何时被删掉的" class="headerlink" title="找到一个文件是何时被删掉的"></a>找到一个文件是何时被删掉的</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">log</span> --diff-filter=D -- path/to/file</span><br></pre></td></tr></table></figure>
+
+<h2 id="删除远程分支"><a href="#删除远程分支" class="headerlink" title="删除远程分支"></a>删除远程分支</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin :branch</span><br></pre></td></tr></table></figure>
+
+<h2 id="让-git-可以递归调用"><a href="#让-git-可以递归调用" class="headerlink" title="让 git 可以递归调用"></a>让 git 可以递归调用</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global alias.git <span class="string">&#x27;!git&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="revert-cherry-pick"><a href="#revert-cherry-pick" class="headerlink" title="revert cherry-pick"></a>revert cherry-pick</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase -p --onto SHA^ SHA</span><br></pre></td></tr></table></figure>
+
+<h2 id="永久删除文件"><a href="#永久删除文件" class="headerlink" title="永久删除文件"></a>永久删除文件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git filter-branch --tree-filter <span class="string">&#x27;rm -rf my_folder/my_file&#x27;</span> HEAD</span><br></pre></td></tr></table></figure>
+
+<h2 id="永久链接"><a href="#永久链接" class="headerlink" title="永久链接"></a>永久链接</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">permalink = <span class="string">&quot;!f() &#123; echo &quot;</span>https://$(git config --get remote.origin.url | grep --color=never -o -E <span class="string">&#x27;github.com[:/][^\\.]+&#x27;</span> | sed s/\\:/\\\\//)/commit/$(git rev-parse @&#123;u&#125;)<span class="string">&quot;; &#125;; open <span class="subst">$(f)</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="仅忽略本地副本的文件更改"><a href="#仅忽略本地副本的文件更改" class="headerlink" title="仅忽略本地副本的文件更改"></a>仅忽略本地副本的文件更改</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git update-index --assume-unchanged &lt;file&gt;</span><br><span class="line"></span><br><span class="line">git update-index --no-assume-unchanged &lt;file&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="忽略已跟踪的文件"><a href="#忽略已跟踪的文件" class="headerlink" title="忽略已跟踪的文件"></a>忽略已跟踪的文件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rm --cached &lt;file&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="获取当前分支名称"><a href="#获取当前分支名称" class="headerlink" title="获取当前分支名称"></a>获取当前分支名称</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch --no-color 2&gt; /dev/null | sed -e <span class="string">&#x27;/^[^*]/d&#x27;</span> -e <span class="string">&#x27;s/* \(.*\)/\1/&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="查看某个版本的目录树"><a href="#查看某个版本的目录树" class="headerlink" title="查看某个版本的目录树"></a>查看某个版本的目录树</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git show HEAD~5:hello.txt</span><br><span class="line"></span><br><span class="line">git show awesome-feature:app/models</span><br></pre></td></tr></table></figure>
+</div>
+  <hr class="copy-line" />
+  <div class="post-copyright">
+    <div class="copy-author">
+      <span>作者 :</span>
+      <span
+        >4Ark</span
+      >
+    </div>
+    <div class="copy-url">
+      <span>地址 :</span>
+      <a href="https://4ark.me/post/git-tips.html">https://4ark.me/post/git-tips.html</a>
+    </div>
+    <div class="copy-origin">
+      <span>来源 :</span>
+      <a href="https://4ark.me">https://4ark.me</a>
+    </div>
+    <div class="copy-license">著作权归作者所有，转载请联系作者获得授权。</div>
+  </div>
+</article>
+
+<div class="blog-post-comments">
+  <div id="load-disqus">
+    <p onclick="loadDisqus()" style="cursor: pointer; text-align: center">
+      🥳&nbsp;加载 Disqus 评论
+    </p>
+  </div>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments.</noscript>
+  </div>
+</div>
+ 
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Writing</a></li>
+         
+          <li><a href="/weekly">Weekly</a></li>
+         
+          <li><a href="/tags">Tags</a></li>
+         
+          <li><a href="/search">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%B9%E9%87%8F%E5%88%A0%E9%99%A4-git-%E5%88%86%E6%94%AF"><span class="toc-number">1.</span> <span class="toc-text">批量删除 git 分支</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%B9%E9%87%8F%E6%B7%BB%E5%8A%A0%E5%8C%B9%E9%85%8D%E6%96%87%E4%BB%B6%E5%88%B0%E6%9A%82%E5%AD%98%E5%8C%BA"><span class="toc-number">2.</span> <span class="toc-text">批量添加匹配文件到暂存区</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%89%E6%9C%80%E5%90%8E%E6%8F%90%E4%BA%A4%E6%97%A5%E6%9C%9F%E6%8E%92%E5%BA%8F%E6%89%80%E6%9C%89%E8%BF%9C%E7%A8%8B%E5%88%86%E6%94%AF"><span class="toc-number">3.</span> <span class="toc-text">按最后提交日期排序所有远程分支</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E5%A5%BD%E7%9A%84-git-log"><span class="toc-number">4.</span> <span class="toc-text">更好的 git log</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%97%E5%87%BA%E5%8F%A6%E5%A4%96%E4%B8%80%E4%B8%AA%E5%88%86%E6%94%AF%E6%B2%A1%E6%9C%89%E7%9A%84%E6%8F%90%E4%BA%A4"><span class="toc-number">5.</span> <span class="toc-text">列出另外一个分支没有的提交</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#clone-%E7%89%B9%E5%AE%9A%E5%88%86%E6%94%AF"><span class="toc-number">6.</span> <span class="toc-text">clone 特定分支</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%92%E5%BD%92%E7%A7%BB%E5%8A%A8%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="toc-number">7.</span> <span class="toc-text">递归移动文件夹</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%97%E5%87%BA%E7%89%B9%E5%AE%9A%E5%88%86%E6%94%AF%E7%9A%84%E8%AE%B0%E5%BD%95"><span class="toc-number">8.</span> <span class="toc-text">列出特定分支的记录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E7%89%B9%E5%AE%9A%E6%96%87%E4%BB%B6%E7%9A%84-git-%E8%AE%B0%E5%BD%95"><span class="toc-number">9.</span> <span class="toc-text">查看特定文件的 git 记录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9-git-%E6%8F%90%E4%BA%A4%E4%B8%BA%E4%BB%BB%E4%BD%95%E4%BA%BA"><span class="toc-number">10.</span> <span class="toc-text">修改 git 提交为任何人</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E6%89%80%E6%9C%89%E5%AD%90%E7%9B%AE%E5%BD%95%E7%9A%84-git-%E7%8A%B6%E6%80%81"><span class="toc-number">11.</span> <span class="toc-text">查看当前所有子目录的 git 状态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA-git-%E5%BD%92%E6%A1%A3%E6%97%B6%E5%BF%BD%E7%95%A5%E6%9F%90%E4%BA%9B%E7%9B%AE%E5%BD%95"><span class="toc-number">12.</span> <span class="toc-text">创建 git 归档时忽略某些目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%97%E5%87%BA%E6%9C%AA%E5%8F%91%E5%B8%83%E7%9A%84-commit"><span class="toc-number">13.</span> <span class="toc-text">列出未发布的 commit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%A8%E6%89%80%E6%9C%89-commit-%E4%B8%AD%E5%AF%BB%E6%89%BE%E4%BB%A3%E7%A0%81"><span class="toc-number">14.</span> <span class="toc-text">在所有 commit 中寻找代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%BE%E5%88%B0%E4%B8%80%E4%B8%AA%E6%96%87%E4%BB%B6%E6%98%AF%E4%BD%95%E6%97%B6%E8%A2%AB%E5%88%A0%E6%8E%89%E7%9A%84"><span class="toc-number">15.</span> <span class="toc-text">找到一个文件是何时被删掉的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E8%BF%9C%E7%A8%8B%E5%88%86%E6%94%AF"><span class="toc-number">16.</span> <span class="toc-text">删除远程分支</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%A9-git-%E5%8F%AF%E4%BB%A5%E9%80%92%E5%BD%92%E8%B0%83%E7%94%A8"><span class="toc-number">17.</span> <span class="toc-text">让 git 可以递归调用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#revert-cherry-pick"><span class="toc-number">18.</span> <span class="toc-text">revert cherry-pick</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B0%B8%E4%B9%85%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6"><span class="toc-number">19.</span> <span class="toc-text">永久删除文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B0%B8%E4%B9%85%E9%93%BE%E6%8E%A5"><span class="toc-number">20.</span> <span class="toc-text">永久链接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%85%E5%BF%BD%E7%95%A5%E6%9C%AC%E5%9C%B0%E5%89%AF%E6%9C%AC%E7%9A%84%E6%96%87%E4%BB%B6%E6%9B%B4%E6%94%B9"><span class="toc-number">21.</span> <span class="toc-text">仅忽略本地副本的文件更改</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BF%BD%E7%95%A5%E5%B7%B2%E8%B7%9F%E8%B8%AA%E7%9A%84%E6%96%87%E4%BB%B6"><span class="toc-number">22.</span> <span class="toc-text">忽略已跟踪的文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%BD%93%E5%89%8D%E5%88%86%E6%94%AF%E5%90%8D%E7%A7%B0"><span class="toc-number">23.</span> <span class="toc-text">获取当前分支名称</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%9F%90%E4%B8%AA%E7%89%88%E6%9C%AC%E7%9A%84%E7%9B%AE%E5%BD%95%E6%A0%91"><span class="toc-number">24.</span> <span class="toc-text">查看某个版本的目录树</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/git-tips.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/git-tips.html&text=Git tips"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/git-tips.html&title=Git tips"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/git-tips.html&is_video=false&description=Git tips"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Git tips&body=Check out this article: https://4ark.me/post/git-tips.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/git-tips.html&title=Git tips"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/git-tips.html&title=Git tips"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/git-tips.html&title=Git tips"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/git-tips.html&title=Git tips"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/git-tips.html&name=Git tips&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/git-tips.html&t=Git tips"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="dark-mobile" class="icon"><i class="fa fa-sun" id="dark-btn" aria-hidden="true"></i> Switch</a>
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    4Ark
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-190615898-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-190615898-1');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<script type="text/javascript">
+  function loadDisqus() {
+    var disqus_shortname = 'https-4ark-me'
+
+    ;(function () {
+      var dsq = document.createElement('script')
+      dsq.type = 'text/javascript'
+      dsq.async = true
+      dsq.src =
+        '//' +
+        disqus_shortname +
+        '.disqus.com/embed.js'
+      ;(
+        document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]
+      ).appendChild(dsq)
+    })()
+
+    $('#load-disqus').hide()
+  }
+</script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

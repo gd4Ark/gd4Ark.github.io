@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="版本说明本文是针对 composition-api v1.0.0-rc.6 版本的一次源码解析，主要是想探析以下两点：  Vue 在安装 composition-api 时做了些什么？ Vue 在执行每个组件的 setup 方法时做了什么？  好了，废话不多说，我们直接开始。 一、安装过程1. 检测是否已安装12345678910&#x2F;&#x2F; src&#x2F;install.tsif (isVueRegister">
+<meta property="og:type" content="article">
+<meta property="og:title" content="composition-api 源码解析">
+<meta property="og:url" content="https://4ark.me/post/composition-api-score-code.html">
+<meta property="og:site_name" content="4Ark × Blog">
+<meta property="og:description" content="版本说明本文是针对 composition-api v1.0.0-rc.6 版本的一次源码解析，主要是想探析以下两点：  Vue 在安装 composition-api 时做了些什么？ Vue 在执行每个组件的 setup 方法时做了什么？  好了，废话不多说，我们直接开始。 一、安装过程1. 检测是否已安装12345678910&#x2F;&#x2F; src&#x2F;install.tsif (isVueRegister">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-07-15T00:00:00.000Z">
+<meta property="article:modified_time" content="2024-02-06T18:11:56.000Z">
+<meta property="article:author" content="4Ark">
+<meta property="article:tag" content="前端">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="源码解析">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>composition-api 源码解析</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script>localStorage.getItem("dark_mode")==="dark"&&document.write(`<link rel="stylesheet" href="${location.origin}/css/dark.css">`)</script>
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+    <meta name="google-site-verification" content="DwDg4EuywHWNZUkTC7sG0WGv_UQekM4uRtOoaGuDJHc" />
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="4Ark × Blog" type="application/atom+xml">
+<link rel="alternate" href="/rss.xml" title="4Ark × Blog" type="application/rss+xml">
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/post/vue-router-score-code.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/post/vuex-score-code.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon"><i class="fa fa-moon" id="dark-btn" aria-hidden="true" onmouseover="$('#i-dark').toggle()" onmouseout="$('#i-dark').toggle()"></i></a></li>
+        <li><a class="icon" target="_blank" rel="noopener" href="https://4ark.me/atom.xml" aria-label="rss"><i class="fas fa-rss"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-dark" class="info" style="display: none;">Switch mode</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/composition-api-score-code.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/composition-api-score-code.html&text=composition-api 源码解析"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/composition-api-score-code.html&title=composition-api 源码解析"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/composition-api-score-code.html&is_video=false&description=composition-api 源码解析"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=composition-api 源码解析&body=Check out this article: https://4ark.me/post/composition-api-score-code.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/composition-api-score-code.html&title=composition-api 源码解析"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/composition-api-score-code.html&title=composition-api 源码解析"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/composition-api-score-code.html&title=composition-api 源码解析"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/composition-api-score-code.html&title=composition-api 源码解析"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/composition-api-score-code.html&name=composition-api 源码解析&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/composition-api-score-code.html&t=composition-api 源码解析"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E"><span class="toc-number">1.</span> <span class="toc-text">版本说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%AE%89%E8%A3%85%E8%BF%87%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">一、安装过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%A3%80%E6%B5%8B%E6%98%AF%E5%90%A6%E5%B7%B2%E5%AE%89%E8%A3%85"><span class="toc-number">2.1.</span> <span class="toc-text">1. 检测是否已安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%A3%80%E6%B5%8B-Vue-%E7%89%88%E6%9C%AC"><span class="toc-number">2.2.</span> <span class="toc-text">2. 检测 Vue 版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%B7%BB%E5%8A%A0-setup-%E8%BF%99%E4%B8%AA-option-api"><span class="toc-number">2.3.</span> <span class="toc-text">3. 添加 setup 这个 option api</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E8%AE%BE%E7%BD%AE%E5%B7%B2%E5%AE%89%E8%A3%85%E6%A0%87%E8%AE%B0"><span class="toc-number">2.4.</span> <span class="toc-text">4. 设置已安装标记</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E8%AE%BE%E7%BD%AE%E5%85%A8%E5%B1%80%E6%B7%B7%E5%90%88"><span class="toc-number">2.5.</span> <span class="toc-text">5. 设置全局混合</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%89%A7%E8%A1%8C-setup"><span class="toc-number">3.</span> <span class="toc-text">二、执行 setup</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%A3%80%E6%B5%8B%E6%98%AF%E5%90%A6%E6%9C%89-render"><span class="toc-number">3.1.</span> <span class="toc-text">1. 检测是否有 render</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%A3%80%E6%B5%8B%E6%98%AF%E5%90%A6%E6%9C%89-setup"><span class="toc-number">3.2.</span> <span class="toc-text">2. 检测是否有 setup</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%9C%A8-data-%E6%96%B9%E6%B3%95%E5%88%9D%E5%A7%8B%E5%8C%96-setup"><span class="toc-number">3.3.</span> <span class="toc-text">3. 在 data 方法初始化 setup</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%88%9D%E5%A7%8B%E5%8C%96-setup"><span class="toc-number">3.4.</span> <span class="toc-text">4. 初始化 setup</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-%E5%88%9D%E5%A7%8B%E5%8C%96-context"><span class="toc-number">3.4.1.</span> <span class="toc-text">4.1. 初始化 context</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-%E5%93%8D%E5%BA%94%E5%BC%8F-props"><span class="toc-number">3.4.2.</span> <span class="toc-text">4.2. 响应式 props</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-%E8%A7%A3%E6%9E%90-slots"><span class="toc-number">3.4.3.</span> <span class="toc-text">4.3. 解析 slots</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-4-%E6%89%A7%E8%A1%8C-setup"><span class="toc-number">3.4.4.</span> <span class="toc-text">4.4. 执行 setup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-6-%E5%A4%84%E7%90%86-setup-%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="toc-number">3.4.5.</span> <span class="toc-text">4.6. 处理 setup 返回值</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        composition-api 源码解析
+    </h1>
+
+
+
+    <div class="meta">
+      <span
+        class="author"
+        itemprop="author"
+        itemscope
+        itemtype="http://schema.org/Person"
+      >
+        <span itemprop="name"
+          >4Ark</span
+        >
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-07-15T00:00:00.000Z" itemprop="datePublished">2021-07-15</time>
+        
+      
+    </div>
+
+ 
+      
+        
+ 
+        
+    <div class="article-tag">
+        <i class="fas fa-hashtag"></i>
+        <a class="tag-link-link" href="/tags/Vue/" rel="tag">Vue</a>, <a class="tag-link-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a>, <a class="tag-link-link" href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" rel="tag">源码解析</a>
+    </div>
+
+
+      
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody"><h2 id="版本说明"><a href="#版本说明" class="headerlink" title="版本说明"></a>版本说明</h2><p>本文是针对 composition-api <a target="_blank" rel="noopener" href="https://github.com/vuejs/composition-api/releases/tag/v1.0.0-rc.6">v1.0.0-rc.6</a> 版本的一次源码解析，主要是想探析以下两点：</p>
+<ol>
+<li>Vue 在安装 composition-api 时做了些什么？</li>
+<li>Vue 在执行每个组件的 <code>setup</code> 方法时做了什么？</li>
+</ol>
+<p>好了，废话不多说，我们直接开始。</p>
+<h2 id="一、安装过程"><a href="#一、安装过程" class="headerlink" title="一、安装过程"></a>一、安装过程</h2><h3 id="1-检测是否已安装"><a href="#1-检测是否已安装" class="headerlink" title="1. 检测是否已安装"></a>1. 检测是否已安装</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/install.ts</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (isVueRegistered(Vue)) &#123;</span><br><span class="line">  <span class="keyword">if</span> (__DEV__) &#123;</span><br><span class="line">    warn(</span><br><span class="line">      <span class="string">&#x27;[vue-composition-api] already installed. Vue.use(VueCompositionAPI) should be called only once.&#x27;</span></span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先是检查是否重复安装，如果是则在开发环境中发出警告，主要是调用了 <code>isVueRegistered</code> 方法来进行检测，下面是它的定义：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/runtimeContext.ts</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> PluginInstalledFlag = <span class="string">&#x27;__composition_api_installed__&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">isVueRegistered</span>(<span class="params">Vue: VueConstructor</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> hasOwn(Vue, PluginInstalledFlag)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过检测 Vue 的 <code>__composition_api_installed__</code>   这个属性来 <code>composition-api</code> 是否已经安装。</p>
+<p>那很明显后来真正安装 composition-api 时会设置这个属性。</p>
+<h3 id="2-检测-Vue-版本"><a href="#2-检测-Vue-版本" class="headerlink" title="2. 检测 Vue 版本"></a>2. 检测 Vue 版本</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (__DEV__) &#123;</span><br><span class="line">  <span class="keyword">if</span> (Vue.version) &#123;</span><br><span class="line">    <span class="keyword">if</span> (Vue.version[<span class="number">0</span>] !== <span class="string">&#x27;2&#x27;</span> || Vue.version[<span class="number">1</span>] !== <span class="string">&#x27;.&#x27;</span>) &#123;</span><br><span class="line">      warn(</span><br><span class="line">        <span class="string">`[vue-composition-api] only works with Vue 2, v<span class="subst">$&#123;Vue.version&#125;</span> found.`</span></span><br><span class="line">      )</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    warn(<span class="string">&#x27;[vue-composition-api] no Vue version found&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后在开发环境中判断 Vue 的版本，必须是 2.x 的版本才能使用 composition-api。</p>
+<h3 id="3-添加-setup-这个-option-api"><a href="#3-添加-setup-这个-option-api" class="headerlink" title="3. 添加 setup 这个 option api"></a>3. 添加 setup 这个 option api</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Vue.config.optionMergeStrategies.setup = <span class="function"><span class="keyword">function</span> (<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="function">  parent: <span class="built_in">Function</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">  child: <span class="built_in">Function</span></span></span></span><br><span class="line"><span class="params"><span class="function"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">mergedSetupFn</span>(<span class="params">props: any, context: any</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> mergeData(</span><br><span class="line">      <span class="keyword">typeof</span> parent === <span class="string">&#x27;function&#x27;</span> ? parent(props, context) || &#123;&#125; : <span class="literal">undefined</span>,</span><br><span class="line">      <span class="keyword">typeof</span> child === <span class="string">&#x27;function&#x27;</span> ? child(props, context) || &#123;&#125; : <span class="literal">undefined</span></span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接着通过 Vue 的 <a target="_blank" rel="noopener" href="https://cn.vuejs.org/v2/guide/mixins.html#%E8%87%AA%E5%AE%9A%E4%B9%89%E9%80%89%E9%A1%B9%E5%90%88%E5%B9%B6%E7%AD%96%E7%95%A5">自定义选项合并策略</a> 来添加 <code>setup</code> 这个 api。</p>
+<p>ps：是否还有同学不知道我们可以自定义 Vue 的 options 呢？可以尝试利用这个 api 来实现一个 <code>asyncComputed</code> 和 <code>multiWatch</code> 来玩玩哦！</p>
+<h3 id="4-设置已安装标记"><a href="#4-设置已安装标记" class="headerlink" title="4. 设置已安装标记"></a>4. 设置已安装标记</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/runtimeContext.ts</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> PluginInstalledFlag = <span class="string">&#x27;__composition_api_installed__&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">setVueConstructor</span>(<span class="params">Vue: VueConstructor</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// @ts-ignore</span></span><br><span class="line">  <span class="keyword">if</span> (__DEV__ &amp;&amp; vueConstructor &amp;&amp; Vue.__proto__ !== vueConstructor.__proto__) &#123;</span><br><span class="line">    warn(<span class="string">&#x27;[vue-composition-api] another instance of Vue installed&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  vueConstructor = Vue</span><br><span class="line">  <span class="built_in">Object</span>.defineProperty(Vue, PluginInstalledFlag, &#123;</span><br><span class="line">    <span class="attr">configurable</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">writable</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">value</span>: <span class="literal">true</span></span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面提到过，就是在这里设置一个表示已经安装的标记。</p>
+<h3 id="5-设置全局混合"><a href="#5-设置全局混合" class="headerlink" title="5. 设置全局混合"></a>5. 设置全局混合</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Vue.mixin(&#123;</span><br><span class="line">  <span class="attr">beforeCreate</span>: functionApiInit</span><br><span class="line">  <span class="comment">// ... other</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>然后添加一个全局的 <code>mixin</code> ，在每个组件的 <code>beforeCreate</code> 生命周期执行一下 <code>functionApiInit</code> 方法。</p>
+<p>以上就是安装 composition-api 做的事，关于 <code>functionApiInit</code> 的内容我们在下一小节中详细讲解 。</p>
+<h2 id="二、执行-setup"><a href="#二、执行-setup" class="headerlink" title="二、执行 setup"></a>二、执行 setup</h2><p>我们知道  composition-api 主要是新增了一个 <code>setup</code> 选项，以及一系列 hooks，而 <code>steup</code> 也不是简单调用一下就完事，在这之前需要做一些事，比如传入的两个参数： <code>props</code> 、 <code>ctx</code> 是怎么来的，以及 <code>setup</code> 的返回值为何可以在 <code>template</code> 中使用等等。</p>
+<p>前面讲了 compsition-api 会在每个组件的 <code>beforeCreate</code> 时执行一下 <code>functionApiInit</code> 方法 ：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Vue.mixin(&#123;</span><br><span class="line">  <span class="attr">beforeCreate</span>: functionApiInit</span><br><span class="line">  <span class="comment">// ... other</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>下面是这个方法主要做的事。</p>
+<h3 id="1-检测是否有-render"><a href="#1-检测是否有-render" class="headerlink" title="1. 检测是否有 render"></a>1. 检测是否有 render</h3><p>第一步是检测是否定义 <code>render</code> 方法，如果有 <code>render</code> 方法，则修改它内部。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> vm = <span class="built_in">this</span></span><br><span class="line"><span class="keyword">const</span> $options = vm.$options</span><br><span class="line"><span class="keyword">const</span> &#123; setup, render &#125; = $options</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (render) &#123;</span><br><span class="line">  <span class="comment">// keep currentInstance accessible for createElement</span></span><br><span class="line">  $options.render = <span class="function"><span class="keyword">function</span> (<span class="params">...args: any</span>): <span class="title">any</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> activateCurrentInstance(vm, <span class="function">() =&gt;</span> render.apply(<span class="built_in">this</span>, args))</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>activateCurrentInstance</code> 的作用就是设置当前实例，所以我们可以在 <code>render</code> 中通过 <code>getCurrentInstance</code> 访问到当前实例。</p>
+<p>ps：值得说明的是即便我们写的是 <code>template</code> ，但到了目前这个阶段这里它已经被转换成 <code>render</code> 函数了。</p>
+<h3 id="2-检测是否有-setup"><a href="#2-检测是否有-setup" class="headerlink" title="2. 检测是否有 setup"></a>2. 检测是否有 setup</h3><p>如果没有定义 <code>setup</code> ，说明这个组件没有使用 <code>composition-api</code> ，这时候则直接跳过该组件：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!setup) &#123;</span><br><span class="line">  <span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">typeof</span> setup !== <span class="string">&#x27;function&#x27;</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (__DEV__) &#123;</span><br><span class="line">    warn(</span><br><span class="line">      <span class="string">&#x27;The &quot;setup&quot; option should be a function that returns a object in component definitions.&#x27;</span>,</span><br><span class="line">      vm</span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-在-data-方法初始化-setup"><a href="#3-在-data-方法初始化-setup" class="headerlink" title="3. 在 data 方法初始化 setup"></a>3. 在 data 方法初始化 setup</h3><p>如果存在 <code>setup</code> ，就会修改这个组件的 <code>data</code> 方法，在初始化真正的 <code>data</code> 方法之前先初始化一下 <code>setup</code> 方法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123;</span><br><span class="line">    data</span><br><span class="line">&#125; = $options</span><br><span class="line"><span class="comment">// wrapper the data option, so we can invoke setup before data get resolved</span></span><br><span class="line">$options.data = <span class="function"><span class="keyword">function</span> <span class="title">wrappedData</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    initSetup(vm, vm.$props)</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">typeof</span> data === <span class="string">&#x27;function&#x27;</span> ?</span><br><span class="line">        (data <span class="keyword">as</span>(<span class="built_in">this</span>: ComponentInstance, <span class="attr">x</span>: ComponentInstance) =&gt; object).call(</span><br><span class="line">            vm,</span><br><span class="line">            vm</span><br><span class="line">        ) :</span><br><span class="line">        data || &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>还记得 Vue 初始化 <code>data</code> 的时机是什么时候吗？答案是在 <code>beforeCreate</code> 和 <code>created</code> 之间，所以 <code>setup</code> 也是一样。</p>
+<h3 id="4-初始化-setup"><a href="#4-初始化-setup" class="headerlink" title="4. 初始化 setup"></a>4. 初始化 setup</h3><p><code>initSetup</code> 方法内部还做了挺多事的，下面是这个方法的全貌，先简单瞄一眼，我们后面会一步步拆解：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">initSetup</span>(<span class="params">vm: ComponentInstance, props: Record &lt; any, any &gt; = &#123;&#125;</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> setup = vm.$options.setup!</span><br><span class="line">        <span class="keyword">const</span> ctx = createSetupContext(vm)</span><br><span class="line">    <span class="comment">// fake reactive for `toRefs(props)`</span></span><br><span class="line">    def(props, <span class="string">&#x27;__ob__&#x27;</span>, createObserver())</span><br><span class="line">    <span class="comment">// resolve scopedSlots and slots to functions</span></span><br><span class="line">    <span class="comment">// @ts-expect-error</span></span><br><span class="line">    resolveScopedSlots(vm, ctx.slots)</span><br><span class="line">    <span class="keyword">let</span> binding: ReturnType &lt; SetupFunction &lt; Data, Data &gt;&gt; | <span class="literal">undefined</span> | <span class="literal">null</span></span><br><span class="line">    activateCurrentInstance(vm, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="comment">// make props to be fake reactive, this is for `toRefs(props)`</span></span><br><span class="line">        binding = setup(props, ctx)</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">if</span> (!binding) <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">if</span> (isFunction(binding)) &#123;</span><br><span class="line">        <span class="comment">// keep typescript happy with the binding type.</span></span><br><span class="line">        <span class="keyword">const</span> bindingFunc = binding</span><br><span class="line">        <span class="comment">// keep currentInstance accessible for createElement</span></span><br><span class="line">        vm.$options.render = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">            <span class="comment">// @ts-expect-error</span></span><br><span class="line">            resolveScopedSlots(vm, ctx.slots)</span><br><span class="line">            <span class="keyword">return</span> activateCurrentInstance(vm, <span class="function">() =&gt;</span> bindingFunc())</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isPlainObject(binding)) &#123;</span><br><span class="line">        <span class="keyword">if</span> (isReactive(binding)) &#123;</span><br><span class="line">            binding = toRefs(binding) <span class="keyword">as</span> Data</span><br><span class="line">        &#125;</span><br><span class="line">        vmStateManager.set(vm, <span class="string">&#x27;rawBindings&#x27;</span>, binding)</span><br><span class="line">        <span class="keyword">const</span> bindingObj = binding</span><br><span class="line">        <span class="built_in">Object</span>.keys(bindingObj).forEach(<span class="function">(<span class="params">name</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">let</span> bindingValue: any = bindingObj[name]</span><br><span class="line">            <span class="keyword">if</span> (!isRef(bindingValue)) &#123;</span><br><span class="line">                <span class="keyword">if</span> (!isReactive(bindingValue)) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (isFunction(bindingValue)) &#123;</span><br><span class="line">                        bindingValue = bindingValue.bind(vm)</span><br><span class="line">                    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!isObject(bindingValue)) &#123;</span><br><span class="line">                        bindingValue = ref(bindingValue)</span><br><span class="line">                    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (hasReactiveArrayChild(bindingValue)) &#123;</span><br><span class="line">                        <span class="comment">// creates a custom reactive properties without make the object explicitly reactive</span></span><br><span class="line">                        <span class="comment">// NOTE we should try to avoid this, better implementation needed</span></span><br><span class="line">                        customReactive(bindingValue)</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isArray(bindingValue)) &#123;</span><br><span class="line">                    bindingValue = ref(bindingValue)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            asVmProperty(vm, name, bindingValue)</span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (__DEV__) &#123;</span><br><span class="line">        assert(</span><br><span class="line">            <span class="literal">false</span>,</span><br><span class="line">            <span class="string">`&quot;setup&quot; must return a &quot;Object&quot; or a &quot;Function&quot;, got &quot;<span class="subst">$&#123;<span class="built_in">Object</span>.prototype.toString</span></span></span><br><span class="line"><span class="subst"><span class="string">        .call(binding)</span></span></span><br><span class="line"><span class="subst"><span class="string">        .slice(<span class="number">8</span>, -<span class="number">1</span>)&#125;</span>&quot;`</span></span><br><span class="line">        )</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-1-初始化-context"><a href="#4-1-初始化-context" class="headerlink" title="4.1. 初始化 context"></a>4.1. 初始化 context</h4><p>这个 <code>ctx</code> 是 <code>setup</code> 中接受的第二个参数，这个对象里面的内容是怎么生成的呢？</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> ctx = createSetupContext(vm)</span><br></pre></td></tr></table></figure>
+
+<p>下面是 <code>createSetupContext</code> 所做的事，首先是定义 <code>ctx</code> 对象中所有的 <code>key</code> ：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> ctx = &#123;</span><br><span class="line">    <span class="attr">slots</span>: &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">as</span> SetupContext</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> propsPlain = [</span><br><span class="line">    <span class="string">&#x27;root&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;parent&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;refs&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;listeners&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;isServer&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;ssrContext&#x27;</span>,</span><br><span class="line">]</span><br><span class="line"><span class="keyword">const</span> propsReactiveProxy = [<span class="string">&#x27;attrs&#x27;</span>]</span><br><span class="line"><span class="keyword">const</span> methodReturnVoid = [<span class="string">&#x27;emit&#x27;</span>]</span><br></pre></td></tr></table></figure>
+
+<p>接下来就是给这些属性利用 <code>Object.defineProperty</code> 做一层代理，当然它们都是只读的：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">propsPlain.forEach(<span class="function">(<span class="params">key</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> srcKey = <span class="string">`$<span class="subst">$&#123;key&#125;</span>`</span></span><br><span class="line">  proxy(ctx, key, &#123;</span><br><span class="line">    <span class="attr">get</span>: <span class="function">() =&gt;</span> vm[srcKey],</span><br><span class="line">    <span class="function"><span class="title">set</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">      warn(<span class="string">`Cannot assign to &#x27;<span class="subst">$&#123;key&#125;</span>&#x27; because it is a read-only property`</span>, vm)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>另外两个 <code>propsReactiveProxy</code> 和 <code>methodReturnVoid</code> 也差不多，这里就略过了。</p>
+<h4 id="4-2-响应式-props"><a href="#4-2-响应式-props" class="headerlink" title="4.2. 响应式 props"></a>4.2. 响应式 props</h4><p>接着就是将 <code>props</code> 对象进行一遍 Observer：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">def(props, <span class="string">&#x27;__ob__&#x27;</span>, createObserver())</span><br><span class="line"></span><br><span class="line"><span class="comment">// src/reactivity/reactive.ts</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">createObserver</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> observe &lt; any &gt; &#123;&#125;.__ob__</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先通过 <code>createObserver</code> 拿到一个把空对象经过 Vue. Observer 后的 <code>__ob__</code> 属性，也就是当前 <code>Observer</code> 实例对象，如果同学们对于 Vue Observer 的原理还不太熟悉，可以看这里 <a target="_blank" rel="noopener" href="http://caibaojian.com/vue-design/art/7vue-reactive.html#%E6%95%B0%E6%8D%AE%E5%AF%B9%E8%B1%A1%E7%9A%84-ob-%E5%B1%9E%E6%80%A7">数据对象的 </a>，本文就不赘述了。</p>
+<p>然后给 <code>props</code> 新增一个 <code>__ob_</code> 属性，指向前面拿到的这个 <code>__ob__</code> 。</p>
+<h4 id="4-3-解析-slots"><a href="#4-3-解析-slots" class="headerlink" title="4.3. 解析 slots"></a>4.3. 解析 slots</h4><p>接着就是把当前实例的 <code>slots</code> 给代理到前面定义的 <code>ctx.slots</code> 中，这时候它只是一个空对象：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">resolveScopedSlots(vm, ctx.slots)</span><br></pre></td></tr></table></figure>
+
+<p>下面是 <code>resolveScopedSlots</code> 的实现：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">resolveScopedSlots</span>(<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="function">    vm: ComponentInstance,</span></span></span><br><span class="line"><span class="params"><span class="function">    slotsProxy: &#123;</span></span></span><br><span class="line"><span class="params"><span class="function">        [x: string]: <span class="built_in">Function</span></span></span></span><br><span class="line"><span class="params"><span class="function">    &#125;</span></span></span><br><span class="line"><span class="params"><span class="function"></span>): <span class="title">void</span> </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> parentVNode = (vm.$options <span class="keyword">as</span> any)._parentVnode</span><br><span class="line">    <span class="keyword">if</span> (!parentVNode) <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> prevSlots = vmStateManager.get(vm, <span class="string">&#x27;slots&#x27;</span>) || []</span><br><span class="line">    <span class="keyword">const</span> curSlots = resolveSlots(parentVNode.data.scopedSlots, vm.$slots)</span><br><span class="line">    <span class="comment">// remove staled slots</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> index = <span class="number">0</span>; index &lt; prevSlots.length; index++) &#123;</span><br><span class="line">        <span class="keyword">const</span> key = prevSlots[index]</span><br><span class="line">        <span class="keyword">if</span> (!curSlots[key]) &#123;</span><br><span class="line">            <span class="keyword">delete</span> slotsProxy[key]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// proxy fresh slots</span></span><br><span class="line">    <span class="keyword">const</span> slotNames = <span class="built_in">Object</span>.keys(curSlots)</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> index = <span class="number">0</span>; index &lt; slotNames.length; index++) &#123;</span><br><span class="line">        <span class="keyword">const</span> key = slotNames[index]</span><br><span class="line">        <span class="keyword">if</span> (!slotsProxy[key]) &#123;</span><br><span class="line">            slotsProxy[key] = createSlotProxy(vm, key)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    vmStateManager.set(vm, <span class="string">&#x27;slots&#x27;</span>, slotNames)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>简单来说就是将父组件的 <code>slots</code> 数组（真正被使用的）代理到 <code>ctx.slots</code> 中，并且在这个 <code>slots</code> 数组有变化时 <code>ctx.slots</code> 也会相应地更新。</p>
+<h4 id="4-4-执行-setup"><a href="#4-4-执行-setup" class="headerlink" title="4.4. 执行 setup"></a>4.4. 执行 setup</h4><p>终于到了最重要的关头，开始执行 <code>setup</code> 了：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">activateCurrentInstance(vm, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// make props to be fake reactive, this is for `toRefs(props)`</span></span><br><span class="line">  binding = setup(props, ctx)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p><code>activateCurrentInstance</code> 之前讲过了，就是使组件的 <code>setup</code> 内部可以通过 <code>getCurrentInstance</code> 访问当前实例，相信真正使用过 <code>composition-api</code> 的同学们都知道这个方法的便利性了，但不知道同学们是否遇到过 <code>getCurrentInstance</code> 方法返回 <code>null</code> 值的情况呢？如果想知道为什么，可以看这篇文章：<a href="https://4ark.me/post/87ba8d8b.html">《从 Composition API 源码分析 getCurrentInstance() 为何返回 null》</a>。</p>
+<p>然后将前面得到的 <code>props</code> 和 <code>ctx</code> 传进去，最后将返回值赋值给 <code>binding</code> 。</p>
+<h4 id="4-6-处理-setup-返回值"><a href="#4-6-处理-setup-返回值" class="headerlink" title="4.6. 处理 setup 返回值"></a>4.6. 处理 setup 返回值</h4><p>处理返回值前需要先对它进行类型判断，有三种条件分支：</p>
+<ol>
+<li>为空，直接返回</li>
+<li>是一个函数，当成 <code>render</code> 方法处理</li>
+<li>是一个普通对象，做一系列转换</li>
+</ol>
+<p>如果返回值是一个函数，则把它当成 <code>render</code> 方法处理，当然在这之前需要重新调用一下 <code>resolveScopedSlots</code> 检测 <code>slots</code> 的更新，并且调用 <code>activateCurrentInstance</code>  ：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (isFunction(binding)) &#123;</span><br><span class="line">  <span class="comment">// keep typescript happy with the binding type.</span></span><br><span class="line">  <span class="keyword">const</span> bindingFunc = binding</span><br><span class="line">  <span class="comment">// keep currentInstance accessible for createElement</span></span><br><span class="line">  vm.$options.render = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// @ts-expect-error</span></span><br><span class="line">    resolveScopedSlots(vm, ctx.slots)</span><br><span class="line">    <span class="keyword">return</span> activateCurrentInstance(vm, <span class="function">() =&gt;</span> bindingFunc())</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>ps：也可以直接在 <code>setup</code> 中返回 <code>JSX</code> 哦，因为 Babel 会把它变成一个函数。</p>
+<p>但通常我们是在 <code>setup</code> 返回一个对象，然后可以直接在 <code>template</code> 中使用这个这些值，所以我们看看返回值是一个对象的情况：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (isPlainObject(binding)) &#123;</span><br><span class="line">    <span class="keyword">if</span> (isReactive(binding)) &#123;</span><br><span class="line">        binding = toRefs(binding) <span class="keyword">as</span> Data</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    vmStateManager.set(vm, <span class="string">&#x27;rawBindings&#x27;</span>, binding)</span><br><span class="line">    <span class="keyword">const</span> bindingObj = binding</span><br><span class="line"></span><br><span class="line">    <span class="built_in">Object</span>.keys(bindingObj).forEach(<span class="function">(<span class="params">name</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> bindingValue: any = bindingObj[name]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!isRef(bindingValue)) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!isReactive(bindingValue)) &#123;</span><br><span class="line">                <span class="keyword">if</span> (isFunction(bindingValue)) &#123;</span><br><span class="line">                    bindingValue = bindingValue.bind(vm)</span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!isObject(bindingValue)) &#123;</span><br><span class="line">                    bindingValue = ref(bindingValue)</span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (hasReactiveArrayChild(bindingValue)) &#123;</span><br><span class="line">                    <span class="comment">// creates a custom reactive properties without make the object explicitly reactive</span></span><br><span class="line">                    <span class="comment">// NOTE we should try to avoid this, better implementation needed</span></span><br><span class="line">                    customReactive(bindingValue)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isArray(bindingValue)) &#123;</span><br><span class="line">                bindingValue = ref(bindingValue)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        asVmProperty(vm, name, bindingValue)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先如果返回的对象是经过 <code>reactive</code> 的，则要调用 <code>toRefs</code> 将它的子属性变成 <code>ref</code> 包装过的，然后调用 <code>vmStateManager.set</code> 将这些属性存放起来，以供别的地方使用。</p>
+<p>然后遍历这个对象，经过一系列类型判断和处理后，将它的子属性设置为当前实例的变量，这样我们就可以在 <code>templte</code> 或者通过 <code>this.xxx</code> 去访问这些变量。</p>
+<p>这里的类型处理简单总结一下就是：</p>
+<ol>
+<li> 如果属性值是一个函数，则这个函数被调用时已经 <code>this</code> 就是当前实例</li>
+<li> 如果属性值一个非对象非函数的值，则会自动经过 <code>ref</code> 包装</li>
+<li> 如果属性值是一个普通对象且有子属性值为经过 <code>reactive</code> 后的数组，则要将这个普通对象也要转换为经过 <code>reactive</code> 包装才行，所以我们在开发时要避免如下情况：</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">setup</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        <span class="attr">obj</span>: &#123;</span><br><span class="line">            <span class="attr">arr</span>: reactive([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>])</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后，在开发环境下判断返回值不是对象是抛出一个错误。到此 <code>setup</code> 函数的执行就完了。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>关于 composition-api 的安装和执行过程就讲完了，下面我们来简单总结一下，composition-api 在安装时会做以下事情：</p>
+<ol>
+<li>通过检查 Vue 的 <code>__composition_api_installed__</code> 属性来判断是否重复安装</li>
+<li>检查 Vue 版本是否 2.x</li>
+<li>使用合并策略添加 <code>setup</code> api</li>
+<li>标记安装</li>
+<li>利用全局混入来对 <code>setup</code> 进行初始化</li>
+</ol>
+<p>而在执行 <code>setup</code> 时会做以下事情：</p>
+<ol>
+<li>检查当前组件是否使用 <code>render</code> 方法，如果有则在这之前标记当前实例，以便 <code>render</code> 方法内部可以通过 <code>getCurrentInstance</code> 方法访问到当前实例。</li>
+<li>检查当前组件有 <code>setup</code> api，没有则直接返回，否则在初始化 <code>data</code> 时先初始化一下 <code>setup</code></li>
+<li>而初始化 <code>setup</code> 做的事就是构造 <code>setup</code> 接受的两个参数：props、ctx</li>
+<li>然后执行 <code>setup</code> ，根据它的返回值类型进行相应的处理</li>
+</ol>
+<p>当然，compsition-api 真正的魅力在于 hooks，下次我就来讲讲 composition-api 的一系列 hooks 是如何实现的，这也能帮助我们更好地利用这些 hooks 方法来编写更优雅、可复用的代码。</p>
+<p>本文就到此，感谢你的阅读。</p>
+</div>
+  <hr class="copy-line" />
+  <div class="post-copyright">
+    <div class="copy-author">
+      <span>作者 :</span>
+      <span
+        >4Ark</span
+      >
+    </div>
+    <div class="copy-url">
+      <span>地址 :</span>
+      <a href="https://4ark.me/post/composition-api-score-code.html">https://4ark.me/post/composition-api-score-code.html</a>
+    </div>
+    <div class="copy-origin">
+      <span>来源 :</span>
+      <a href="https://4ark.me">https://4ark.me</a>
+    </div>
+    <div class="copy-license">著作权归作者所有，转载请联系作者获得授权。</div>
+  </div>
+</article>
+
+<div class="blog-post-comments">
+  <div id="load-disqus">
+    <p onclick="loadDisqus()" style="cursor: pointer; text-align: center">
+      🥳&nbsp;加载 Disqus 评论
+    </p>
+  </div>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments.</noscript>
+  </div>
+</div>
+ 
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Writing</a></li>
+         
+          <li><a href="/weekly">Weekly</a></li>
+         
+          <li><a href="/tags">Tags</a></li>
+         
+          <li><a href="/search">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E"><span class="toc-number">1.</span> <span class="toc-text">版本说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%AE%89%E8%A3%85%E8%BF%87%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">一、安装过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%A3%80%E6%B5%8B%E6%98%AF%E5%90%A6%E5%B7%B2%E5%AE%89%E8%A3%85"><span class="toc-number">2.1.</span> <span class="toc-text">1. 检测是否已安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%A3%80%E6%B5%8B-Vue-%E7%89%88%E6%9C%AC"><span class="toc-number">2.2.</span> <span class="toc-text">2. 检测 Vue 版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%B7%BB%E5%8A%A0-setup-%E8%BF%99%E4%B8%AA-option-api"><span class="toc-number">2.3.</span> <span class="toc-text">3. 添加 setup 这个 option api</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E8%AE%BE%E7%BD%AE%E5%B7%B2%E5%AE%89%E8%A3%85%E6%A0%87%E8%AE%B0"><span class="toc-number">2.4.</span> <span class="toc-text">4. 设置已安装标记</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E8%AE%BE%E7%BD%AE%E5%85%A8%E5%B1%80%E6%B7%B7%E5%90%88"><span class="toc-number">2.5.</span> <span class="toc-text">5. 设置全局混合</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%89%A7%E8%A1%8C-setup"><span class="toc-number">3.</span> <span class="toc-text">二、执行 setup</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%A3%80%E6%B5%8B%E6%98%AF%E5%90%A6%E6%9C%89-render"><span class="toc-number">3.1.</span> <span class="toc-text">1. 检测是否有 render</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%A3%80%E6%B5%8B%E6%98%AF%E5%90%A6%E6%9C%89-setup"><span class="toc-number">3.2.</span> <span class="toc-text">2. 检测是否有 setup</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%9C%A8-data-%E6%96%B9%E6%B3%95%E5%88%9D%E5%A7%8B%E5%8C%96-setup"><span class="toc-number">3.3.</span> <span class="toc-text">3. 在 data 方法初始化 setup</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%88%9D%E5%A7%8B%E5%8C%96-setup"><span class="toc-number">3.4.</span> <span class="toc-text">4. 初始化 setup</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-%E5%88%9D%E5%A7%8B%E5%8C%96-context"><span class="toc-number">3.4.1.</span> <span class="toc-text">4.1. 初始化 context</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-%E5%93%8D%E5%BA%94%E5%BC%8F-props"><span class="toc-number">3.4.2.</span> <span class="toc-text">4.2. 响应式 props</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-%E8%A7%A3%E6%9E%90-slots"><span class="toc-number">3.4.3.</span> <span class="toc-text">4.3. 解析 slots</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-4-%E6%89%A7%E8%A1%8C-setup"><span class="toc-number">3.4.4.</span> <span class="toc-text">4.4. 执行 setup</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-6-%E5%A4%84%E7%90%86-setup-%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="toc-number">3.4.5.</span> <span class="toc-text">4.6. 处理 setup 返回值</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/composition-api-score-code.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/composition-api-score-code.html&text=composition-api 源码解析"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/composition-api-score-code.html&title=composition-api 源码解析"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/composition-api-score-code.html&is_video=false&description=composition-api 源码解析"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=composition-api 源码解析&body=Check out this article: https://4ark.me/post/composition-api-score-code.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/composition-api-score-code.html&title=composition-api 源码解析"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/composition-api-score-code.html&title=composition-api 源码解析"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/composition-api-score-code.html&title=composition-api 源码解析"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/composition-api-score-code.html&title=composition-api 源码解析"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/composition-api-score-code.html&name=composition-api 源码解析&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/composition-api-score-code.html&t=composition-api 源码解析"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="dark-mobile" class="icon"><i class="fa fa-sun" id="dark-btn" aria-hidden="true"></i> Switch</a>
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    4Ark
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-190615898-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-190615898-1');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<script type="text/javascript">
+  function loadDisqus() {
+    var disqus_shortname = 'https-4ark-me'
+
+    ;(function () {
+      var dsq = document.createElement('script')
+      dsq.type = 'text/javascript'
+      dsq.async = true
+      dsq.src =
+        '//' +
+        disqus_shortname +
+        '.disqus.com/embed.js'
+      ;(
+        document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]
+      ).appendChild(dsq)
+    })()
+
+    $('#load-disqus').hide()
+  }
+</script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

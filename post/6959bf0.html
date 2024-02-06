@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="写在前面在团队开发中，每个人的代码风格都不一样，为了日后方便更新和维护，必须考虑协作和编码规范。 本文就介绍如何在 PhpStorm 中配置 PSR2 代码规范检查和保存自动格式化修复，以及利用 Git Hook 对提交的代码进行检查。 正文安装 PHP-CS1composer global require &quot;squizlabs&#x2F;php_codesniffer&#x3D;*&quot;  安装完成">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PhpStorm 使用 PHPCS 检查代码规范及自动修正和Git提交检查">
+<meta property="og:url" content="https://4ark.me/post/6959bf0.html">
+<meta property="og:site_name" content="4Ark × Blog">
+<meta property="og:description" content="写在前面在团队开发中，每个人的代码风格都不一样，为了日后方便更新和维护，必须考虑协作和编码规范。 本文就介绍如何在 PhpStorm 中配置 PSR2 代码规范检查和保存自动格式化修复，以及利用 Git Hook 对提交的代码进行检查。 正文安装 PHP-CS1composer global require &quot;squizlabs&#x2F;php_codesniffer&#x3D;*&quot;  安装完成">
+<meta property="og:locale">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/d8bf4d6423310685be6a4bdcd55ff64.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/150de5624de5b230c93bb636eb794e7.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/3eb78dc76568e3656798747eea83e8c.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/d9c37df038c2cf0a6538ea4bc5630ca.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20190727141029.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20190727141709.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20190727141817.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20190727142731.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20190727142957.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20190727143052.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20190727143522.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20190727143824.png">
+<meta property="article:published_time" content="2019-07-27T00:20:15.000Z">
+<meta property="article:modified_time" content="2024-02-06T18:11:56.000Z">
+<meta property="article:author" content="4Ark">
+<meta property="article:tag" content="后端">
+<meta property="article:tag" content="PHP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/d8bf4d6423310685be6a4bdcd55ff64.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>PhpStorm 使用 PHPCS 检查代码规范及自动修正和Git提交检查</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script>localStorage.getItem("dark_mode")==="dark"&&document.write(`<link rel="stylesheet" href="${location.origin}/css/dark.css">`)</script>
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+    <meta name="google-site-verification" content="DwDg4EuywHWNZUkTC7sG0WGv_UQekM4uRtOoaGuDJHc" />
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="4Ark × Blog" type="application/atom+xml">
+<link rel="alternate" href="/rss.xml" title="4Ark × Blog" type="application/rss+xml">
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/post/f6ef2a76.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/post/d94be22b.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon"><i class="fa fa-moon" id="dark-btn" aria-hidden="true" onmouseover="$('#i-dark').toggle()" onmouseout="$('#i-dark').toggle()"></i></a></li>
+        <li><a class="icon" target="_blank" rel="noopener" href="https://4ark.me/atom.xml" aria-label="rss"><i class="fas fa-rss"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-dark" class="info" style="display: none;">Switch mode</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/6959bf0.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/6959bf0.html&text=PhpStorm 使用 PHPCS 检查代码规范及自动修正和Git提交检查"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/6959bf0.html&title=PhpStorm 使用 PHPCS 检查代码规范及自动修正和Git提交检查"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/6959bf0.html&is_video=false&description=PhpStorm 使用 PHPCS 检查代码规范及自动修正和Git提交检查"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=PhpStorm 使用 PHPCS 检查代码规范及自动修正和Git提交检查&body=Check out this article: https://4ark.me/post/6959bf0.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/6959bf0.html&title=PhpStorm 使用 PHPCS 检查代码规范及自动修正和Git提交检查"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/6959bf0.html&title=PhpStorm 使用 PHPCS 检查代码规范及自动修正和Git提交检查"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/6959bf0.html&title=PhpStorm 使用 PHPCS 检查代码规范及自动修正和Git提交检查"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/6959bf0.html&title=PhpStorm 使用 PHPCS 检查代码规范及自动修正和Git提交检查"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/6959bf0.html&name=PhpStorm 使用 PHPCS 检查代码规范及自动修正和Git提交检查&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/6959bf0.html&t=PhpStorm 使用 PHPCS 检查代码规范及自动修正和Git提交检查"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="toc-number">1.</span> <span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A3%E6%96%87"><span class="toc-number">2.</span> <span class="toc-text">正文</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-PHP-CS"><span class="toc-number">2.1.</span> <span class="toc-text">安装 PHP-CS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE-PhpStorm-%E4%BD%BF%E7%94%A8-PSR-2-%E6%A0%87%E5%87%86"><span class="toc-number">2.2.</span> <span class="toc-text">配置 PhpStorm 使用 PSR-2 标准</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E4%BB%A3%E7%A0%81%E9%A3%8E%E6%A0%BC"><span class="toc-number">2.2.1.</span> <span class="toc-text">1. 代码风格</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E8%AE%BE%E7%BD%AE-PHP-CS-%E8%B7%AF%E5%BE%84"><span class="toc-number">2.2.2.</span> <span class="toc-text">2. 设置 PHP-CS 路径</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E4%BB%A3%E7%A0%81%E6%A3%80%E6%9F%A5"><span class="toc-number">2.2.3.</span> <span class="toc-text">3. 代码检查</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%86%E6%88%90-PHP-CS"><span class="toc-number">2.3.</span> <span class="toc-text">集成 PHP-CS</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E8%AF%B4%E6%98%8E"><span class="toc-number">2.3.1.</span> <span class="toc-text">参数说明</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">2.3.2.</span> <span class="toc-text">使用方法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E4%BF%9D%E5%AD%98%E8%87%AA%E5%8A%A8%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%92%8C%E4%BF%AE%E5%A4%8D"><span class="toc-number">2.4.</span> <span class="toc-text">配置保存自动格式化和修复</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E4%B8%BA-phpcbf-%E6%B7%BB%E5%8A%A0%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="toc-number">2.4.0.1.</span> <span class="toc-text">1. 为 phpcbf 添加快捷键</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E5%BD%95%E5%88%B6%E5%AE%8F"><span class="toc-number">2.4.0.2.</span> <span class="toc-text">2. 录制宏</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-%E4%B8%BA%E5%AE%8F%E9%85%8D%E7%BD%AE%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="toc-number">2.4.0.3.</span> <span class="toc-text">3. 为宏配置快捷键</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8-Git-Hook-%E5%AF%B9%E6%8F%90%E4%BA%A4%E7%9A%84%E4%BB%A3%E7%A0%81%E8%BF%9B%E8%A1%8C%E6%A3%80%E6%9F%A5"><span class="toc-number">2.5.</span> <span class="toc-text">利用 Git Hook 对提交的代码进行检查</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-GrumPHP"><span class="toc-number">2.5.1.</span> <span class="toc-text">安装 GrumPHP</span></a></li></ol></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        PhpStorm 使用 PHPCS 检查代码规范及自动修正和Git提交检查
+    </h1>
+
+
+
+    <div class="meta">
+      <span
+        class="author"
+        itemprop="author"
+        itemscope
+        itemtype="http://schema.org/Person"
+      >
+        <span itemprop="name"
+          >4Ark</span
+        >
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-07-27T00:20:15.000Z" itemprop="datePublished">2019-07-27</time>
+        
+      
+    </div>
+
+ 
+      
+        
+ 
+        
+    <div class="article-tag">
+        <i class="fas fa-hashtag"></i>
+        <a class="tag-link-link" href="/tags/PHP/" rel="tag">PHP</a>, <a class="tag-link-link" href="/tags/%E5%90%8E%E7%AB%AF/" rel="tag">后端</a>
+    </div>
+
+
+      
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody"><h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>在团队开发中，每个人的代码风格都不一样，为了日后方便更新和维护，必须考虑协作和编码规范。</p>
+<p>本文就介绍如何在 PhpStorm 中配置 PSR2 代码规范检查和保存自动格式化修复，以及利用 Git Hook 对提交的代码进行检查。</p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="安装-PHP-CS"><a href="#安装-PHP-CS" class="headerlink" title="安装 PHP-CS"></a>安装 PHP-CS</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer global require &quot;squizlabs/php_codesniffer=*&quot;</span><br></pre></td></tr></table></figure>
+
+<p>安装完成后会在全局依赖包目录生成 phpcbf 和 phpcs 文件</p>
+<blockquote>
+<p>查看 composer 全局依赖包路径，下面会用到</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer global config bin-dir --absolute</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置-PhpStorm-使用-PSR-2-标准"><a href="#配置-PhpStorm-使用-PSR-2-标准" class="headerlink" title="配置 PhpStorm 使用 PSR-2 标准"></a>配置 PhpStorm 使用 PSR-2 标准</h3><h4 id="1-代码风格"><a href="#1-代码风格" class="headerlink" title="1. 代码风格"></a>1. 代码风格</h4><p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/d8bf4d6423310685be6a4bdcd55ff64.png" alt="img"></p>
+<h4 id="2-设置-PHP-CS-路径"><a href="#2-设置-PHP-CS-路径" class="headerlink" title="2. 设置 PHP-CS 路径"></a>2. 设置 PHP-CS 路径</h4><p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/150de5624de5b230c93bb636eb794e7.png" alt="img"></p>
+<h4 id="3-代码检查"><a href="#3-代码检查" class="headerlink" title="3. 代码检查"></a>3. 代码检查</h4><p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/3eb78dc76568e3656798747eea83e8c.png" alt="img"></p>
+<blockquote>
+<p>如果没有下拉选项，可以点击旁边的刷新按钮</p>
+</blockquote>
+<p>还有这个</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/d9c37df038c2cf0a6538ea4bc5630ca.png" alt="img"></p>
+<p>配置到这里后，打开一个 PHP 文件，就会在不符合 PSR-2 的代码下边加一条波浪线</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20190727141029.png" alt="img"></p>
+<p>使用 <code>Ctrl + Alt + L</code> 将会自动格式化成 PSR-2 的风格</p>
+<h3 id="集成-PHP-CS"><a href="#集成-PHP-CS" class="headerlink" title="集成 PHP-CS"></a>集成 PHP-CS</h3><p>经过上面的操作，Phpstorm 代码格式化的规则基本与 PHP-CS 的规则基本一致了，但也有一小部分不一致，所以后面还要用到 phpcs 和 phpcbf</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20190727141709.png" alt="img"></p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20190727141817.png" alt="img"></p>
+<h4 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明"></a>参数说明</h4><p>Program：<code>phpcs/phpcbf</code> 路径</p>
+<p>Arguments：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">--standard=PSR2 $FileDir$/$FileName$ ## 当前文件</span><br><span class="line">--standard=PSR2 $FileDir$ ## 当前文件夹</span><br></pre></td></tr></table></figure>
+
+<p>Working directory：<code>$ProjectFileDir$</code></p>
+<h4 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h4><p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20190727142731.png" alt="img"></p>
+<h3 id="配置保存自动格式化和修复"><a href="#配置保存自动格式化和修复" class="headerlink" title="配置保存自动格式化和修复"></a>配置保存自动格式化和修复</h3><h5 id="1-为-phpcbf-添加快捷键"><a href="#1-为-phpcbf-添加快捷键" class="headerlink" title="1. 为 phpcbf 添加快捷键"></a>1. 为 phpcbf 添加快捷键</h5><p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20190727142957.png" alt="img"></p>
+<h5 id="2-录制宏"><a href="#2-录制宏" class="headerlink" title="2. 录制宏"></a>2. 录制宏</h5><p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20190727143052.png" alt="img"></p>
+<p>步骤：</p>
+<ol>
+<li><code>Ctrl + Alt + L</code></li>
+<li><code>Ctrl + Alt + Shift + P</code> （phpcbf 快捷键）</li>
+<li><code>Ctrl + S</code></li>
+<li>按下编辑器右下角保存录制</li>
+</ol>
+<h5 id="3-为宏配置快捷键"><a href="#3-为宏配置快捷键" class="headerlink" title="3. 为宏配置快捷键"></a>3. 为宏配置快捷键</h5><p>先删除默认的保存快捷键 <code>Ctrl + S</code>，另外配置一个别的快捷键<code>Ctrl + Alt + Shift + S</code></p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20190727143522.png" alt="img"></p>
+<p>为宏配置快捷键</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20190727143824.png" alt="img"></p>
+<h3 id="利用-Git-Hook-对提交的代码进行检查"><a href="#利用-Git-Hook-对提交的代码进行检查" class="headerlink" title="利用 Git Hook 对提交的代码进行检查"></a>利用 Git Hook 对提交的代码进行检查</h3><h4 id="安装-GrumPHP"><a href="#安装-GrumPHP" class="headerlink" title="安装 GrumPHP"></a>安装 GrumPHP</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer require --dev phpro/grumphp</span><br></pre></td></tr></table></figure>
+
+<p>安装完后会自动生成一个 <code>grumphp.yml</code></p>
+<p>请修改成：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">parameters:</span><br><span class="line">  git_dir: .</span><br><span class="line">  bin_dir: vendor/bin</span><br><span class="line">  tasks:</span><br><span class="line">    phpcs:</span><br><span class="line">      standard: PSR2</span><br><span class="line">      ignore_patterns:</span><br><span class="line">        - ./database/*</span><br><span class="line">        - ./vendor/*</span><br></pre></td></tr></table></figure>
+
+<p>这样 <code>git commit</code> 的时候就会对提交的代码进行检查，只有符合 PSR-2 规范的代码才能通过。</p>
+</div>
+  <hr class="copy-line" />
+  <div class="post-copyright">
+    <div class="copy-author">
+      <span>作者 :</span>
+      <span
+        >4Ark</span
+      >
+    </div>
+    <div class="copy-url">
+      <span>地址 :</span>
+      <a href="https://4ark.me/post/6959bf0.html">https://4ark.me/post/6959bf0.html</a>
+    </div>
+    <div class="copy-origin">
+      <span>来源 :</span>
+      <a href="https://4ark.me">https://4ark.me</a>
+    </div>
+    <div class="copy-license">著作权归作者所有，转载请联系作者获得授权。</div>
+  </div>
+</article>
+
+<div class="blog-post-comments">
+  <div id="load-disqus">
+    <p onclick="loadDisqus()" style="cursor: pointer; text-align: center">
+      🥳&nbsp;加载 Disqus 评论
+    </p>
+  </div>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments.</noscript>
+  </div>
+</div>
+ 
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Writing</a></li>
+         
+          <li><a href="/weekly">Weekly</a></li>
+         
+          <li><a href="/tags">Tags</a></li>
+         
+          <li><a href="/search">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="toc-number">1.</span> <span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A3%E6%96%87"><span class="toc-number">2.</span> <span class="toc-text">正文</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-PHP-CS"><span class="toc-number">2.1.</span> <span class="toc-text">安装 PHP-CS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE-PhpStorm-%E4%BD%BF%E7%94%A8-PSR-2-%E6%A0%87%E5%87%86"><span class="toc-number">2.2.</span> <span class="toc-text">配置 PhpStorm 使用 PSR-2 标准</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E4%BB%A3%E7%A0%81%E9%A3%8E%E6%A0%BC"><span class="toc-number">2.2.1.</span> <span class="toc-text">1. 代码风格</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E8%AE%BE%E7%BD%AE-PHP-CS-%E8%B7%AF%E5%BE%84"><span class="toc-number">2.2.2.</span> <span class="toc-text">2. 设置 PHP-CS 路径</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E4%BB%A3%E7%A0%81%E6%A3%80%E6%9F%A5"><span class="toc-number">2.2.3.</span> <span class="toc-text">3. 代码检查</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%86%E6%88%90-PHP-CS"><span class="toc-number">2.3.</span> <span class="toc-text">集成 PHP-CS</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E8%AF%B4%E6%98%8E"><span class="toc-number">2.3.1.</span> <span class="toc-text">参数说明</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">2.3.2.</span> <span class="toc-text">使用方法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E4%BF%9D%E5%AD%98%E8%87%AA%E5%8A%A8%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%92%8C%E4%BF%AE%E5%A4%8D"><span class="toc-number">2.4.</span> <span class="toc-text">配置保存自动格式化和修复</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E4%B8%BA-phpcbf-%E6%B7%BB%E5%8A%A0%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="toc-number">2.4.0.1.</span> <span class="toc-text">1. 为 phpcbf 添加快捷键</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E5%BD%95%E5%88%B6%E5%AE%8F"><span class="toc-number">2.4.0.2.</span> <span class="toc-text">2. 录制宏</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-%E4%B8%BA%E5%AE%8F%E9%85%8D%E7%BD%AE%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="toc-number">2.4.0.3.</span> <span class="toc-text">3. 为宏配置快捷键</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8-Git-Hook-%E5%AF%B9%E6%8F%90%E4%BA%A4%E7%9A%84%E4%BB%A3%E7%A0%81%E8%BF%9B%E8%A1%8C%E6%A3%80%E6%9F%A5"><span class="toc-number">2.5.</span> <span class="toc-text">利用 Git Hook 对提交的代码进行检查</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-GrumPHP"><span class="toc-number">2.5.1.</span> <span class="toc-text">安装 GrumPHP</span></a></li></ol></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/6959bf0.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/6959bf0.html&text=PhpStorm 使用 PHPCS 检查代码规范及自动修正和Git提交检查"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/6959bf0.html&title=PhpStorm 使用 PHPCS 检查代码规范及自动修正和Git提交检查"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/6959bf0.html&is_video=false&description=PhpStorm 使用 PHPCS 检查代码规范及自动修正和Git提交检查"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=PhpStorm 使用 PHPCS 检查代码规范及自动修正和Git提交检查&body=Check out this article: https://4ark.me/post/6959bf0.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/6959bf0.html&title=PhpStorm 使用 PHPCS 检查代码规范及自动修正和Git提交检查"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/6959bf0.html&title=PhpStorm 使用 PHPCS 检查代码规范及自动修正和Git提交检查"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/6959bf0.html&title=PhpStorm 使用 PHPCS 检查代码规范及自动修正和Git提交检查"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/6959bf0.html&title=PhpStorm 使用 PHPCS 检查代码规范及自动修正和Git提交检查"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/6959bf0.html&name=PhpStorm 使用 PHPCS 检查代码规范及自动修正和Git提交检查&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/6959bf0.html&t=PhpStorm 使用 PHPCS 检查代码规范及自动修正和Git提交检查"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="dark-mobile" class="icon"><i class="fa fa-sun" id="dark-btn" aria-hidden="true"></i> Switch</a>
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    4Ark
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-190615898-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-190615898-1');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<script type="text/javascript">
+  function loadDisqus() {
+    var disqus_shortname = 'https-4ark-me'
+
+    ;(function () {
+      var dsq = document.createElement('script')
+      dsq.type = 'text/javascript'
+      dsq.async = true
+      dsq.src =
+        '//' +
+        disqus_shortname +
+        '.disqus.com/embed.js'
+      ;(
+        document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]
+      ).appendChild(dsq)
+    })()
+
+    $('#load-disqus').hide()
+  }
+</script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

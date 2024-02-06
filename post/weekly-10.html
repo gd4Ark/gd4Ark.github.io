@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="本周见闻Git 2.36 亮点4 月 18 日，Git 正式发布 2.36 版本，其中包含 96 个贡献者的改动，其中有 26 个新特性，在此罗列一些我比较感兴趣的新特性：  git log –remerge-diff，更好地显示合并提交的差异，在此之前，如果我们查看一个具有合并冲突的提交差异时，输入的结果往往很难理解，而现在使用 --remerge-diff 则可以用 mergeconflict">
+<meta property="og:type" content="article">
+<meta property="og:title" content="周刊第10期：你如何在网上找到可靠的信息？">
+<meta property="og:url" content="https://4ark.me/post/weekly-10.html">
+<meta property="og:site_name" content="4Ark × Blog">
+<meta property="og:description" content="本周见闻Git 2.36 亮点4 月 18 日，Git 正式发布 2.36 版本，其中包含 96 个贡献者的改动，其中有 26 个新特性，在此罗列一些我比较感兴趣的新特性：  git log –remerge-diff，更好地显示合并提交的差异，在此之前，如果我们查看一个具有合并冲突的提交差异时，输入的结果往往很难理解，而现在使用 --remerge-diff 则可以用 mergeconflict">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-04-26T00:00:00.000Z">
+<meta property="article:modified_time" content="2024-02-06T18:11:56.000Z">
+<meta property="article:author" content="4Ark">
+<meta property="article:tag" content="weekly">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>周刊第10期：你如何在网上找到可靠的信息？</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script>localStorage.getItem("dark_mode")==="dark"&&document.write(`<link rel="stylesheet" href="${location.origin}/css/dark.css">`)</script>
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+    <meta name="google-site-verification" content="DwDg4EuywHWNZUkTC7sG0WGv_UQekM4uRtOoaGuDJHc" />
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="4Ark × Blog" type="application/atom+xml">
+<link rel="alternate" href="/rss.xml" title="4Ark × Blog" type="application/rss+xml">
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/post/weekly-11.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/post/weekly-09.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon"><i class="fa fa-moon" id="dark-btn" aria-hidden="true" onmouseover="$('#i-dark').toggle()" onmouseout="$('#i-dark').toggle()"></i></a></li>
+        <li><a class="icon" target="_blank" rel="noopener" href="https://4ark.me/atom.xml" aria-label="rss"><i class="fas fa-rss"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-dark" class="info" style="display: none;">Switch mode</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/weekly-10.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/weekly-10.html&text=周刊第10期：你如何在网上找到可靠的信息？"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/weekly-10.html&title=周刊第10期：你如何在网上找到可靠的信息？"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/weekly-10.html&is_video=false&description=周刊第10期：你如何在网上找到可靠的信息？"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=周刊第10期：你如何在网上找到可靠的信息？&body=Check out this article: https://4ark.me/post/weekly-10.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/weekly-10.html&title=周刊第10期：你如何在网上找到可靠的信息？"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/weekly-10.html&title=周刊第10期：你如何在网上找到可靠的信息？"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/weekly-10.html&title=周刊第10期：你如何在网上找到可靠的信息？"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/weekly-10.html&title=周刊第10期：你如何在网上找到可靠的信息？"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/weekly-10.html&name=周刊第10期：你如何在网上找到可靠的信息？&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/weekly-10.html&t=周刊第10期：你如何在网上找到可靠的信息？"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%91%A8%E8%A7%81%E9%97%BB"><span class="toc-number">1.</span> <span class="toc-text">本周见闻</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Git-2-36-%E4%BA%AE%E7%82%B9"><span class="toc-number">1.1.</span> <span class="toc-text">Git 2.36 亮点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AEHN%EF%BC%9A%E4%BD%A0%E5%A6%82%E4%BD%95%E5%9C%A8%E7%BD%91%E4%B8%8A%E6%89%BE%E5%88%B0%E5%8F%AF%E9%9D%A0%E7%9A%84%E4%BF%A1%E6%81%AF%EF%BC%9F"><span class="toc-number">1.2.</span> <span class="toc-text">问HN：你如何在网上找到可靠的信息？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B-tips"><span class="toc-number">2.</span> <span class="toc-text">一些 tips</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#JavaScript-%E6%A0%B9%E6%8D%AE%E8%83%8C%E6%99%AF%E8%89%B2%E6%98%BE%E7%A4%BA%E5%AF%B9%E5%BA%94%E7%9A%84%E6%96%87%E5%AD%97%E9%A2%9C%E8%89%B2"><span class="toc-number">2.1.</span> <span class="toc-text">JavaScript 根据背景色显示对应的文字颜色</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8-Vim-%E4%B8%AD%E4%BF%9D%E5%AD%98%E5%8F%AA%E8%AF%BB%E6%96%87%E4%BB%B6"><span class="toc-number">2.2.</span> <span class="toc-text">在 Vim 中保存只读文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Mac-%E5%9C%A8-dock-%E9%9A%90%E8%97%8F%E7%89%B9%E5%AE%9A%E5%BA%94%E7%94%A8"><span class="toc-number">2.3.</span> <span class="toc-text">Mac 在 dock 隐藏特定应用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E4%BA%AB%E6%96%87%E7%AB%A0"><span class="toc-number">3.</span> <span class="toc-text">分享文章</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E8%8A%B1%E4%B8%A4%E5%B9%B4%E6%97%B6%E9%97%B4%E9%9D%A2%E8%AF%95%E4%B8%80%E4%B8%AA%E4%BA%BA"><span class="toc-number">3.1.</span> <span class="toc-text">怎么花两年时间面试一个人</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%A0%E5%BA%94%E8%AF%A5%E9%98%85%E8%AF%BB%E5%AD%A6%E6%9C%AF%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6%E8%AE%BA%E6%96%87"><span class="toc-number">3.2.</span> <span class="toc-text">你应该阅读学术计算机科学论文</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WebAssembly-%E4%BD%BF%E7%94%A8JavaScript-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8"><span class="toc-number">3.3.</span> <span class="toc-text">WebAssembly 使用JavaScript 垃圾回收器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%89%E8%B6%A3%E7%9A%84%E9%93%BE%E6%8E%A5"><span class="toc-number">4.</span> <span class="toc-text">有趣的链接</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        周刊第10期：你如何在网上找到可靠的信息？
+    </h1>
+
+
+
+    <div class="meta">
+      <span
+        class="author"
+        itemprop="author"
+        itemscope
+        itemtype="http://schema.org/Person"
+      >
+        <span itemprop="name"
+          >4Ark</span
+        >
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-04-26T00:00:00.000Z" itemprop="datePublished">2022-04-26</time>
+        
+      
+    </div>
+
+ 
+      
+        <div class="article-tag">
+            <i class="fa fa-calendar-week"></i>
+            <a href="/weekly">Weekly</a>
+        </div>
+      
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody"><h2 id="本周见闻"><a href="#本周见闻" class="headerlink" title="本周见闻"></a>本周见闻</h2><h3 id="Git-2-36-亮点"><a href="#Git-2-36-亮点" class="headerlink" title="Git 2.36 亮点"></a><a target="_blank" rel="noopener" href="https://github.blog/2022-04-18-highlights-from-git-2-36/">Git 2.36 亮点</a></h3><p>4 月 18 日，Git 正式发布 <a target="_blank" rel="noopener" href="https://lore.kernel.org/git/xmqqh76qz791.fsf@gitster.g/T/#u">2.36 版本</a>，其中包含 96 个贡献者的改动，其中有 26 个新特性，在此罗列一些我比较感兴趣的新特性：</p>
+<ol>
+<li>git log –remerge-diff，更好地显示合并提交的差异，在此之前，如果我们查看一个具有合并冲突的提交差异时，输入的结果往往很难理解，而现在使用 <code>--remerge-diff</code> 则可以用 <a target="_blank" rel="noopener" href="https://git-scm.com/docs/git-config#Documentation/git-config.txt-mergeconflictStyle">mergeconflictStyle</a> 的样式显示差异。</li>
+<li>更严格的存储库权限检查，在 2.35 版本时，出现了<a target="_blank" rel="noopener" href="https://github.blog/2022-04-12-git-security-vulnerability-announced/">两个安全漏洞</a>，此漏洞会影响在多用户计算机上工作的用户，这可能会导致某个用户在其他用户的存储库上执行任意命令，在 Git <a target="_blank" rel="noopener" href="https://lore.kernel.org/git/xmqqv8veb5i6.fsf@gitster.g/">2.35.2</a> 版本中发布了安全补丁，总得来说就是 Git 更改了默认行为，防止这种情况的发生，我们也可以通过最新的 <a target="_blank" rel="noopener" href="https://git-scm.com/docs/git-config/#Documentation/git-config.txt-safedirectory">safe.directory</a> 配置来有意义地绕过这个行为。</li>
+<li>我们都知道 git bisect 这个命令可以用于二分查找，快速定位引入 BUG 的提交，同时它也可以通过指定一个可执行脚本来自动化这个过程，<code>git bisect run test.sh</code>，但在此之前，Git 并没有检查指定的文件是否为可执行脚本，导致 bisect 运行出错，该问题现在得到修复。</li>
+<li>还有很多，感兴趣自行了解。</li>
+</ol>
+<h3 id="问HN：你如何在网上找到可靠的信息？"><a href="#问HN：你如何在网上找到可靠的信息？" class="headerlink" title="问HN：你如何在网上找到可靠的信息？"></a><a target="_blank" rel="noopener" href="https://news.ycombinator.com/item?id=31107699">问HN：你如何在网上找到可靠的信息？</a></h3><p>在 hacker news 上看到的一个帖子，在信息爆炸的时代，我们如何在网上找到可靠的信息？总结出了一些自认为有用的观点：</p>
+<ol>
+<li>在信息源寻找「信息」，而不是「观点」，我们根据这些「信息」，得到我们自己的「观点」，同时以开放的心态去验证自己的「观点」，留意那些与你不同观点的人。</li>
+<li>永远不要相信单一的信息来源，譬如不要只看国内的媒体：）</li>
+<li>摆脱信息茧房，学习使用 RSS 订阅你感兴趣的内容，但是如何寻找有用的信息源也是一大难题。</li>
+<li>尝试使用英文搜索你的问题，如果 Google 不好用，可以试试 <a target="_blank" rel="noopener" href="https://teclis.com/">Teclis</a>。</li>
+</ol>
+<h2 id="一些-tips"><a href="#一些-tips" class="headerlink" title="一些 tips"></a>一些 tips</h2><h3 id="JavaScript-根据背景色显示对应的文字颜色"><a href="#JavaScript-根据背景色显示对应的文字颜色" class="headerlink" title="JavaScript 根据背景色显示对应的文字颜色"></a>JavaScript 根据背景色显示对应的文字颜色</h3><p>在 2022 的今天，dark 模式已经成为任何一个关注用户体验的应用不可或缺的功能，其中有一个很常见的需求就是根据背景颜色决定对应的文字颜色，这里就简单讲述一下我的实现思考。</p>
+<p>首先我们需要知道任何颜色都有对应的灰度值的，得到颜色对应的灰度以后，就能知道该颜色是属于偏亮还是偏暗。</p>
+<p>而获取灰度值的公式为：(0.299 * <em>r</em> + 0.587 * <em>g</em> + 0.114 * <em>b</em>) / 255</p>
+<p>下面我们简单测试一下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 从 rgb 获取灰度</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getGrayLevelFromRgb</span>(<span class="params">[r, g, b]</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (<span class="number">0.299</span> * r + <span class="number">0.587</span> * g + <span class="number">0.114</span> * b) / <span class="number">255</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(getGrayLevelFromRgb([<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>])) <span class="comment">// 1</span></span><br><span class="line"><span class="built_in">console</span>.log(getGrayLevelFromRgb([<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>])) <span class="comment">// 0</span></span><br><span class="line"><span class="built_in">console</span>.log(getGrayLevelFromRgb([<span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span>])) <span class="comment">// 0.299</span></span><br><span class="line"><span class="built_in">console</span>.log(getGrayLevelFromRgb([<span class="number">18</span>, <span class="number">18</span>, <span class="number">18</span>])) <span class="comment">// 0.07058823529411765</span></span><br></pre></td></tr></table></figure>
+
+<p>而我们只需要设定一个阈值，大于这个阈值的就属于 light，否则为 dark 即可。</p>
+<p>这里我设定的阈值是 0.85，这个阈值具体是多少根据实际情况而定。</p>
+<h3 id="在-Vim-中保存只读文件"><a href="#在-Vim-中保存只读文件" class="headerlink" title="在 Vim 中保存只读文件"></a>在 Vim 中保存只读文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">:w ! sudo tee % &gt; /dev/null</span><br></pre></td></tr></table></figure>
+
+<h3 id="Mac-在-dock-隐藏特定应用"><a href="#Mac-在-dock-隐藏特定应用" class="headerlink" title="Mac 在 dock 隐藏特定应用"></a>Mac 在 dock 隐藏特定应用</h3><p>有时候我们想要在 Mac 的 dock 中隐藏特定应用，可以这样：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo lsappinfo setinfo -app XXX ApplicationType=UIElement</span><br></pre></td></tr></table></figure>
+
+<h2 id="分享文章"><a href="#分享文章" class="headerlink" title="分享文章"></a>分享文章</h2><h3 id="怎么花两年时间面试一个人"><a href="#怎么花两年时间面试一个人" class="headerlink" title="怎么花两年时间面试一个人"></a><a target="_blank" rel="noopener" href="http://mindhacks.cn/2011/11/04/how-to-interview-a-person-for-two-years/">怎么花两年时间面试一个人</a></h3><p>这是一篇 11 年前的文章（2011），但在今天看来仍然非常有用，本文比较长，但我还是建议你阅读。</p>
+<p>这里简单摘要一些本文内容，本文开宗明义地提出一个问题：<strong>招聘难，难于上青天</strong>。</p>
+<p>这是因为：</p>
+<ol>
+<li>最好的人也许不投简历，就决定去哪里了。所以要在他们做决定前找到他们。</li>
+<li>比较差的会投很多次简历，找不到工作的时间越多，投的简历越多，给整个 pool 带来很多噪音，top10% 的简历也许根本不算全部人的 top10%。</li>
+</ol>
+<p>公司招到靠谱的人非常重要，所以，<strong>招聘也许是一个公司决策当中最最重要的一个环节</strong>。</p>
+<p>本文作者就根据他的一些经验，给出了一些关于如何做招聘的建议。</p>
+<p>最后作者给出如何花两年时间面试一个人的方法，那就是看面试者平时的积累，推荐的方式是：书 + GitHub，这样足以相当两年左右的面试。</p>
+<h3 id="你应该阅读学术计算机科学论文"><a href="#你应该阅读学术计算机科学论文" class="headerlink" title="你应该阅读学术计算机科学论文"></a><a target="_blank" rel="noopener" href="https://stackoverflow.blog/2022/04/07/you-should-be-reading-academic-computer-science-papers/">你应该阅读学术计算机科学论文</a></h3><p>作为一名在职程序员，你需要不断地学习，你可以通过查看教程、文档、StackOverflow，以及你可以找到的任何帮助你更好地编写代码并保持最新技能的内容。但是，你试过深入研究计算机科学论文来提高你的编程能力吗？</p>
+<p>虽然以上提到的教程可以帮助你立即编写代码，但阅读学术论文能够帮助你了解编程的来龙去脉，从空指针到对象，这些编程中大部分日常使用的功能都可以追溯到上世纪 60 年代，未来的创新一样建立在今天的研究之上。</p>
+<p>所以，不妨试一下直接通过阅读论文去了解这些编程的知识，如果认为阅读论文还是太难，可以试一下观看这些演讲：<a target="_blank" rel="noopener" href="https://www.youtube.com/c/PapersWeLove/videos">PapersWeLove - YouTube</a>。</p>
+<h3 id="WebAssembly-使用JavaScript-垃圾回收器"><a href="#WebAssembly-使用JavaScript-垃圾回收器" class="headerlink" title="WebAssembly 使用JavaScript 垃圾回收器"></a><a target="_blank" rel="noopener" href="https://jott.live/markdown/js_gc_in_wasm">WebAssembly 使用JavaScript 垃圾回收器</a></h3><p>我们知道，JavaScript 自带有垃圾回收机制，而 WebAssembly 却没有这个机制，因为它在比较底层的环境中运行，我们只能靠自己分配内存。</p>
+<p>目前有一个关于 WebAssembly 的<a target="_blank" rel="noopener" href="https://github.com/WebAssembly/gc/blob/main/proposals/gc/MVP.md">提案</a>，涉及实现一个垃圾回收机制，但可惜还处于 Stage 2，仍没有浏览器实现该功能。</p>
+<p>而本文作者发现了一个取巧的方式可以实现这个需求，那就是使用 WeakRefs，总的来说就是通过 WeakRefs 特性，自行实现一个永久循环的函数，去做垃圾回收的事情。</p>
+<p>感兴趣可以阅读相关<a target="_blank" rel="noopener" href="https://github.com/bwasti/web_assembly_experiments/tree/main/memory_management">实现代码</a>。</p>
+<h2 id="有趣的链接"><a href="#有趣的链接" class="headerlink" title="有趣的链接"></a>有趣的链接</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://it-tools.tech/">IT Tools</a>：一个开发者工具，包含日常使用的功能，如 Base64 转换、QR Code 生成，URL 解析等，使用体验极佳。</li>
+</ul>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.joshwcomeau.com/operator-lookup/">Operator Lookup</a>：输入一个 JavaScript 的操作符（e.g. +、=&gt;），将会解释该操作符的作用，对初学者非常有用。</li>
+</ul>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://gitexplorer.com/">Git Explorer</a>：通过的问答选择的方式寻找你想要的 Git 命令，从此使用 Git 命令不再求人。</li>
+</ul>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://sourabhbajaj.com/mac-setup">macOS Setup Guide</a>：本指南介绍了在新 Mac 上设置开发环境的基础知识。旨在供所有人用作设置环境或安装语言/库的指南。</li>
+</ul>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://tiny-helpers.dev/">Tiny Helpers</a>：Web 开发者的工具集合。</li>
+</ul>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://iep.utm.edu/">Internet Encyclopedia of Philosophy</a>：互联网哲学百科全书，有很多关于形而上的哲学论文。</li>
+</ul>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://stage.so/">Stage</a>：一个设计工具。</li>
+</ul>
+</div>
+  <hr class="copy-line" />
+  <div class="post-copyright">
+    <div class="copy-author">
+      <span>作者 :</span>
+      <span
+        >4Ark</span
+      >
+    </div>
+    <div class="copy-url">
+      <span>地址 :</span>
+      <a href="https://4ark.me/post/weekly-10.html">https://4ark.me/post/weekly-10.html</a>
+    </div>
+    <div class="copy-origin">
+      <span>来源 :</span>
+      <a href="https://4ark.me">https://4ark.me</a>
+    </div>
+    <div class="copy-license">著作权归作者所有，转载请联系作者获得授权。</div>
+  </div>
+</article>
+
+<div class="blog-post-comments">
+  <div id="load-disqus">
+    <p onclick="loadDisqus()" style="cursor: pointer; text-align: center">
+      🥳&nbsp;加载 Disqus 评论
+    </p>
+  </div>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments.</noscript>
+  </div>
+</div>
+ 
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Writing</a></li>
+         
+          <li><a href="/weekly">Weekly</a></li>
+         
+          <li><a href="/tags">Tags</a></li>
+         
+          <li><a href="/search">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%91%A8%E8%A7%81%E9%97%BB"><span class="toc-number">1.</span> <span class="toc-text">本周见闻</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Git-2-36-%E4%BA%AE%E7%82%B9"><span class="toc-number">1.1.</span> <span class="toc-text">Git 2.36 亮点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AEHN%EF%BC%9A%E4%BD%A0%E5%A6%82%E4%BD%95%E5%9C%A8%E7%BD%91%E4%B8%8A%E6%89%BE%E5%88%B0%E5%8F%AF%E9%9D%A0%E7%9A%84%E4%BF%A1%E6%81%AF%EF%BC%9F"><span class="toc-number">1.2.</span> <span class="toc-text">问HN：你如何在网上找到可靠的信息？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B-tips"><span class="toc-number">2.</span> <span class="toc-text">一些 tips</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#JavaScript-%E6%A0%B9%E6%8D%AE%E8%83%8C%E6%99%AF%E8%89%B2%E6%98%BE%E7%A4%BA%E5%AF%B9%E5%BA%94%E7%9A%84%E6%96%87%E5%AD%97%E9%A2%9C%E8%89%B2"><span class="toc-number">2.1.</span> <span class="toc-text">JavaScript 根据背景色显示对应的文字颜色</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8-Vim-%E4%B8%AD%E4%BF%9D%E5%AD%98%E5%8F%AA%E8%AF%BB%E6%96%87%E4%BB%B6"><span class="toc-number">2.2.</span> <span class="toc-text">在 Vim 中保存只读文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Mac-%E5%9C%A8-dock-%E9%9A%90%E8%97%8F%E7%89%B9%E5%AE%9A%E5%BA%94%E7%94%A8"><span class="toc-number">2.3.</span> <span class="toc-text">Mac 在 dock 隐藏特定应用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E4%BA%AB%E6%96%87%E7%AB%A0"><span class="toc-number">3.</span> <span class="toc-text">分享文章</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E8%8A%B1%E4%B8%A4%E5%B9%B4%E6%97%B6%E9%97%B4%E9%9D%A2%E8%AF%95%E4%B8%80%E4%B8%AA%E4%BA%BA"><span class="toc-number">3.1.</span> <span class="toc-text">怎么花两年时间面试一个人</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%A0%E5%BA%94%E8%AF%A5%E9%98%85%E8%AF%BB%E5%AD%A6%E6%9C%AF%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%A7%91%E5%AD%A6%E8%AE%BA%E6%96%87"><span class="toc-number">3.2.</span> <span class="toc-text">你应该阅读学术计算机科学论文</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WebAssembly-%E4%BD%BF%E7%94%A8JavaScript-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8"><span class="toc-number">3.3.</span> <span class="toc-text">WebAssembly 使用JavaScript 垃圾回收器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%89%E8%B6%A3%E7%9A%84%E9%93%BE%E6%8E%A5"><span class="toc-number">4.</span> <span class="toc-text">有趣的链接</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/weekly-10.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/weekly-10.html&text=周刊第10期：你如何在网上找到可靠的信息？"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/weekly-10.html&title=周刊第10期：你如何在网上找到可靠的信息？"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/weekly-10.html&is_video=false&description=周刊第10期：你如何在网上找到可靠的信息？"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=周刊第10期：你如何在网上找到可靠的信息？&body=Check out this article: https://4ark.me/post/weekly-10.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/weekly-10.html&title=周刊第10期：你如何在网上找到可靠的信息？"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/weekly-10.html&title=周刊第10期：你如何在网上找到可靠的信息？"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/weekly-10.html&title=周刊第10期：你如何在网上找到可靠的信息？"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/weekly-10.html&title=周刊第10期：你如何在网上找到可靠的信息？"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/weekly-10.html&name=周刊第10期：你如何在网上找到可靠的信息？&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/weekly-10.html&t=周刊第10期：你如何在网上找到可靠的信息？"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="dark-mobile" class="icon"><i class="fa fa-sun" id="dark-btn" aria-hidden="true"></i> Switch</a>
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    4Ark
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-190615898-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-190615898-1');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<script type="text/javascript">
+  function loadDisqus() {
+    var disqus_shortname = 'https-4ark-me'
+
+    ;(function () {
+      var dsq = document.createElement('script')
+      dsq.type = 'text/javascript'
+      dsq.async = true
+      dsq.src =
+        '//' +
+        disqus_shortname +
+        '.disqus.com/embed.js'
+      ;(
+        document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]
+      ).appendChild(dsq)
+    })()
+
+    $('#load-disqus').hide()
+  }
+</script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

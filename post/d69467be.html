@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="前言版本说明我的 AP 型号为： RG-AP220-SE 系统版本为： RGOS 11.1(5)B8 需求本次实训目的是创建一个热点，需求如下：  创建一个 SSID 为 ruijie 的 WLAN 能够自动获取 IP 地址（DHCP） 为 WLAN 添加一种加密方式  正文准备首先，我们要先把 AP 切换到胖模式 1Ruijie# ap-mode fat  可以用以下命令查看 AP 当前的模式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="锐捷无线AP学习笔记 - 入门篇">
+<meta property="og:url" content="https://4ark.me/post/d69467be.html">
+<meta property="og:site_name" content="4Ark × Blog">
+<meta property="og:description" content="前言版本说明我的 AP 型号为： RG-AP220-SE 系统版本为： RGOS 11.1(5)B8 需求本次实训目的是创建一个热点，需求如下：  创建一个 SSID 为 ruijie 的 WLAN 能够自动获取 IP 地址（DHCP） 为 WLAN 添加一种加密方式  正文准备首先，我们要先把 AP 切换到胖模式 1Ruijie# ap-mode fat  可以用以下命令查看 AP 当前的模式">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-11-05T23:01:43.000Z">
+<meta property="article:modified_time" content="2024-02-06T18:11:56.000Z">
+<meta property="article:author" content="4Ark">
+<meta property="article:tag" content="网络">
+<meta property="article:tag" content="无线AP">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>锐捷无线AP学习笔记 - 入门篇</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script>localStorage.getItem("dark_mode")==="dark"&&document.write(`<link rel="stylesheet" href="${location.origin}/css/dark.css">`)</script>
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+    <meta name="google-site-verification" content="DwDg4EuywHWNZUkTC7sG0WGv_UQekM4uRtOoaGuDJHc" />
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="4Ark × Blog" type="application/atom+xml">
+<link rel="alternate" href="/rss.xml" title="4Ark × Blog" type="application/rss+xml">
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/post/28baf5fd.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon"><i class="fa fa-moon" id="dark-btn" aria-hidden="true" onmouseover="$('#i-dark').toggle()" onmouseout="$('#i-dark').toggle()"></i></a></li>
+        <li><a class="icon" target="_blank" rel="noopener" href="https://4ark.me/atom.xml" aria-label="rss"><i class="fas fa-rss"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-dark" class="info" style="display: none;">Switch mode</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/d69467be.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/d69467be.html&text=锐捷无线AP学习笔记 - 入门篇"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/d69467be.html&title=锐捷无线AP学习笔记 - 入门篇"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/d69467be.html&is_video=false&description=锐捷无线AP学习笔记 - 入门篇"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=锐捷无线AP学习笔记 - 入门篇&body=Check out this article: https://4ark.me/post/d69467be.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/d69467be.html&title=锐捷无线AP学习笔记 - 入门篇"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/d69467be.html&title=锐捷无线AP学习笔记 - 入门篇"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/d69467be.html&title=锐捷无线AP学习笔记 - 入门篇"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/d69467be.html&title=锐捷无线AP学习笔记 - 入门篇"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/d69467be.html&name=锐捷无线AP学习笔记 - 入门篇&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/d69467be.html&t=锐捷无线AP学习笔记 - 入门篇"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E"><span class="toc-number">1.1.</span> <span class="toc-text">版本说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9C%80%E6%B1%82"><span class="toc-number">1.2.</span> <span class="toc-text">需求</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A3%E6%96%87"><span class="toc-number">2.</span> <span class="toc-text">正文</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%86%E5%A4%87"><span class="toc-number">2.1.</span> <span class="toc-text">准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA-WLAN"><span class="toc-number">2.2.</span> <span class="toc-text">创建 WLAN</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DHCP-%E6%9C%8D%E5%8A%A1"><span class="toc-number">2.3.</span> <span class="toc-text">DHCP 服务</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WLAN-%E5%8A%A0%E5%AF%86"><span class="toc-number">3.</span> <span class="toc-text">WLAN 加密</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#WEP-%E6%96%B9%E5%BC%8F"><span class="toc-number">3.1.</span> <span class="toc-text">WEP 方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PSK-%E6%8E%A5%E5%85%A5%E8%AE%A4%E8%AF%81-WPA"><span class="toc-number">3.2.</span> <span class="toc-text">PSK 接入认证 (WPA)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PSK-%E6%8E%A5%E5%85%A5%E8%AE%A4%E8%AF%81-WPA2"><span class="toc-number">3.3.</span> <span class="toc-text">PSK 接入认证 (WPA2)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#802-1x-%E6%8E%A5%E5%85%A5%E8%AE%A4%E8%AF%81"><span class="toc-number">3.4.</span> <span class="toc-text">802.1x 接入认证</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%B4%E4%B8%80%E4%B8%8B%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">4.</span> <span class="toc-text">说一下遇到的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98"><span class="toc-number">4.1.</span> <span class="toc-text">问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9C%8B%E6%B3%95"><span class="toc-number">4.2.</span> <span class="toc-text">看法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-number">5.</span> <span class="toc-text">参考链接</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        锐捷无线AP学习笔记 - 入门篇
+    </h1>
+
+
+
+    <div class="meta">
+      <span
+        class="author"
+        itemprop="author"
+        itemscope
+        itemtype="http://schema.org/Person"
+      >
+        <span itemprop="name"
+          >4Ark</span
+        >
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-11-05T23:01:43.000Z" itemprop="datePublished">2018-11-05</time>
+        
+      
+    </div>
+
+ 
+      
+        
+ 
+        
+    <div class="article-tag">
+        <i class="fas fa-hashtag"></i>
+        <a class="tag-link-link" href="/tags/%E6%97%A0%E7%BA%BFAP/" rel="tag">无线AP</a>, <a class="tag-link-link" href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag">网络</a>
+    </div>
+
+
+      
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><h3 id="版本说明"><a href="#版本说明" class="headerlink" title="版本说明"></a>版本说明</h3><p>我的 AP 型号为： RG-AP220-SE</p>
+<p>系统版本为： RGOS 11.1(5)B8</p>
+<h3 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h3><p>本次实训目的是创建一个热点，需求如下：</p>
+<ul>
+<li>创建一个 SSID 为 <code>ruijie</code> 的 WLAN</li>
+<li>能够自动获取 IP 地址（DHCP）</li>
+<li>为 WLAN 添加一种加密方式</li>
+</ul>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><p>首先，我们要先把 AP 切换到胖模式</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">Ruijie#</span><span class="bash"> ap-mode fat</span></span><br></pre></td></tr></table></figure>
+
+<p>可以用以下命令查看 AP 当前的模式</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">Ruijie#</span><span class="bash"> show ap-mode</span></span><br></pre></td></tr></table></figure>
+
+<p>接着开启一下无线广播转发</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">Ruijie(config)#</span><span class="bash"> data-plane wireless-broadcast <span class="built_in">enable</span></span></span><br></pre></td></tr></table></figure>
+
+<p>好了，现在就可以开始我们的实例了。</p>
+<h3 id="创建-WLAN"><a href="#创建-WLAN" class="headerlink" title="创建 WLAN"></a>创建 WLAN</h3><p>创建一个 VLAN</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">Ruijie(config)#</span><span class="bash"> vlan 1</span></span><br><span class="line"><span class="meta">Ruijie(config-vlan)#</span><span class="bash"> ex</span></span><br></pre></td></tr></table></figure>
+
+<p>以太网接口封装 VLAN</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">Ruijie(config)#</span><span class="bash"> int gigabitEthernet 0/1</span></span><br><span class="line">Ruijie(config-if-GigabitEthernet 0/1)# encapsulation dot1Q 1 // 对应 vlan</span><br><span class="line">Ruijie(config-if-GigabitEthernet 0/1)# ex</span><br></pre></td></tr></table></figure>
+
+<p>设置一下 AP 的管理地址（管理地址与网关处于相同网段下）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">Ruijie(config)#</span><span class="bash"> int bVI 1</span></span><br><span class="line">Ruijie(config-if-BVI 1)# ip address 10.10.34.250 255.255.255.0</span><br><span class="line">Ruijie(config-if-BVI 1)# ex</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注：此时，在你本机上 ping 这个地址，是可以通的（若不能 ping 通，且配置正确，请看文章结尾）。</p>
+</blockquote>
+<p>定义 SSID</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">Ruijie(config)#</span><span class="bash"> dot11 wlan 1</span></span><br><span class="line"><span class="meta">Ruijie(dot11-wlan-config)#</span><span class="bash"> vlan 1</span></span><br><span class="line"><span class="meta">Ruijie(dot11-wlan-config)#</span><span class="bash"> broadcast-ssid</span></span><br><span class="line"><span class="meta">Ruijie(dot11-wlan-config)#</span><span class="bash"> ssid ruijie</span></span><br><span class="line"><span class="meta">Ruijie(dot11-wlan-config)#</span><span class="bash"> ex</span></span><br></pre></td></tr></table></figure>
+
+<p>创建射频卡子接口</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">Ruijie(config)#</span><span class="bash"> int dot11radio 1/0.1</span></span><br><span class="line">Ruijie(config-subif-Dot11radio 1/0.1)# encapsulation dot1Q 1 // 对应 vlan</span><br><span class="line">Ruijie(config-subif-Dot11radio 1/0.1)# ex</span><br></pre></td></tr></table></figure>
+
+<p>SSID 和 射频卡进行关联</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">Ruijie(config)#</span><span class="bash"> int dot11radio 1/0</span></span><br><span class="line">Ruijie(config-if-Dot11radio 1/0)# wlan-id 1 // 对应 wlan-id</span><br><span class="line">Ruijie(config-if-Dot11radio 1/0)# ex</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注： 这时 AP 已经发出了无线信号，你可以在手机上搜索得到。</p>
+</blockquote>
+<p>设置 AP 的默认路由（也就是这个局域网的网关）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">Ruijie(config)#</span><span class="bash"> ip route 0.0.0.0 0.0.0.0 10.10.34.254</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注：做这一步之前，最好确认一下 AP 是否与默认路由相通</p>
+</blockquote>
+<p>这时，通过手动配置静态 IP，是可以成功连接 WLAN 的。</p>
+<h3 id="DHCP-服务"><a href="#DHCP-服务" class="headerlink" title="DHCP 服务"></a>DHCP 服务</h3><p>通常来说，一个网络环境下会有专门的 DHCP 服务器，所以不需要 AP 来分配地址。</p>
+<p>然而，我这里并没有 DHCP 服务器，那就只能靠 AP 来分配了。</p>
+<p>首先，开启 DHCP 服务</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">Ruijie(config)#</span><span class="bash"> service dhcp</span></span><br></pre></td></tr></table></figure>
+
+<p>排除地址，low - high</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">Ruijie(config)#</span><span class="bash"> ip dhcp excluded-address 10.10.34.8 10.10.34.254</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注：我把 8 - 254 的 IP 排除了，所以剩下的范围就是 1 - 7。</p>
+</blockquote>
+<p>配置地址池，名字为 test，以及地址段、网关、DNS</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">Ruijie(config)#</span><span class="bash"> ip dhcp pool <span class="built_in">test</span></span></span><br><span class="line"><span class="meta">Ruijie(dhcp-config)#</span><span class="bash"> network 10.10.34.0 255.255.255.0</span></span><br><span class="line"><span class="meta">Ruijie(dhcp-config)#</span><span class="bash"> default-router 10.10.34.254</span></span><br><span class="line"><span class="meta">Ruijie(dhcp-config)#</span><span class="bash"> dns-server 8.8.8.8</span></span><br></pre></td></tr></table></figure>
+
+<p>这时，手机上是可以通过 DHCP 方式 获取到 IP 地址的。</p>
+<h2 id="WLAN-加密"><a href="#WLAN-加密" class="headerlink" title="WLAN 加密"></a>WLAN 加密</h2><p>常见的 WLAN 加密方式分为三种：</p>
+<ul>
+<li>WEP 加密</li>
+<li>PSK 接入认证</li>
+<li>802.1x 接入认证</li>
+</ul>
+<p>关于加密方式详细的介绍，请看：<a target="_blank" rel="noopener" href="http://www.ruijiery.com/uploadfile/2016/0621/20160621124933455.pdf">手册 WLAN 安全节章</a> 。</p>
+<p>配置加密方式都需要进入到相关的 wlan-id 下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">Ruijie(config)#</span><span class="bash"> wlansec 1 // 对应 wlan-id</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="WEP-方式"><a href="#WEP-方式" class="headerlink" title="WEP 方式"></a>WEP 方式</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">Ruijie(config-wlansec)#</span><span class="bash"> security static-wep-key encryption 40 ascii 1 12345</span></span><br><span class="line"><span class="meta">Ruijie(config-wlansec)#</span><span class="bash"> security static-wep-key authentication  shellare-key</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注： 密码长度可选为 （40 | 103），40 = 5 个，103 = 13 个</p>
+</blockquote>
+<h3 id="PSK-接入认证-WPA"><a href="#PSK-接入认证-WPA" class="headerlink" title="PSK 接入认证 (WPA)"></a>PSK 接入认证 (WPA)</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">Ruijie(config-wlansec)#</span><span class="bash"> security wpa <span class="built_in">enable</span></span></span><br><span class="line"><span class="meta">Ruijie(config-wlansec)#</span><span class="bash"> security wpa ciphers aes <span class="built_in">enable</span></span></span><br><span class="line"><span class="meta">Ruijie(config-wlansec)#</span><span class="bash"> security wpa akm psk <span class="built_in">enable</span></span></span><br><span class="line"><span class="meta">Ruijie(config-wlansec)#</span><span class="bash"> security wpa akm psk set-key ascii 123456789</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注：密码不得少于 8 个 字符</p>
+</blockquote>
+<h3 id="PSK-接入认证-WPA2"><a href="#PSK-接入认证-WPA2" class="headerlink" title="PSK 接入认证 (WPA2)"></a>PSK 接入认证 (WPA2)</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">Ruijie(config-wlansec)#</span><span class="bash"> security rsn <span class="built_in">enable</span></span></span><br><span class="line"><span class="meta">Ruijie(config-wlansec)#</span><span class="bash"> security rsn ciphers aes <span class="built_in">enable</span></span></span><br><span class="line"><span class="meta">Ruijie(config-wlansec)#</span><span class="bash"> security rsn akm psk <span class="built_in">enable</span></span></span><br><span class="line"><span class="meta">Ruijie(config-wlansec)#</span><span class="bash"> security rsn akm psk set-key ascii 123456789</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注：密码不得少于 8 个 字符</p>
+</blockquote>
+<h3 id="802-1x-接入认证"><a href="#802-1x-接入认证" class="headerlink" title="802.1x 接入认证"></a><strong>802.1x</strong> 接入认证</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">Ruijie(config-wlansec)#</span><span class="bash">security wpa <span class="built_in">enable</span></span></span><br><span class="line"><span class="meta">Ruijie(config-wlansec)#</span><span class="bash">security wpa ciphers aes <span class="built_in">enable</span></span></span><br></pre></td></tr></table></figure>
+
+<h2 id="说一下遇到的问题"><a href="#说一下遇到的问题" class="headerlink" title="说一下遇到的问题"></a>说一下遇到的问题</h2><h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>在这次实训中，我用到 vlan 1，一切正常。</p>
+<p>但是，当我使用另外的 vlan （vlan 10）时，发现在本机并不能 ping 通 AP 的管理地址。</p>
+<p>这个时候，AP 不能与网关连通，所以无法正确配置 DHCP 服务器（手动配置静态没有问题）。</p>
+<h3 id="看法"><a href="#看法" class="headerlink" title="看法"></a>看法</h3><p>初步看来，可能是因为我机房的二层交换机的所有接口都在 vlan 1 下，且没有配置为 trunk 模式，故不能 ping 通。</p>
+<p>但是我不知道这个交换机的密码，所以无法取证。</p>
+<p>如果你也遇到这个问题，且有靠谱的解决方案，请联系我，谢谢。</p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
+<li><p><a target="_blank" rel="noopener" href="http://www.ruijiery.com/uploadfile/2016/0621/20160621124933455.pdf">http://www.ruijiery.com/uploadfile/2016/0621/20160621124933455.pdf</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u012318074/article/details/52599540">https://blog.csdn.net/u012318074/article/details/52599540</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://wenku.baidu.com/view/ab3addf8af1ffc4ffe47ac93.html">https://wenku.baidu.com/view/ab3addf8af1ffc4ffe47ac93.html</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://wenku.baidu.com/view/fcc1dda9d0d233d4b14e6973.html">https://wenku.baidu.com/view/fcc1dda9d0d233d4b14e6973.html</a></p>
+</li>
+</ul>
+</div>
+  <hr class="copy-line" />
+  <div class="post-copyright">
+    <div class="copy-author">
+      <span>作者 :</span>
+      <span
+        >4Ark</span
+      >
+    </div>
+    <div class="copy-url">
+      <span>地址 :</span>
+      <a href="https://4ark.me/post/d69467be.html">https://4ark.me/post/d69467be.html</a>
+    </div>
+    <div class="copy-origin">
+      <span>来源 :</span>
+      <a href="https://4ark.me">https://4ark.me</a>
+    </div>
+    <div class="copy-license">著作权归作者所有，转载请联系作者获得授权。</div>
+  </div>
+</article>
+
+<div class="blog-post-comments">
+  <div id="load-disqus">
+    <p onclick="loadDisqus()" style="cursor: pointer; text-align: center">
+      🥳&nbsp;加载 Disqus 评论
+    </p>
+  </div>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments.</noscript>
+  </div>
+</div>
+ 
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Writing</a></li>
+         
+          <li><a href="/weekly">Weekly</a></li>
+         
+          <li><a href="/tags">Tags</a></li>
+         
+          <li><a href="/search">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%88%E6%9C%AC%E8%AF%B4%E6%98%8E"><span class="toc-number">1.1.</span> <span class="toc-text">版本说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9C%80%E6%B1%82"><span class="toc-number">1.2.</span> <span class="toc-text">需求</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A3%E6%96%87"><span class="toc-number">2.</span> <span class="toc-text">正文</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%86%E5%A4%87"><span class="toc-number">2.1.</span> <span class="toc-text">准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA-WLAN"><span class="toc-number">2.2.</span> <span class="toc-text">创建 WLAN</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DHCP-%E6%9C%8D%E5%8A%A1"><span class="toc-number">2.3.</span> <span class="toc-text">DHCP 服务</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#WLAN-%E5%8A%A0%E5%AF%86"><span class="toc-number">3.</span> <span class="toc-text">WLAN 加密</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#WEP-%E6%96%B9%E5%BC%8F"><span class="toc-number">3.1.</span> <span class="toc-text">WEP 方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PSK-%E6%8E%A5%E5%85%A5%E8%AE%A4%E8%AF%81-WPA"><span class="toc-number">3.2.</span> <span class="toc-text">PSK 接入认证 (WPA)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PSK-%E6%8E%A5%E5%85%A5%E8%AE%A4%E8%AF%81-WPA2"><span class="toc-number">3.3.</span> <span class="toc-text">PSK 接入认证 (WPA2)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#802-1x-%E6%8E%A5%E5%85%A5%E8%AE%A4%E8%AF%81"><span class="toc-number">3.4.</span> <span class="toc-text">802.1x 接入认证</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%B4%E4%B8%80%E4%B8%8B%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">4.</span> <span class="toc-text">说一下遇到的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98"><span class="toc-number">4.1.</span> <span class="toc-text">问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9C%8B%E6%B3%95"><span class="toc-number">4.2.</span> <span class="toc-text">看法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-number">5.</span> <span class="toc-text">参考链接</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/d69467be.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/d69467be.html&text=锐捷无线AP学习笔记 - 入门篇"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/d69467be.html&title=锐捷无线AP学习笔记 - 入门篇"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/d69467be.html&is_video=false&description=锐捷无线AP学习笔记 - 入门篇"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=锐捷无线AP学习笔记 - 入门篇&body=Check out this article: https://4ark.me/post/d69467be.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/d69467be.html&title=锐捷无线AP学习笔记 - 入门篇"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/d69467be.html&title=锐捷无线AP学习笔记 - 入门篇"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/d69467be.html&title=锐捷无线AP学习笔记 - 入门篇"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/d69467be.html&title=锐捷无线AP学习笔记 - 入门篇"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/d69467be.html&name=锐捷无线AP学习笔记 - 入门篇&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/d69467be.html&t=锐捷无线AP学习笔记 - 入门篇"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="dark-mobile" class="icon"><i class="fa fa-sun" id="dark-btn" aria-hidden="true"></i> Switch</a>
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    4Ark
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-190615898-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-190615898-1');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<script type="text/javascript">
+  function loadDisqus() {
+    var disqus_shortname = 'https-4ark-me'
+
+    ;(function () {
+      var dsq = document.createElement('script')
+      dsq.type = 'text/javascript'
+      dsq.async = true
+      dsq.src =
+        '//' +
+        disqus_shortname +
+        '.disqus.com/embed.js'
+      ;(
+        document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]
+      ).appendChild(dsq)
+    })()
+
+    $('#load-disqus').hide()
+  }
+</script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

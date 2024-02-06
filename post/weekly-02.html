@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="俄乌战争这是一个技术、踩坑记录、日常吐槽的博客，我本不想给它蒙上太多政治色彩，但原谅我实在是憋不住了。 2022年2月24号，俄罗斯入侵乌拉克，与此同时，国内的媒体出现了铺天盖地的假信息、在微博、抖音上网友们更是发表了各种极度令人恶心的言论，让我备受震撼。 你们到底有没有意识到，这可是战争，是要死很多人的！或许你们认为这不关你的事、或许你们认为这只是开开玩笑、又或许你们认为这本就是一场正义的战争。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="周刊第2期：珍惜和平">
+<meta property="og:url" content="https://4ark.me/post/weekly-02.html">
+<meta property="og:site_name" content="4Ark × Blog">
+<meta property="og:description" content="俄乌战争这是一个技术、踩坑记录、日常吐槽的博客，我本不想给它蒙上太多政治色彩，但原谅我实在是憋不住了。 2022年2月24号，俄罗斯入侵乌拉克，与此同时，国内的媒体出现了铺天盖地的假信息、在微博、抖音上网友们更是发表了各种极度令人恶心的言论，让我备受震撼。 你们到底有没有意识到，这可是战争，是要死很多人的！或许你们认为这不关你的事、或许你们认为这只是开开玩笑、又或许你们认为这本就是一场正义的战争。">
+<meta property="og:locale">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202202282142093.jpeg">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202202282142529.jpeg">
+<meta property="og:image" content="https://www.leemeichin.com/img/yes-i-can-connect-to-a-db-in-css/tweet.jpg">
+<meta property="article:published_time" content="2022-02-27T00:00:00.000Z">
+<meta property="article:modified_time" content="2024-02-06T18:11:56.000Z">
+<meta property="article:author" content="4Ark">
+<meta property="article:tag" content="weekly">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202202282142093.jpeg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>周刊第2期：珍惜和平</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script>localStorage.getItem("dark_mode")==="dark"&&document.write(`<link rel="stylesheet" href="${location.origin}/css/dark.css">`)</script>
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+    <meta name="google-site-verification" content="DwDg4EuywHWNZUkTC7sG0WGv_UQekM4uRtOoaGuDJHc" />
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="4Ark × Blog" type="application/atom+xml">
+<link rel="alternate" href="/rss.xml" title="4Ark × Blog" type="application/rss+xml">
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/post/hg-tips.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/post/weekly-01.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon"><i class="fa fa-moon" id="dark-btn" aria-hidden="true" onmouseover="$('#i-dark').toggle()" onmouseout="$('#i-dark').toggle()"></i></a></li>
+        <li><a class="icon" target="_blank" rel="noopener" href="https://4ark.me/atom.xml" aria-label="rss"><i class="fas fa-rss"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-dark" class="info" style="display: none;">Switch mode</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/weekly-02.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/weekly-02.html&text=周刊第2期：珍惜和平"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/weekly-02.html&title=周刊第2期：珍惜和平"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/weekly-02.html&is_video=false&description=周刊第2期：珍惜和平"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=周刊第2期：珍惜和平&body=Check out this article: https://4ark.me/post/weekly-02.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/weekly-02.html&title=周刊第2期：珍惜和平"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/weekly-02.html&title=周刊第2期：珍惜和平"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/weekly-02.html&title=周刊第2期：珍惜和平"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/weekly-02.html&title=周刊第2期：珍惜和平"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/weekly-02.html&name=周刊第2期：珍惜和平&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/weekly-02.html&t=周刊第2期：珍惜和平"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%84%E4%B9%8C%E6%88%98%E4%BA%89"><span class="toc-number">1.</span> <span class="toc-text">俄乌战争</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E4%BA%AB%E6%96%87%E7%AB%A0"><span class="toc-number">2.</span> <span class="toc-text">分享文章</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Yes-I-can-connect-to-a-DB-in-CSS"><span class="toc-number">2.1.</span> <span class="toc-text">Yes, I can connect to a DB in CSS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%88%91%E4%B8%BA%E4%BB%80%E4%B9%88%E8%AF%B4-Vim-%E6%AF%94-VSCode-%E6%9B%B4%E5%A5%BD%E7%94%A8"><span class="toc-number">2.2.</span> <span class="toc-text">我为什么说 Vim 比 VSCode 更好用</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%AA%E4%BA%BA%E6%80%9D%E8%80%83"><span class="toc-number">2.2.0.1.</span> <span class="toc-text">个人思考</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CSS-not-%E4%BC%AA%E7%B1%BB%E9%80%89%E6%8B%A9%E5%99%A8%E5%B7%B2%E6%94%AF%E6%8C%81%E5%A4%8D%E6%9D%82%E5%8F%82%E6%95%B0"><span class="toc-number">3.</span> <span class="toc-text">CSS :not()伪类选择器已支持复杂参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Facebook-%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%96%87%E5%8C%96%E7%8B%AC%E7%89%B9%E4%B9%8B%E5%A4%84"><span class="toc-number">4.</span> <span class="toc-text">Facebook 工程师文化独特之处</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%89%E8%B6%A3%E7%9A%84%E9%93%BE%E6%8E%A5"><span class="toc-number">5.</span> <span class="toc-text">有趣的链接</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        周刊第2期：珍惜和平
+    </h1>
+
+
+
+    <div class="meta">
+      <span
+        class="author"
+        itemprop="author"
+        itemscope
+        itemtype="http://schema.org/Person"
+      >
+        <span itemprop="name"
+          >4Ark</span
+        >
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-02-27T00:00:00.000Z" itemprop="datePublished">2022-02-27</time>
+        
+      
+    </div>
+
+ 
+      
+        <div class="article-tag">
+            <i class="fa fa-calendar-week"></i>
+            <a href="/weekly">Weekly</a>
+        </div>
+      
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody"><h2 id="俄乌战争"><a href="#俄乌战争" class="headerlink" title="俄乌战争"></a>俄乌战争</h2><p>这是一个技术、踩坑记录、日常吐槽的博客，我本不想给它蒙上太多政治色彩，但原谅我实在是憋不住了。</p>
+<p>2022年2月24号，俄罗斯入侵乌拉克，与此同时，国内的媒体出现了铺天盖地的假信息、在微博、抖音上网友们更是发表了各种极度令人恶心的言论，让我备受震撼。</p>
+<p>你们到底有没有意识到，这可是战争，是要死很多人的！或许你们认为这不关你的事、或许你们认为这只是开开玩笑、又或许你们认为这本就是一场正义的战争。</p>
+<p>每个人都可以有自己的政治立场，但我希望你们积点口德，不要拿这种事情来口嗨。</p>
+<p>我想在此引用几句在网上看到的几句话，也正是我想说的：</p>
+<blockquote>
+<p>我们，强烈反对俄罗斯对乌克兰发动的战争。无论俄罗斯有千种理由，万般借口，以武力入侵一个主权国家都是对以联合国宪章为基础的国际关系准则的践踏，是对现有国际安全体系的破坏。<br /><br>我们，坚决支持乌克兰人民保家卫国的行动。我们担忧俄罗斯的武力行为将导致欧洲乃至整个世界局势的动荡，引发更大范围的人道主义灾难。<br /><br>我们，强烈呼吁俄罗斯政府和普京总统停止战争，用谈判解决纠纷。强权不仅会使文明进步的成果和国际正义的原则毁于一旦，还会给俄罗斯民族带来巨大的耻辱和灾难。<br /><br>和平始于人心的渴望。我们，反对不义战争。</p>
+</blockquote>
+<blockquote>
+<p>没有任何一个战争的挑衅者，值得歌颂。<br /><br>也没有任何一个战争的发起者，值得赞扬。<br /><br>民族主义在现实世界值得提倡，但沦为民粹时就会反噬自己。<br /><br>宏大叙事是审美的一种需要，但如果全民歌颂将让集体万劫不复。<br /></p>
+</blockquote>
+<p>根据 The Kyiv Independent 报道，下面是目前双方的战损情况：</p>
+<div style="display: flex;">
+    <img width="50%" src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202202282142093.jpeg">
+    <img width="50%" src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202202282142529.jpeg">
+</div>
+
+<p>这一串数字的背后，是无数家庭的血和泪！</p>
+<p>请珍惜来之不易的和平，任何为战争欢呼的人都是傻逼！</p>
+<h2 id="分享文章"><a href="#分享文章" class="headerlink" title="分享文章"></a>分享文章</h2><blockquote>
+<p>一些本周阅读过的好文章、以及我的一些总结和个人思考；非常建议你直接阅读原文，毕竟一千个读者就有一千个哈姆雷特，而且我的理解可能是错的。</p>
+</blockquote>
+<h3 id="Yes-I-can-connect-to-a-DB-in-CSS"><a href="#Yes-I-can-connect-to-a-DB-in-CSS" class="headerlink" title="Yes, I can connect to a DB in CSS"></a><a target="_blank" rel="noopener" href="https://www.leemeichin.com/posts/yes-i-can-connect-to-a-db-in-css.html">Yes, I can connect to a DB in CSS</a></h3><p><em>原文地址：<a target="_blank" rel="noopener" href="https://www.leemeichin.com/posts/yes-i-can-connect-to-a-db-in-css.html">《Yes, I can connect to a DB in CSS》 | kamelåså</a></em></p>
+<p><img src="https://www.leemeichin.com/img/yes-i-can-connect-to-a-db-in-css/tweet.jpg"></p>
+<blockquote>
+<p>招聘人员会说：</p>
+<p>我们正在寻找可以使用 CSS 连接到数据库的人。</p>
+</blockquote>
+<p>这能做到吗？是的，这篇文章的作者就做到了。</p>
+<p>首先需要了解两个东西：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/Guide/Houdini">CSS Houdini</a>：可以通过 JavaScript 访问并控制 CSS 模型，其最大的特点就是 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/PaintWorklet">PaintWorklet</a>，它可以以编程方式生成一个图像，也与我们所熟悉的 Canvas 类似。</li>
+<li><a target="_blank" rel="noopener" href="https://sql.js.org/">sql.js</a>：它是一个 JS 库，允许你在浏览器中创建并查询一个关系型数据库，使用一个存储在浏览器内的虚拟数据库文件，所以数据的存储和修改都不是持久化的；不过它还支持将 SQLite 编译成 Wasm，也就意味着可以在浏览器访问现有的 SQLite 数据库文件。</li>
+</ul>
+<p>做法就是：在 JS 中通过 Houdini 获取 CSS 变量，然后传递给 SQLite 的 DB 实例。</p>
+<p>最终效果看这里：<a target="_blank" rel="noopener" href="https://sqlcss.xyz/">https://sqlcss.xyz</a></p>
+<h3 id="我为什么说-Vim-比-VSCode-更好用"><a href="#我为什么说-Vim-比-VSCode-更好用" class="headerlink" title="我为什么说 Vim 比 VSCode 更好用"></a><a target="_blank" rel="noopener" href="https://sean-warman.medium.com/why-vim-is-better-than-vscode-d09e2355eb37">我为什么说 Vim 比 VSCode 更好用</a></h3><p><em>原文地址：<a target="_blank" rel="noopener" href="https://sean-warman.medium.com/why-vim-is-better-than-vscode-d09e2355eb37">《Why Vim is better than VSCode》 | Sean</a></em></p>
+<p>随着微软开始全面拥抱开源世界，推出了一个又一个大型开源项目，例如 VSCode，就已经在代码编辑器中占据了一个重要的位置，并且随着 <a target="_blank" rel="noopener" href="https://github.com/features/codespaces">Codespaces</a> 和 <a target="_blank" rel="noopener" href="https://github.com/gitpod-io/openvscode-server">Open VSCode Server</a> 的推出，可以轻松在浏览器上进行远程开发。</p>
+<p>除此之外，微软还开源了一个项目叫做 <a target="_blank" rel="noopener" href="https://github.com/xtermjs/xterm.js/">xterm.js</a>，用于 VSCode 的终端，这也让浏览器实现终端功能变得更加简单。</p>
+<p>作者认为相比于 VSCode，还是 Vim更胜一筹，因为它轻巧快熟，可以在服务器上通过 SSH 写代码，所有事情都可以在终端中完成，可移植性和可配置性都非常高，并且基于 xterm.js 也可以轻松实现在浏览器上使用 Vim 进行远程开发。</p>
+<p>它并不像很多人想象得那么难以上手，它甚至让代码写起来就像打游戏一样，因为它的控制方式与游戏相似，都是通过各种命令的组合操作。</p>
+<p>大多数命令有两个、三个或四个部分。三部分结构的一个版本是这样的：操作符（operator）-文本对象（text object）-动作（motion）。</p>
+<p>操作符包括删除（delete）、更改（change）、视觉选择（visual select）和替换（replace），每次选一个使用。</p>
+<p>所以可以这样组合：</p>
+<ul>
+<li>di’ —— 删除（delete）“单引号”内（inside）的内容。</li>
+<li>da” —— 删除“双引号”周围（around）的内容。</li>
+<li>dit —— 删除 html 标签（tag）内的内容。</li>
+<li>ci[ —— 改变（change）[方括号] 内的内容。</li>
+</ul>
+<h5 id="个人思考"><a href="#个人思考" class="headerlink" title="个人思考"></a>个人思考</h5><p>对于 Vim，我一直在想要学习、放弃之间反复横跳，以至于到现在也只会一些简单的编辑，没有感受过 Vim 命令组合的强大。</p>
+<p>但此文只是举了几个例子，就让我更加了解 Vim 的命令组合，重新燃起我想要学习 Vim 的热情。</p>
+<h2 id="CSS-not-伪类选择器已支持复杂参数"><a href="#CSS-not-伪类选择器已支持复杂参数" class="headerlink" title="CSS :not()伪类选择器已支持复杂参数"></a><a target="_blank" rel="noopener" href="https://www.zhangxinxu.com/wordpress/2022/02/css-not-pseudo-class-list-argument/?utm_source=tuicool&utm_medium=referral">CSS :not()伪类选择器已支持复杂参数</a></h2><p><em>原文地址：<a target="_blank" rel="noopener" href="https://www.zhangxinxu.com/wordpress/2022/02/css-not-pseudo-class-list-argument/?utm_source=tuicool&utm_medium=referral">《CSS :not()伪类选择器已支持复杂参数》 | 张鑫旭</a></em></p>
+<p>新特性：</p>
+<ul>
+<li>支持多个选择器：<code>:not(.a, .b)</code></li>
+<li>权重的区别：无论 :not() 内部有多少个选择器，最终只计算 :not() 本身这一个标签选择器</li>
+</ul>
+<h2 id="Facebook-工程师文化独特之处"><a href="#Facebook-工程师文化独特之处" class="headerlink" title="Facebook 工程师文化独特之处"></a><a target="_blank" rel="noopener" href="https://chinese.catchen.me/2022/02/unique-engineering-culture-of-facebook.html">Facebook 工程师文化独特之处</a></h2><p><em>原文地址：<a target="_blank" rel="noopener" href="https://chinese.catchen.me/2022/02/unique-engineering-culture-of-facebook.html">《Facebook 工程师文化独特之处》 | Cat Chen</a></em></p>
+<p>作者在 Facebook 工作了 7 年，结合 Facebook 之前和之后的其它公司的经验， 本文就分享了一些作者觉得属于 Facebook 的独特文化的地方。</p>
+<ul>
+<li>工程师对产品结果负责任<ul>
+<li>工程师考评不只看技术，从高级工程师开始，考评主要看对产品结果的产出</li>
+<li>假如产品的留存率没有得到提高，则工程师、产品经理的考评都会得到惩罚</li>
+<li>鼓励下属自行定义「什么叫做成功」，而不是告诉下属「做什么才能成功」</li>
+</ul>
+</li>
+<li>基础架构被视为内部产品<ul>
+<li>基础架构在公司内部推广</li>
+</ul>
+</li>
+<li>救火比防火更容易获得回报<ul>
+<li>如果你做的事无法量化，即便它是非常有用的，公司也会认为这是无意义的</li>
+<li>举个例子：如果在小镇未发生火灾前，即便消防队长在背后默默做了很多事情防范，大家也不会认为这是你的功劳；相反，只有在发生过一次非常严重的火灾后，你做的事才能体现价值。</li>
+<li>这就是为什么 Facebook 内部那么多问题处于起火状态，因为不起火就没有救火英雄。</li>
+</ul>
+</li>
+</ul>
+<h2 id="有趣的链接"><a href="#有趣的链接" class="headerlink" title="有趣的链接"></a>有趣的链接</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://npm.runkit.com/">NPM RunKit</a>：直接在浏览器中尝试任何 npm 软件包，如果你也曾有过与我一样的经历，想尝试一下某个库的运行结果，由于无法直接在浏览器 console 中运行，最终只能选择在项目内随便找个地方运行的话，那就可以试试这个工具，非常简单快捷，只需在 url 后面补上你想要的 npm 包名，如 <a target="_blank" rel="noopener" href="https://npm.runkit.com/dayjs">dayjs</a>。</li>
+</ul>
+</div>
+  <hr class="copy-line" />
+  <div class="post-copyright">
+    <div class="copy-author">
+      <span>作者 :</span>
+      <span
+        >4Ark</span
+      >
+    </div>
+    <div class="copy-url">
+      <span>地址 :</span>
+      <a href="https://4ark.me/post/weekly-02.html">https://4ark.me/post/weekly-02.html</a>
+    </div>
+    <div class="copy-origin">
+      <span>来源 :</span>
+      <a href="https://4ark.me">https://4ark.me</a>
+    </div>
+    <div class="copy-license">著作权归作者所有，转载请联系作者获得授权。</div>
+  </div>
+</article>
+
+<div class="blog-post-comments">
+  <div id="load-disqus">
+    <p onclick="loadDisqus()" style="cursor: pointer; text-align: center">
+      🥳&nbsp;加载 Disqus 评论
+    </p>
+  </div>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments.</noscript>
+  </div>
+</div>
+ 
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Writing</a></li>
+         
+          <li><a href="/weekly">Weekly</a></li>
+         
+          <li><a href="/tags">Tags</a></li>
+         
+          <li><a href="/search">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%84%E4%B9%8C%E6%88%98%E4%BA%89"><span class="toc-number">1.</span> <span class="toc-text">俄乌战争</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E4%BA%AB%E6%96%87%E7%AB%A0"><span class="toc-number">2.</span> <span class="toc-text">分享文章</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Yes-I-can-connect-to-a-DB-in-CSS"><span class="toc-number">2.1.</span> <span class="toc-text">Yes, I can connect to a DB in CSS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%88%91%E4%B8%BA%E4%BB%80%E4%B9%88%E8%AF%B4-Vim-%E6%AF%94-VSCode-%E6%9B%B4%E5%A5%BD%E7%94%A8"><span class="toc-number">2.2.</span> <span class="toc-text">我为什么说 Vim 比 VSCode 更好用</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%AA%E4%BA%BA%E6%80%9D%E8%80%83"><span class="toc-number">2.2.0.1.</span> <span class="toc-text">个人思考</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CSS-not-%E4%BC%AA%E7%B1%BB%E9%80%89%E6%8B%A9%E5%99%A8%E5%B7%B2%E6%94%AF%E6%8C%81%E5%A4%8D%E6%9D%82%E5%8F%82%E6%95%B0"><span class="toc-number">3.</span> <span class="toc-text">CSS :not()伪类选择器已支持复杂参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Facebook-%E5%B7%A5%E7%A8%8B%E5%B8%88%E6%96%87%E5%8C%96%E7%8B%AC%E7%89%B9%E4%B9%8B%E5%A4%84"><span class="toc-number">4.</span> <span class="toc-text">Facebook 工程师文化独特之处</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%89%E8%B6%A3%E7%9A%84%E9%93%BE%E6%8E%A5"><span class="toc-number">5.</span> <span class="toc-text">有趣的链接</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/weekly-02.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/weekly-02.html&text=周刊第2期：珍惜和平"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/weekly-02.html&title=周刊第2期：珍惜和平"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/weekly-02.html&is_video=false&description=周刊第2期：珍惜和平"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=周刊第2期：珍惜和平&body=Check out this article: https://4ark.me/post/weekly-02.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/weekly-02.html&title=周刊第2期：珍惜和平"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/weekly-02.html&title=周刊第2期：珍惜和平"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/weekly-02.html&title=周刊第2期：珍惜和平"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/weekly-02.html&title=周刊第2期：珍惜和平"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/weekly-02.html&name=周刊第2期：珍惜和平&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/weekly-02.html&t=周刊第2期：珍惜和平"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="dark-mobile" class="icon"><i class="fa fa-sun" id="dark-btn" aria-hidden="true"></i> Switch</a>
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    4Ark
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-190615898-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-190615898-1');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<script type="text/javascript">
+  function loadDisqus() {
+    var disqus_shortname = 'https-4ark-me'
+
+    ;(function () {
+      var dsq = document.createElement('script')
+      dsq.type = 'text/javascript'
+      dsq.async = true
+      dsq.src =
+        '//' +
+        disqus_shortname +
+        '.disqus.com/embed.js'
+      ;(
+        document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]
+      ).appendChild(dsq)
+    })()
+
+    $('#load-disqus').hide()
+  }
+</script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="前言如果同学们已经开始使用 Composition API，那么我们可能都会遇到类似的问题，那就是有时候我们调用 getCurrentInstance() ，它返回的居然是 null ，举个例子： 1234567891011121314151617181920212223242526272829303132333435363738394041&lt;template&gt;  &lt;div&amp;gt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从 Composition API 源码分析 getCurrentInstance() 为何返回 null">
+<meta property="og:url" content="https://4ark.me/post/87ba8d8b.html">
+<meta property="og:site_name" content="4Ark × Blog">
+<meta property="og:description" content="前言如果同学们已经开始使用 Composition API，那么我们可能都会遇到类似的问题，那就是有时候我们调用 getCurrentInstance() ，它返回的居然是 null ，举个例子： 1234567891011121314151617181920212223242526272829303132333435363738394041&lt;template&gt;  &lt;div&amp;gt">
+<meta property="og:locale">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/image.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210116224432.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210116224450.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210116224510.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210116224526.png">
+<meta property="article:published_time" content="2021-01-16T22:39:55.000Z">
+<meta property="article:modified_time" content="2024-02-06T18:11:56.000Z">
+<meta property="article:author" content="4Ark">
+<meta property="article:tag" content="前端">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="源码解析">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/image.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>从 Composition API 源码分析 getCurrentInstance() 为何返回 null</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script>localStorage.getItem("dark_mode")==="dark"&&document.write(`<link rel="stylesheet" href="${location.origin}/css/dark.css">`)</script>
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+    <meta name="google-site-verification" content="DwDg4EuywHWNZUkTC7sG0WGv_UQekM4uRtOoaGuDJHc" />
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="4Ark × Blog" type="application/atom+xml">
+<link rel="alternate" href="/rss.xml" title="4Ark × Blog" type="application/rss+xml">
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/posts/bao-ren-shao-qing-shu.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/posts/2020-summary.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon"><i class="fa fa-moon" id="dark-btn" aria-hidden="true" onmouseover="$('#i-dark').toggle()" onmouseout="$('#i-dark').toggle()"></i></a></li>
+        <li><a class="icon" target="_blank" rel="noopener" href="https://4ark.me/atom.xml" aria-label="rss"><i class="fas fa-rss"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-dark" class="info" style="display: none;">Switch mode</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/87ba8d8b.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/87ba8d8b.html&text=从 Composition API 源码分析 getCurrentInstance() 为何返回 null"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/87ba8d8b.html&title=从 Composition API 源码分析 getCurrentInstance() 为何返回 null"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/87ba8d8b.html&is_video=false&description=从 Composition API 源码分析 getCurrentInstance() 为何返回 null"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=从 Composition API 源码分析 getCurrentInstance() 为何返回 null&body=Check out this article: https://4ark.me/post/87ba8d8b.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/87ba8d8b.html&title=从 Composition API 源码分析 getCurrentInstance() 为何返回 null"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/87ba8d8b.html&title=从 Composition API 源码分析 getCurrentInstance() 为何返回 null"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/87ba8d8b.html&title=从 Composition API 源码分析 getCurrentInstance() 为何返回 null"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/87ba8d8b.html&title=从 Composition API 源码分析 getCurrentInstance() 为何返回 null"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/87ba8d8b.html&name=从 Composition API 源码分析 getCurrentInstance() 为何返回 null&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/87ba8d8b.html&t=从 Composition API 源码分析 getCurrentInstance() 为何返回 null"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%AA%E9%95%BF%E4%B8%8D%E8%AF%BB"><span class="toc-number">2.</span> <span class="toc-text">太长不读</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90%E8%BF%87%E7%A8%8B"><span class="toc-number">3.</span> <span class="toc-text">分析过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        从 Composition API 源码分析 getCurrentInstance() 为何返回 null
+    </h1>
+
+
+
+    <div class="meta">
+      <span
+        class="author"
+        itemprop="author"
+        itemscope
+        itemtype="http://schema.org/Person"
+      >
+        <span itemprop="name"
+          >4Ark</span
+        >
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-01-16T22:39:55.000Z" itemprop="datePublished">2021-01-16</time>
+        
+      
+    </div>
+
+ 
+      
+        
+ 
+        
+    <div class="article-tag">
+        <i class="fas fa-hashtag"></i>
+        <a class="tag-link-link" href="/tags/Vue/" rel="tag">Vue</a>, <a class="tag-link-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a>, <a class="tag-link-link" href="/tags/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" rel="tag">源码解析</a>
+    </div>
+
+
+      
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>如果同学们已经开始使用 Composition API，那么我们可能都会遇到类似的问题，那就是有时候我们调用 <code>getCurrentInstance()</code> ，它返回的居然是 <code>null</code> ，举个例子：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>&#123;&#123; count &#125;&#125;<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&quot;increase&quot;</span>&gt;</span>Increase<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">  <span class="keyword">import</span> &#123;</span></span><br><span class="line"><span class="javascript">    defineComponent,</span></span><br><span class="line"><span class="javascript">    ref,</span></span><br><span class="line"><span class="javascript">    getCurrentInstance</span></span><br><span class="line"><span class="javascript">  &#125; <span class="keyword">from</span> <span class="string">&#x27;@vue/composition-api&#x27;</span></span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript">  <span class="function"><span class="keyword">function</span> <span class="title">useIncrease</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">    <span class="keyword">const</span> count = ref(<span class="number">0</span>)</span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript">    <span class="function"><span class="keyword">function</span> <span class="title">increase</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">      count.value++</span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript">      <span class="comment">// 假设我们还要访问当前实例来做些什么</span></span></span><br><span class="line"><span class="javascript">      getCurrentInstance().doSomething <span class="comment">// 但 getCurrentInstance() 返回的是 null</span></span></span><br><span class="line"><span class="javascript">    &#125;</span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript">    <span class="keyword">return</span> &#123;</span></span><br><span class="line"><span class="javascript">      count,</span></span><br><span class="line"><span class="javascript">      increase</span></span><br><span class="line"><span class="javascript">    &#125;</span></span><br><span class="line"><span class="javascript">  &#125;</span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript">  <span class="keyword">export</span> <span class="keyword">default</span> defineComponent(&#123;</span></span><br><span class="line"><span class="javascript">    <span class="function"><span class="title">setup</span>(<span class="params"></span>)</span> &#123;</span></span><br><span class="line"><span class="javascript">      <span class="keyword">const</span> &#123; count, increase &#125; = useIncrease()</span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript">      <span class="keyword">return</span> &#123;</span></span><br><span class="line"><span class="javascript">        count,</span></span><br><span class="line"><span class="javascript">        increase</span></span><br><span class="line"><span class="javascript">      &#125;</span></span><br><span class="line"><span class="javascript">    &#125;</span></span><br><span class="line"><span class="javascript">  &#125;)</span></span><br><span class="line"><span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>或许有些同学已经知道，只要我们把该方法的调用摆到外面，那它就能正常工作了：</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">function useIncrease() &#123;</span><br><span class="line"><span class="addition">+  const vm = getCurrentInstance()</span></span><br><span class="line">  const count = ref(0)</span><br><span class="line"></span><br><span class="line">  function increase() &#123;</span><br><span class="line">    count.value++</span><br><span class="line"></span><br><span class="line"><span class="deletion">-   getCurrentInstance().doSomething</span></span><br><span class="line"><span class="addition">+   vm.doSomething // 这时能够正常访问</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return &#123;</span><br><span class="line">    count,</span><br><span class="line">    increase,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>另外其实不止 <code>getCurrentInstance()</code> ，还有诸如： <code>useStore</code> 、 <code>useRouter</code> 这些跟 Vue 实例沾边的都会有这个问题，不过本文只讨论 <code>getCurrentInstance()</code>，至于其它这些我不太清楚，所以不敢乱下结论。</p>
+<p>我之前对此一直没怎么深究，满足于知道这样做能使它正常工作就足够了。但是，当我今天看到这篇文章《<a target="_blank" rel="noopener" href="https://juejin.cn/post/6917592199140458504">使用 Vue3 的 CompositionAPI 来优化代码量</a>》的时候，里面也提到了一样的问题，只是这位同学认为像 <code>getCurrentInstance()</code> 方法只能在 <code>setup()</code> 中调用，而无法在外部的 <code>hooks</code> 方法中调用时，我意识到这个问题必须得讲清楚，否则会造成很多误解。</p>
+<p>但当我想在评论区提醒一波时，我发现其实我也不清楚背后的缘由，索性就趁此机会，好好了解一下为什么会有这么神奇的事情。毕竟，只知道能工作的解决方法是不够的，还要知道它为什么会这样。</p>
+<p>但 Google 一番，发现没有对这个问题做太多解读（难道这件事不值得疑惑吗？），从 Composition API 官方仓库的 <a target="_blank" rel="noopener" href="https://github.com/vuejs/composition-api/issues/455">issue</a> 中，也只是给出了与上面类似的解决方案，但并没有说为什么要这样，对此我就更加疑惑了。</p>
+<p>所以，本文就来分析一下，到底为什么在不同的位置调用 <code>getCurrentInstance()</code> 得到的结果会不一样呢？</p>
+<h2 id="太长不读"><a href="#太长不读" class="headerlink" title="太长不读"></a>太长不读</h2><p>为了不浪费同学们宝贵的时间，我先把重点放到前面，首先是到底什么时候才能访问通过 <code>getCurrentInstance()</code> 当前实例：</p>
+<ol>
+<li>只要在 <code>setup()</code> 内部调用的任何方法，都能获取到当前实例，无论函数调用栈有多深</li>
+<li>但只能在同步代码中才能访问，其它的诸如 <code>setTimeout</code>、 <code>DOM 事件</code> 、 <code>Promise</code> 这类异步代码均无法访问（建议再回头看看上面的例子</li>
+</ol>
+<p>无法访问的原因是：</p>
+<ol>
+<li>Composition API 会在调用组件的 <code>setup()</code> 前，先拿一个变量存放当前实例，以供调用 <code>getCurrentInstance()</code> 时返回，源码：<a target="_blank" rel="noopener" href="https://github.com/vuejs/composition-api/blob/master/src/mixin.ts#L95">mixin.ts#L95</a> 和 <a target="_blank" rel="noopener" href="https://github.com/vuejs/composition-api/blob/master/src/utils/instance.ts#L116">instance.ts#L116</a></li>
+<li>执行完 <code>setup()</code> 以后，会把用于存放当前实例的变量值恢复到以前的模样（也就是 <code>null</code> ），源码：<a target="_blank" rel="noopener" href="https://github.com/vuejs/composition-api/blob/master/src/utils/instance.ts#L126">instance.ts#L126</a></li>
+<li>所以，当 Composition API 内部执行到我们组件的 <code>setup()</code> 时，所有的同步代码都能访问到当前实例，但那些异步代码再去访问时，它已经恢复成 <code>null</code> 了。</li>
+</ol>
+<p>好了，就是这么简单，相信同学们下次再遇到这种问题时，就不会疑惑为什么 <code>getCurrentInstance()</code> 会返回 <code>null</code> ，因为我们知道背后的运行逻辑。</p>
+<p>结论说完了，下面开始分享一下我分析这个问题的整个过程，也希望能对同学们有一些启发。</p>
+<h2 id="分析过程"><a href="#分析过程" class="headerlink" title="分析过程"></a>分析过程</h2><p>想知道问题的所在，最直接的方法就是看源码，但是直接 clone 项目下来从头看，显然不及通过打断点来得高效，毕竟我们现在的目的还不是学习它的源码设计，只是想知道它其中一部分的运行逻辑。</p>
+<p>我们用下面的代码来做例子：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">  <span class="keyword">import</span> &#123; defineComponent, getCurrentInstance &#125; <span class="keyword">from</span> <span class="string">&#x27;@vue/composition-api&#x27;</span></span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript">  <span class="keyword">export</span> <span class="keyword">default</span> defineComponent(&#123;</span></span><br><span class="line"><span class="javascript">    <span class="function"><span class="title">setup</span>(<span class="params"></span>)</span> &#123;</span></span><br><span class="line"><span class="javascript">      <span class="keyword">debugger</span></span></span><br><span class="line"><span class="javascript">      <span class="built_in">console</span>.log(getCurrentInstance())</span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript">      <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">debugger</span></span></span><br><span class="line"><span class="javascript">        <span class="built_in">console</span>.log(getCurrentInstance())</span></span><br><span class="line"><span class="javascript">      &#125;)</span></span><br><span class="line"><span class="javascript">    &#125;</span></span><br><span class="line"><span class="javascript">  &#125;)</span></span><br><span class="line"><span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到，我们在两处调用的地方之前都加了一个断点， 先看看它们执行起来有何不同。</p>
+<p>第一次调用的内部是这样的，这时候它能够访问：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/image.png"></p>
+<p>而第二次调用的内部是这样的，这时候它已经变成了 <code>null</code> ：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210116224432.png"></p>
+<p>可以看到 <code>getCurrentInstance()</code> 的内部非常简单，只是将 <code>currentInstance</code> 给返回出来了，而这个变量显然是在外部定义的，那为什么两次调用，它的值就发生了变化呢？</p>
+<p>我们留意到断点进来的文件是：vue-composition-api.esm.js，那我们直接在 <code>node_modules</code> 下打开这个文件，先搜索一下有哪些地方修改了 <code>currentInstance</code> 这个变量，根据上图就能看到是通过 <code>setCurrentInstance()</code> 方法来修改，于是我们搜索一下这个方法的调用：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210116224450.png"></p>
+<p>可以看到一共有四处（其中一处是定义），但是光靠肉眼看也很难看出来什么，所以还是老方法，在每个调用之前加一个断点（是的，我们可以直接修改 <code>node_modules</code> 下的代码来进行调试），然后我们发现第一次调用是在 <code>activateCurrentInstance</code> ：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210116224510.png"></p>
+<p>这时候我们仔细看看这个方法的内部，就能看出些端倪：</p>
+<ol>
+<li>上图显示 <code>preVm</code> 是一个 <code>null</code></li>
+<li>而 <code>vm</code> 是一个 Vue 的实例</li>
+<li>执行完 <code>fn(vm)</code> 后，又将 <code>preVm</code> 传入到 <code>setCurrentInstance()</code> 去了</li>
+</ol>
+<p>所以，我们看看这个 <code>fn(vm)</code> 内部是什么，搜索 <code>activateCurrentInstance()</code> 的调用，发现一个很可疑的地方：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210116224526.png"></p>
+<p>很明显这里就是执行组件 <code>setup()</code> 函数的地方，再结合上图来看，我们得出结论：</p>
+<ol>
+<li>在执行组件 <code>setup()</code> 函数前，先把当前实例存放起来</li>
+<li>然后执行组件 <code>setup()</code> 函数时， <code>setup()</code> 函数内部自然就能通过 <code>getCurrentInstance()</code> 访问当前实例了</li>
+<li>等执行完 <code>setup()</code> 后，又将 <code>currentInstance</code> 重置回 null 去了（注意是同步执行 <code>setup()</code></li>
+<li>后面 <code>setup()</code> 内部的异步代码再去调用 <code>getCurrentInstance()</code> ，其实已经是 <code>null</code> 了</li>
+</ol>
+<p>如果还不太理解的同学，建议先补一下 JavaScript 的：事件循环、同步、异步、宏任务、微任务这些概念。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>至此，整个分析过程就结束了，你可能也会觉得很简单，我觉得你上你也行，所以不要觉得这些底层库的运行原理很难捉摸，出了问题也先别一味抱怨或者尝试各种 HACK，为何不直接看看它的运行逻辑呢？</p>
+<p>所以，大胆 debug 吧，少年。</p>
+</div>
+  <hr class="copy-line" />
+  <div class="post-copyright">
+    <div class="copy-author">
+      <span>作者 :</span>
+      <span
+        >4Ark</span
+      >
+    </div>
+    <div class="copy-url">
+      <span>地址 :</span>
+      <a href="https://4ark.me/post/87ba8d8b.html">https://4ark.me/post/87ba8d8b.html</a>
+    </div>
+    <div class="copy-origin">
+      <span>来源 :</span>
+      <a href="https://4ark.me">https://4ark.me</a>
+    </div>
+    <div class="copy-license">著作权归作者所有，转载请联系作者获得授权。</div>
+  </div>
+</article>
+
+<div class="blog-post-comments">
+  <div id="load-disqus">
+    <p onclick="loadDisqus()" style="cursor: pointer; text-align: center">
+      🥳&nbsp;加载 Disqus 评论
+    </p>
+  </div>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments.</noscript>
+  </div>
+</div>
+ 
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Writing</a></li>
+         
+          <li><a href="/weekly">Weekly</a></li>
+         
+          <li><a href="/tags">Tags</a></li>
+         
+          <li><a href="/search">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%AA%E9%95%BF%E4%B8%8D%E8%AF%BB"><span class="toc-number">2.</span> <span class="toc-text">太长不读</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90%E8%BF%87%E7%A8%8B"><span class="toc-number">3.</span> <span class="toc-text">分析过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/87ba8d8b.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/87ba8d8b.html&text=从 Composition API 源码分析 getCurrentInstance() 为何返回 null"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/87ba8d8b.html&title=从 Composition API 源码分析 getCurrentInstance() 为何返回 null"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/87ba8d8b.html&is_video=false&description=从 Composition API 源码分析 getCurrentInstance() 为何返回 null"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=从 Composition API 源码分析 getCurrentInstance() 为何返回 null&body=Check out this article: https://4ark.me/post/87ba8d8b.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/87ba8d8b.html&title=从 Composition API 源码分析 getCurrentInstance() 为何返回 null"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/87ba8d8b.html&title=从 Composition API 源码分析 getCurrentInstance() 为何返回 null"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/87ba8d8b.html&title=从 Composition API 源码分析 getCurrentInstance() 为何返回 null"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/87ba8d8b.html&title=从 Composition API 源码分析 getCurrentInstance() 为何返回 null"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/87ba8d8b.html&name=从 Composition API 源码分析 getCurrentInstance() 为何返回 null&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/87ba8d8b.html&t=从 Composition API 源码分析 getCurrentInstance() 为何返回 null"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="dark-mobile" class="icon"><i class="fa fa-sun" id="dark-btn" aria-hidden="true"></i> Switch</a>
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    4Ark
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-190615898-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-190615898-1');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<script type="text/javascript">
+  function loadDisqus() {
+    var disqus_shortname = 'https-4ark-me'
+
+    ;(function () {
+      var dsq = document.createElement('script')
+      dsq.type = 'text/javascript'
+      dsq.async = true
+      dsq.src =
+        '//' +
+        disqus_shortname +
+        '.disqus.com/embed.js'
+      ;(
+        document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]
+      ).appendChild(dsq)
+    })()
+
+    $('#load-disqus').hide()
+  }
+</script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

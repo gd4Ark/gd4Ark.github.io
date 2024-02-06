@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="前言最近在做一个前后端分离的项目，前端使用 Vue+ Element UI，而后端则使用 Lumen 做接口开发，其中分页是必不可少的一部分，本文就介绍如何基于以上环境做一个简单、可复用的分页功能。 先说后端后端做的事情不多，只需要接受几个参数，根据参数来获取数据即可。 需要获取的参数如下：  pageSize（一页数据的数量） pageIndex（第几页的数据）  然后就可以根据这两个参数计算出">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue + Element UI + Lumen 实现通用表格功能 - 分页">
+<meta property="og:url" content="https://4ark.me/post/64f1da47.html">
+<meta property="og:site_name" content="4Ark × Blog">
+<meta property="og:description" content="前言最近在做一个前后端分离的项目，前端使用 Vue+ Element UI，而后端则使用 Lumen 做接口开发，其中分页是必不可少的一部分，本文就介绍如何基于以上环境做一个简单、可复用的分页功能。 先说后端后端做的事情不多，只需要接受几个参数，根据参数来获取数据即可。 需要获取的参数如下：  pageSize（一页数据的数量） pageIndex（第几页的数据）  然后就可以根据这两个参数计算出">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-02-01T15:19:47.000Z">
+<meta property="article:modified_time" content="2024-02-06T18:11:56.000Z">
+<meta property="article:author" content="4Ark">
+<meta property="article:tag" content="前端">
+<meta property="article:tag" content="PHP">
+<meta property="article:tag" content="Vue">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Vue + Element UI + Lumen 实现通用表格功能 - 分页</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script>localStorage.getItem("dark_mode")==="dark"&&document.write(`<link rel="stylesheet" href="${location.origin}/css/dark.css">`)</script>
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+    <meta name="google-site-verification" content="DwDg4EuywHWNZUkTC7sG0WGv_UQekM4uRtOoaGuDJHc" />
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="4Ark × Blog" type="application/atom+xml">
+<link rel="alternate" href="/rss.xml" title="4Ark × Blog" type="application/rss+xml">
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/posts/share-site.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/post/834cec76.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon"><i class="fa fa-moon" id="dark-btn" aria-hidden="true" onmouseover="$('#i-dark').toggle()" onmouseout="$('#i-dark').toggle()"></i></a></li>
+        <li><a class="icon" target="_blank" rel="noopener" href="https://4ark.me/atom.xml" aria-label="rss"><i class="fas fa-rss"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-dark" class="info" style="display: none;">Switch mode</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/64f1da47.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/64f1da47.html&text=Vue + Element UI + Lumen 实现通用表格功能 - 分页"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/64f1da47.html&title=Vue + Element UI + Lumen 实现通用表格功能 - 分页"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/64f1da47.html&is_video=false&description=Vue + Element UI + Lumen 实现通用表格功能 - 分页"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Vue + Element UI + Lumen 实现通用表格功能 - 分页&body=Check out this article: https://4ark.me/post/64f1da47.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/64f1da47.html&title=Vue + Element UI + Lumen 实现通用表格功能 - 分页"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/64f1da47.html&title=Vue + Element UI + Lumen 实现通用表格功能 - 分页"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/64f1da47.html&title=Vue + Element UI + Lumen 实现通用表格功能 - 分页"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/64f1da47.html&title=Vue + Element UI + Lumen 实现通用表格功能 - 分页"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/64f1da47.html&name=Vue + Element UI + Lumen 实现通用表格功能 - 分页&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/64f1da47.html&t=Vue + Element UI + Lumen 实现通用表格功能 - 分页"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%88%E8%AF%B4%E5%90%8E%E7%AB%AF"><span class="toc-number">2.</span> <span class="toc-text">先说后端</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%8D%E8%AF%B4%E5%89%8D%E7%AB%AF"><span class="toc-number">3.</span> <span class="toc-text">再说前端</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="toc-number">3.1.</span> <span class="toc-text">获取数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-number">3.2.</span> <span class="toc-text">数据持久化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AC%E7%94%A8%E5%88%86%E9%A1%B5%E7%BB%84%E4%BB%B6"><span class="toc-number">3.3.</span> <span class="toc-text">公用分页组件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%88%86%E9%A1%B5%E7%BB%84%E4%BB%B6"><span class="toc-number">3.4.</span> <span class="toc-text">使用分页组件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E8%AE%B0"><span class="toc-number">4.</span> <span class="toc-text">后记</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Vue + Element UI + Lumen 实现通用表格功能 - 分页
+    </h1>
+
+
+
+    <div class="meta">
+      <span
+        class="author"
+        itemprop="author"
+        itemscope
+        itemtype="http://schema.org/Person"
+      >
+        <span itemprop="name"
+          >4Ark</span
+        >
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-02-01T15:19:47.000Z" itemprop="datePublished">2019-02-01</time>
+        
+      
+    </div>
+
+ 
+      
+        
+ 
+        
+    <div class="article-tag">
+        <i class="fas fa-hashtag"></i>
+        <a class="tag-link-link" href="/tags/PHP/" rel="tag">PHP</a>, <a class="tag-link-link" href="/tags/Vue/" rel="tag">Vue</a>, <a class="tag-link-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a>
+    </div>
+
+
+      
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近在做一个前后端分离的项目，前端使用 <code>Vue</code>+ <code>Element UI</code>，而后端则使用 <code>Lumen</code> 做接口开发，其中分页是必不可少的一部分，本文就介绍如何基于以上环境做一个简单、可复用的分页功能。</p>
+<h2 id="先说后端"><a href="#先说后端" class="headerlink" title="先说后端"></a>先说后端</h2><p>后端做的事情不多，只需要接受几个参数，根据参数来获取数据即可。</p>
+<p>需要获取的参数如下：</p>
+<ul>
+<li><code>pageSize</code>（一页数据的数量）</li>
+<li><code>pageIndex</code>（第几页的数据）</li>
+</ul>
+<p>然后就可以根据这两个参数计算出偏移量，再从数据库中取出相应的数据。</p>
+<p>假如现在给出的参数为：<code>pageSize=10</code>，<code>pageIndex = 2</code>，也就是说每一页要 10 条记录，要第二页。</p>
+<p>计算偏移量的公式为：<code>pageSize * (pageIndex - 1)</code>。</p>
+<p>基本代码如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getUser</span>(<span class="params">Request <span class="variable">$request</span></span>)</span>&#123;</span><br><span class="line">    <span class="variable">$pageSize</span> = <span class="variable">$request</span>-&gt;input(<span class="string">&#x27;pageSize&#x27;</span>);</span><br><span class="line">    <span class="variable">$pageIndex</span> = <span class="variable">$request</span>-&gt;input(<span class="string">&#x27;pageIndex&#x27;</span>);</span><br><span class="line">    <span class="variable">$offset</span> = <span class="variable">$pageSize</span> * (<span class="variable">$pageIndex</span> - <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> User::offset(<span class="variable">$offset</span>)</span><br><span class="line">                -&gt;limit(<span class="variable">$pageSize</span>)</span><br><span class="line">                -&gt;get();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>后端基本上只需要做这么多，就可以完成一个分页的功能了，但还是有几处地方需要改进一下：</p>
+<ul>
+<li>给参数一个默认值</li>
+<li>前端还需要知道整个表的数据的总数</li>
+<li>把分页做成一个公用的函数</li>
+</ul>
+<p>改进后的代码如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="variable">$default_page_size</span> = <span class="number">30</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="variable">$default_page_index</span> = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 公用分页</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">pagination</span>(<span class="params"><span class="variable">$request</span>, <span class="variable">$list</span></span>) </span>&#123;</span><br><span class="line">	<span class="variable">$pageSize</span> = <span class="variable">$request</span>-&gt;input(<span class="string">&#x27;pageSize&#x27;</span>, <span class="keyword">$this</span>-&gt;default_page_size);</span><br><span class="line">	<span class="variable">$pageIndex</span> = <span class="variable">$request</span>-&gt;input(<span class="string">&#x27;pageIndex&#x27;</span>, <span class="keyword">$this</span>-&gt;default_page_index);</span><br><span class="line">	<span class="variable">$offset</span> = <span class="variable">$pageSize</span> * (<span class="variable">$pageIndex</span> - <span class="number">1</span>);</span><br><span class="line">	<span class="variable">$total</span> = <span class="variable">$list</span>-&gt;count();</span><br><span class="line">	<span class="variable">$list</span> = <span class="variable">$list</span></span><br><span class="line">            -&gt;offset(<span class="variable">$offset</span>)</span><br><span class="line">            -&gt;limit(<span class="variable">$pageSize</span>);</span><br><span class="line">	<span class="keyword">return</span> [</span><br><span class="line">		<span class="string">&#x27;list&#x27;</span> =&gt; <span class="variable">$list</span>-&gt;get(),</span><br><span class="line">		<span class="string">&#x27;total&#x27;</span> =&gt; <span class="variable">$total</span>,</span><br><span class="line">    ];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取用户列表</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">getUser</span>(<span class="params">Request <span class="variable">$request</span></span>) </span>&#123;</span><br><span class="line">    <span class="variable">$list</span> = User::query();</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    	这里可以做一些查询之类的操作</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">$this</span>-&gt;pagination(<span class="variable">$request</span>, <span class="variable">$list</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="再说前端"><a href="#再说前端" class="headerlink" title="再说前端"></a>再说前端</h2><p>前端相对于需要做的事情就比较多了，需要考虑几点：</p>
+<ul>
+<li>获取数据时需要带上分页的参数</li>
+<li>分页参数需要进行本地持久化，以免刷新页面回到第一页（后端设置的默认值）</li>
+<li>同样要抽象出一个通用的分页组件</li>
+</ul>
+<h3 id="获取数据"><a href="#获取数据" class="headerlink" title="获取数据"></a>获取数据</h3><p>这里我们用 <code>vuex</code>来管理状态，然后在请求时带上分页数据：</p>
+<p>store.js：</p>
+<blockquote>
+<p><strong>注意</strong>：</p>
+<ul>
+<li>这里为了方便展示代码，并没有使用模块化，项目中，最好将使用模块化方便管理。</li>
+<li>这里默认读者清楚 ES6 的语法</li>
+</ul>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">new</span> vuex.Store(&#123;</span><br><span class="line">  <span class="attr">state</span>: &#123;</span><br><span class="line">    <span class="attr">user</span>: &#123;</span><br><span class="line">      <span class="attr">list</span>: [],</span><br><span class="line">      <span class="attr">total</span>: <span class="number">0</span>,</span><br><span class="line">      <span class="attr">pageIndex</span>: <span class="number">1</span>,</span><br><span class="line">      <span class="attr">pageSize</span>: <span class="number">10</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">mutations</span>: &#123;</span><br><span class="line">    <span class="function"><span class="title">updateUser</span>(<span class="params">state, data</span>)</span> &#123;</span><br><span class="line">      state.user = &#123;</span><br><span class="line">        ...state.user,</span><br><span class="line">        ...data</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">actions</span>: &#123;</span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="title">getUser</span>(<span class="params">&#123; commit, state, getters &#125;</span>)</span> &#123;</span><br><span class="line">      <span class="comment">// $axios 只是我自己封装的一个函数 这里并不重要</span></span><br><span class="line">      <span class="keyword">const</span> res = <span class="keyword">await</span> $axios.get(<span class="string">&#x27;/user&#x27;</span>, getters.requestData(state.user))</span><br><span class="line">      commit(<span class="string">&#x27;updateUser&#x27;</span>, res)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">getters</span>: &#123;</span><br><span class="line">    <span class="function"><span class="title">requestData</span>(<span class="params">state</span>)</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="function">(<span class="params">origin</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> &#123; pageIndex, pageSize &#125; = origin</span><br><span class="line">        <span class="keyword">const</span> data = &#123;</span><br><span class="line">          pageIndex,</span><br><span class="line">          pageSize</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> data</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="数据持久化"><a href="#数据持久化" class="headerlink" title="数据持久化"></a>数据持久化</h3><p>现在如何获取数据已经搞定了，数据持久化我使用 <a target="_blank" rel="noopener" href="https://github.com/crossjs/vuex-localstorage">vuex-localstorage</a>，安装后，只需要在上面代码的基础上添加：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> createPersist <span class="keyword">from</span> <span class="string">&#x27;vuex-localstorage&#x27;</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">new</span> vuex.Store(&#123;</span><br><span class="line">  <span class="comment">// 接着上面的</span></span><br><span class="line">  <span class="attr">plugins</span>: [</span><br><span class="line">    createPersist(&#123;</span><br><span class="line">      <span class="attr">namespace</span>: <span class="string">&#x27;studio-user&#x27;</span>,</span><br><span class="line">      <span class="attr">initialState</span>: &#123;&#125;,</span><br><span class="line">      <span class="comment">// ONE_WEEK</span></span><br><span class="line">      <span class="attr">expires</span>: <span class="number">7</span> * <span class="number">24</span> * <span class="number">60</span> * <span class="number">60</span> * <span class="number">1e3</span></span><br><span class="line">    &#125;)</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="公用分页组件"><a href="#公用分页组件" class="headerlink" title="公用分页组件"></a>公用分页组件</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">el-Pagination</span></span></span><br><span class="line"><span class="tag">    <span class="attr">background</span></span></span><br><span class="line"><span class="tag">    <span class="attr">layout</span>=<span class="string">&quot;total, sizes, prev, pager, next, jumper&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">:total</span>=<span class="string">&quot;module.total&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">:current-page.sync</span>=<span class="string">&quot;module.pageIndex&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">:page-sizes</span>=<span class="string">&quot;module.pageSizes&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">:page-size.sync</span>=<span class="string">&quot;module.pageSize&quot;</span></span></span><br><span class="line"><span class="tag">    @<span class="attr">current-change</span>=<span class="string">&quot;handleCurrentChange&quot;</span></span></span><br><span class="line"><span class="tag">    @<span class="attr">size-change</span>=<span class="string">&quot;handleSizeChange&quot;</span></span></span><br><span class="line"><span class="tag">  &gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">el-Pagination</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">  <span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span><br><span class="line"><span class="javascript">    <span class="attr">props</span>: &#123;</span></span><br><span class="line"><span class="javascript">      <span class="attr">module</span>: <span class="built_in">Object</span></span></span><br><span class="line"><span class="javascript">    &#125;,</span></span><br><span class="line"><span class="javascript">    <span class="attr">methods</span>: &#123;</span></span><br><span class="line"><span class="javascript">      <span class="function"><span class="title">getData</span>(<span class="params"></span>)</span> &#123;</span></span><br><span class="line"><span class="javascript">        <span class="built_in">this</span>.$emit(<span class="string">&#x27;get-data&#x27;</span>)</span></span><br><span class="line"><span class="javascript">      &#125;,</span></span><br><span class="line"><span class="javascript">      <span class="function"><span class="title">handleCurrentChange</span>(<span class="params"></span>)</span> &#123;</span></span><br><span class="line"><span class="javascript">        <span class="built_in">this</span>.getData()</span></span><br><span class="line"><span class="javascript">      &#125;,</span></span><br><span class="line"><span class="javascript">      <span class="function"><span class="title">handleSizeChange</span>(<span class="params">val</span>)</span> &#123;</span></span><br><span class="line"><span class="javascript">        <span class="built_in">this</span>.getData()</span></span><br><span class="line"><span class="javascript">      &#125;</span></span><br><span class="line"><span class="javascript">    &#125;</span></span><br><span class="line"><span class="javascript">  &#125;</span></span><br><span class="line"><span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="使用分页组件"><a href="#使用分页组件" class="headerlink" title="使用分页组件"></a>使用分页组件</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;container&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">el-table</span> <span class="attr">:data</span>=<span class="string">&quot;user.list&quot;</span> <span class="attr">style</span>=<span class="string">&quot;width: 100%;&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">el-table-column</span></span></span><br><span class="line"><span class="tag">        <span class="attr">v-for</span>=<span class="string">&quot;(item,index) in columns&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">:key</span>=<span class="string">&quot;index&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">:prop</span>=<span class="string">&quot;item.prop&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">:label</span>=<span class="string">&quot;item.label&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">align</span>=<span class="string">&quot;center&quot;</span></span></span><br><span class="line"><span class="tag">      /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">el-table</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">pagination</span> <span class="attr">:module</span>=<span class="string">&quot;user&quot;</span> @<span class="attr">get-data</span>=<span class="string">&quot;getData&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">  <span class="keyword">import</span> Pagination <span class="keyword">from</span> <span class="string">&#x27;@/common/components/Pagination&#x27;</span></span></span><br><span class="line"><span class="javascript">  <span class="keyword">import</span> &#123; mapActions, mapState &#125; <span class="keyword">from</span> <span class="string">&#x27;vuex&#x27;</span></span></span><br><span class="line"><span class="javascript">  <span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span><br><span class="line"><span class="javascript">    <span class="attr">components</span>: &#123;</span></span><br><span class="line"><span class="javascript">      Pagination</span></span><br><span class="line"><span class="javascript">    &#125;,</span></span><br><span class="line"><span class="javascript">    <span class="attr">data</span>: <span class="function">() =&gt;</span> (&#123;</span></span><br><span class="line"><span class="javascript">      <span class="attr">columns</span>: [</span></span><br><span class="line"><span class="javascript">        &#123;</span></span><br><span class="line"><span class="javascript">          <span class="attr">prop</span>: <span class="string">&#x27;name&#x27;</span>,</span></span><br><span class="line"><span class="javascript">          <span class="attr">label</span>: <span class="string">&#x27;姓名&#x27;</span></span></span><br><span class="line"><span class="javascript">        &#125;,</span></span><br><span class="line"><span class="javascript">        &#123;</span></span><br><span class="line"><span class="javascript">          <span class="attr">prop</span>: <span class="string">&#x27;性别&#x27;</span>,</span></span><br><span class="line"><span class="javascript">          <span class="attr">label</span>: <span class="string">&#x27;sex&#x27;</span></span></span><br><span class="line"><span class="javascript">        &#125;,</span></span><br><span class="line"><span class="javascript">        &#123;</span></span><br><span class="line"><span class="javascript">          <span class="attr">prop</span>: <span class="string">&#x27;年龄&#x27;</span>,</span></span><br><span class="line"><span class="javascript">          <span class="attr">label</span>: <span class="string">&#x27;age&#x27;</span></span></span><br><span class="line"><span class="javascript">        &#125;</span></span><br><span class="line"><span class="javascript">      ]</span></span><br><span class="line"><span class="javascript">    &#125;),</span></span><br><span class="line"><span class="javascript">    <span class="function"><span class="title">created</span>(<span class="params"></span>)</span> &#123;</span></span><br><span class="line"><span class="javascript">      <span class="built_in">this</span>.getData()</span></span><br><span class="line"><span class="javascript">    &#125;,</span></span><br><span class="line"><span class="javascript">    <span class="attr">methods</span>: &#123;</span></span><br><span class="line"><span class="javascript">      ...mapActions(&#123;</span></span><br><span class="line"><span class="javascript">        <span class="attr">getData</span>: <span class="string">&#x27;getUser&#x27;</span></span></span><br><span class="line"><span class="javascript">      &#125;)</span></span><br><span class="line"><span class="javascript">    &#125;,</span></span><br><span class="line"><span class="javascript">    <span class="attr">computed</span>: &#123;</span></span><br><span class="line"><span class="javascript">      ...mapState([<span class="string">&#x27;user&#x27;</span>])</span></span><br><span class="line"><span class="javascript">    &#125;</span></span><br><span class="line"><span class="javascript">  &#125;</span></span><br><span class="line"><span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>将一些常用的功能抽象出来，打造一个自己的工具库，从而使开发效率更高。</p>
+<p>最后，安利一下文章开头说的项目：<a target="_blank" rel="noopener" href="https://github.com/gd4Ark/learn_english">清技背单词</a>，上面的代码就是从这个项目中<code>copy</code>出来后略作修改的。</p>
+<p>感谢观看，希望我的文章能对您有一些帮助！</p>
+</div>
+  <hr class="copy-line" />
+  <div class="post-copyright">
+    <div class="copy-author">
+      <span>作者 :</span>
+      <span
+        >4Ark</span
+      >
+    </div>
+    <div class="copy-url">
+      <span>地址 :</span>
+      <a href="https://4ark.me/post/64f1da47.html">https://4ark.me/post/64f1da47.html</a>
+    </div>
+    <div class="copy-origin">
+      <span>来源 :</span>
+      <a href="https://4ark.me">https://4ark.me</a>
+    </div>
+    <div class="copy-license">著作权归作者所有，转载请联系作者获得授权。</div>
+  </div>
+</article>
+
+<div class="blog-post-comments">
+  <div id="load-disqus">
+    <p onclick="loadDisqus()" style="cursor: pointer; text-align: center">
+      🥳&nbsp;加载 Disqus 评论
+    </p>
+  </div>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments.</noscript>
+  </div>
+</div>
+ 
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Writing</a></li>
+         
+          <li><a href="/weekly">Weekly</a></li>
+         
+          <li><a href="/tags">Tags</a></li>
+         
+          <li><a href="/search">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%88%E8%AF%B4%E5%90%8E%E7%AB%AF"><span class="toc-number">2.</span> <span class="toc-text">先说后端</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%8D%E8%AF%B4%E5%89%8D%E7%AB%AF"><span class="toc-number">3.</span> <span class="toc-text">再说前端</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="toc-number">3.1.</span> <span class="toc-text">获取数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-number">3.2.</span> <span class="toc-text">数据持久化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AC%E7%94%A8%E5%88%86%E9%A1%B5%E7%BB%84%E4%BB%B6"><span class="toc-number">3.3.</span> <span class="toc-text">公用分页组件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%88%86%E9%A1%B5%E7%BB%84%E4%BB%B6"><span class="toc-number">3.4.</span> <span class="toc-text">使用分页组件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E8%AE%B0"><span class="toc-number">4.</span> <span class="toc-text">后记</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/64f1da47.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/64f1da47.html&text=Vue + Element UI + Lumen 实现通用表格功能 - 分页"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/64f1da47.html&title=Vue + Element UI + Lumen 实现通用表格功能 - 分页"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/64f1da47.html&is_video=false&description=Vue + Element UI + Lumen 实现通用表格功能 - 分页"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Vue + Element UI + Lumen 实现通用表格功能 - 分页&body=Check out this article: https://4ark.me/post/64f1da47.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/64f1da47.html&title=Vue + Element UI + Lumen 实现通用表格功能 - 分页"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/64f1da47.html&title=Vue + Element UI + Lumen 实现通用表格功能 - 分页"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/64f1da47.html&title=Vue + Element UI + Lumen 实现通用表格功能 - 分页"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/64f1da47.html&title=Vue + Element UI + Lumen 实现通用表格功能 - 分页"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/64f1da47.html&name=Vue + Element UI + Lumen 实现通用表格功能 - 分页&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/64f1da47.html&t=Vue + Element UI + Lumen 实现通用表格功能 - 分页"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="dark-mobile" class="icon"><i class="fa fa-sun" id="dark-btn" aria-hidden="true"></i> Switch</a>
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    4Ark
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-190615898-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-190615898-1');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<script type="text/javascript">
+  function loadDisqus() {
+    var disqus_shortname = 'https-4ark-me'
+
+    ;(function () {
+      var dsq = document.createElement('script')
+      dsq.type = 'text/javascript'
+      dsq.async = true
+      dsq.src =
+        '//' +
+        disqus_shortname +
+        '.disqus.com/embed.js'
+      ;(
+        document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]
+      ).appendChild(dsq)
+    })()
+
+    $('#load-disqus').hide()
+  }
+</script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

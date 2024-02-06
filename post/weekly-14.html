@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="暂停更新因为最近在做一个 Side Project，所以本周刊已经有一段时间没更新了，毕竟一个人的时间精力是非常有限的，无法同时把两件事情做好，思前想后，决定先暂时停止周刊，等后面时间充裕起来，再恢复周刊，请见谅。 本周见闻为什么会有「她」和「祂」在 V2EX 看到一个帖子《汉字不分性别的“他”》，不禁疑惑为何要将「他」分为「它、他、她、牠、祂」呢？ 首先为什么会出现「她」呢，其实「她」的开始是从">
+<meta property="og:type" content="article">
+<meta property="og:title" content="周刊第14期：暂停更新说明、自动化测试的未来趋势">
+<meta property="og:url" content="https://4ark.me/post/weekly-14.html">
+<meta property="og:site_name" content="4Ark × Blog">
+<meta property="og:description" content="暂停更新因为最近在做一个 Side Project，所以本周刊已经有一段时间没更新了，毕竟一个人的时间精力是非常有限的，无法同时把两件事情做好，思前想后，决定先暂时停止周刊，等后面时间充裕起来，再恢复周刊，请见谅。 本周见闻为什么会有「她」和「祂」在 V2EX 看到一个帖子《汉字不分性别的“他”》，不禁疑惑为何要将「他」分为「它、他、她、牠、祂」呢？ 首先为什么会出现「她」呢，其实「她」的开始是从">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-06-14T00:00:00.000Z">
+<meta property="article:modified_time" content="2024-02-06T18:11:56.000Z">
+<meta property="article:author" content="4Ark">
+<meta property="article:tag" content="weekly">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>周刊第14期：暂停更新说明、自动化测试的未来趋势</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script>localStorage.getItem("dark_mode")==="dark"&&document.write(`<link rel="stylesheet" href="${location.origin}/css/dark.css">`)</script>
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+    <meta name="google-site-verification" content="DwDg4EuywHWNZUkTC7sG0WGv_UQekM4uRtOoaGuDJHc" />
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="4Ark × Blog" type="application/atom+xml">
+<link rel="alternate" href="/rss.xml" title="4Ark × Blog" type="application/rss+xml">
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/post/yarn-cwd-issue.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/post/weekly-13.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon"><i class="fa fa-moon" id="dark-btn" aria-hidden="true" onmouseover="$('#i-dark').toggle()" onmouseout="$('#i-dark').toggle()"></i></a></li>
+        <li><a class="icon" target="_blank" rel="noopener" href="https://4ark.me/atom.xml" aria-label="rss"><i class="fas fa-rss"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-dark" class="info" style="display: none;">Switch mode</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/weekly-14.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/weekly-14.html&text=周刊第14期：暂停更新说明、自动化测试的未来趋势"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/weekly-14.html&title=周刊第14期：暂停更新说明、自动化测试的未来趋势"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/weekly-14.html&is_video=false&description=周刊第14期：暂停更新说明、自动化测试的未来趋势"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=周刊第14期：暂停更新说明、自动化测试的未来趋势&body=Check out this article: https://4ark.me/post/weekly-14.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/weekly-14.html&title=周刊第14期：暂停更新说明、自动化测试的未来趋势"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/weekly-14.html&title=周刊第14期：暂停更新说明、自动化测试的未来趋势"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/weekly-14.html&title=周刊第14期：暂停更新说明、自动化测试的未来趋势"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/weekly-14.html&title=周刊第14期：暂停更新说明、自动化测试的未来趋势"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/weekly-14.html&name=周刊第14期：暂停更新说明、自动化测试的未来趋势&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/weekly-14.html&t=周刊第14期：暂停更新说明、自动化测试的未来趋势"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9A%82%E5%81%9C%E6%9B%B4%E6%96%B0"><span class="toc-number">1.</span> <span class="toc-text">暂停更新</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%91%A8%E8%A7%81%E9%97%BB"><span class="toc-number">2.</span> <span class="toc-text">本周见闻</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E6%9C%89%E3%80%8C%E5%A5%B9%E3%80%8D%E5%92%8C%E3%80%8C%E7%A5%82%E3%80%8D"><span class="toc-number">2.1.</span> <span class="toc-text">为什么会有「她」和「祂」</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B-tips"><span class="toc-number">3.</span> <span class="toc-text">一些 tips</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E4%B8%AA%E7%8E%B0%E4%BB%A3-Bash-%E8%AF%AD%E6%B3%95"><span class="toc-number">3.1.</span> <span class="toc-text">5 个现代 Bash 语法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E8%BE%93%E5%85%A5%E6%AF%94-Python-%E5%92%8C-Node-js-%E6%9B%B4%E5%8A%A0%E7%AE%80%E5%8D%95"><span class="toc-number">3.1.1.</span> <span class="toc-text">处理输入比 Python 和 Node.js 更加简单</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-%E4%B8%AA%E7%BD%95%E4%B8%BA%E4%BA%BA%E7%9F%A5%E4%BD%86%E9%9D%9E%E5%B8%B8%E6%9C%89%E7%94%A8%E7%9A%84-HTML-%E6%8F%90%E7%A4%BA%E3%80%82"><span class="toc-number">3.2.</span> <span class="toc-text">10 个罕为人知但非常有用的 HTML 提示。</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%93%E5%BC%80%E6%91%84%E5%83%8F%E6%9C%BA"><span class="toc-number">3.2.1.</span> <span class="toc-text">打开摄像机</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E4%BA%AB%E6%96%87%E7%AB%A0"><span class="toc-number">4.</span> <span class="toc-text">分享文章</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E7%9A%84%E6%9C%AA%E6%9D%A5%E8%B6%8B%E5%8A%BF"><span class="toc-number">4.1.</span> <span class="toc-text">自动化测试的未来趋势</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%89%E8%B6%A3%E7%9A%84%E9%93%BE%E6%8E%A5"><span class="toc-number">5.</span> <span class="toc-text">有趣的链接</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        周刊第14期：暂停更新说明、自动化测试的未来趋势
+    </h1>
+
+
+
+    <div class="meta">
+      <span
+        class="author"
+        itemprop="author"
+        itemscope
+        itemtype="http://schema.org/Person"
+      >
+        <span itemprop="name"
+          >4Ark</span
+        >
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-06-14T00:00:00.000Z" itemprop="datePublished">2022-06-14</time>
+        
+      
+    </div>
+
+ 
+      
+        <div class="article-tag">
+            <i class="fa fa-calendar-week"></i>
+            <a href="/weekly">Weekly</a>
+        </div>
+      
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody"><h2 id="暂停更新"><a href="#暂停更新" class="headerlink" title="暂停更新"></a>暂停更新</h2><p>因为最近在做一个 Side Project，所以本周刊已经有一段时间没更新了，毕竟一个人的时间精力是非常有限的，无法同时把两件事情做好，思前想后，决定先暂时停止周刊，等后面时间充裕起来，再恢复周刊，请见谅。</p>
+<h2 id="本周见闻"><a href="#本周见闻" class="headerlink" title="本周见闻"></a>本周见闻</h2><h3 id="为什么会有「她」和「祂」"><a href="#为什么会有「她」和「祂」" class="headerlink" title="为什么会有「她」和「祂」"></a>为什么会有「她」和「祂」</h3><p>在 V2EX 看到一个帖子<a target="_blank" rel="noopener" href="https://v2ex.com/t/857418">《汉字不分性别的“他”》</a>，不禁疑惑为何要将「他」分为「它、他、她、牠、祂」呢？</p>
+<p>首先为什么会出现「她」呢，其实「她」的开始是从清朝的刘半农才开始使用的，在以前「她」一直是「姐」的异体字，而在 1934 年的女性杂志《妇女共鸣》中，就曾在一篇<a target="_blank" rel="noopener" href="http://www.cuhk.edu.hk/ics/21c/media/articles/c136-201207034.pdf">启事</a>指出：「本刊同仁，以人字旁代男子、女字旁代女子，牛字旁代物件，含有侮辱女子非人之意」，所以拒绝用「她」字。但尽管当时饱受批评，如今「她」还是成为流行的女性专用代词。</p>
+<p>而「祂」的出现则是西方宗教在华传教时，用作对上帝、耶稣等的第三人称代名词，不过在我们生活中已经很少能够见到了。</p>
+<p>延伸阅读：<a target="_blank" rel="noopener" href="https://www.arianalife.com/tc/topics-tc/lgbt-tc/x%E4%B9%9Fand-ta-the-gradual-rise-of-gender-neutral-pronouns-in-chinese-tc/">《「他」、「X也」，还是「Ta」：非二元性別代词有哪些？》</a></p>
+<h2 id="一些-tips"><a href="#一些-tips" class="headerlink" title="一些 tips"></a>一些 tips</h2><p>分享两篇非常不错的文章，分别提供 Bash 和 HTML 很多有用的技巧，这里就不全文摘抄了，有兴趣可以点击进原文查看。</p>
+<h3 id="5-个现代-Bash-语法"><a href="#5-个现代-Bash-语法" class="headerlink" title="5 个现代 Bash 语法"></a><a target="_blank" rel="noopener" href="https://levelup.gitconnected.com/5-bash-syntax-for-going-beyond-traditional-shell-scripting-6904d3e71af6">5 个现代 Bash 语法</a></h3><h4 id="处理输入比-Python-和-Node-js-更加简单"><a href="#处理输入比-Python-和-Node-js-更加简单" class="headerlink" title="处理输入比 Python 和 Node.js 更加简单"></a>处理输入比 Python 和 Node.js 更加简单</h4><p>在 Bash 中，你可以通过以下代码来获取用户输入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">read</span> -p <span class="string">&quot;Enter your name: &quot;</span> name</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Hello, <span class="variable">$name</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 示例</span></span><br><span class="line">&gt; ./test.sh</span><br><span class="line">Enter your name: 4Ark</span><br><span class="line">Hello, 4Ark</span><br></pre></td></tr></table></figure>
+
+<h3 id="10-个罕为人知但非常有用的-HTML-提示。"><a href="#10-个罕为人知但非常有用的-HTML-提示。" class="headerlink" title="10 个罕为人知但非常有用的 HTML 提示。"></a><a target="_blank" rel="noopener" href="https://dev.to/babib/7-shocking-html-tips-you-probably-dont-know-about-ggd">10 个罕为人知但非常有用的 HTML 提示。</a></h3><h4 id="打开摄像机"><a href="#打开摄像机" class="headerlink" title="打开摄像机"></a>打开摄像机</h4><p>我们可以通过 input 的 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/capture">capture</a> 属性来打开摄像机，它具有两个属性值：</p>
+<ol>
+<li>user：前摄像头</li>
+<li>environment：后摄像头</li>
+</ol>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;file&quot;</span> <span class="attr">capture</span>=<span class="string">&quot;user&quot;</span> <span class="attr">accept</span>=<span class="string">&quot;image/*&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="分享文章"><a href="#分享文章" class="headerlink" title="分享文章"></a>分享文章</h2><h3 id="自动化测试的未来趋势"><a href="#自动化测试的未来趋势" class="headerlink" title="自动化测试的未来趋势"></a><a target="_blank" rel="noopener" href="https://insights.thoughtworks.cn/automated-testing-trends/">自动化测试的未来趋势</a></h3><p>这篇文章主要讲述自动化测试的发展以及未来趋势，从最早期的录制回放技术开始，逐步发展成DOM对象识别与分层自动化，而如今火热的 AI 技术会给自动化测试带来哪些突破呢？</p>
+<p>其实在业界中已经有基于 AI 技术的自动化测试技术：</p>
+<ol>
+<li>自愈（Self-Healing）技术</li>
+<li>机器学习（Machine Learning）技术</li>
+</ol>
+<p><strong>自愈技术</strong>一般指的是：一种自我修复的管理机制。<br>举个例子，假设我们通过 <a target="_blank" rel="noopener" href="https://www.cypress.io/">Cypress</a> 等框架进行 E2E 测试时，都是通过 CSS 选择器等方式获取元素，从而做进一步的测试，而当我们的内部实现发生变化时（这里指的就是元素发生变化），测试用例会失败，我们需要手动修改测试用例。<br>而自愈技术可以通过比较页面前后的差异，来自动修复测试用例中的 CSS 选择器，并在结束时更新测试用例到代码中。<br>自愈技术在业界较好的实践是 <a target="_blank" rel="noopener" href="https://healenium.io/">Healenium</a>。</p>
+<p>然而传统的基于元素定位器等方式，面临着一些问题：</p>
+<ul>
+<li>仍然需要人工获取定位方式；</li>
+<li>如果是通过 Canvas 绘制出来的对象，如何识别元素 (如Flutter Web)。</li>
+</ul>
+<p>于是就有了<strong>机器学习</strong>来解决这个问题，它可以通过图像识别和处理等技术来生成测试用例，比如直接根据某个按钮的截图来定位这个按钮，现在在业界较好的实践是 <a target="_blank" rel="noopener" href="https://airtest.netease.com/">Airtest</a>。</p>
+<p>自动化测试未来趋势不仅仅是这两种，还有如智能化探索性测试，智能遍历测试以及智能验证等。关于智能遍历所用到的技术，大家可以参考DQN的介绍。</p>
+<h2 id="有趣的链接"><a href="#有趣的链接" class="headerlink" title="有趣的链接"></a>有趣的链接</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.babelabc.com/">巴别英语 - 英语听力口语在线学习</a>：刷TED演讲和美剧佳作练听力, 带单句步进重复、灵活中英字幕设置等专为英语学习设计的功能, 让学英语变得容易、有趣、高效。</li>
+</ul>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://monkeylearn.com/word-cloud">Free Word Cloud Generator</a>：构建你的词云，按相关性和频率对结果进行排序，探索更高级的文本分析工具。</li>
+</ul>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://www.jsnice.org/">JS NICE</a>：一个 JavaScript 反混淆的在线工具。</li>
+</ul>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://slashy.app/">Slashy</a>：一个可以创建 Notion 自定义命令的增强工具，非常不错。</li>
+</ul>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://type-scale.com/">Type Scale</a>：一个可视化的字体大小调节工具，可以预览 CSS 字体在不同 rem 上表现。</li>
+</ul>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://evanhahn.github.io/ffmpeg-buddy/">ffmpeg-buddy</a>：一个 ffmpeg 参数生成工具。</li>
+</ul>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.digitalocean.com/community/tools/nginx?global.app.lang=zhCN">NGINX 配置</a>：一个 nginx 配置生成工具。</li>
+</ul>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.compose.ai/">Compose AI</a>：一个帮助写作的 AI 工具，目前仅适用于英语，缺点就是太贵。</li>
+</ul>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://getcssscan.com/">CSS Scan</a>：一个可直接在网页内获取任意元素 CSS 样式的工具。</li>
+</ul>
+</div>
+  <hr class="copy-line" />
+  <div class="post-copyright">
+    <div class="copy-author">
+      <span>作者 :</span>
+      <span
+        >4Ark</span
+      >
+    </div>
+    <div class="copy-url">
+      <span>地址 :</span>
+      <a href="https://4ark.me/post/weekly-14.html">https://4ark.me/post/weekly-14.html</a>
+    </div>
+    <div class="copy-origin">
+      <span>来源 :</span>
+      <a href="https://4ark.me">https://4ark.me</a>
+    </div>
+    <div class="copy-license">著作权归作者所有，转载请联系作者获得授权。</div>
+  </div>
+</article>
+
+<div class="blog-post-comments">
+  <div id="load-disqus">
+    <p onclick="loadDisqus()" style="cursor: pointer; text-align: center">
+      🥳&nbsp;加载 Disqus 评论
+    </p>
+  </div>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments.</noscript>
+  </div>
+</div>
+ 
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Writing</a></li>
+         
+          <li><a href="/weekly">Weekly</a></li>
+         
+          <li><a href="/tags">Tags</a></li>
+         
+          <li><a href="/search">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9A%82%E5%81%9C%E6%9B%B4%E6%96%B0"><span class="toc-number">1.</span> <span class="toc-text">暂停更新</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%91%A8%E8%A7%81%E9%97%BB"><span class="toc-number">2.</span> <span class="toc-text">本周见闻</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E6%9C%89%E3%80%8C%E5%A5%B9%E3%80%8D%E5%92%8C%E3%80%8C%E7%A5%82%E3%80%8D"><span class="toc-number">2.1.</span> <span class="toc-text">为什么会有「她」和「祂」</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B-tips"><span class="toc-number">3.</span> <span class="toc-text">一些 tips</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E4%B8%AA%E7%8E%B0%E4%BB%A3-Bash-%E8%AF%AD%E6%B3%95"><span class="toc-number">3.1.</span> <span class="toc-text">5 个现代 Bash 语法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E8%BE%93%E5%85%A5%E6%AF%94-Python-%E5%92%8C-Node-js-%E6%9B%B4%E5%8A%A0%E7%AE%80%E5%8D%95"><span class="toc-number">3.1.1.</span> <span class="toc-text">处理输入比 Python 和 Node.js 更加简单</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-%E4%B8%AA%E7%BD%95%E4%B8%BA%E4%BA%BA%E7%9F%A5%E4%BD%86%E9%9D%9E%E5%B8%B8%E6%9C%89%E7%94%A8%E7%9A%84-HTML-%E6%8F%90%E7%A4%BA%E3%80%82"><span class="toc-number">3.2.</span> <span class="toc-text">10 个罕为人知但非常有用的 HTML 提示。</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%93%E5%BC%80%E6%91%84%E5%83%8F%E6%9C%BA"><span class="toc-number">3.2.1.</span> <span class="toc-text">打开摄像机</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E4%BA%AB%E6%96%87%E7%AB%A0"><span class="toc-number">4.</span> <span class="toc-text">分享文章</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E7%9A%84%E6%9C%AA%E6%9D%A5%E8%B6%8B%E5%8A%BF"><span class="toc-number">4.1.</span> <span class="toc-text">自动化测试的未来趋势</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%89%E8%B6%A3%E7%9A%84%E9%93%BE%E6%8E%A5"><span class="toc-number">5.</span> <span class="toc-text">有趣的链接</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/weekly-14.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/weekly-14.html&text=周刊第14期：暂停更新说明、自动化测试的未来趋势"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/weekly-14.html&title=周刊第14期：暂停更新说明、自动化测试的未来趋势"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/weekly-14.html&is_video=false&description=周刊第14期：暂停更新说明、自动化测试的未来趋势"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=周刊第14期：暂停更新说明、自动化测试的未来趋势&body=Check out this article: https://4ark.me/post/weekly-14.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/weekly-14.html&title=周刊第14期：暂停更新说明、自动化测试的未来趋势"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/weekly-14.html&title=周刊第14期：暂停更新说明、自动化测试的未来趋势"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/weekly-14.html&title=周刊第14期：暂停更新说明、自动化测试的未来趋势"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/weekly-14.html&title=周刊第14期：暂停更新说明、自动化测试的未来趋势"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/weekly-14.html&name=周刊第14期：暂停更新说明、自动化测试的未来趋势&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/weekly-14.html&t=周刊第14期：暂停更新说明、自动化测试的未来趋势"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="dark-mobile" class="icon"><i class="fa fa-sun" id="dark-btn" aria-hidden="true"></i> Switch</a>
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    4Ark
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-190615898-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-190615898-1');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<script type="text/javascript">
+  function loadDisqus() {
+    var disqus_shortname = 'https-4ark-me'
+
+    ;(function () {
+      var dsq = document.createElement('script')
+      dsq.type = 'text/javascript'
+      dsq.async = true
+      dsq.src =
+        '//' +
+        disqus_shortname +
+        '.disqus.com/embed.js'
+      ;(
+        document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]
+      ).appendChild(dsq)
+    })()
+
+    $('#load-disqus').hide()
+  }
+</script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

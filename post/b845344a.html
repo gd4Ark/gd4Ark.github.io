@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="1. 前言学习 JavaScript 也有一段时间，今天抽空总结一下作用域，也方便自己以后翻阅。 2. 什么是作用域如果让我用一句简短的话来讲述什么是作用域，我的回答是：  其实作用域的本质是一套规则，它定义了变量的可访问范围，控制变量的可见性和生命周期。  既然作用域是一套规则，那么究竟如何设置这些规则呢？ 先不急，在这之前，我们先来理解几个概念。 2.1 编译到执行的过程下面我们就拿这段代码来">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解 JavaScript 中的作用域">
+<meta property="og:url" content="https://4ark.me/post/b845344a.html">
+<meta property="og:site_name" content="4Ark × Blog">
+<meta property="og:description" content="1. 前言学习 JavaScript 也有一段时间，今天抽空总结一下作用域，也方便自己以后翻阅。 2. 什么是作用域如果让我用一句简短的话来讲述什么是作用域，我的回答是：  其实作用域的本质是一套规则，它定义了变量的可访问范围，控制变量的可见性和生命周期。  既然作用域是一套规则，那么究竟如何设置这些规则呢？ 先不急，在这之前，我们先来理解几个概念。 2.1 编译到执行的过程下面我们就拿这段代码来">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-01-09T20:56:32.000Z">
+<meta property="article:modified_time" content="2024-02-06T18:11:56.000Z">
+<meta property="article:author" content="4Ark">
+<meta property="article:tag" content="前端">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>理解 JavaScript 中的作用域</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script>localStorage.getItem("dark_mode")==="dark"&&document.write(`<link rel="stylesheet" href="${location.origin}/css/dark.css">`)</script>
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+    <meta name="google-site-verification" content="DwDg4EuywHWNZUkTC7sG0WGv_UQekM4uRtOoaGuDJHc" />
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="4Ark × Blog" type="application/atom+xml">
+<link rel="alternate" href="/rss.xml" title="4Ark × Blog" type="application/rss+xml">
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/post/b5597874.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/post/2a0a222a.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon"><i class="fa fa-moon" id="dark-btn" aria-hidden="true" onmouseover="$('#i-dark').toggle()" onmouseout="$('#i-dark').toggle()"></i></a></li>
+        <li><a class="icon" target="_blank" rel="noopener" href="https://4ark.me/atom.xml" aria-label="rss"><i class="fas fa-rss"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-dark" class="info" style="display: none;">Switch mode</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/b845344a.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/b845344a.html&text=理解 JavaScript 中的作用域"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/b845344a.html&title=理解 JavaScript 中的作用域"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/b845344a.html&is_video=false&description=理解 JavaScript 中的作用域"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=理解 JavaScript 中的作用域&body=Check out this article: https://4ark.me/post/b845344a.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/b845344a.html&title=理解 JavaScript 中的作用域"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/b845344a.html&title=理解 JavaScript 中的作用域"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/b845344a.html&title=理解 JavaScript 中的作用域"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/b845344a.html&title=理解 JavaScript 中的作用域"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/b845344a.html&name=理解 JavaScript 中的作用域&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/b845344a.html&t=理解 JavaScript 中的作用域"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">1. 前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%BB%80%E4%B9%88%E6%98%AF%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="toc-number">2.</span> <span class="toc-text">2. 什么是作用域</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E7%BC%96%E8%AF%91%E5%88%B0%E6%89%A7%E8%A1%8C%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 编译到执行的过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-LHS-amp-RHS-%E6%9F%A5%E8%AF%A2"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 LHS &amp; RHS 查询</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-1-%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%B5%8C%E5%A5%97"><span class="toc-number">2.2.1.</span> <span class="toc-text">2.2.1 作用域嵌套</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%AF%8D%E6%B3%95%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="toc-number">3.</span> <span class="toc-text">3. 词法作用域</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%BC%95%E6%93%8E%E5%AF%B9%E4%BD%9C%E7%94%A8%E5%9F%9F%E7%9A%84%E6%9F%A5%E6%89%BE"><span class="toc-number">4.</span> <span class="toc-text">4. 引擎对作用域的查找</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%AC%BA%E9%AA%97%E8%AF%AD%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text">5. 欺骗语法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-eval"><span class="toc-number">5.1.</span> <span class="toc-text">5.1 eval</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-with"><span class="toc-number">5.2.</span> <span class="toc-text">5.2 with</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E6%80%A7%E8%83%BD"><span class="toc-number">5.3.</span> <span class="toc-text">5.3 性能</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%87%BD%E6%95%B0%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%92%8C%E5%9D%97%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="toc-number">6.</span> <span class="toc-text">6. 函数作用域和块作用域</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-%E5%87%BD%E6%95%B0%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="toc-number">6.1.</span> <span class="toc-text">6.1 函数作用域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-%E5%9D%97%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="toc-number">6.2.</span> <span class="toc-text">6.2 块作用域</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E6%8F%90%E5%8D%87"><span class="toc-number">7.</span> <span class="toc-text">7. 提升</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E5%87%BD%E6%95%B0%E4%BC%98%E5%85%88"><span class="toc-number">8.</span> <span class="toc-text">8. 函数优先</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E5%90%8E%E8%AE%B0"><span class="toc-number">9.</span> <span class="toc-text">9. 后记</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        理解 JavaScript 中的作用域
+    </h1>
+
+
+
+    <div class="meta">
+      <span
+        class="author"
+        itemprop="author"
+        itemscope
+        itemtype="http://schema.org/Person"
+      >
+        <span itemprop="name"
+          >4Ark</span
+        >
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-01-09T20:56:32.000Z" itemprop="datePublished">2019-01-09</time>
+        
+      
+    </div>
+
+ 
+      
+        
+ 
+        
+    <div class="article-tag">
+        <i class="fas fa-hashtag"></i>
+        <a class="tag-link-link" href="/tags/JavaScript/" rel="tag">JavaScript</a>, <a class="tag-link-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a>
+    </div>
+
+
+      
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody"><h2 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h2><p>学习 JavaScript 也有一段时间，今天抽空总结一下作用域，也方便自己以后翻阅。</p>
+<h2 id="2-什么是作用域"><a href="#2-什么是作用域" class="headerlink" title="2. 什么是作用域"></a>2. 什么是作用域</h2><p>如果让我用一句简短的话来讲述什么是作用域，我的回答是：</p>
+<blockquote>
+<p>其实作用域的本质是一套规则，它定义了变量的可访问范围，控制变量的可见性和生命周期。</p>
+</blockquote>
+<p>既然作用域是一套规则，那么究竟如何设置这些规则呢？</p>
+<p>先不急，在这之前，我们先来理解几个概念。</p>
+<h3 id="2-1-编译到执行的过程"><a href="#2-1-编译到执行的过程" class="headerlink" title="2.1 编译到执行的过程"></a>2.1 编译到执行的过程</h3><p>下面我们就拿这段代码来讲述 JavaScript 编译到执行的过程。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>首先我们来看一下在这个过程中，几个功臣所需要做的事。</p>
+<ol>
+<li><p>引擎（总指挥）：</p>
+<p>从头到尾负责整个 JavaScript 程序的编译及执行过程。</p>
+</li>
+<li><p>编译器（劳工）：</p>
+<ol>
+<li><p>词法分析（分词）</p>
+<p>解析成词法单元，<code>var</code>、<code>a</code>、<code>=</code>、<code>2</code>。</p>
+</li>
+<li><p>语法分析（解析）</p>
+<p>将单词单元转换成抽象语法树（AST）。</p>
+</li>
+<li><p>代码生成</p>
+<p>将抽象语法树转换成机器指令。</p>
+</li>
+</ol>
+</li>
+<li><p>作用域（仓库管理员）：</p>
+<p>负责收集并维护所有生命的标识符（变量）组成的一系列查询，并实施一套非常严格的规则，确定当前执行的代码对这些标识符的访问权限。</p>
+</li>
+</ol>
+<p>然后我们再来看，执行这段代码时，每个功臣是怎么协同工作的。</p>
+<p>引擎：</p>
+<blockquote>
+<p>其实这段代码有两个完全不同的声明，<code>var a</code>和<code>a = 2</code>，一个由编译器在编译时处理，另一个则由引擎在运行时处理。</p>
+</blockquote>
+<p>编译器：</p>
+<blockquote>
+<ol>
+<li>一套编译器常规操作下来，到代码生成步骤。</li>
+<li>遇到<code>var a</code>，会先询问作用域中是否已经存在同名变量，如果是，则忽略该声明，继续进行编译；否则它会要求作用域声明一个新的变量<code>a</code>。</li>
+<li>为引擎生成运行<code>a = 2</code>时所需的代码。</li>
+</ol>
+</blockquote>
+<p>引擎：</p>
+<blockquote>
+<p>会先询问作用域是否存在变量<code>a</code>，如果是，就会使用这个变量进行赋值操作；否则一直往外层嵌套作用域找（详见作用域嵌套），直至到全局作用域都没有时，抛出一个异常。</p>
+</blockquote>
+<p><strong>总结：</strong>变量的赋值操作会执行两个动作， 首先编译器会在当前作用域中声明一个变量（ 如果之前没有声明过），然后在运行时引擎会在作用域中查找该变量， 如果能够找到就会对它赋值。</p>
+<h3 id="2-2-LHS-amp-RHS-查询"><a href="#2-2-LHS-amp-RHS-查询" class="headerlink" title="2.2 LHS &amp; RHS 查询"></a>2.2 LHS &amp; RHS 查询</h3><p>从上面可知，引擎在获得编译器给出的代码后，还会对作用域进行询问变量。</p>
+<p>聪明的你肯定一眼就看出，<code>L</code>和<code>R</code>的含义，它们分别代表左侧和右侧。</p>
+<p>现在我们把代码改成这样：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = b</span><br></pre></td></tr></table></figure>
+
+<p>这时引擎对<code>a</code>进行 LHS 查询，对<code>b</code>进行 RHS 查询，但是<code>L</code>和<code>R</code>并不一定指操作符的左右边，而应该这样理解：</p>
+<blockquote>
+<p>LHS 是为了找到赋值的目标。 RHS 是赋值操作的源头。也就是 LHS 是为了找到变量这个容器本身，给它赋值，而 RHS 是为了取出这个变量的值。</p>
+</blockquote>
+<h4 id="2-2-1-作用域嵌套"><a href="#2-2-1-作用域嵌套" class="headerlink" title="2.2.1 作用域嵌套"></a>2.2.1 作用域嵌套</h4><p>当一个块或函数嵌套在另一个块或函数中时，就发生了作用域的嵌套，进而形成了一条作用域链。因此，在当前作用域中无法找到某个变量时，引擎就会在外层嵌套的作用域中继续查找，直到找到该变量， 或抵达最外层的作用域(也就是全局作用域)为止。</p>
+<h2 id="3-词法作用域"><a href="#3-词法作用域" class="headerlink" title="3. 词法作用域"></a>3. 词法作用域</h2><p>作用域分为两种：</p>
+<ol>
+<li>词法作用域（较为普遍，JavaScript 所使用的也是这种）</li>
+<li>动态作用域（使用较少，比如 Bash 脚本、Perl 中的一些模式等）</li>
+</ol>
+<blockquote>
+<p>词法作用域是由你在写代码时将变量和块作用域写在哪里来决定的。</p>
+</blockquote>
+<p>看以下代码，这个例子中有三个逐级嵌套的作用域。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">2</span> <span class="comment">// 作用域1 全局</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> b = a * <span class="number">2</span> <span class="comment">// 作用域2 局部</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> c = a * b <span class="comment">// 作用域3 局部</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ol>
+<li>作用域是由你书写代码所在位置决定的。</li>
+<li>子级作用域可以访问父级作用域，而父级作用域则不能访问子级作用域。</li>
+</ol>
+</blockquote>
+<h2 id="4-引擎对作用域的查找"><a href="#4-引擎对作用域的查找" class="headerlink" title="4. 引擎对作用域的查找"></a>4. 引擎对作用域的查找</h2><p>作用域查找会在找到第一个匹配的标识符时停止，在多层的嵌套作用域中可以定义同名的标识符，这叫做“遮蔽效应”（内部的标识符“遮蔽”了外部的标识符）。也就是说查找时会从运行所在的作用域开始，逐级往上查找，直到遇见第一个标识符为止。</p>
+<p>全局变量（全局作用域下定义的变量）会自动变成全局对象（比如浏览器中的 window 对象）。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">1</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> a = <span class="number">2</span></span><br><span class="line">  <span class="built_in">console</span>.log(a) <span class="comment">// 2</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> a = <span class="number">3</span></span><br><span class="line">    <span class="built_in">console</span>.log(a) <span class="comment">// 3</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">window</span>.a) <span class="comment">// 1</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>非全局的变量如果被遮蔽了，就无论如何都无法被访问到，所以在上述代码中，<code>bar</code>内的作用域无法访问到<code>foo</code>下定义的变量<code>a</code>。</p>
+<p>词法作用域查找只会查找一级标识符，比如<code>a</code>、<code>b</code>，如果是<code>foo.bar</code>，词法作用域查找只会试图查找<code>foo</code>标识符，找到这个变量后，由对象属性访问规则接管属性的访问。</p>
+</blockquote>
+<h2 id="5-欺骗语法"><a href="#5-欺骗语法" class="headerlink" title="5. 欺骗语法"></a>5. 欺骗语法</h2><p>虽然词法作用域是在代码编写时确定的，但还是有方法可以在引擎运行时动态修改词法作用域，有两种机制：</p>
+<ol>
+<li><code>eval</code></li>
+<li><code>with</code></li>
+</ol>
+<h3 id="5-1-eval"><a href="#5-1-eval" class="headerlink" title="5.1 eval"></a>5.1 eval</h3><p>JavaScript 的 <code>eval</code>函数可以接受一个字符串参数并作为代码语句来执行， 就好像代码是原本就在那个位置一样，考虑以下代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">str</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">eval</span>(str) <span class="comment">// 欺骗</span></span><br><span class="line">  <span class="built_in">console</span>.log(a)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> a = <span class="number">1</span></span><br><span class="line">foo(<span class="string">&#x27;var a = 2;&#x27;</span>) <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+
+<p>仿佛<code>eval</code>中传入的参数语句原本就在那一样，会创建一个变量<code>a</code>，并遮蔽了外部作用域的同名变量。</p>
+<p><strong>注意</strong>：</p>
+<blockquote>
+<ul>
+<li><code>eval</code>通常被用来执行动态创建的代码，可以根据程序逻辑动态地将变量和函数以字符串形式拼接在一起之后传递进去。</li>
+<li>在严格模式下，<code>eval</code>无法修改所在的作用域。</li>
+<li>与<code>eval</code>相似的还有，<code>setTimeout</code>、<code>setInterval</code>、<code>new Function</code>。</li>
+</ul>
+</blockquote>
+<h3 id="5-2-with"><a href="#5-2-with" class="headerlink" title="5.2 with"></a>5.2 with</h3><p><code>with</code>通常被当作重复引用同一个对象中的多个属性的快捷方式， 可以不需要重复引用对象本身。</p>
+<p>使用方法如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj1 = &#123; <span class="attr">a</span>: <span class="number">1</span>, <span class="attr">b</span>: <span class="number">2</span> &#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">with</span> (obj) &#123;</span><br><span class="line">    a = <span class="number">2</span></span><br><span class="line">    b = <span class="number">3</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">foo(obj1)</span><br><span class="line"><span class="built_in">console</span>.log(obj1) <span class="comment">// &#123;a: 2, b: 3&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>然而考虑以下代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj2 = &#123; <span class="attr">a</span>: <span class="number">1</span>, <span class="attr">b</span>: <span class="number">2</span> &#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">with</span> (obj) &#123;</span><br><span class="line">    a = <span class="number">2</span></span><br><span class="line">    b = <span class="number">3</span></span><br><span class="line">    c = <span class="number">4</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">foo(obj2)</span><br><span class="line"><span class="built_in">console</span>.log(obj2) <span class="comment">// &#123;a: 2, b: 3&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(c) <span class="comment">// 4 不好，c被泄露到全局作用域下</span></span><br></pre></td></tr></table></figure>
+
+<p>尽管<code>with</code>可以将对象处理为词法作用域，但是这样块内部正常的<code>var</code>操作并不会限制在这个块的作用域下，而是被添加到<code>with</code>所在的函数作用域下，而不通过<code>var</code>声明变量将视为声明全局变量。</p>
+<h3 id="5-3-性能"><a href="#5-3-性能" class="headerlink" title="5.3 性能"></a>5.3 性能</h3><p><code>eval</code>和<code>with</code>会在运行时修改或创建新的作用域，以此来欺骗其他书写时定义的词法作用域，然而 JavaScript 引擎会在编译阶段进行性能优化，有些优化依赖于能够根据代码的词法进行静态分析，并预先确定所有的变量和函数的定义位置，才能在执行过程中快速找到标识符。但是通过<code>eval</code>和<code>with</code>来欺骗词法作用域会导致引擎无法知道他们对词法作用域做了什么样的改动，只能对部分不进行优化，因此如果在代码中大量使用<code>eval</code>或<code>with</code>就会导致代码运行起来变得非常慢。</p>
+<h2 id="6-函数作用域和块作用域"><a href="#6-函数作用域和块作用域" class="headerlink" title="6. 函数作用域和块作用域"></a>6. 函数作用域和块作用域</h2><h3 id="6-1-函数作用域"><a href="#6-1-函数作用域" class="headerlink" title="6.1 函数作用域"></a>6.1 函数作用域</h3><p>在 JavaScript 中每声明一个函数就会创建一个函数作用域，同时属于这个函数的所有变量在整个函数的范围内都可以使用。</p>
+<h3 id="6-2-块作用域"><a href="#6-2-块作用域" class="headerlink" title="6.2 块作用域"></a>6.2 块作用域</h3><p>从 ES3 发布以来，JavaScript 就有了块作用域，创建块作用域的几种方式有：</p>
+<ul>
+<li><p><code>with</code></p>
+<p>上面已经讲了，这里不再复述。</p>
+</li>
+<li><p><code>try/catch</code></p>
+<p><code>try/catch</code> 的 <code>catch</code> 分句会创建一个块作用域，其中声明的变量仅在 catch 内部有效。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  <span class="keyword">throw</span> <span class="number">2</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (a) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><code>let</code>和<code>const</code></p>
+<p>ES6 引入的新关键词，提供了除 <code>var</code> 以外的变量声明方式，它们可以将变量绑定到所在的任意作用域中（通常是<code>&#123;&#125;</code>内部）。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="keyword">let</span> a = <span class="number">2</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(a) <span class="comment">// ReferenceError: a is not defined</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>：使用 <code>let</code>和<code>const</code> 进行的声明不会在块作用域中进行提升。</p>
+</li>
+</ul>
+<h2 id="7-提升"><a href="#7-提升" class="headerlink" title="7. 提升"></a>7. 提升</h2><p>考虑这段代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(a)</span><br><span class="line"><span class="keyword">var</span> a = <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>输入结果是<code>undefined</code>，而不是<code>ReferenceError</code>。</p>
+<p>为什么呢？</p>
+<p>前面说过，编译阶段时，会把声明分成两个动作，也就是只把<code>var a</code>部分进行提升。</p>
+<p>所以第二段代码真正的执行顺序是：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a <span class="comment">// 这时 a 是 undefined</span></span><br><span class="line"><span class="built_in">console</span>.log(a)</span><br><span class="line">a = <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ul>
+<li>编译阶段时会把所有的声明操作提升，而赋值操作原地执行。</li>
+<li>函数声明会把整个函数提升，而不仅仅是函数名。</li>
+</ul>
+</blockquote>
+<h2 id="8-函数优先"><a href="#8-函数优先" class="headerlink" title="8. 函数优先"></a>8. 函数优先</h2><p>虽然函数和变量都会被提升，但函数声明的优先级高于变量声明，所以：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">foo() <span class="comment">// 1</span></span><br><span class="line"><span class="keyword">var</span> foo</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">1</span>)</span><br><span class="line">&#125;</span><br><span class="line">foo = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">2</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因为这个代码片段会被引擎理解为如下形式：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">1</span>)</span><br><span class="line">&#125;</span><br><span class="line">foo() <span class="comment">// 1</span></span><br><span class="line">foo = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">2</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个值得一提的是，尽管<code>var foo</code>出现在<code>function foo()...</code>之前，但由于函数声明会被优先提升，所以它会被忽略（因为重复声明了）。<br><strong>注意：</strong></p>
+<blockquote>
+<p>JavaScript 会忽略前面已经声明过的声明，不管它是变量还是函数，只要其名称相同。</p>
+</blockquote>
+<h2 id="9-后记"><a href="#9-后记" class="headerlink" title="9. 后记"></a>9. 后记</h2><p>因为篇幅原因，有一部分内容只是大概提到，并没有太过于详细的讲解，如果你感兴趣，那么我推荐你看看<strong>《你不知道的 JavaScript（上）》</strong>这本书，书上对此内容有很详细的说明。</p>
+<p>本文也是作者一边查看此书一边结合自己的理解来进行编写的。</p>
+<p>其实作用域还有一个非常重要的概念，那就是<strong>闭包</strong>。但闭包也是 JavaScript 中的一个非常重要却又难以掌握的，所以需要另开一篇文章来介绍。</p>
+<p>最后，我想说的就是，在这个框架工具流行的时代，我们往往会被这些新东西所吸引，却忽略了最本质的东西，诸诸不知，恰恰是这些我们所忽略的东西才是最重要的，所有的 JavaScript 框架工具都是基于这些内容。所以，不妨回过头来看看这些原生的东西，相信你会更上一层楼。</p>
+<p>谢谢观看！</p>
+</div>
+  <hr class="copy-line" />
+  <div class="post-copyright">
+    <div class="copy-author">
+      <span>作者 :</span>
+      <span
+        >4Ark</span
+      >
+    </div>
+    <div class="copy-url">
+      <span>地址 :</span>
+      <a href="https://4ark.me/post/b845344a.html">https://4ark.me/post/b845344a.html</a>
+    </div>
+    <div class="copy-origin">
+      <span>来源 :</span>
+      <a href="https://4ark.me">https://4ark.me</a>
+    </div>
+    <div class="copy-license">著作权归作者所有，转载请联系作者获得授权。</div>
+  </div>
+</article>
+
+<div class="blog-post-comments">
+  <div id="load-disqus">
+    <p onclick="loadDisqus()" style="cursor: pointer; text-align: center">
+      🥳&nbsp;加载 Disqus 评论
+    </p>
+  </div>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments.</noscript>
+  </div>
+</div>
+ 
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Writing</a></li>
+         
+          <li><a href="/weekly">Weekly</a></li>
+         
+          <li><a href="/tags">Tags</a></li>
+         
+          <li><a href="/search">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">1. 前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%BB%80%E4%B9%88%E6%98%AF%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="toc-number">2.</span> <span class="toc-text">2. 什么是作用域</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E7%BC%96%E8%AF%91%E5%88%B0%E6%89%A7%E8%A1%8C%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 编译到执行的过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-LHS-amp-RHS-%E6%9F%A5%E8%AF%A2"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 LHS &amp; RHS 查询</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-1-%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%B5%8C%E5%A5%97"><span class="toc-number">2.2.1.</span> <span class="toc-text">2.2.1 作用域嵌套</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E8%AF%8D%E6%B3%95%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="toc-number">3.</span> <span class="toc-text">3. 词法作用域</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%BC%95%E6%93%8E%E5%AF%B9%E4%BD%9C%E7%94%A8%E5%9F%9F%E7%9A%84%E6%9F%A5%E6%89%BE"><span class="toc-number">4.</span> <span class="toc-text">4. 引擎对作用域的查找</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%AC%BA%E9%AA%97%E8%AF%AD%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text">5. 欺骗语法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-eval"><span class="toc-number">5.1.</span> <span class="toc-text">5.1 eval</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-with"><span class="toc-number">5.2.</span> <span class="toc-text">5.2 with</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E6%80%A7%E8%83%BD"><span class="toc-number">5.3.</span> <span class="toc-text">5.3 性能</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%87%BD%E6%95%B0%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%92%8C%E5%9D%97%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="toc-number">6.</span> <span class="toc-text">6. 函数作用域和块作用域</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-%E5%87%BD%E6%95%B0%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="toc-number">6.1.</span> <span class="toc-text">6.1 函数作用域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-%E5%9D%97%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="toc-number">6.2.</span> <span class="toc-text">6.2 块作用域</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E6%8F%90%E5%8D%87"><span class="toc-number">7.</span> <span class="toc-text">7. 提升</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E5%87%BD%E6%95%B0%E4%BC%98%E5%85%88"><span class="toc-number">8.</span> <span class="toc-text">8. 函数优先</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E5%90%8E%E8%AE%B0"><span class="toc-number">9.</span> <span class="toc-text">9. 后记</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/b845344a.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/b845344a.html&text=理解 JavaScript 中的作用域"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/b845344a.html&title=理解 JavaScript 中的作用域"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/b845344a.html&is_video=false&description=理解 JavaScript 中的作用域"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=理解 JavaScript 中的作用域&body=Check out this article: https://4ark.me/post/b845344a.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/b845344a.html&title=理解 JavaScript 中的作用域"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/b845344a.html&title=理解 JavaScript 中的作用域"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/b845344a.html&title=理解 JavaScript 中的作用域"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/b845344a.html&title=理解 JavaScript 中的作用域"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/b845344a.html&name=理解 JavaScript 中的作用域&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/b845344a.html&t=理解 JavaScript 中的作用域"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="dark-mobile" class="icon"><i class="fa fa-sun" id="dark-btn" aria-hidden="true"></i> Switch</a>
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    4Ark
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-190615898-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-190615898-1');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<script type="text/javascript">
+  function loadDisqus() {
+    var disqus_shortname = 'https-4ark-me'
+
+    ;(function () {
+      var dsq = document.createElement('script')
+      dsq.type = 'text/javascript'
+      dsq.async = true
+      dsq.src =
+        '//' +
+        disqus_shortname +
+        '.disqus.com/embed.js'
+      ;(
+        document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]
+      ).appendChild(dsq)
+    })()
+
+    $('#load-disqus').hide()
+  }
+</script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

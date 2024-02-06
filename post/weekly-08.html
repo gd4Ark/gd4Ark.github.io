@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="阅读 ECMAScript 规范有必要先向部分初学者解释一下 JavaScript 和 ECMAScript 的区别，最开始 ECMA 仅是 European Computer Manufacturers Association （欧洲计算机制造商协会）的首字母缩写，不过随着计算机的国际化，组织的标准牵涉到很多其他国家，因此这个组织已经改名为 Ecma 国际，所以现在的 Ecma 本身就是一个名字">
+<meta property="og:type" content="article">
+<meta property="og:title" content="周刊第8期：阅读 ECMAScript 规范">
+<meta property="og:url" content="https://4ark.me/post/weekly-08.html">
+<meta property="og:site_name" content="4Ark × Blog">
+<meta property="og:description" content="阅读 ECMAScript 规范有必要先向部分初学者解释一下 JavaScript 和 ECMAScript 的区别，最开始 ECMA 仅是 European Computer Manufacturers Association （欧洲计算机制造商协会）的首字母缩写，不过随着计算机的国际化，组织的标准牵涉到很多其他国家，因此这个组织已经改名为 Ecma 国际，所以现在的 Ecma 本身就是一个名字">
+<meta property="og:locale">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202204080105185.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202204080001598.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202204111949351.png">
+<meta property="article:published_time" content="2022-04-11T00:00:00.000Z">
+<meta property="article:modified_time" content="2024-02-06T18:11:56.000Z">
+<meta property="article:author" content="4Ark">
+<meta property="article:tag" content="weekly">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202204080105185.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>周刊第8期：阅读 ECMAScript 规范</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script>localStorage.getItem("dark_mode")==="dark"&&document.write(`<link rel="stylesheet" href="${location.origin}/css/dark.css">`)</script>
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+    <meta name="google-site-verification" content="DwDg4EuywHWNZUkTC7sG0WGv_UQekM4uRtOoaGuDJHc" />
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="4Ark × Blog" type="application/atom+xml">
+<link rel="alternate" href="/rss.xml" title="4Ark × Blog" type="application/rss+xml">
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/post/weekly-09.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/post/weekly-07.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon"><i class="fa fa-moon" id="dark-btn" aria-hidden="true" onmouseover="$('#i-dark').toggle()" onmouseout="$('#i-dark').toggle()"></i></a></li>
+        <li><a class="icon" target="_blank" rel="noopener" href="https://4ark.me/atom.xml" aria-label="rss"><i class="fas fa-rss"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-dark" class="info" style="display: none;">Switch mode</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/weekly-08.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/weekly-08.html&text=周刊第8期：阅读 ECMAScript 规范"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/weekly-08.html&title=周刊第8期：阅读 ECMAScript 规范"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/weekly-08.html&is_video=false&description=周刊第8期：阅读 ECMAScript 规范"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=周刊第8期：阅读 ECMAScript 规范&body=Check out this article: https://4ark.me/post/weekly-08.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/weekly-08.html&title=周刊第8期：阅读 ECMAScript 规范"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/weekly-08.html&title=周刊第8期：阅读 ECMAScript 规范"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/weekly-08.html&title=周刊第8期：阅读 ECMAScript 规范"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/weekly-08.html&title=周刊第8期：阅读 ECMAScript 规范"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/weekly-08.html&name=周刊第8期：阅读 ECMAScript 规范&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/weekly-08.html&t=周刊第8期：阅读 ECMAScript 规范"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%98%85%E8%AF%BB-ECMAScript-%E8%A7%84%E8%8C%83"><span class="toc-number">1.</span> <span class="toc-text">阅读 ECMAScript 规范</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%80%8A%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0%E3%80%8B%E2%80%94%E2%80%94-%E6%9D%BE%E6%9C%AC%E8%A1%8C%E5%BC%98"><span class="toc-number">2.</span> <span class="toc-text">《编程语言的设计与实现》—— 松本行弘</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%91%A8%E8%A7%81%E9%97%BB"><span class="toc-number">3.</span> <span class="toc-text">本周见闻</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CSS-%E5%B1%9E%E6%80%A7%E4%BD%BF%E7%94%A8%E6%AC%A1%E6%95%B0%E6%8E%92%E8%A1%8C%E6%A6%9C"><span class="toc-number">3.1.</span> <span class="toc-text">CSS 属性使用次数排行榜</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B-tips"><span class="toc-number">4.</span> <span class="toc-text">一些 tips</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88-HTTP-301-%E5%90%8E%E4%BC%9A%E6%8A%8A-POST-%E8%BD%AC%E4%B8%BA-GET%EF%BC%9F"><span class="toc-number">4.1.</span> <span class="toc-text">为什么 HTTP 301 后会把 POST 转为 GET？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JavaScript-%E7%9A%84%E6%95%B0%E5%AD%97%E5%AE%89%E5%85%A8%E8%8C%83%E5%9B%B4"><span class="toc-number">4.2.</span> <span class="toc-text">JavaScript 的数字安全范围</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E3%80%8CEnter%E9%94%AE%E3%80%8D%E8%A6%81%E8%A2%AB%E7%BF%BB%E8%AF%91%E4%B8%BA%E3%80%8C%E5%9B%9E%E8%BD%A6%E9%94%AE%E3%80%8D%EF%BC%9F"><span class="toc-number">4.3.</span> <span class="toc-text">为什么「Enter键」要被翻译为「回车键」？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E4%BA%AB%E6%96%87%E7%AB%A0"><span class="toc-number">5.</span> <span class="toc-text">分享文章</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#DeepL-Api-%E8%AE%BE%E8%AE%A1%E4%B8%AD%E7%9A%84%E6%AC%BA%E9%AA%97%E6%88%98%E6%9C%AF"><span class="toc-number">5.1.</span> <span class="toc-text">DeepL Api 设计中的欺骗战术</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cloudflare-%E5%A6%82%E4%BD%95%E5%B0%86%E7%BD%91%E7%AB%99%E5%8A%A0%E8%BD%BD%E6%97%B6%E9%97%B4%E7%BC%A9%E7%9F%AD-30"><span class="toc-number">5.2.</span> <span class="toc-text">Cloudflare 如何将网站加载时间缩短 30%</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%89%E8%B6%A3%E7%9A%84%E9%93%BE%E6%8E%A5"><span class="toc-number">6.</span> <span class="toc-text">有趣的链接</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        周刊第8期：阅读 ECMAScript 规范
+    </h1>
+
+
+
+    <div class="meta">
+      <span
+        class="author"
+        itemprop="author"
+        itemscope
+        itemtype="http://schema.org/Person"
+      >
+        <span itemprop="name"
+          >4Ark</span
+        >
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-04-11T00:00:00.000Z" itemprop="datePublished">2022-04-11</time>
+        
+      
+    </div>
+
+ 
+      
+        <div class="article-tag">
+            <i class="fa fa-calendar-week"></i>
+            <a href="/weekly">Weekly</a>
+        </div>
+      
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody"><h2 id="阅读-ECMAScript-规范"><a href="#阅读-ECMAScript-规范" class="headerlink" title="阅读 ECMAScript 规范"></a>阅读 ECMAScript 规范</h2><p>有必要先向部分初学者解释一下 JavaScript 和 ECMAScript 的区别，最开始 ECMA 仅是 European Computer Manufacturers Association （欧洲计算机制造商协会）的首字母缩写，不过随着计算机的国际化，组织的标准牵涉到很多其他国家，因此这个组织已经改名为 Ecma 国际，所以现在的 Ecma 本身就是一个名字，不再是首字母缩写。</p>
+<p>ECMAScript 与 JavaScript 其实就是同一个东西，只是因为 JavaScript 这个名称已经被 Sun 公司注册了商标，并且不开放给 Ecma 协会使用，所以 JavaScript 的标准只能叫做 ECMAScript，而 JavaScript 可以看做是 ECMAScript 规范的一种实现。</p>
+<p>我们为什么要学习阅读 ECMAScript 规范呢？如果你只是一名 JavaScript 的初学者，你确实没有太大的必要去阅读 ECMAScript 规范，只需要通过阅读 MDN 文档就能学习如何编写 JavaScript，但随着 JavaScript 水平的提升，我们会越来越不满足于使用，我们会想要知道更多内部的细节，然而并不是所有的 JavaScript 细节都会在 MDN 文档上说明。</p>
+<p>下面我就举个在工作中真实遇到的场景，以此阐述我们为什么需要阅读 ECMAScript 规范。</p>
+<p>考虑以下代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">  <span class="number">300</span>: <span class="number">300</span>,</span><br><span class="line">  <span class="number">100</span>: <span class="number">100</span>,</span><br><span class="line">  <span class="number">200</span>: <span class="number">200</span>,</span><br><span class="line">  <span class="number">50.5</span>: <span class="number">50.5</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">const</span> key <span class="keyword">in</span> obj) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(obj[key])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>你觉得这段代码的输出顺序是什么呢？答案是：<code>100,200,300,50.5</code>。</p>
+<p>这是为什么呢？</p>
+<p>从 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/for...in">for…in</a> 的 MDN 文档中，无法得到我们想要的答案，这时候就只能通过阅读 ECMAScript 规范：</p>
+<p> <img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202204080105185.png" alt="image-20220408010524823"></p>
+<p>通过以上信息我们得知，JavaScript 在遍历一个对象的时候，它将按照如下规则执行：</p>
+<ol>
+<li>创建一个空的列表用于存放 keys</li>
+<li>将所有<strong>合法的数组索引</strong>按升序的顺序存入</li>
+<li>将所有<strong>字符串类型索引</strong>按属性创建时间以升序的顺序存入</li>
+<li>将所有 <strong><code>Symbol</code> 类型索引</strong>按属性创建时间以升序的顺序存入</li>
+<li>返回 keys</li>
+</ol>
+<p>PS：当然 for…in 是不会返回 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol">Symbol</a> 类型的属性的，需要使用 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertySymbols">Object.getOwnPropertySymbols()</a>。</p>
+<p>以上源自我遇到的一个真实案例，详见<a href="https://4ark.me/post/how-object-keys-work.html">《一行 Object.keys() 引发的血案》</a>。</p>
+<p>相信大家都已经非常清楚学习阅读 ECMAScript 规范的重要性，可 ECMAScript 规范也不是这么容易阅读的，所以这里提供了一些文章，帮助你快速学习阅读 ECMAScript 规范：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://timothygu.me/es-howto/#example-string-prototype-substring">How to Read the ECMAScript Specification</a></li>
+<li><a target="_blank" rel="noopener" href="https://v8.dev/blog/tags/understanding-ecmascript">Understanding the ECMAScript spec</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.huli.tw/2022/01/30/how-to-validate-javascript-knowledge/">你知道的 JavaScript 知識都有可能是錯的</a></li>
+</ul>
+<p>总之，与本文一样带着问题去阅读，往往能够事半功倍。</p>
+<h2 id="《编程语言的设计与实现》——-松本行弘"><a href="#《编程语言的设计与实现》——-松本行弘" class="headerlink" title="《编程语言的设计与实现》—— 松本行弘"></a>《编程语言的设计与实现》—— 松本行弘</h2><p>此书是 Ruby 语言的创造者 —— 松本行宏在《日经Linux》杂志上的连载整合而成，主要介绍了新语言 Streem 的设计与实现过程。作者从设计 Streem 这门新语言的动机开始讲起，由浅入深，详细介绍了新语言开发中的各个环节，以及语言设计上的纠结与取舍，其中也不乏对其他编程语言的调查与思考，向读者展示了创建编程语言的乐趣。</p>
+<p>笔者现在刚看完第二章，不过也可以谈谈我的阅读感悟：作为一名野生前端，我对编译原理可谓是一窍不通，顶多也就写个 Babel 小玩具的水平，像《编译原理》这种专业书，我是连前十页都啃不下去，好在日系书籍有一个很大的特点就是：<strong>浅显易懂</strong>，此书也不例外，在前两章就带领读者如何通过 lex 进行词法解析，然后通过 yacc 进行语法解析，这过程还会将编译原理中的一些知识带出来，譬如 BNF（巴科斯范式）、窥孔优化等。</p>
+<p>除了编译原理以外，我们还可以通过本书学习如何站在语言设计者的角度去思考语言的特性，为什么要这么设计，从而使我们的视野更加开阔，所以建议每一位开发者都阅读本书（对我这种野生程序员尤为重要）。</p>
+<h2 id="本周见闻"><a href="#本周见闻" class="headerlink" title="本周见闻"></a>本周见闻</h2><h3 id="CSS-属性使用次数排行榜"><a href="#CSS-属性使用次数排行榜" class="headerlink" title="CSS 属性使用次数排行榜"></a><a target="_blank" rel="noopener" href="https://chromestatus.com/metrics/css/popularity">CSS 属性使用次数排行榜</a></h3><p>Chrome 使用<a target="_blank" rel="noopener" href="https://source.chromium.org/chromium/chromium/src/+/main:tools/metrics/histograms/enums.xml">匿名使用统计数据</a>计算每个在 Chrome 浏览器加载的页面中 CSS 属性出现的次数，数据的实时性大概在 24 小时之内。</p>
+<p>以下截取部分排名靠前的 CSS 属性：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202204080001598.png" alt="image-20220408000057438"></p>
+<h2 id="一些-tips"><a href="#一些-tips" class="headerlink" title="一些 tips"></a>一些 tips</h2><h3 id="为什么-HTTP-301-后会把-POST-转为-GET？"><a href="#为什么-HTTP-301-后会把-POST-转为-GET？" class="headerlink" title="为什么 HTTP 301 后会把 POST 转为 GET？"></a><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/HTTP_301">为什么 HTTP 301 后会把 POST 转为 GET？</a></h3><p>根据 <a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc7231#section-6.4.2">RFC 7231, section 6.4.2: 301 永久重定向</a> 指出：</p>
+<blockquote>
+<p>Note: For historical reasons, a user agent MAY change the request<br> method from POST to GET for the subsequent request.  If this<br> behavior is undesired, the 307 (Temporary Redirect) status code<br> can be used instead.</p>
+</blockquote>
+<p>简而言之就是因为历史原因，当某些 HTTP/1.0 客户端收到该状态码时，可能会将 POST 方法改为 GET 方法，继续向新地址发出请求，这是错误的实现——故而后续标准引入了 <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/HTTP_307">HTTP 307</a>。</p>
+<p>所以最好只在 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/GET"><code>GET</code></a> 或 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/HEAD"><code>HEAD</code></a> 方法时使用 301，其他情况使用 307 或者 308 来替代 301。</p>
+<h3 id="JavaScript-的数字安全范围"><a href="#JavaScript-的数字安全范围" class="headerlink" title="JavaScript 的数字安全范围"></a><a target="_blank" rel="noopener" href="https://blog.huli.tw/2022/03/14/javascript-number/">JavaScript 的数字安全范围</a></h3><p>你会如何解释这段代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">9007199254740992</span> === <span class="number">9007199254740993</span> <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<p>我们知道 JavaScript 的数字是用 64 bit 來存，而且遵循的规格是 IEEE 754-2019，既然用 64 bit 来存，那可以表示的数字自然是有限的。</p>
+<p>我们可以用 <code>Number.MAX_SAFE_INTEGER</code> 表示 JavaScript 最大正整数的安全范围，也就是 <code>2^53 - 1</code> = <code>9007199254740991</code>。</p>
+<p>这里所说的安全指的是：<strong>能够准确区分两个不相同的值</strong>，例如 <code>Number.MAX_SAFE_INTEGER + 1 === Number.MAX_SAFE_INTEGER + 2</code> 这在 JavaScript 上是成立的，但它在数学上是错误的，我们可以使用 <code>Number.isSafeInteger()</code> 来判断一个数字是否是一个「安全整数」。</p>
+<p>需要注意的是，最大的安全范围不代表 JavaScript 只能存储 <code>Number.MAX_SAFE_INTEGER</code> 这么大的数字，其实我们最大可以存储 <code>Number.MAX_VALUE</code> 也就是 1.7976931348623157e+308 ，只是它不在安全范围之内罢了。</p>
+<p>总之，对于一些比较大的数字（譬如 uuid 这类），优先考虑是否使用 String 类型，如果一定要数字类型，可以了解下 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/BigInt">BigInt</a>。</p>
+<h3 id="为什么「Enter键」要被翻译为「回车键」？"><a href="#为什么「Enter键」要被翻译为「回车键」？" class="headerlink" title="为什么「Enter键」要被翻译为「回车键」？"></a><a target="_blank" rel="noopener" href="https://haohailong.net/2012/why-enter-key-is-huiche-in-chinese">为什么「Enter键」要被翻译为「回车键」？</a></h3><p>其实「回车」并不是 “Enter” 的翻译，而是 “return” 的翻译。这个 return 其实指的是 “↵+Enter” 中箭头的意思，换言之，Enter 并不是“↵”的一个解释，严格讲 “Enter” 和“↵”是这个键的两种不同的名称，也即两个不同的用途。</p>
+<p>之所以会被翻译成「回车」，是因为现代电脑键盘是从过去的打字机上继承过来的，在过去的机械打字机上有个部件叫「字车」，每打一个字符，字车前进一格，打完一行后，我们需要让字车回到起始位置，而 “Return” 键最早就是这个作用，因此被翻译为「回车」。</p>
+<p>有兴趣可以看看这个视频：</p>
+<iframe src="//player.bilibili.com/player.html?aid=591562931&bvid=BV1uq4y1k7EM&cid=440002269&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+
+<h2 id="分享文章"><a href="#分享文章" class="headerlink" title="分享文章"></a>分享文章</h2><h3 id="DeepL-Api-设计中的欺骗战术"><a href="#DeepL-Api-设计中的欺骗战术" class="headerlink" title="DeepL Api 设计中的欺骗战术"></a><a target="_blank" rel="noopener" href="https://zu1k.com/posts/thinking/deception-tactics-in-deepl-api-design/">DeepL Api 设计中的欺骗战术</a></h3><p>本文作者通过逆向 DeepL 的 Windows 客户端（C#），破解了 DeepL 如何实现接口防滥用。</p>
+<p>直接说结论，其实 DeepL 并没有使用一些常规的方法（譬如 token、签名等）去实现接口防滥用，而是通过两个非常取巧的方法去把开发者绕晕：</p>
+<ol>
+<li>timestamp 参数并不是一个真实的时间戳，而是通过时间戳和源文本的长度进行伪造的，公式是：<code>ts - ts % i_count + i_count</code>，由于与真实的时间戳仅有毫秒部分的差别，一般人无法直接看出端倪。</li>
+<li>id 参数就是一个随机数，只不过后续的请求会在此基础上 + 1，并且这个 id 会决定文本中一个小小的、微不足道的空格。但由于我们通过拿到结果后都会先对 JSON 进行一下格式化，所以很容易忽略这种细节。</li>
+</ol>
+<p>如果不是逆向源代码，相信一般人很难发现这两点细节，不得不感叹 DeepL 工程师的脑洞。</p>
+<h3 id="Cloudflare-如何将网站加载时间缩短-30"><a href="#Cloudflare-如何将网站加载时间缩短-30" class="headerlink" title="Cloudflare 如何将网站加载时间缩短 30%"></a><a target="_blank" rel="noopener" href="https://blog.cloudflare.com/early-hints/">Cloudflare 如何将网站加载时间缩短 30%</a></h3><p>本文介绍 Cloudflare 在 2021 年发布的一个新特性：Early Hints，准确来说它是一个 <a target="_blank" rel="noopener" href="https://httpwg.org/specs/rfc8297.html">Web 标准</a>，它定义了一个新的状态码 103。</p>
+<p>其最核心的功能是：在服务器响应 200 时，先向客户端响应 103，其响应内容包含这个网页所需呈现内容的资源提示，客户端可利用此提示加载页面速度，如下图：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202204111949351.png" alt="img"></p>
+<p>在上面提到的 <a target="_blank" rel="noopener" href="https://httpwg.org/specs/rfc8297.html">RFC</a> 中可看到 HTTP 103 的响应大概长这样（其中可能会有多个 103 响应）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Client request:</span><br><span class="line"></span><br><span class="line">  GET / HTTP/1.1</span><br><span class="line">  Host: example.com</span><br><span class="line"></span><br><span class="line">Server response:</span><br><span class="line"></span><br><span class="line">  HTTP/1.1 103 Early Hints</span><br><span class="line">  Link: &lt;/style.css&gt;; rel=preload; as=style</span><br><span class="line">  Link: &lt;/script.js&gt;; rel=preload; as=script</span><br><span class="line"></span><br><span class="line">  HTTP/1.1 200 OK</span><br><span class="line">  Date: Fri, 26 May 2017 10:02:11 GMT</span><br><span class="line">  Content-Length: 1234</span><br><span class="line">  Content-Type: text/html; charset=utf-8</span><br><span class="line">  Link: &lt;/style.css&gt;; rel=preload; as=style</span><br><span class="line">  Link: &lt;/script.js&gt;; rel=preload; as=script</span><br><span class="line"></span><br><span class="line">  &lt;!doctype html&gt;</span><br><span class="line">  [... rest of the response body is omitted from the example ...]</span><br></pre></td></tr></table></figure>
+
+<p>我们可以在 Chrome 94 及更新版本使用该特性，关于更多内容可见：<a target="_blank" rel="noopener" href="https://blog.cloudflare.com/early-hints/">early-hints</a>。</p>
+<h2 id="有趣的链接"><a href="#有趣的链接" class="headerlink" title="有趣的链接"></a>有趣的链接</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://cn.history.js.org/index.html">JavaScript 二十年</a>：这本书纪录了从 1995 年到 2015 年这二十年的 JavaScript 历史，看完它会对 JavaScript 有不同的体会（还会知道很多冷知识），此为中译版，原版地址：<a target="_blank" rel="noopener" href="http://wirfs-brock.com/allen/posts/866">JavaScript: The First 20 Years</a>。</li>
+</ul>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/mozilla-spidermonkey/jsparagus/blob/master/js-quirks.md#readme">js-quirks</a>：关于 JavaScript 的一些怪癖语法说明，对于想要实现 JavaScript 解析器的同学很有帮助和启发。</li>
+</ul>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://moonvy.com/">Moonvy 月维</a>：探索「设计生产力」之道，与你一起， 创造设计师与开发者的必备工具。</li>
+</ul>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://quokkajs.com/">QUOKKA</a>：<em>Quokka</em> 是一个调试工具，可以为您正在编写的代码提供实时反馈（可惜大部分功能都要收费。</li>
+</ul>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.iconfinder.com/p/free-ukraine-icons">Free Ukraine icons</a>：一些与乌克兰战争有关的免费 icon 图标。</li>
+</ul>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://express.adobe.com/zh-Hans-CN/sp/">Adobe Creative Cloud Express</a>：Adobe 新推出的一个设计工具，可提供快速「去除背景」、「转换为 GIF」、「合并 PDF」以及更多高级操作。</li>
+</ul>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://uxtools.co/challenges">UX Design Challenges | UX Tools</a>：一些 UX 的挑战，帮助你学习如何提高产品的用户体验。</li>
+</ul>
+</div>
+  <hr class="copy-line" />
+  <div class="post-copyright">
+    <div class="copy-author">
+      <span>作者 :</span>
+      <span
+        >4Ark</span
+      >
+    </div>
+    <div class="copy-url">
+      <span>地址 :</span>
+      <a href="https://4ark.me/post/weekly-08.html">https://4ark.me/post/weekly-08.html</a>
+    </div>
+    <div class="copy-origin">
+      <span>来源 :</span>
+      <a href="https://4ark.me">https://4ark.me</a>
+    </div>
+    <div class="copy-license">著作权归作者所有，转载请联系作者获得授权。</div>
+  </div>
+</article>
+
+<div class="blog-post-comments">
+  <div id="load-disqus">
+    <p onclick="loadDisqus()" style="cursor: pointer; text-align: center">
+      🥳&nbsp;加载 Disqus 评论
+    </p>
+  </div>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments.</noscript>
+  </div>
+</div>
+ 
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Writing</a></li>
+         
+          <li><a href="/weekly">Weekly</a></li>
+         
+          <li><a href="/tags">Tags</a></li>
+         
+          <li><a href="/search">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%98%85%E8%AF%BB-ECMAScript-%E8%A7%84%E8%8C%83"><span class="toc-number">1.</span> <span class="toc-text">阅读 ECMAScript 规范</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%80%8A%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0%E3%80%8B%E2%80%94%E2%80%94-%E6%9D%BE%E6%9C%AC%E8%A1%8C%E5%BC%98"><span class="toc-number">2.</span> <span class="toc-text">《编程语言的设计与实现》—— 松本行弘</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%91%A8%E8%A7%81%E9%97%BB"><span class="toc-number">3.</span> <span class="toc-text">本周见闻</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CSS-%E5%B1%9E%E6%80%A7%E4%BD%BF%E7%94%A8%E6%AC%A1%E6%95%B0%E6%8E%92%E8%A1%8C%E6%A6%9C"><span class="toc-number">3.1.</span> <span class="toc-text">CSS 属性使用次数排行榜</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B-tips"><span class="toc-number">4.</span> <span class="toc-text">一些 tips</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88-HTTP-301-%E5%90%8E%E4%BC%9A%E6%8A%8A-POST-%E8%BD%AC%E4%B8%BA-GET%EF%BC%9F"><span class="toc-number">4.1.</span> <span class="toc-text">为什么 HTTP 301 后会把 POST 转为 GET？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JavaScript-%E7%9A%84%E6%95%B0%E5%AD%97%E5%AE%89%E5%85%A8%E8%8C%83%E5%9B%B4"><span class="toc-number">4.2.</span> <span class="toc-text">JavaScript 的数字安全范围</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E3%80%8CEnter%E9%94%AE%E3%80%8D%E8%A6%81%E8%A2%AB%E7%BF%BB%E8%AF%91%E4%B8%BA%E3%80%8C%E5%9B%9E%E8%BD%A6%E9%94%AE%E3%80%8D%EF%BC%9F"><span class="toc-number">4.3.</span> <span class="toc-text">为什么「Enter键」要被翻译为「回车键」？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E4%BA%AB%E6%96%87%E7%AB%A0"><span class="toc-number">5.</span> <span class="toc-text">分享文章</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#DeepL-Api-%E8%AE%BE%E8%AE%A1%E4%B8%AD%E7%9A%84%E6%AC%BA%E9%AA%97%E6%88%98%E6%9C%AF"><span class="toc-number">5.1.</span> <span class="toc-text">DeepL Api 设计中的欺骗战术</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cloudflare-%E5%A6%82%E4%BD%95%E5%B0%86%E7%BD%91%E7%AB%99%E5%8A%A0%E8%BD%BD%E6%97%B6%E9%97%B4%E7%BC%A9%E7%9F%AD-30"><span class="toc-number">5.2.</span> <span class="toc-text">Cloudflare 如何将网站加载时间缩短 30%</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%89%E8%B6%A3%E7%9A%84%E9%93%BE%E6%8E%A5"><span class="toc-number">6.</span> <span class="toc-text">有趣的链接</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/weekly-08.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/weekly-08.html&text=周刊第8期：阅读 ECMAScript 规范"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/weekly-08.html&title=周刊第8期：阅读 ECMAScript 规范"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/weekly-08.html&is_video=false&description=周刊第8期：阅读 ECMAScript 规范"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=周刊第8期：阅读 ECMAScript 规范&body=Check out this article: https://4ark.me/post/weekly-08.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/weekly-08.html&title=周刊第8期：阅读 ECMAScript 规范"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/weekly-08.html&title=周刊第8期：阅读 ECMAScript 规范"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/weekly-08.html&title=周刊第8期：阅读 ECMAScript 规范"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/weekly-08.html&title=周刊第8期：阅读 ECMAScript 规范"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/weekly-08.html&name=周刊第8期：阅读 ECMAScript 规范&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/weekly-08.html&t=周刊第8期：阅读 ECMAScript 规范"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="dark-mobile" class="icon"><i class="fa fa-sun" id="dark-btn" aria-hidden="true"></i> Switch</a>
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    4Ark
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-190615898-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-190615898-1');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<script type="text/javascript">
+  function loadDisqus() {
+    var disqus_shortname = 'https-4ark-me'
+
+    ;(function () {
+      var dsq = document.createElement('script')
+      dsq.type = 'text/javascript'
+      dsq.async = true
+      dsq.src =
+        '//' +
+        disqus_shortname +
+        '.disqus.com/embed.js'
+      ;(
+        document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]
+      ).appendChild(dsq)
+    })()
+
+    $('#load-disqus').hide()
+  }
+</script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

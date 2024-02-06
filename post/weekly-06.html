@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="分享文章 一些本周阅读过的好文章、以及我的一些总结和个人思考；非常建议你直接阅读原文，毕竟一千个读者就有一千个哈姆雷特，而且我的理解可能是错的。  网络没有版本号在过去一年时间里，我们经常听到 WEB3 ，以及相关的术语：如区块链、加密、NTF 等，让不少 WEB 开发者认为这项技术是未来的趋势，于是每个开发者都跃跃欲试，但本文作者认为我们应该对这个充满误导性的术语 「WEB3」持谨慎态度，因为网">
+<meta property="og:type" content="article">
+<meta property="og:title" content="周刊第6期：网络没有版本号">
+<meta property="og:url" content="https://4ark.me/post/weekly-06.html">
+<meta property="og:site_name" content="4Ark × Blog">
+<meta property="og:description" content="分享文章 一些本周阅读过的好文章、以及我的一些总结和个人思考；非常建议你直接阅读原文，毕竟一千个读者就有一千个哈姆雷特，而且我的理解可能是错的。  网络没有版本号在过去一年时间里，我们经常听到 WEB3 ，以及相关的术语：如区块链、加密、NTF 等，让不少 WEB 开发者认为这项技术是未来的趋势，于是每个开发者都跃跃欲试，但本文作者认为我们应该对这个充满误导性的术语 「WEB3」持谨慎态度，因为网">
+<meta property="og:locale">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202203282335113.png">
+<meta property="article:published_time" content="2022-03-28T00:00:00.000Z">
+<meta property="article:modified_time" content="2024-02-06T18:11:56.000Z">
+<meta property="article:author" content="4Ark">
+<meta property="article:tag" content="weekly">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202203282335113.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>周刊第6期：网络没有版本号</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script>localStorage.getItem("dark_mode")==="dark"&&document.write(`<link rel="stylesheet" href="${location.origin}/css/dark.css">`)</script>
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+    <meta name="google-site-verification" content="DwDg4EuywHWNZUkTC7sG0WGv_UQekM4uRtOoaGuDJHc" />
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="4Ark × Blog" type="application/atom+xml">
+<link rel="alternate" href="/rss.xml" title="4Ark × Blog" type="application/rss+xml">
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/post/weekly-07.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/post/weekly-05.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon"><i class="fa fa-moon" id="dark-btn" aria-hidden="true" onmouseover="$('#i-dark').toggle()" onmouseout="$('#i-dark').toggle()"></i></a></li>
+        <li><a class="icon" target="_blank" rel="noopener" href="https://4ark.me/atom.xml" aria-label="rss"><i class="fas fa-rss"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-dark" class="info" style="display: none;">Switch mode</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/weekly-06.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/weekly-06.html&text=周刊第6期：网络没有版本号"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/weekly-06.html&title=周刊第6期：网络没有版本号"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/weekly-06.html&is_video=false&description=周刊第6期：网络没有版本号"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=周刊第6期：网络没有版本号&body=Check out this article: https://4ark.me/post/weekly-06.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/weekly-06.html&title=周刊第6期：网络没有版本号"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/weekly-06.html&title=周刊第6期：网络没有版本号"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/weekly-06.html&title=周刊第6期：网络没有版本号"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/weekly-06.html&title=周刊第6期：网络没有版本号"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/weekly-06.html&name=周刊第6期：网络没有版本号&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/weekly-06.html&t=周刊第6期：网络没有版本号"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E4%BA%AB%E6%96%87%E7%AB%A0"><span class="toc-number">1.</span> <span class="toc-text">分享文章</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E6%B2%A1%E6%9C%89%E7%89%88%E6%9C%AC%E5%8F%B7"><span class="toc-number">1.1.</span> <span class="toc-text">网络没有版本号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%82%A8%E5%9C%A8%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E6%96%B9%E9%9D%A2%E7%9A%84%E7%BB%8F%E9%AA%8C%E6%B0%B4%E5%B9%B3%E5%B0%86%E4%BD%BF%E6%82%A8%E4%BA%A7%E7%94%9F%E6%88%AA%E7%84%B6%E4%B8%8D%E5%90%8C%E7%9A%84%E8%A7%82%E7%82%B9%E5%92%8C%E6%84%8F%E8%A7%81"><span class="toc-number">1.2.</span> <span class="toc-text">您在软件开发方面的经验水平将使您产生截然不同的观点和意见</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%AA%E4%BA%BA%E6%80%9D%E8%80%83"><span class="toc-number">1.2.1.</span> <span class="toc-text">个人思考</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BD%93%E4%BD%A0%E5%9C%A8%E6%9E%84%E5%BB%BA%E4%BA%A7%E5%93%81%E6%97%B6%EF%BC%8C%E4%BD%A0%E5%BA%94%E8%AF%A5%E5%90%AC%E5%8F%96%E8%B0%81%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%9F"><span class="toc-number">1.3.</span> <span class="toc-text">当你在构建产品时，你应该听取谁的意见？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E6%B5%8F%E8%A7%88%E5%99%A8-devtools-%E4%B8%AD%E6%89%93%E5%8D%B0%E5%9B%BE%E7%89%87"><span class="toc-number">1.4.</span> <span class="toc-text">在浏览器 devtools 中打印图片</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%89%E8%B6%A3%E7%9A%84%E9%93%BE%E6%8E%A5"><span class="toc-number">2.</span> <span class="toc-text">有趣的链接</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        周刊第6期：网络没有版本号
+    </h1>
+
+
+
+    <div class="meta">
+      <span
+        class="author"
+        itemprop="author"
+        itemscope
+        itemtype="http://schema.org/Person"
+      >
+        <span itemprop="name"
+          >4Ark</span
+        >
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-03-28T00:00:00.000Z" itemprop="datePublished">2022-03-28</time>
+        
+      
+    </div>
+
+ 
+      
+        <div class="article-tag">
+            <i class="fa fa-calendar-week"></i>
+            <a href="/weekly">Weekly</a>
+        </div>
+      
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody"><h2 id="分享文章"><a href="#分享文章" class="headerlink" title="分享文章"></a>分享文章</h2><blockquote>
+<p>一些本周阅读过的好文章、以及我的一些总结和个人思考；非常建议你直接阅读原文，毕竟一千个读者就有一千个哈姆雷特，而且我的理解可能是错的。</p>
+</blockquote>
+<h3 id="网络没有版本号"><a href="#网络没有版本号" class="headerlink" title="网络没有版本号"></a><a target="_blank" rel="noopener" href="https://hiddedevries.nl/en/blog/2022-01-03-the-web-doesnt-have-version-numbers">网络没有版本号</a></h3><p>在过去一年时间里，我们经常听到 WEB3 ，以及相关的术语：如区块链、加密、NTF 等，让不少 WEB 开发者认为这项技术是未来的趋势，于是每个开发者都跃跃欲试，但本文作者认为我们应该对这个充满误导性的术语 「WEB3」持谨慎态度，因为网络并没有版本号，更没有某个权威的机构会定期更新网络的版本。</p>
+<p>希望 WEB3 及其相关术语不会成为 WEB 开发者的简历上必备的流行词，对于大部分 WEB 开发者而言，该领域的专业知识是不必要的。</p>
+<h3 id="您在软件开发方面的经验水平将使您产生截然不同的观点和意见"><a href="#您在软件开发方面的经验水平将使您产生截然不同的观点和意见" class="headerlink" title="您在软件开发方面的经验水平将使您产生截然不同的观点和意见"></a><a target="_blank" rel="noopener" href="https://www.kevinhooke.com/2022/03/22/your-experience-level-in-software-development-will-lead-you-to-wildly-different-points-of-view-and-opinions/">您在软件开发方面的经验水平将使您产生截然不同的观点和意见</a></h3><p>假设你是一个初级开发者，你为了实现某个功能，而刚好有一个库/框架能够满足你的需求，所以你希望能够把这个库/框架加入到项目中，但比你更有经验的同事拒绝了这个建议，他认为没必要仅仅为了实现一个功能而添加一个库/框架。</p>
+<p>你可能会认为这是一个短视的看法，他们不应该被困在什么都自己重新造轮子的旧观念上。</p>
+<p>但也许他是这样思考问题的：</p>
+<ol>
+<li>添加一个库，意味着增加系统的复杂度、意味着更多的风险。</li>
+<li>需要及时跟踪这个库的安全漏洞、并在 breaking change 时更新现有的代码。</li>
+<li>这个库的安全性如何？是否会有意外的情况发生？</li>
+<li>添加这个库的成本和风险？成本是否会比自己开发更低？</li>
+</ol>
+<h4 id="个人思考"><a href="#个人思考" class="headerlink" title="个人思考"></a>个人思考</h4><p>对于任何一个商业项目而言，不应该也不可能完全脱离开源社区的框架、类库，我们确实不可能所有事情都重新造轮子，开源类库的健壮性肯定比自己实现要强，但这也不意味着我们可以盲目地使用开源类库，即便要使用类库，也可能会面临多个不同选择，我们应该从生态社区、维护积极性、安全性等多方面进行考察和对比，最终选择出适合的方案。</p>
+<h3 id="当你在构建产品时，你应该听取谁的意见？"><a href="#当你在构建产品时，你应该听取谁的意见？" class="headerlink" title="当你在构建产品时，你应该听取谁的意见？"></a><a target="_blank" rel="noopener" href="https://justinjackson.ca/opinion">当你在构建产品时，你应该听取谁的意见？</a></h3><aside>
+💬 "在我使用苹果产品的这么多年里，我从来没有退过一个产品。直到现在。上个月我购买了带 Touch Bar 的新 MacBook Pro。真让人失望。这是第一个让我的工作效率下降的苹果设备。该公司已经与史蒂夫-乔布斯关于简单、优雅机器的愿景脱节。- 迈克尔-凯特
+</aside>
+
+<p>人们根据自己的背景来重视不同的东西。就比如对于笔记本电脑，不同的群体需要不同的功能：</p>
+<ul>
+<li><strong>学生们</strong>想要一台价格实惠且重量轻的笔记本电脑（因为他们会把它带到课堂上）。</li>
+<li><strong>程序员</strong>想要一台具有高分辨率屏幕，大量内存和全尺寸键盘的笔记本电脑。</li>
+<li><strong>游戏玩家</strong>想要一个具有超强 CPU和 GPU 的电脑，他们也不介意笔记本电脑是否笨重。</li>
+</ul>
+<p>本文作者提出我们在构建产品时，最应该听从谁的意见，以及如何听从：</p>
+<ul>
+<li><strong>只接受为您的产品付费的人的产品反馈</strong>，很多人可能不同意这个观点，但是请看看 Feedbook 和谷歌，我们中的许多人都在每天使用它，但是 Facebook 和谷歌似乎不太关心我们的隐私，并在未经我们同意的情况下分享我们的信息。为什么？<strong>因为他们效忠的是广告商</strong>。</li>
+</ul>
+<h3 id="在浏览器-devtools-中打印图片"><a href="#在浏览器-devtools-中打印图片" class="headerlink" title="在浏览器 devtools 中打印图片"></a><a target="_blank" rel="noopener" href="https://www.bram.us/2022/02/13/log-images-to-the-devtools-console-with-console-image/">在浏览器 devtools 中打印图片</a></h3><p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202203282335113.png" alt="Untitled"></p>
+<p>我们使用以下代码在 devtools 中利用 <code>console.log</code> 输出图片：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getBox</span>(<span class="params">width, height</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        <span class="attr">string</span>: <span class="string">&quot;+&quot;</span>,</span><br><span class="line">        <span class="attr">style</span>: <span class="string">&quot;font-size: 1px; padding: &quot;</span> + <span class="built_in">Math</span>.floor(height/<span class="number">2</span>) + <span class="string">&quot;px &quot;</span> + <span class="built_in">Math</span>.floor(width/<span class="number">2</span>) + <span class="string">&quot;px; line-height: &quot;</span> + height + <span class="string">&quot;px;&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.image = <span class="function"><span class="keyword">function</span>(<span class="params">url, scale</span>) </span>&#123;</span><br><span class="line">    scale = scale || <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">var</span> img = <span class="keyword">new</span> Image();</span><br><span class="line"></span><br><span class="line">    img.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> dim = getBox(<span class="built_in">this</span>.width * scale, <span class="built_in">this</span>.height * scale);</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;%c&quot;</span> + dim.string, dim.style + <span class="string">&quot;background: url(&quot;</span> + url + <span class="string">&quot;); background-size: &quot;</span> + (<span class="built_in">this</span>.width * scale) + <span class="string">&quot;px &quot;</span> + (<span class="built_in">this</span>.height * scale) + <span class="string">&quot;px; color: transparent;&quot;</span>);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    img.src = url;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>或者直接使用这个库：<a target="_blank" rel="noopener" href="https://github.com/adriancooney/console.image">https://github.com/adriancooney/console.image</a></p>
+<h2 id="有趣的链接"><a href="#有趣的链接" class="headerlink" title="有趣的链接"></a>有趣的链接</h2><ul>
+<li><p><a target="_blank" rel="noopener" href="https://myxml.in/cors-tester.html">CORS Tester</a>：跨域对于前后端来说都是一个不可逾越的知识点，在实际项目开发中也必然会遇到各种各样的跨域问题，可以使用这个网站在线体验跨域的请求。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://effective-shell.com/">Effective Shell</a>：一本学习 Shell 的在线书籍，适合任何一个想要入门 Shell 的同学。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://curlconverter.com/">Convert curl commands to code</a>：将 CURL 转换到各编程语言的实例中，当然我们平常都会使用 Postman、PAW 等工具进行转换，不过也总有需要在线转换的时候把？</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://exploringjs.com/impatient-js/index.html">JavaScript for impatient programmers (ES2022 edition)</a>：在 JavaScript 世界中有很多非常经典的书籍，如 《JavaScript 权威指南》、《JavaScript 高级程序设计》、《你不知道的 JavaScript》 等，但我推荐这本更加现代化的书，包含了最新的 ES2022 新特性。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://charm.sh/">Charm</a>：在 CLI 构建你的图形界面，真的很漂亮！</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://jless.io/">jless</a>：一个更好地显示 JSON 的 CLI 工具，推荐使用！</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://devtoys.app/">DevToys</a>：堪称开发者的瑞士军刀，提供了比如文件转换（JSON &lt;&gt; YAML ）、编码解码、格式化（支持 JSON、SQL、XML）、哈希生成、UUID 生成、图片压缩多种功能。</p>
+</li>
+</ul>
+</div>
+  <hr class="copy-line" />
+  <div class="post-copyright">
+    <div class="copy-author">
+      <span>作者 :</span>
+      <span
+        >4Ark</span
+      >
+    </div>
+    <div class="copy-url">
+      <span>地址 :</span>
+      <a href="https://4ark.me/post/weekly-06.html">https://4ark.me/post/weekly-06.html</a>
+    </div>
+    <div class="copy-origin">
+      <span>来源 :</span>
+      <a href="https://4ark.me">https://4ark.me</a>
+    </div>
+    <div class="copy-license">著作权归作者所有，转载请联系作者获得授权。</div>
+  </div>
+</article>
+
+<div class="blog-post-comments">
+  <div id="load-disqus">
+    <p onclick="loadDisqus()" style="cursor: pointer; text-align: center">
+      🥳&nbsp;加载 Disqus 评论
+    </p>
+  </div>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments.</noscript>
+  </div>
+</div>
+ 
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Writing</a></li>
+         
+          <li><a href="/weekly">Weekly</a></li>
+         
+          <li><a href="/tags">Tags</a></li>
+         
+          <li><a href="/search">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E4%BA%AB%E6%96%87%E7%AB%A0"><span class="toc-number">1.</span> <span class="toc-text">分享文章</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E6%B2%A1%E6%9C%89%E7%89%88%E6%9C%AC%E5%8F%B7"><span class="toc-number">1.1.</span> <span class="toc-text">网络没有版本号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%82%A8%E5%9C%A8%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E6%96%B9%E9%9D%A2%E7%9A%84%E7%BB%8F%E9%AA%8C%E6%B0%B4%E5%B9%B3%E5%B0%86%E4%BD%BF%E6%82%A8%E4%BA%A7%E7%94%9F%E6%88%AA%E7%84%B6%E4%B8%8D%E5%90%8C%E7%9A%84%E8%A7%82%E7%82%B9%E5%92%8C%E6%84%8F%E8%A7%81"><span class="toc-number">1.2.</span> <span class="toc-text">您在软件开发方面的经验水平将使您产生截然不同的观点和意见</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%AA%E4%BA%BA%E6%80%9D%E8%80%83"><span class="toc-number">1.2.1.</span> <span class="toc-text">个人思考</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BD%93%E4%BD%A0%E5%9C%A8%E6%9E%84%E5%BB%BA%E4%BA%A7%E5%93%81%E6%97%B6%EF%BC%8C%E4%BD%A0%E5%BA%94%E8%AF%A5%E5%90%AC%E5%8F%96%E8%B0%81%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%9F"><span class="toc-number">1.3.</span> <span class="toc-text">当你在构建产品时，你应该听取谁的意见？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E6%B5%8F%E8%A7%88%E5%99%A8-devtools-%E4%B8%AD%E6%89%93%E5%8D%B0%E5%9B%BE%E7%89%87"><span class="toc-number">1.4.</span> <span class="toc-text">在浏览器 devtools 中打印图片</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%89%E8%B6%A3%E7%9A%84%E9%93%BE%E6%8E%A5"><span class="toc-number">2.</span> <span class="toc-text">有趣的链接</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/weekly-06.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/weekly-06.html&text=周刊第6期：网络没有版本号"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/weekly-06.html&title=周刊第6期：网络没有版本号"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/weekly-06.html&is_video=false&description=周刊第6期：网络没有版本号"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=周刊第6期：网络没有版本号&body=Check out this article: https://4ark.me/post/weekly-06.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/weekly-06.html&title=周刊第6期：网络没有版本号"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/weekly-06.html&title=周刊第6期：网络没有版本号"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/weekly-06.html&title=周刊第6期：网络没有版本号"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/weekly-06.html&title=周刊第6期：网络没有版本号"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/weekly-06.html&name=周刊第6期：网络没有版本号&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/weekly-06.html&t=周刊第6期：网络没有版本号"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="dark-mobile" class="icon"><i class="fa fa-sun" id="dark-btn" aria-hidden="true"></i> Switch</a>
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    4Ark
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-190615898-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-190615898-1');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<script type="text/javascript">
+  function loadDisqus() {
+    var disqus_shortname = 'https-4ark-me'
+
+    ;(function () {
+      var dsq = document.createElement('script')
+      dsq.type = 'text/javascript'
+      dsq.async = true
+      dsq.src =
+        '//' +
+        disqus_shortname +
+        '.disqus.com/embed.js'
+      ;(
+        document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]
+      ).appendChild(dsq)
+    })()
+
+    $('#load-disqus').hide()
+  }
+</script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

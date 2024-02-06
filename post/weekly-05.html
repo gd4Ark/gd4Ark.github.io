@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="拖延症本期周刊延迟了两天，今晚抽空补上，内容会相对比较少。 反思一下，一个原因是这周比较忙，但主要还是因为自己的拖延症，希望以后能够克服这个问题。 分享文章 一些本周阅读过的好文章、以及我的一些总结和个人思考；非常建议你直接阅读原文，毕竟一千个读者就有一千个哈姆雷特，而且我的理解可能是错的。  Exhausting Exhaustive Testing原文地址：《Exhausting Exhaus">
+<meta property="og:type" content="article">
+<meta property="og:title" content="周刊第5期：拖延症">
+<meta property="og:url" content="https://4ark.me/post/weekly-05.html">
+<meta property="og:site_name" content="4Ark × Blog">
+<meta property="og:description" content="拖延症本期周刊延迟了两天，今晚抽空补上，内容会相对比较少。 反思一下，一个原因是这周比较忙，但主要还是因为自己的拖延症，希望以后能够克服这个问题。 分享文章 一些本周阅读过的好文章、以及我的一些总结和个人思考；非常建议你直接阅读原文，毕竟一千个读者就有一千个哈姆雷特，而且我的理解可能是错的。  Exhausting Exhaustive Testing原文地址：《Exhausting Exhaus">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-03-23T00:00:00.000Z">
+<meta property="article:modified_time" content="2024-02-06T18:11:56.000Z">
+<meta property="article:author" content="4Ark">
+<meta property="article:tag" content="weekly">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>周刊第5期：拖延症</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script>localStorage.getItem("dark_mode")==="dark"&&document.write(`<link rel="stylesheet" href="${location.origin}/css/dark.css">`)</script>
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+    <meta name="google-site-verification" content="DwDg4EuywHWNZUkTC7sG0WGv_UQekM4uRtOoaGuDJHc" />
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="4Ark × Blog" type="application/atom+xml">
+<link rel="alternate" href="/rss.xml" title="4Ark × Blog" type="application/rss+xml">
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/post/weekly-06.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/post/hg-hooks.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon"><i class="fa fa-moon" id="dark-btn" aria-hidden="true" onmouseover="$('#i-dark').toggle()" onmouseout="$('#i-dark').toggle()"></i></a></li>
+        <li><a class="icon" target="_blank" rel="noopener" href="https://4ark.me/atom.xml" aria-label="rss"><i class="fas fa-rss"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-dark" class="info" style="display: none;">Switch mode</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/weekly-05.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/weekly-05.html&text=周刊第5期：拖延症"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/weekly-05.html&title=周刊第5期：拖延症"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/weekly-05.html&is_video=false&description=周刊第5期：拖延症"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=周刊第5期：拖延症&body=Check out this article: https://4ark.me/post/weekly-05.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/weekly-05.html&title=周刊第5期：拖延症"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/weekly-05.html&title=周刊第5期：拖延症"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/weekly-05.html&title=周刊第5期：拖延症"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/weekly-05.html&title=周刊第5期：拖延症"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/weekly-05.html&name=周刊第5期：拖延症&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/weekly-05.html&t=周刊第5期：拖延症"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%96%E5%BB%B6%E7%97%87"><span class="toc-number">1.</span> <span class="toc-text">拖延症</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E4%BA%AB%E6%96%87%E7%AB%A0"><span class="toc-number">2.</span> <span class="toc-text">分享文章</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Exhausting-Exhaustive-Testing"><span class="toc-number">2.1.</span> <span class="toc-text">Exhausting Exhaustive Testing</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%AA%E4%BA%BA%E6%80%9D%E8%80%83"><span class="toc-number">2.1.1.</span> <span class="toc-text">个人思考</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%99%BE%E5%BA%A6%E8%85%BE%E8%AE%AF%E9%98%BF%E9%87%8C%E7%9C%9F%E7%9A%84%E6%98%AF%E9%AB%98%E7%A7%91%E6%8A%80%E4%BC%81%E4%B8%9A%E5%90%97%EF%BC%9F"><span class="toc-number">2.2.</span> <span class="toc-text">百度腾讯阿里真的是高科技企业吗？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%89%E8%B6%A3%E7%9A%84%E9%93%BE%E6%8E%A5"><span class="toc-number">3.</span> <span class="toc-text">有趣的链接</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        周刊第5期：拖延症
+    </h1>
+
+
+
+    <div class="meta">
+      <span
+        class="author"
+        itemprop="author"
+        itemscope
+        itemtype="http://schema.org/Person"
+      >
+        <span itemprop="name"
+          >4Ark</span
+        >
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-03-23T00:00:00.000Z" itemprop="datePublished">2022-03-23</time>
+        
+      
+    </div>
+
+ 
+      
+        <div class="article-tag">
+            <i class="fa fa-calendar-week"></i>
+            <a href="/weekly">Weekly</a>
+        </div>
+      
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody"><h2 id="拖延症"><a href="#拖延症" class="headerlink" title="拖延症"></a>拖延症</h2><p>本期周刊延迟了两天，今晚抽空补上，内容会相对比较少。</p>
+<p>反思一下，一个原因是这周比较忙，但主要还是因为自己的拖延症，希望以后能够克服这个问题。</p>
+<h2 id="分享文章"><a href="#分享文章" class="headerlink" title="分享文章"></a>分享文章</h2><blockquote>
+<p>一些本周阅读过的好文章、以及我的一些总结和个人思考；非常建议你直接阅读原文，毕竟一千个读者就有一千个哈姆雷特，而且我的理解可能是错的。</p>
+</blockquote>
+<h3 id="Exhausting-Exhaustive-Testing"><a href="#Exhausting-Exhaustive-Testing" class="headerlink" title="Exhausting Exhaustive Testing"></a><a target="_blank" rel="noopener" href="https://www.openmymind.net/Exhausting-Exhaustive-Testing/">Exhausting Exhaustive Testing</a></h3><p><em>原文地址：<a target="_blank" rel="noopener" href="https://www.openmymind.net/Exhausting-Exhaustive-Testing/">《Exhausting Exhaustive Testing》 | openmymind</a></em></p>
+<p>非常短的一篇文章，但作者的观点让我醒醐灌顶：编写有效的测试具有挑战性，每个测试用例都需要考虑最大化其价值。</p>
+<p>举一个例子，比如我们有这么一个软删除用户的函数：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">func deleteUser(id) (bool, error) &#123;</span><br><span class="line">  tag, <span class="attr">err</span> := conn.Exec(<span class="string">`</span></span><br><span class="line"><span class="string">    update users</span></span><br><span class="line"><span class="string">    set status = &#x27;deleted&#x27;</span></span><br><span class="line"><span class="string">    where id = $1</span></span><br><span class="line"><span class="string">  `</span>, id)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> tag.RowsAffected() == <span class="number">1</span>, err</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通常我们会如何测试这个函数？是不是这样：</p>
+<ol>
+<li>插入一个新的用户</li>
+<li>调用这个函数</li>
+<li>判断这个新用户是否被删除</li>
+</ol>
+<p>这样测试没有错，但是我们忽略了一点：如果这个函数把所有用户都删除了呢？是不是也能通过测试？</p>
+<p>所以正确的测试方式是：插入两个用户，删除第一个用户，确保第二个用户没有被删除。</p>
+<p>还有另外一个例子，假如我们要获取用户列表，SQL 是这样的：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> id, name</span><br><span class="line"><span class="keyword">from</span> users</span><br><span class="line"><span class="keyword">where</span> status <span class="operator">=</span> <span class="string">&#x27;normal&#x27;</span></span><br><span class="line">  <span class="keyword">and</span> customer_id <span class="operator">=</span> $<span class="number">1</span></span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> name</span><br></pre></td></tr></table></figure>
+
+<p>通常我们可能是这样测试的：</p>
+<ol>
+<li>插入一个新用户，设置 customer_id</li>
+<li>调用函数</li>
+<li>判断是否返回这个新用户</li>
+</ol>
+<p>但作者认为至少需要插入四个新用户才能进行这个测试：</p>
+<ol>
+<li>四个用户，其中一个被删除的 A、一个 customer_id 不符合的 B，剩余两个才符合条件</li>
+<li>确保没有返回 A 和 B</li>
+</ol>
+<h4 id="个人思考"><a href="#个人思考" class="headerlink" title="个人思考"></a>个人思考</h4><p>诚然我们都认同测试的重要性，但是如何编写测试是一门非常高深的学问，只是编写测试用例的时候只是流于表面的，那么其价值是非常低的，甚至是浪费时间的。</p>
+<h3 id="百度腾讯阿里真的是高科技企业吗？"><a href="#百度腾讯阿里真的是高科技企业吗？" class="headerlink" title="百度腾讯阿里真的是高科技企业吗？"></a><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/JseMDsqTDKfIepmFj3u55w">百度腾讯阿里真的是高科技企业吗？</a></h3><p><em>原文地址：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/JseMDsqTDKfIepmFj3u55w">《百度腾讯阿里真的是高科技企业吗？》 | 马工</a></em></p>
+<p>那么，这些潜力人才去了BAT，在干什么呢？腾讯的公众号文章《搞了运维开发这么多年，原来 Ping 还能这么玩儿！》揭示了部分真相：一个北大本科毕业生在腾讯研究一个1981年的协议ICMP，而这个协议因为不安全已经被大多数美国同行比如AWS给默认禁掉了。说句不客气的话，ICMP协议就是IT行业的回字的四种写法，让北大毕业生去研究ICMP协议，就是把他们变成孔乙己。</p>
+<h2 id="有趣的链接"><a href="#有趣的链接" class="headerlink" title="有趣的链接"></a>有趣的链接</h2><ul>
+<li><p><a target="_blank" rel="noopener" href="https://oktools.net/aes">AES加密/解密</a>：一个在线 AES 加密/解密的工具。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://plantuml-editor.kkeisuke.dev/">PlantUML Editor</a>：一个在线画 PlantUML 的工具。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://getoss.art/">OssArt</a>：一个非常有意思的开源项目，它可以帮你打印出最早从 2010 年开始的 GitHub Activity 贡献图，让你的成就感满满。</p>
+</li>
+</ul>
+</div>
+  <hr class="copy-line" />
+  <div class="post-copyright">
+    <div class="copy-author">
+      <span>作者 :</span>
+      <span
+        >4Ark</span
+      >
+    </div>
+    <div class="copy-url">
+      <span>地址 :</span>
+      <a href="https://4ark.me/post/weekly-05.html">https://4ark.me/post/weekly-05.html</a>
+    </div>
+    <div class="copy-origin">
+      <span>来源 :</span>
+      <a href="https://4ark.me">https://4ark.me</a>
+    </div>
+    <div class="copy-license">著作权归作者所有，转载请联系作者获得授权。</div>
+  </div>
+</article>
+
+<div class="blog-post-comments">
+  <div id="load-disqus">
+    <p onclick="loadDisqus()" style="cursor: pointer; text-align: center">
+      🥳&nbsp;加载 Disqus 评论
+    </p>
+  </div>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments.</noscript>
+  </div>
+</div>
+ 
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Writing</a></li>
+         
+          <li><a href="/weekly">Weekly</a></li>
+         
+          <li><a href="/tags">Tags</a></li>
+         
+          <li><a href="/search">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%96%E5%BB%B6%E7%97%87"><span class="toc-number">1.</span> <span class="toc-text">拖延症</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E4%BA%AB%E6%96%87%E7%AB%A0"><span class="toc-number">2.</span> <span class="toc-text">分享文章</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Exhausting-Exhaustive-Testing"><span class="toc-number">2.1.</span> <span class="toc-text">Exhausting Exhaustive Testing</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%AA%E4%BA%BA%E6%80%9D%E8%80%83"><span class="toc-number">2.1.1.</span> <span class="toc-text">个人思考</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%99%BE%E5%BA%A6%E8%85%BE%E8%AE%AF%E9%98%BF%E9%87%8C%E7%9C%9F%E7%9A%84%E6%98%AF%E9%AB%98%E7%A7%91%E6%8A%80%E4%BC%81%E4%B8%9A%E5%90%97%EF%BC%9F"><span class="toc-number">2.2.</span> <span class="toc-text">百度腾讯阿里真的是高科技企业吗？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%89%E8%B6%A3%E7%9A%84%E9%93%BE%E6%8E%A5"><span class="toc-number">3.</span> <span class="toc-text">有趣的链接</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/weekly-05.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/weekly-05.html&text=周刊第5期：拖延症"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/weekly-05.html&title=周刊第5期：拖延症"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/weekly-05.html&is_video=false&description=周刊第5期：拖延症"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=周刊第5期：拖延症&body=Check out this article: https://4ark.me/post/weekly-05.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/weekly-05.html&title=周刊第5期：拖延症"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/weekly-05.html&title=周刊第5期：拖延症"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/weekly-05.html&title=周刊第5期：拖延症"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/weekly-05.html&title=周刊第5期：拖延症"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/weekly-05.html&name=周刊第5期：拖延症&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/weekly-05.html&t=周刊第5期：拖延症"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="dark-mobile" class="icon"><i class="fa fa-sun" id="dark-btn" aria-hidden="true"></i> Switch</a>
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    4Ark
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-190615898-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-190615898-1');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<script type="text/javascript">
+  function loadDisqus() {
+    var disqus_shortname = 'https-4ark-me'
+
+    ;(function () {
+      var dsq = document.createElement('script')
+      dsq.type = 'text/javascript'
+      dsq.async = true
+      dsq.src =
+        '//' +
+        disqus_shortname +
+        '.disqus.com/embed.js'
+      ;(
+        document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]
+      ).appendChild(dsq)
+    })()
+
+    $('#load-disqus').hide()
+  }
+</script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

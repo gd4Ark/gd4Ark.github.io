@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Sitemap: https://4ark.me/sitemap.xml
+Sitemap: https://4ark.me/baidusitemap.xml

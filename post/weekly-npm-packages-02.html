@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="需求本文是每周轮子计划的第二篇，本周我们来实现一个被广泛使用的工具，那就是鼎鼎大名的 husky，几乎所有现代前端项目、以及 Node.js 项目都会接入这个工具，它的用途主要是统一管理项目中的 Git Hooks 脚本，不熟悉该工具的同学也不要紧，下面我们先来简单介绍一下 husky，它到底解决了什么问题，我们为什么需要使用 husky。 大部分公司都会采用 Git 来对项目进行代码的版本控制，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="每周轮子之 husky：统一规范团队 Git Hooks">
+<meta property="og:url" content="https://4ark.me/post/weekly-npm-packages-02.html">
+<meta property="og:site_name" content="4Ark × Blog">
+<meta property="og:description" content="需求本文是每周轮子计划的第二篇，本周我们来实现一个被广泛使用的工具，那就是鼎鼎大名的 husky，几乎所有现代前端项目、以及 Node.js 项目都会接入这个工具，它的用途主要是统一管理项目中的 Git Hooks 脚本，不熟悉该工具的同学也不要紧，下面我们先来简单介绍一下 husky，它到底解决了什么问题，我们为什么需要使用 husky。 大部分公司都会采用 Git 来对项目进行代码的版本控制，">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-05-30T00:00:00.000Z">
+<meta property="article:modified_time" content="2024-02-06T18:11:56.000Z">
+<meta property="article:author" content="4Ark">
+<meta property="article:tag" content="每周轮子">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>每周轮子之 husky：统一规范团队 Git Hooks</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script>localStorage.getItem("dark_mode")==="dark"&&document.write(`<link rel="stylesheet" href="${location.origin}/css/dark.css">`)</script>
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+    <meta name="google-site-verification" content="DwDg4EuywHWNZUkTC7sG0WGv_UQekM4uRtOoaGuDJHc" />
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="4Ark × Blog" type="application/atom+xml">
+<link rel="alternate" href="/rss.xml" title="4Ark × Blog" type="application/rss+xml">
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/post/weekly-13.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/post/weekly-12.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon"><i class="fa fa-moon" id="dark-btn" aria-hidden="true" onmouseover="$('#i-dark').toggle()" onmouseout="$('#i-dark').toggle()"></i></a></li>
+        <li><a class="icon" target="_blank" rel="noopener" href="https://4ark.me/atom.xml" aria-label="rss"><i class="fas fa-rss"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-dark" class="info" style="display: none;">Switch mode</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/weekly-npm-packages-02.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/weekly-npm-packages-02.html&text=每周轮子之 husky：统一规范团队 Git Hooks"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/weekly-npm-packages-02.html&title=每周轮子之 husky：统一规范团队 Git Hooks"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/weekly-npm-packages-02.html&is_video=false&description=每周轮子之 husky：统一规范团队 Git Hooks"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=每周轮子之 husky：统一规范团队 Git Hooks&body=Check out this article: https://4ark.me/post/weekly-npm-packages-02.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/weekly-npm-packages-02.html&title=每周轮子之 husky：统一规范团队 Git Hooks"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/weekly-npm-packages-02.html&title=每周轮子之 husky：统一规范团队 Git Hooks"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/weekly-npm-packages-02.html&title=每周轮子之 husky：统一规范团队 Git Hooks"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/weekly-npm-packages-02.html&title=每周轮子之 husky：统一规范团队 Git Hooks"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/weekly-npm-packages-02.html&name=每周轮子之 husky：统一规范团队 Git Hooks&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/weekly-npm-packages-02.html&t=每周轮子之 husky：统一规范团队 Git Hooks"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9C%80%E6%B1%82"><span class="toc-number">1.</span> <span class="toc-text">需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E8%B7%B5"><span class="toc-number">2.</span> <span class="toc-text">实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#v4-%E4%BB%A5%E5%89%8D%E7%9A%84%E7%89%88%E6%9C%AC"><span class="toc-number">2.1.</span> <span class="toc-text">v4 以前的版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#v4-%E4%BB%A5%E5%90%8E%E7%9A%84%E7%89%88%E6%9C%AC"><span class="toc-number">2.2.</span> <span class="toc-text">v4 以后的版本</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#install-%E5%AE%89%E8%A3%85%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">2.2.1.</span> <span class="toc-text">install 安装初始化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#uninstall-%E5%8D%B8%E8%BD%BD"><span class="toc-number">2.2.2.</span> <span class="toc-text">uninstall 卸载</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#set-%E6%B7%BB%E5%8A%A0-hook"><span class="toc-number">2.2.3.</span> <span class="toc-text">set 添加 hook</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#add-%E8%BF%BD%E5%8A%A0-hook-%E5%91%BD%E4%BB%A4"><span class="toc-number">2.2.4.</span> <span class="toc-text">add 追加 hook 命令</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-number">3.</span> <span class="toc-text">结语</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        每周轮子之 husky：统一规范团队 Git Hooks
+    </h1>
+
+
+
+    <div class="meta">
+      <span
+        class="author"
+        itemprop="author"
+        itemscope
+        itemtype="http://schema.org/Person"
+      >
+        <span itemprop="name"
+          >4Ark</span
+        >
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-05-30T00:00:00.000Z" itemprop="datePublished">2022-05-30</time>
+        
+      
+    </div>
+
+ 
+      
+        
+ 
+        
+    <div class="article-tag">
+        <i class="fas fa-hashtag"></i>
+        <a class="tag-link-link" href="/tags/%E6%AF%8F%E5%91%A8%E8%BD%AE%E5%AD%90/" rel="tag">每周轮子</a>
+    </div>
+
+
+      
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody"><h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>本文是每周轮子计划的第二篇，本周我们来实现一个被广泛使用的工具，那就是鼎鼎大名的 husky，几乎所有现代前端项目、以及 Node.js 项目都会接入这个工具，它的用途主要是统一管理项目中的 Git Hooks 脚本，不熟悉该工具的同学也不要紧，下面我们先来简单介绍一下 husky，它到底解决了什么问题，我们为什么需要使用 husky。</p>
+<p>大部分公司都会采用 Git 来对项目进行代码的版本控制，其好处相信大家都知道，这里就不再赘述，通常为了保证项目的代码质量、以及更好地进行团队之间的协作，我们都会在提交代码时做一些额外的工作，包括：检查 commit message 的规范性、统一代码风格、进行单元测试等等。</p>
+<p>而这些工作自然不能完全依靠项目成员的自觉性，毕竟人都会犯错，所以这些工作都得交给自动化工具来处理。</p>
+<p>因此，大部分版本控制系统都会提供一个叫做钩子（Hooks）的东西，Git 自然也不例外，Hooks 可以让我们在特定的重要动作发生时触发自定义脚本，通常分为客户端和服务端，而我们接触的大部分 Hooks 都是客户端的，也就是在我们本机上执行的。</p>
+<p>下面我们简单介绍一下如何在 Git 中使用 Hooks，我们只需要在项目的 <code>.git/hooks</code> 目录中创建一个<strong>与某个 hook 同名的可执行脚本</strong>即可，比如我们想要阻止一切提交，并将 commit message 打印到终端：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># .git/hooks/commit-msg</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#!/usr/bin/env bash</span></span><br><span class="line"></span><br><span class="line">INPUT_FILE=<span class="variable">$1</span></span><br><span class="line"></span><br><span class="line">START_LINE=$(head -n1 <span class="variable">$INPUT_FILE</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;当前提交信息为：<span class="variable">$START_LINE</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;阻止此次提交！！！&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">exit</span> 1</span><br></pre></td></tr></table></figure>
+
+<p>这里先别纠结这段脚本代码是如何做到的，只需清楚我们可以利用 Git Hooks 做到这一点，实际上我们可以在这里做任何操作，比如检查 commit message 的规范性。</p>
+<p>讲完如何使用 Git Hooks，那我们就得讲讲这种方式存在哪些不足。</p>
+<p>在 <a target="_blank" rel="noopener" href="https://git-scm.com/book/zh/v2/%E8%87%AA%E5%AE%9A%E4%B9%89-Git-Git-%E9%92%A9%E5%AD%90">Git 文档</a>中对客户端钩子有这么一段话：</p>
+<blockquote>
+<p>需要注意的是，克隆某个版本库时，它的客户端钩子并不随同复制。 如果需要靠这些脚本来强制维持某种策略，建议你在服务器端实现这一功能。 </p>
+</blockquote>
+<p>简单来说就是，我们上面添加的这个 <code>commit-msg</code> Hook，只能在我们自己的机器上，不能被加入到版本控制中推送到远端，也就意味着我们无法同步这些 Hooks 脚本。</p>
+<p>而 husky 主要就是为了解决这个问题，除此之外还提供了更加简便的方式来使用 Git Hooks，而无须采用上面那种方式。</p>
+<p>先来介绍一下大家所熟知的 husky 用法，首先要安装这个工具，可以使用全局安装，但一般更推荐在项目本地安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install husky -D</span><br></pre></td></tr></table></figure>
+
+<p>然后我们在 <code>package.json</code> 中添加以下代码：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;husky&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;hooks&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;pre-commit&quot;</span>: <span class="string">&quot;lint-staged&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;pre-push&quot;</span>: <span class="string">&quot;yarn test&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上这种方式是 husky v4 版本之前的配置方式，相信大部分同学都对这种方式很熟悉了，而在最新版本 husky（v7 之后） 已经不支持这样使用，而是采用命令行配置的方式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npx husky add .husky/pre-commit <span class="string">&quot;lint-staged&quot;</span></span><br><span class="line">npx husky add .husky/pre-push <span class="string">&quot;yarn test&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>它的配置方式之所以会有如此翻天覆地的变化是有原因的，不过说来话长，我们下面会讲到，这里先按下不表。</p>
+<p>本文就带领大家从 0 到 1 造一个 husky，我们先从第一种使用方式开始，然后一步步来看为什么 husky 在新版本会选择改变它的配置方式。</p>
+<p>让我们开始吧！</p>
+<h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><h3 id="v4-以前的版本"><a href="#v4-以前的版本" class="headerlink" title="v4 以前的版本"></a>v4 以前的版本</h3><p>我们先来以最 low 的方式实现它，第一步是对 <code>package.json</code> 进行配置，以便测试：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;husky&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;hooks&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;pre-commit&quot;</span>: <span class="string">&quot;echo hello husky!&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后读取 <code>package.json</code>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// husky.js</span></span><br><span class="line"><span class="keyword">const</span> pkg = <span class="built_in">require</span>(<span class="string">&#x27;./package.json&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">husky</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!pkg?.husky?.hooks) &#123;</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> pkg.husky.hooks !== <span class="string">&#x27;object&#x27;</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> hooks = pkg.husky.hooks</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(hooks)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">husky()</span><br></pre></td></tr></table></figure>
+
+<p>现在我们现在已经能拿到 hooks 相关的配置，然后我们把相关的脚本内容写入到对应的 hooks 可执行文件：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">const</span> [name, value] <span class="keyword">of</span> <span class="built_in">Object</span>.entries(hooks)) &#123;</span><br><span class="line">  <span class="keyword">const</span> script = <span class="string">`#!/bin/sh\n<span class="subst">$&#123;value&#125;</span>\n`</span></span><br><span class="line"></span><br><span class="line">  fs.writeFileSync(<span class="string">`./.git/hooks/<span class="subst">$&#123;name&#125;</span>`</span>, script, &#123; <span class="attr">mode</span>: <span class="string">&#x27;751&#x27;</span> &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node husky.js</span><br></pre></td></tr></table></figure>
+
+<p>然后我们就可以看到 <code>.git/hooks</code> 下面多了一个 <code>pre-commit</code> 可执行文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; cat pre-commit</span><br><span class="line"></span><br><span class="line"><span class="comment">#!/bin/sh</span></span><br><span class="line"><span class="built_in">echo</span> hello husky!</span><br></pre></td></tr></table></figure>
+
+<p> 这时候进行 commit 也可以看到输出：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; git commit -m <span class="string">&quot;test&quot;</span></span><br><span class="line"></span><br><span class="line">hello husky!</span><br></pre></td></tr></table></figure>
+
+<p>这时候我们已经完成了 husky 大部分的功能，但是这里还存在这么一个问题：<strong>如果现在我去修改 <code>package.json</code>  中的 husky 配置，hooks 文件如何同步更新？</strong></p>
+<p>举个例子，如果现在把 <code>package.json</code> 改成这样：</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;husky&quot;: &#123;</span><br><span class="line">    &quot;hooks&quot;: &#123;</span><br><span class="line"><span class="deletion">-     &quot;pre-commit&quot;: &quot;echo hello husky!&quot;</span></span><br><span class="line"><span class="addition">+     &quot;pre-commit&quot;: &quot;echo hello husky2!&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后进行 commit，它输出的仍然是 hello husky!，实际上如果我们不是手动执行写入 hooks 文件这个操作，甚至连第一步都做不到，可是回想上面 husky 的使用方式，我们只需要安装 husky 后进行配置即可，并不需要手动执行什么命令。</p>
+<p>那 Huksy 是如何做到这一点的呢？动动你聪明的小脑瓜，有没有解决方案呢？</p>
+<p>我们先来分析一下为什么无法做到自动同步更新 hooks，归根到底就是因为无法检测修改 <code>package.json</code> 后自动执行写入 hooks 操作，那我们不妨换一种思路：<strong>不用在修改 <code>package.json</code> 时执行写入操作，而是在执行 hooks 时去执行 <code>package.json</code> 中对应的 <code>hooks</code>。</strong></p>
+<p>可能有点拗口，换句话说就是我们在一开始就把所有的 hooks 预注册了，然后在每一个 hooks 脚本中做同一件事：寻找 <code>package.json</code> 中对应的 hooks 并执行。</p>
+<p>可能会觉得有点奇技淫巧 ，但也不失为一种曲线救国的方式，而事实上在 husky v4 之前还真的是这么做的。</p>
+<p>那我们如何在一开始就注册所有 hooks 呢？</p>
+<p>翻了一下 npm 的文档，发现有一个 <code>install</code> 钩子，它会在 <code>npm install</code> 后执行。</p>
+<p>首先我们的项目结构如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── husky-test</span><br><span class="line">│   ├── husky</span><br><span class="line">│   │   ├── husky.js</span><br><span class="line">│   │   └── package.json</span><br><span class="line">│   └── package.json</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>husky/package.json</code> 添加以下代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;name&quot;</span>: <span class="string">&quot;husky&quot;</span>,</span><br><span class="line">  <span class="string">&quot;version&quot;</span>: <span class="string">&quot;1.0.0&quot;</span>,</span><br><span class="line">  <span class="string">&quot;license&quot;</span>: <span class="string">&quot;MIT&quot;</span>,</span><br><span class="line">  <span class="string">&quot;scripts&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;install&quot;</span>: <span class="string">&quot;node husky&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后在 <code>husky-test</code> 安装这个 npm 包：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;name&quot;</span>: <span class="string">&quot;husky-test&quot;</span>,</span><br><span class="line">  <span class="string">&quot;version&quot;</span>: <span class="string">&quot;1.0.0&quot;</span>,</span><br><span class="line">  <span class="string">&quot;license&quot;</span>: <span class="string">&quot;MIT&quot;</span>,</span><br><span class="line">  <span class="string">&quot;dependencies&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;husky&quot;</span>: <span class="string">&quot;./husky&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这时候执行 <code>npm install</code> 会运行 <code>husky/husky.js</code> ，我们就可以在这个文件中预注册所有的 hooks，不过在此之前我们先梳理一下整体实现逻辑：</p>
+<ol>
+<li>我们要在 <code>husky.js</code> 中预注册所有的 hooks，可以在这个<a target="_blank" rel="noopener" href="https://git-scm.com/docs/githooks">文档</a>中参考所有的 hooks。</li>
+<li>我们要在所有的 hooks 中写入脚本内容，使其可以在被执行时寻找 <code>package.json</code> 中对应的 hook，并将其执行结果返回。<ol>
+<li>因为 hooks 的 exit code 非 0 时要中断本次操作。</li>
+</ol>
+</li>
+</ol>
+<p>因此，经过梳理后，我们的目录结构调整如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── husky                   // husky 包</span><br><span class="line">│   ├── package.json     </span><br><span class="line">│   ├── husky.js            // install 入口</span><br><span class="line">│   ├── installer           // 初始化，预注册 hooks</span><br><span class="line">│   │   └── index.js     </span><br><span class="line">│   ├── runner              // 寻找对应的 hook 并执行</span><br><span class="line">│   │   └── index.js     </span><br><span class="line">│   └── sh                  // 所有 hooks 统一调用脚本</span><br><span class="line">│       └── husky.sh     </span><br><span class="line">└── package.json            // 测试</span><br></pre></td></tr></table></figure>
+
+<p>我们在 <code>husky.js</code> 中调用 install 进行初始化操作：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> install = <span class="built_in">require</span>(<span class="string">&#x27;./installer&#x27;</span>)</span><br><span class="line"></span><br><span class="line">install()</span><br></pre></td></tr></table></figure>
+
+<p>然后在 <code>installer/index.js</code> 中预注册 hooks：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// installer/index.js</span></span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> cp = <span class="built_in">require</span>(<span class="string">&#x27;child_process&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> hookList = [</span><br><span class="line">  <span class="string">&#x27;applypatch-msg&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;pre-applypatch&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;post-applypatch&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;pre-commit&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;pre-merge-commit&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;prepare-commit-msg&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;commit-msg&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;post-commit&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;pre-rebase&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;post-checkout&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;post-merge&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;pre-push&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;post-update&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;push-to-checkout&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;pre-auto-gc&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;post-rewrite&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;sendemail-validate&#x27;</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">git</span>(<span class="params">args, cwd = process.cwd()</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> cp.spawnSync(<span class="string">&#x27;git&#x27;</span>, args, &#123; <span class="attr">stdio</span>: <span class="string">&#x27;pipe&#x27;</span>, <span class="attr">encoding</span>: <span class="string">&#x27;utf-8&#x27;</span>, cwd &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getGitRoot</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> git([<span class="string">&#x27;rev-parse&#x27;</span>, <span class="string">&#x27;--show-toplevel&#x27;</span>]).stdout.trim()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getGitHooksDir</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> root = getGitRoot()</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> path.join(root, <span class="string">&#x27;.git/hooks&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getHookScript</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">`#!/bin/sh</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">. &quot;$(dirname &quot;$0&quot;)/husky.sh&quot;</span></span><br><span class="line"><span class="string">`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">writeHook</span>(<span class="params">filename, script</span>) </span>&#123;</span><br><span class="line">  fs.writeFileSync(filename, script, <span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">  fs.chmodSync(filename, <span class="number">0o0755</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createHook</span>(<span class="params">filename</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> hookScript = getHookScript()</span><br><span class="line"></span><br><span class="line">  writeHook(filename, hookScript)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createHooks</span>(<span class="params">gitHooksDir</span>) </span>&#123;</span><br><span class="line">  getHooks(gitHooksDir).forEach(createHook)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getHooks</span>(<span class="params">gitHooksDir</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> hookList.map(<span class="function">(<span class="params">hookName</span>) =&gt;</span> path.join(gitHooksDir, hookName))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getMainScript</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> mainScript = fs.readFileSync(</span><br><span class="line">    path.join(__dirname, <span class="string">&#x27;../../sh/husky.sh&#x27;</span>),</span><br><span class="line">    <span class="string">&#x27;utf-8&#x27;</span></span><br><span class="line">  )</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> mainScript</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createMainScript</span>(<span class="params">gitHooksDir</span>) </span>&#123;</span><br><span class="line">  fs.writeFileSync(path.join(gitHooksDir, <span class="string">&#x27;husky.sh&#x27;</span>), getMainScript(), <span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">install</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> gitHooksDir = getGitHooksDir()</span><br><span class="line"></span><br><span class="line">  createHooks(gitHooksDir)</span><br><span class="line">  createMainScript(gitHooksDir)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>做完这一步的结果是在安装 husky 时，会自动创建 hooks、并将 <code>husky.sh</code> 复制到 <code>.git/hooks</code> 中，所有 hooks 都会调用 <code>husky,sh</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"></span><br><span class="line">. <span class="string">&quot;<span class="subst">$(dirname <span class="string">&quot;<span class="variable">$0</span>&quot;</span>)</span>/husky.sh&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>在 <code>husky.sh</code> 中主要是做一件事，调用 <code>runner/index</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># sh/husky.sh</span></span><br><span class="line">gitParams=<span class="string">&quot;$*&quot;</span></span><br><span class="line">hookName=<span class="string">&quot;<span class="subst">$(basename <span class="string">&quot;<span class="variable">$0</span>&quot;</span>)</span>&quot;</span></span><br><span class="line"></span><br><span class="line">npm husky-run <span class="variable">$hookName</span> <span class="string">&quot;<span class="variable">$gitParams</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>husky-run</code> 是我们自定义的一个命令，需要在 <code>package.json</code> 中先注册：</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// husky/package.json</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;husky&quot;,</span><br><span class="line">  &quot;version&quot;: &quot;1.0.0&quot;,</span><br><span class="line">  &quot;license&quot;: &quot;MIT&quot;,</span><br><span class="line">  &quot;bin&quot;: &#123;</span><br><span class="line"><span class="addition">+   &quot;husky-run&quot;: &quot;./runner/index.js&quot;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;scripts&quot;: &#123;</span><br><span class="line">    &quot;install&quot;: &quot;node husky&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>所以实际上就是调用 <code>runner/index</code>，我们要在这个文件中寻找对应的 hook 并执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env node</span></span><br><span class="line"></span><br><span class="line">const &#123; spawnSync &#125; = require(<span class="string">&#x27;child_process&#x27;</span>)</span><br><span class="line">const &#123; cosmiconfigSync &#125; = require(<span class="string">&#x27;cosmiconfig&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> getConf(dir) &#123;</span><br><span class="line">  const explorer = cosmiconfigSync(<span class="string">&#x27;husky&#x27;</span>)</span><br><span class="line">  const &#123; config = &#123;&#125; &#125; = explorer.search(dir) || &#123;&#125;</span><br><span class="line"></span><br><span class="line">  const defaults = &#123;</span><br><span class="line">    skipCI: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">return</span> &#123; ...defaults, ...config &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> getCommand(cwd, hookName) &#123;</span><br><span class="line">  const config = getConf(cwd)</span><br><span class="line"></span><br><span class="line">  <span class="built_in">return</span> config &amp;&amp; config.hooks &amp;&amp; config.hooks[hookName]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> runner(</span><br><span class="line">  [, , hookName = <span class="string">&#x27;&#x27;</span>, husky_GIT_PARAMS],</span><br><span class="line">  &#123; cwd = process.cwd() &#125; = &#123;&#125;</span><br><span class="line">) &#123;</span><br><span class="line">  const <span class="built_in">command</span> = getCommand(cwd, hookName)</span><br><span class="line"></span><br><span class="line">  const env = &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (husky_GIT_PARAMS) &#123;</span><br><span class="line">    env.husky_GIT_PARAMS = husky_GIT_PARAMS</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">command</span>) &#123;</span><br><span class="line">    <span class="built_in">return</span> runCommand(cwd, hookName, <span class="built_in">command</span>, env)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">return</span> 0</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> runCommand(cwd, hookName, cmd, env) &#123;</span><br><span class="line">  const &#123; status &#125; = spawnSync(<span class="string">&#x27;sh&#x27;</span>, [<span class="string">&#x27;-c&#x27;</span>, cmd], &#123;</span><br><span class="line">    cwd,</span><br><span class="line">    env: &#123; ...process.env, ...env &#125;,</span><br><span class="line">    stdio: <span class="string">&#x27;inherit&#x27;</span></span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (status !== 0) &#123;</span><br><span class="line">    const noVerifyMessage = [</span><br><span class="line">      <span class="string">&#x27;commit-msg&#x27;</span>,</span><br><span class="line">      <span class="string">&#x27;pre-commit&#x27;</span>,</span><br><span class="line">      <span class="string">&#x27;pre-rebase&#x27;</span>,</span><br><span class="line">      <span class="string">&#x27;pre-push&#x27;</span></span><br><span class="line">    ].includes(hookName)</span><br><span class="line">      ? <span class="string">&#x27;(add --no-verify to bypass)&#x27;</span></span><br><span class="line">      : <span class="string">&#x27;(cannot be bypassed with --no-verify due to Git specs)&#x27;</span></span><br><span class="line"></span><br><span class="line">    console.log(`husky &gt; <span class="variable">$&#123;hookName&#125;</span> hook failed <span class="variable">$&#123;noVerifyMessage&#125;</span>`)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (status === 127) &#123;</span><br><span class="line">    <span class="built_in">return</span> 1</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">return</span> status || 0</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">async <span class="keyword">function</span> <span class="function"><span class="title">run</span></span>() &#123;</span><br><span class="line">  try &#123;</span><br><span class="line">    const status = await runner(process.argv)</span><br><span class="line">    process.exit(status)</span><br><span class="line">  &#125; catch (err) &#123;</span><br><span class="line">    console.log(<span class="string">&#x27;husky &gt; unexpected error&#x27;</span>, err)</span><br><span class="line">    process.exit(1)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">run()</span><br></pre></td></tr></table></figure>
+
+<p>我们来测试一下，在 <code>package.json</code> 添加如下配置：</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;husky-test&quot;,</span><br><span class="line">  &quot;version&quot;: &quot;1.0.0&quot;,</span><br><span class="line">  &quot;license&quot;: &quot;MIT&quot;,</span><br><span class="line">  &quot;dependencies&quot;: &#123;</span><br><span class="line">    &quot;husky&quot;: &quot;./husky&quot;</span><br><span class="line">  &#125;,</span><br><span class="line"><span class="addition">+  &quot;husky&quot;: &#123;</span></span><br><span class="line"><span class="addition">+    &quot;hooks&quot;: &#123;</span></span><br><span class="line"><span class="addition">+      &quot;pre-commit&quot;: &quot;echo 123 &amp;&amp; exit 1&quot;</span></span><br><span class="line"><span class="addition">+    &#125;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后进行一次 commit，得到结果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; git commit -m <span class="string">&quot;test&quot;</span></span><br><span class="line"></span><br><span class="line">123</span><br><span class="line">husky &gt; pre-commit hook failed (add --no-verify to bypass)</span><br></pre></td></tr></table></figure>
+
+<p>OK，到这里我们除了一些代码上的健壮性问题以外，已经把大部分 husky v4 版本的核心功能都给实现了。</p>
+<p>不过我们已经能够对 husky 的实现方式给摸透，各位同学认为这样的实现方式好不好呢？</p>
+<p>其实 husky 的这种通过预注册所有 hooks 的方式一直被人诟病，详见 <a target="_blank" rel="noopener" href="https://github.com/typicode/husky/issues/260">#260</a> 。</p>
+<p>其实 husky 的维护者也知道这种方式属实不妥，不过由于当时 Git 的 hooks 机制，只能一直顶着骂名维护下去。</p>
+<p>终于，在 Git v2.9 的版本升级中，正式支持通过配置 core.hooksPath 自定义项目的 hooks 的存放路径，也即意味着可将 hooks 加入版本控制，于是 husky 二话不说地进行了重构，用了一种全新的实现方式来做这件事，也就是我们今天看到的 husky v5 以后的版本（截止目前最新的 v8 版本）。</p>
+<p>同时 husky 因为配置方式的缘故，使其仅局限于 node.js 项目，为了提高 husky 的使用范围，最新版本决定采用 CLI 配置的方式，参见：<a target="_blank" rel="noopener" href="https://blog.typicode.com/husky-git-hooks-javascript-config/">Why husky has dropped conventional JS config</a>。</p>
+<p>因此，最新版本的 husky 实现代码与前面版本截然不同，下面我们继续从 0 到 1 开始实现 husky。</p>
+<h3 id="v4-以后的版本"><a href="#v4-以后的版本" class="headerlink" title="v4 以后的版本"></a>v4 以后的版本</h3><p>我们再把最新版本的 husky 使用方式介绍一遍：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 初始化</span></span><br><span class="line">npm set-script prepare <span class="string">&quot;husky install&quot;</span></span><br><span class="line">npm run prepare</span><br><span class="line"></span><br><span class="line"><span class="comment"># 配置 hook</span></span><br><span class="line">npx husky add .husky/pre-commit <span class="string">&quot;npm test&quot;</span></span><br><span class="line">git add .husky/pre-commit</span><br></pre></td></tr></table></figure>
+
+<p>可以发现最新版本的 husky 无需利用 npm 的 install 钩子，毕竟已经不再局限于 node.js 项目，所以初始化操作需要另寻僻径，在 husky 文档中给出的解决方案是利用 npm 的 prepare 钩子，其可以执行 npm publish 和 不带参数的 npm install 时执行。</p>
+<p>同时 husky 一共支持以下命令：</p>
+<ol>
+<li>husky install：安装，主要是配置 Git 的 core.hooksPath</li>
+<li>husky uninstall：卸载，主要是恢复对 Git 的 core.hooksPath 的修改</li>
+<li>husky set：新增 hook</li>
+<li>husky add：给已有的 hook 追加命令</li>
+</ol>
+<p>因此，它的实现方式并不难，这里我直接张贴核心源码过来，首先是 CLI 的入口：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Get CLI arguments</span></span><br><span class="line"><span class="keyword">const</span> [, , cmd, ...args] = process.argv</span><br><span class="line"><span class="keyword">const</span> ln = args.length</span><br><span class="line"><span class="keyword">const</span> [x, y] = args</span><br><span class="line"></span><br><span class="line"><span class="comment">// Set or add command in hook</span></span><br><span class="line"><span class="keyword">const</span> hook = <span class="function">(<span class="params">fn: (a1: <span class="built_in">string</span>, a2: <span class="built_in">string</span>) =&gt; <span class="built_in">void</span></span>) =&gt;</span> (): <span class="function"><span class="params">void</span> =&gt;</span></span><br><span class="line">  <span class="comment">// Show usage if no arguments are provided or more than 2</span></span><br><span class="line">  !ln || ln &gt; <span class="number">2</span> ? help(<span class="number">2</span>) : fn(x, y)</span><br><span class="line"></span><br><span class="line"><span class="comment">// CLI commands</span></span><br><span class="line"><span class="keyword">const</span> cmds: &#123; [key: <span class="built_in">string</span>]: <span class="function">() =&gt;</span> <span class="built_in">void</span> &#125; = &#123;</span><br><span class="line">  <span class="attr">install</span>: (): <span class="function"><span class="params">void</span> =&gt;</span> (ln &gt; <span class="number">1</span> ? help(<span class="number">2</span>) : h.install(x)),</span><br><span class="line">  <span class="attr">uninstall</span>: h.uninstall,</span><br><span class="line">  <span class="attr">set</span>: hook(h.set),</span><br><span class="line">  <span class="attr">add</span>: hook(h.add),</span><br><span class="line">  [<span class="string">&#x27;-v&#x27;</span>]: <span class="function">() =&gt;</span></span><br><span class="line">    <span class="comment">// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-var-requires</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">require</span>(p.join(__dirname, <span class="string">&#x27;../package.json&#x27;</span>)).version),</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Run CLI</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  <span class="comment">// Run command or show usage for unknown command</span></span><br><span class="line">  cmds[cmd] ? cmds[cmd]() : help(<span class="number">0</span>)</span><br><span class="line">&#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">  <span class="built_in">console</span>.error(e <span class="keyword">instanceof</span> <span class="built_in">Error</span> ? <span class="string">`husky - <span class="subst">$&#123;e.message&#125;</span>`</span> : e)</span><br><span class="line">  process.exit(<span class="number">1</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="install-安装初始化"><a href="#install-安装初始化" class="headerlink" title="install 安装初始化"></a>install 安装初始化</h4><p>安装初始化主要做以下事情：</p>
+<ol>
+<li>拷贝 <code>husky.sh</code> 到项目中，其主要工作是添加 debug 开关以及支持 <code>.huskyrc</code> 配置文件，最后将其添加到 <code>.gitignore</code>。</li>
+<li>将 Git 的 core.hooksPath 修改为项目目录的 <code>.husky</code>，后续添加的 hooks 都将存放在此目录。</li>
+</ol>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/index.ts</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">install</span>(<span class="params">dir = <span class="string">&#x27;.husky&#x27;</span></span>): <span class="title">void</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (process.env.HUSKY === <span class="string">&#x27;0&#x27;</span>) &#123;</span><br><span class="line">    l(<span class="string">&#x27;HUSKY env variable is set to 0, skipping install&#x27;</span>)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Ensure that we&#x27;re inside a git repository</span></span><br><span class="line">  <span class="comment">// If git command is not found, status is null and we should return.</span></span><br><span class="line">  <span class="comment">// That&#x27;s why status value needs to be checked explicitly.</span></span><br><span class="line">  <span class="keyword">if</span> (git([<span class="string">&#x27;rev-parse&#x27;</span>]).status !== <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Custom dir help</span></span><br><span class="line">  <span class="keyword">const</span> url = <span class="string">&#x27;https://typicode.github.io/husky/#/?id=custom-directory&#x27;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Ensure that we&#x27;re not trying to install outside of cwd</span></span><br><span class="line">  <span class="keyword">if</span> (!p.resolve(process.cwd(), dir).startsWith(process.cwd())) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">`.. not allowed (see <span class="subst">$&#123;url&#125;</span>)`</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Ensure that cwd is git top level</span></span><br><span class="line">  <span class="keyword">if</span> (!fs.existsSync(<span class="string">&#x27;.git&#x27;</span>)) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">`.git can&#x27;t be found (see <span class="subst">$&#123;url&#125;</span>)`</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="comment">// Create .husky/_</span></span><br><span class="line">    fs.mkdirSync(p.join(dir, <span class="string">&#x27;_&#x27;</span>), &#123; <span class="attr">recursive</span>: <span class="literal">true</span> &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Create .husky/_/.gitignore</span></span><br><span class="line">    fs.writeFileSync(p.join(dir, <span class="string">&#x27;_/.gitignore&#x27;</span>), <span class="string">&#x27;*&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Copy husky.sh to .husky/_/husky.sh</span></span><br><span class="line">    fs.copyFileSync(p.join(__dirname, <span class="string">&#x27;../husky.sh&#x27;</span>), p.join(dir, <span class="string">&#x27;_/husky.sh&#x27;</span>))</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Configure repo</span></span><br><span class="line">    <span class="keyword">const</span> &#123; error &#125; = git([<span class="string">&#x27;config&#x27;</span>, <span class="string">&#x27;core.hooksPath&#x27;</span>, dir])</span><br><span class="line">    <span class="keyword">if</span> (error) &#123;</span><br><span class="line">      <span class="keyword">throw</span> error</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">    l(<span class="string">&#x27;Git hooks failed to install&#x27;</span>)</span><br><span class="line">    <span class="keyword">throw</span> e</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  l(<span class="string">&#x27;Git hooks installed&#x27;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="uninstall-卸载"><a href="#uninstall-卸载" class="headerlink" title="uninstall 卸载"></a>uninstall 卸载</h4><p>卸载的工作就更简单了，只需要恢复对 Git 的 core.hooksPath 的配置即可：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">uninstall</span>(<span class="params"></span>): <span class="title">void</span> </span>&#123;</span><br><span class="line">  git([<span class="string">&#x27;config&#x27;</span>, <span class="string">&#x27;--unset&#x27;</span>, <span class="string">&#x27;core.hooksPath&#x27;</span>])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="set-添加-hook"><a href="#set-添加-hook" class="headerlink" title="set 添加 hook"></a>set 添加 hook</h4><p>添加 hook 只需要创建对应的 hook 脚本文件，并写入内容：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">set</span>(<span class="params">file: <span class="built_in">string</span>, cmd: <span class="built_in">string</span></span>): <span class="title">void</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> dir = p.dirname(file)</span><br><span class="line">  <span class="keyword">if</span> (!fs.existsSync(dir)) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(</span><br><span class="line">      <span class="string">`can&#x27;t create hook, <span class="subst">$&#123;dir&#125;</span> directory doesn&#x27;t exist (try running husky install)`</span>,</span><br><span class="line">    )</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  fs.writeFileSync(</span><br><span class="line">    file,</span><br><span class="line">    <span class="string">`#!/usr/bin/env sh</span></span><br><span class="line"><span class="string">. &quot;$(dirname -- &quot;$0&quot;)/_/husky.sh&quot;</span></span><br><span class="line"><span class="string"><span class="subst">$&#123;cmd&#125;</span></span></span><br><span class="line"><span class="string">`</span>,</span><br><span class="line">    &#123; <span class="attr">mode</span>: <span class="number">0o0755</span> &#125;,</span><br><span class="line">  )</span><br><span class="line"></span><br><span class="line">  l(<span class="string">`created <span class="subst">$&#123;file&#125;</span>`</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="add-追加-hook-命令"><a href="#add-追加-hook-命令" class="headerlink" title="add 追加 hook 命令"></a>add 追加 hook 命令</h4><p>add 命令是对已有的 hook 文件追加脚本文件，</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">file: <span class="built_in">string</span>, cmd: <span class="built_in">string</span></span>): <span class="title">void</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (fs.existsSync(file)) &#123;</span><br><span class="line">    fs.appendFileSync(file, <span class="string">`<span class="subst">$&#123;cmd&#125;</span>\n`</span>)</span><br><span class="line">    l(<span class="string">`updated <span class="subst">$&#123;file&#125;</span>`</span>)</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    set(file, cmd)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>本文带领大家从 0 到 1 实现了 v4 以及最新版本的 husky，相信大家看完后对 husky 的实现方式也有了一定的了解，在以后的工作中使用它将会更加地得心应手，但如果你所在的项目中不是使用 Git，而是其它版本控制工具，也可以尝试基于 husky 改造，比如本人就曾尝试将 husky 改造使其<a target="_blank" rel="noopener" href="https://github.com/gd4Ark/husky/pull/1">支持 Mercurial</a>。</p>
+</div>
+  <hr class="copy-line" />
+  <div class="post-copyright">
+    <div class="copy-author">
+      <span>作者 :</span>
+      <span
+        >4Ark</span
+      >
+    </div>
+    <div class="copy-url">
+      <span>地址 :</span>
+      <a href="https://4ark.me/post/weekly-npm-packages-02.html">https://4ark.me/post/weekly-npm-packages-02.html</a>
+    </div>
+    <div class="copy-origin">
+      <span>来源 :</span>
+      <a href="https://4ark.me">https://4ark.me</a>
+    </div>
+    <div class="copy-license">著作权归作者所有，转载请联系作者获得授权。</div>
+  </div>
+</article>
+
+<div class="blog-post-comments">
+  <div id="load-disqus">
+    <p onclick="loadDisqus()" style="cursor: pointer; text-align: center">
+      🥳&nbsp;加载 Disqus 评论
+    </p>
+  </div>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments.</noscript>
+  </div>
+</div>
+ 
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Writing</a></li>
+         
+          <li><a href="/weekly">Weekly</a></li>
+         
+          <li><a href="/tags">Tags</a></li>
+         
+          <li><a href="/search">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9C%80%E6%B1%82"><span class="toc-number">1.</span> <span class="toc-text">需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E8%B7%B5"><span class="toc-number">2.</span> <span class="toc-text">实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#v4-%E4%BB%A5%E5%89%8D%E7%9A%84%E7%89%88%E6%9C%AC"><span class="toc-number">2.1.</span> <span class="toc-text">v4 以前的版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#v4-%E4%BB%A5%E5%90%8E%E7%9A%84%E7%89%88%E6%9C%AC"><span class="toc-number">2.2.</span> <span class="toc-text">v4 以后的版本</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#install-%E5%AE%89%E8%A3%85%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">2.2.1.</span> <span class="toc-text">install 安装初始化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#uninstall-%E5%8D%B8%E8%BD%BD"><span class="toc-number">2.2.2.</span> <span class="toc-text">uninstall 卸载</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#set-%E6%B7%BB%E5%8A%A0-hook"><span class="toc-number">2.2.3.</span> <span class="toc-text">set 添加 hook</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#add-%E8%BF%BD%E5%8A%A0-hook-%E5%91%BD%E4%BB%A4"><span class="toc-number">2.2.4.</span> <span class="toc-text">add 追加 hook 命令</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-number">3.</span> <span class="toc-text">结语</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/weekly-npm-packages-02.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/weekly-npm-packages-02.html&text=每周轮子之 husky：统一规范团队 Git Hooks"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/weekly-npm-packages-02.html&title=每周轮子之 husky：统一规范团队 Git Hooks"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/weekly-npm-packages-02.html&is_video=false&description=每周轮子之 husky：统一规范团队 Git Hooks"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=每周轮子之 husky：统一规范团队 Git Hooks&body=Check out this article: https://4ark.me/post/weekly-npm-packages-02.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/weekly-npm-packages-02.html&title=每周轮子之 husky：统一规范团队 Git Hooks"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/weekly-npm-packages-02.html&title=每周轮子之 husky：统一规范团队 Git Hooks"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/weekly-npm-packages-02.html&title=每周轮子之 husky：统一规范团队 Git Hooks"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/weekly-npm-packages-02.html&title=每周轮子之 husky：统一规范团队 Git Hooks"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/weekly-npm-packages-02.html&name=每周轮子之 husky：统一规范团队 Git Hooks&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/weekly-npm-packages-02.html&t=每周轮子之 husky：统一规范团队 Git Hooks"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="dark-mobile" class="icon"><i class="fa fa-sun" id="dark-btn" aria-hidden="true"></i> Switch</a>
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    4Ark
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-190615898-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-190615898-1');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<script type="text/javascript">
+  function loadDisqus() {
+    var disqus_shortname = 'https-4ark-me'
+
+    ;(function () {
+      var dsq = document.createElement('script')
+      dsq.type = 'text/javascript'
+      dsq.async = true
+      dsq.src =
+        '//' +
+        disqus_shortname +
+        '.disqus.com/embed.js'
+      ;(
+        document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]
+      ).appendChild(dsq)
+    })()
+
+    $('#load-disqus').hide()
+  }
+</script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

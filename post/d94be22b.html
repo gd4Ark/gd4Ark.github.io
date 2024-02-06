@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="本书是硅谷创业之父 Paul Graham 的博客文集，主要介绍黑客即优秀程序员的爱好和动机，讨论黑客成长、黑客对世界的贡献以及编程语言和黑客工作方法等所有对计算机时代感兴趣的人的一些话题。书中的内容不但有助于了解计算机编程的本质、互联网行业的规则，还会帮助读者了解我们这个时代，迫使读者独立思考。 本书适合所有程序员和互联网创业者，也适合一切对计算机行业感兴趣的读者。  写在前面最近读完这本书，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《黑客与画家》-读书笔记">
+<meta property="og:url" content="https://4ark.me/post/d94be22b.html">
+<meta property="og:site_name" content="4Ark × Blog">
+<meta property="og:description" content="本书是硅谷创业之父 Paul Graham 的博客文集，主要介绍黑客即优秀程序员的爱好和动机，讨论黑客成长、黑客对世界的贡献以及编程语言和黑客工作方法等所有对计算机时代感兴趣的人的一些话题。书中的内容不但有助于了解计算机编程的本质、互联网行业的规则，还会帮助读者了解我们这个时代，迫使读者独立思考。 本书适合所有程序员和互联网创业者，也适合一切对计算机行业感兴趣的读者。  写在前面最近读完这本书，">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-05-19T20:37:23.000Z">
+<meta property="article:modified_time" content="2024-02-06T18:11:56.000Z">
+<meta property="article:author" content="4Ark">
+<meta property="article:tag" content="读书">
+<meta property="article:tag" content="程序员">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>《黑客与画家》-读书笔记</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script>localStorage.getItem("dark_mode")==="dark"&&document.write(`<link rel="stylesheet" href="${location.origin}/css/dark.css">`)</script>
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+    <meta name="google-site-verification" content="DwDg4EuywHWNZUkTC7sG0WGv_UQekM4uRtOoaGuDJHc" />
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="4Ark × Blog" type="application/atom+xml">
+<link rel="alternate" href="/rss.xml" title="4Ark × Blog" type="application/rss+xml">
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/post/6959bf0.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/post/learn-bitwise-operators.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon"><i class="fa fa-moon" id="dark-btn" aria-hidden="true" onmouseover="$('#i-dark').toggle()" onmouseout="$('#i-dark').toggle()"></i></a></li>
+        <li><a class="icon" target="_blank" rel="noopener" href="https://4ark.me/atom.xml" aria-label="rss"><i class="fas fa-rss"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-dark" class="info" style="display: none;">Switch mode</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/d94be22b.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/d94be22b.html&text=《黑客与画家》-读书笔记"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/d94be22b.html&title=《黑客与画家》-读书笔记"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/d94be22b.html&is_video=false&description=《黑客与画家》-读书笔记"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=《黑客与画家》-读书笔记&body=Check out this article: https://4ark.me/post/d94be22b.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/d94be22b.html&title=《黑客与画家》-读书笔记"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/d94be22b.html&title=《黑客与画家》-读书笔记"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/d94be22b.html&title=《黑客与画家》-读书笔记"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/d94be22b.html&title=《黑客与画家》-读书笔记"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/d94be22b.html&name=《黑客与画家》-读书笔记&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/d94be22b.html&t=《黑客与画家》-读书笔记"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="toc-number">1.</span> <span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A3%E6%96%87"><span class="toc-number">2.</span> <span class="toc-text">正文</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B9%A6%E5%91%86%E5%AD%90%E4%B8%8D%E5%8F%97%E6%AC%A2%E8%BF%8E"><span class="toc-number">2.1.</span> <span class="toc-text">1、为什么书呆子不受欢迎</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E9%BB%91%E5%AE%A2%E4%B8%8E%E7%94%BB%E5%AE%B6"><span class="toc-number">2.2.</span> <span class="toc-text">2、黑客与画家</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E4%B8%8D%E8%83%BD%E8%AF%B4%E7%9A%84%E8%AF%9D"><span class="toc-number">2.3.</span> <span class="toc-text">3、不能说的话</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81%E8%89%AF%E5%A5%BD%E7%9A%84%E5%9D%8F%E4%B9%A0%E6%83%AF"><span class="toc-number">2.4.</span> <span class="toc-text">4、良好的坏习惯</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5%E3%80%81%E5%8F%A6%E4%B8%80%E6%9D%A1%E8%B7%AF"><span class="toc-number">2.5.</span> <span class="toc-text">5、另一条路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6%E3%80%81%E5%A6%82%E4%BD%95%E5%88%9B%E9%80%A0%E8%B4%A2%E5%AF%8C"><span class="toc-number">2.6.</span> <span class="toc-text">6、如何创造财富</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7%E3%80%81%E5%85%B3%E6%B3%A8%E8%B4%AB%E5%AF%8C%E5%88%86%E5%8C%96"><span class="toc-number">2.7.</span> <span class="toc-text">7、关注贫富分化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8%E3%80%81%E9%98%B2%E6%AD%A2%E5%9E%83%E5%9C%BE%E9%82%AE%E4%BB%B6%E7%9A%84%E4%B8%80%E4%B8%AA%E6%96%B9%E6%B3%95"><span class="toc-number">2.8.</span> <span class="toc-text">8、防止垃圾邮件的一个方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9%E3%80%81%E8%AE%BE%E8%AE%A1%E8%80%85%E7%9A%84%E5%93%81%E5%91%B3"><span class="toc-number">2.9.</span> <span class="toc-text">9、设计者的品味</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10%E3%80%81%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E8%A7%A3%E6%9E%90"><span class="toc-number">2.10.</span> <span class="toc-text">10、编程语言解析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11%E3%80%81%E4%B8%80%E7%99%BE%E5%B9%B4%E5%90%8E%E7%9A%84%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80"><span class="toc-number">2.11.</span> <span class="toc-text">11、一百年后的编程语言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12%E3%80%81%E6%8B%92%E7%BB%9D%E5%B9%B3%E5%BA%B8"><span class="toc-number">2.12.</span> <span class="toc-text">12、拒绝平庸</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#13%E3%80%81%E4%B9%A6%E5%91%86%E5%AD%90%E7%9A%84%E5%A4%8D%E4%BB%87"><span class="toc-number">2.13.</span> <span class="toc-text">13、书呆子的复仇</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#14-%E6%A2%A6%E5%AF%90%E4%BB%A5%E6%B1%82%E7%9A%84%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80"><span class="toc-number">2.14.</span> <span class="toc-text">14.梦寐以求的编程语言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#15%E3%80%81%E8%AE%BE%E8%AE%A1%E4%B8%8E%E7%A0%94%E7%A9%B6"><span class="toc-number">2.15.</span> <span class="toc-text">15、设计与研究</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        《黑客与画家》-读书笔记
+    </h1>
+
+
+
+    <div class="meta">
+      <span
+        class="author"
+        itemprop="author"
+        itemscope
+        itemtype="http://schema.org/Person"
+      >
+        <span itemprop="name"
+          >4Ark</span
+        >
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-05-19T20:37:23.000Z" itemprop="datePublished">2019-05-19</time>
+        
+      
+    </div>
+
+ 
+      
+        
+ 
+        
+    <div class="article-tag">
+        <i class="fas fa-hashtag"></i>
+        <a class="tag-link-link" href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98/" rel="tag">程序员</a>, <a class="tag-link-link" href="/tags/%E8%AF%BB%E4%B9%A6/" rel="tag">读书</a>
+    </div>
+
+
+      
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody"><blockquote>
+<p>本书是硅谷创业之父 Paul Graham 的博客文集，主要介绍黑客即优秀程序员的爱好和动机，讨论黑客成长、黑客对世界的贡献以及编程语言和黑客工作方法等所有对计算机时代感兴趣的人的一些话题。书中的内容不但有助于了解计算机编程的本质、互联网行业的规则，还会帮助读者了解我们这个时代，迫使读者独立思考。</p>
+<p>本书适合所有程序员和互联网创业者，也适合一切对计算机行业感兴趣的读者。</p>
+</blockquote>
+<h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>最近读完这本书，写得很不错，适合边读边思考，作者从自身经历讨论了很多问题，包括书呆子、政治、财富、创业、编程语言、设计等问题。</p>
+<p>另外本人看的是阮一峰翻译的版本，文笔非常流畅，一点都没有翻译的腔调，感觉是直接用母语写出一般。</p>
+<p>在此感谢作者 Paul Graham 先生和 译者阮一峰先生。</p>
+<p>声明，这本书的每章都是相互独立的，不必要按顺序阅读。</p>
+<p>全书大致分为 3 部分</p>
+<ul>
+<li>1-4 章解释黑客如何成长以及如何看待世界</li>
+<li>5-9 章介绍创业、工作的方法论</li>
+<li>10-15 章讨论编程语言的特点和使用方法</li>
+</ul>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="1、为什么书呆子不受欢迎"><a href="#1、为什么书呆子不受欢迎" class="headerlink" title="1、为什么书呆子不受欢迎"></a>1、为什么书呆子不受欢迎</h3><p>黑客的特点之一便是高智商，在学校一般表现为书呆子形象，不受欢迎，其主要原因是，他们专注于解决自己感兴趣的事情，而不想花心思去取悦别人。但是学校不是社会，这里并不需要解决问题的人，于是书呆子们完全没有用武之地。但是，一旦这些书呆子走入社会，社会需要能够真正解决问题的人，于是书呆子们的价值就体现出来了。</p>
+<h3 id="2、黑客与画家"><a href="#2、黑客与画家" class="headerlink" title="2、黑客与画家"></a>2、黑客与画家</h3><p>与作曲家、建筑师、作家一样，黑客和画家都是试图创作出优秀作品。他们本质上都不是在做研究，虽然在创作过程中，他们可能会发现一些新技术（那样当然更好）。</p>
+<p>从这个基本观点出发，通过借鉴这些创作领域的创作模式，我们可以得出一些重要的启示：</p>
+<ol>
+<li>编程不应该是先将思路完全想好，然后去写代码。思路的完善应该是在代码编写过程中完成的。好的编程语言应是允许动态扩展的语言，编程语言是帮助我们思考的，而 不仅仅是表达已经想好的想法。</li>
+<li>学习编程，应是实践的过程。在敲代码，写程序中去学习。</li>
+<li>保留自己写过的代码，时常翻看。</li>
+<li>大量阅读范例程序，充分利用开源的资源。</li>
+</ol>
+<p>作者也提到在大公司中，并不能发挥一个黑客的所有能力，如果你想开发出的优秀软件，那么可以选择创业，但是这样会导致你必须处理许多与开发软件无关的事情，并且赚钱的软件往往不是好玩的软件，所以解决方法是：找一个养家糊口的”白天工作“，然后在其余时间开发优美的软件。</p>
+<h3 id="3、不能说的话"><a href="#3、不能说的话" class="headerlink" title="3、不能说的话"></a>3、不能说的话</h3><p>先问自己：你是一个随大流的人吗？有没有什么观点不愿说出口？你的观点是别人灌输给你的，还是独立思考得到的？</p>
+<p>不管哪个年代，有一件事都是不会改变的，那就是“祸从口出”。</p>
+<p>满足“不能说的话”的两个条件 ：</p>
+<ol>
+<li>这些话不能说出口</li>
+<li>它们是正确的，或者看起来很可能正确，值得进一步讨论</li>
+</ol>
+<p>其中第二条更重要，很显然，你说一句 5+3=53 并不会引起人们的注意，除了嘲笑和鄙视。因为怒触他人的言论是那些可能会有人相信的言论。我猜想，最令人暴跳如雷的言论，就是被认为说出了真相的言论。</p>
+<p>明确了什么是“不能说的话”，接着，作者给出了五种找出“不能说的话”的方法：</p>
+<ol>
+<li><p>判断言论的真伪</p>
+</li>
+<li><p>关注“异端邪说”</p>
+<blockquote>
+<p>历史上的每一个年代，都会给”异端邪说“贴一些标签，目的是在人们开始思考它们是否为真之前就把它们封杀。其实在当代，也有这样的问题。我们应该多加注意那些贴标签的行为。</p>
+</blockquote>
+</li>
+<li><p>将当代观念与不同时期的古代观念 diff 一下，将当代不同地方的观念 diff 一下</p>
+</li>
+<li><p>寻找那些一本正经的卫道者，看看他们到底在捍卫着什么。作者用一个例子解释，父母在家里会尽量避免说脏话，只是不想让孩子学到。但是，孩子虽然没从父母那里学会说脏话，但是从他的朋友那里学到了。所以在家里，父母和孩子都不说脏话，而在外面都尽情地说。</p>
+</li>
+<li><p>观察禁忌是如何产生的。流行的道德观念往往不是偶然产生的，而是被刻意创造出来的。如果有些观点不能说，可能的原因是某些团体不让我们说。</p>
+<blockquote>
+<p>我猜想，道德禁忌的最大制造者是那些权力斗争中略占上风的一方。你会发现，这一方有实力推行禁忌，同时又软弱到需要禁忌保护自己的利益。</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="4、良好的坏习惯"><a href="#4、良好的坏习惯" class="headerlink" title="4、良好的坏习惯"></a>4、良好的坏习惯</h3><p>黑客往往是不服从管教的，并以违反常理的思维方式思考、行动。虽然他们的行为常常导致平凡大众的反感，甚至厌恶，进而产生了偏见，但是这种“坏习惯”反而利大于弊，让他们保持了一种常人不具备的敏感，尤其是对于一些貌似无关痛痒，却与所有人息息相关的政治行为。</p>
+<p>举例来说，为什么程序员会比其他人更在乎公民自由？表面上来看，政府侵犯公民自由并不会让代码质量下降，而只是逐渐导致一个观点占据上风。而如果一旦极权主义制度形成，那么这种制度就很难废除。黑客对公民自由这一概念比普通人理解的更透彻，更重要的是，他们明白失去知识自由之后未来的样子。所以他们能感知即将到来的暴风雨。</p>
+<p>那些占据高位、本能地想要约束黑客、强迫黑客服从的人们，请小心你们的要求，因为你们真有可能成为千古罪人。</p>
+<h3 id="5、另一条路"><a href="#5、另一条路" class="headerlink" title="5、另一条路"></a>5、另一条路</h3><p>在作者看来，一个人们拥有言论自由和行动自由的社会，往往最有可能采纳最优方案，而不是采纳最有权势的人提出的方案。</p>
+<p>要让软件变得可靠，关键是你要全神贯注，而不是开发得很慢。</p>
+<p>如果你亲眼见到某人第一次使用你的软件，你就会知道软件的哪个地方最打动他。</p>
+<p>互联网做起来很辛苦，还有许多特别大的压力，但是它们的唯一作用，就是使得创业公司成功的机会变大。</p>
+<p>管理企业其实很简单，只要记住两点就可以了：做出用户喜欢的产品，保证开支小于收入。只要做到这两点，你就会超过大多数创业公司。</p>
+<p>另外，如果你不打算自己动手开发和设计，那就不要创业。</p>
+<h3 id="6、如何创造财富"><a href="#6、如何创造财富" class="headerlink" title="6、如何创造财富"></a>6、如何创造财富</h3><p>金钱不等于财富，创造有价值的东西就是创造财富。你最好先搞清楚什么是财富。财富与金钱并不是同义词。财富存在的时间与人类历史一样长久，甚至更长久，事实上蚂蚁也拥有财富。金钱是一种历史相对较短的发明。</p>
+<p>要致富，你需要两样东西：可测量性和可放大性。</p>
+<p>如果你有一个令你感到安全的工作，你是不会致富的，因为没有危险，就几乎等于没有可放大性。</p>
+<p>创业公司通过发明新技术盈利，所以具备可放大性。</p>
+<p>如果你开发出来的技术是竞争对手难于复制的，那就够了，你不需要依靠其他防御手段了。</p>
+<p>不应该收购的危险信号，排在榜首的信号中有一个就是公司由技术顽童掌控，只想解决有趣的技术问题，不考虑用户的需要。你开办创业公司不是单纯地为了解决问题，而是为了解决那些用户关心的问题。</p>
+<p>政府禁止个人积累财富实际上就是命令人民减慢工作的速度。</p>
+<p>只要懂得藏富于民，国家就会变得强大。</p>
+<h3 id="7、关注贫富分化"><a href="#7、关注贫富分化" class="headerlink" title="7、关注贫富分化"></a>7、关注贫富分化</h3><p>进入社会以后，你不能总是靠父母养活，如果你需要什么东西，要么你自己做出来，要么做其他东西与需要的人交换金钱，再用金钱去买你想要的东西</p>
+<p>技术肯定加剧了有技术者与无技术者之间的生产效率差异</p>
+<p>技术在加大收入差距的同时，缩小了大部分的其他差距</p>
+<h3 id="8、防止垃圾邮件的一个方法"><a href="#8、防止垃圾邮件的一个方法" class="headerlink" title="8、防止垃圾邮件的一个方法"></a>8、防止垃圾邮件的一个方法</h3><p>这一节对于现在这个年代的意义不是很大，作者认为过滤垃圾邮件是可以做到的，基于内容的过滤器将发挥作用。 但是在他那个年代，意义很大的。</p>
+<p>要对单个词语进行贝叶斯判断，就能很好地过滤大部分垃圾邮件。后面通过统计学的方法做了一个过滤器，其实有点像现在的机器学习了。</p>
+<h3 id="9、设计者的品味"><a href="#9、设计者的品味" class="headerlink" title="9、设计者的品味"></a>9、设计者的品味</h3><p>他想要的学生不仅应该技术过硬，还应当能够使用技术做出优美的产品</p>
+<p>你需要的是咬牙向前冲刺的痛苦，而不是脚被钉子扎破的痛苦。解决难题的痛苦对设计师有好处，但是对付挑剔的客户的痛苦或者对付质量低劣的建材的痛苦就是另外一回事了</p>
+<p>在历史的任何时刻都有一些热点项目，一些团体在这些项目上做出伟大的成绩。如果你远离这些中心，几乎不可能单靠自己就取得伟大成果</p>
+<h3 id="10、编程语言解析"><a href="#10、编程语言解析" class="headerlink" title="10、编程语言解析"></a>10、编程语言解析</h3><p>程序员的时间比计算机的时间昂贵得多。</p>
+<p>长期使用某种语言，就会慢慢按照这种语言的思维模式进行思考。</p>
+<p>静态类型语言与动态类型语言没有绝对的好坏之分，每个人都可以有自己的选择。</p>
+<h3 id="11、一百年后的编程语言"><a href="#11、一百年后的编程语言" class="headerlink" title="11、一百年后的编程语言"></a>11、一百年后的编程语言</h3><p>语言只是一种书写法，程序则是一种严格符合规则的描述，以书面形式记录计算机如何解决你的问题。<br>随着技术的发展，每一代人都在做上一代人觉得很浪费的事情。<br>浪费分成好的浪费和坏的浪费，感兴趣的就是好的浪费，即用更多的钱得到更简单的设计。<br>对速度的追求是人类内心根深蒂固的欲望，设计编程语言的时候，应该有意识地问问自己，什么时候可以放弃一些性能，换来一点点便利性的提高。<br>将语言的语义与语言的实现分离。<br>写文章，就是为了试着搞清楚某件事情，对于软件而言也是如此。<br>效率低下的软件并不等于很烂的软件，一种让程序员做无用功的语言才真正称得上很烂，浪费程序员的时间而不是浪费机器的时间才是真正的无效率。<br>面向对象编程，使得可以对代码进行可持续性开发。<br>性能分析器有助于指导程序开发，现在许多人仍然相信程序运行速度提升的关键在于开发出能够生成更快速代码的编译器。</p>
+<ul>
+<li>一百年后的编程语言在理论上今天就能设计出来。</li>
+<li>如果今天真的能设计出这样一种语言，很可能现在适合编程，并且能够产生更好的结果。</li>
+</ul>
+<h3 id="12、拒绝平庸"><a href="#12、拒绝平庸" class="headerlink" title="12、拒绝平庸"></a>12、拒绝平庸</h3><p>这一节作者在推广 Lisp 语言，Lisp 很值得学习，你掌握它以后，会感到它给你带来的极大启发，这会大大提高你的编程水平，使你成为一个更好的程序员，尽管在实际工作中极少会用到 Lisp。</p>
+<h3 id="13、书呆子的复仇"><a href="#13、书呆子的复仇" class="headerlink" title="13、书呆子的复仇"></a>13、书呆子的复仇</h3><p>在某些情况下，一些语言就是比另一些语言更出色。<br>认为所有语言都一样的看法的缺点是自欺欺人，但优点是可以使许多事情变得很简单。<br>编程语言现在的发展不过刚刚赶上 1958 年 Lisp 语言的水平。</p>
+<p>为什么 Lisp 很特别，因为 Lisp 刚诞生的时候包含的 9 种思想：</p>
+<ol>
+<li>条件结构(即 if-else 结构)</li>
+<li>函数也是一种数据结构</li>
+<li>递归</li>
+<li>变量的动态类型</li>
+<li>垃圾回收机制</li>
+<li>程序由表达式组成</li>
+<li>符号类型</li>
+<li>代码使用符号和常量组成的树形表示法</li>
+<li>无论什么时候，整个语言都是可用的（Lisp 不真正区分读取期、编译期、运行期）</li>
+</ol>
+<h3 id="14-梦寐以求的编程语言"><a href="#14-梦寐以求的编程语言" class="headerlink" title="14.梦寐以求的编程语言"></a>14.梦寐以求的编程语言</h3><p>这种语言干净简练，具有最高层次的抽象和互动性，而且很容易装备，可以只用很少的代码就解决常见的问题。不管是什么程序，你真正要写的代码几乎都与你自己的特定设置有关，其他具有普遍性的问题都有现成的函数库可以调用。</p>
+<p>这种语言有大量优秀的范例可供学习，而且非常符合直觉，你只需花几分钟阅读范例就能领会应该如何使用此种语言。</p>
+<p>这种语言以层的方式构建。较高的抽象层透明地构建在较低的抽象层之上。如果需要的话，你可以直接使用较低的抽象层。</p>
+<p>这种语言的所有细节对使用者都是透明的。它提供的抽象能力只是为了方便你的开发，而不是为了强迫你按照它的方式行事。</p>
+<h3 id="15、设计与研究"><a href="#15、设计与研究" class="headerlink" title="15、设计与研究"></a>15、设计与研究</h3><p>让用户满意并不等于迎合用户的一切要求，用户不了解所有可能的选择，也经常弄错自己真正想要的东西。<br>编程语言也应该是以人为本。<br>贴近用户的设计思想被归纳为“弱即是强”模式。<br>任何时候，代码都必须能够运行。</p>
+</div>
+  <hr class="copy-line" />
+  <div class="post-copyright">
+    <div class="copy-author">
+      <span>作者 :</span>
+      <span
+        >4Ark</span
+      >
+    </div>
+    <div class="copy-url">
+      <span>地址 :</span>
+      <a href="https://4ark.me/post/d94be22b.html">https://4ark.me/post/d94be22b.html</a>
+    </div>
+    <div class="copy-origin">
+      <span>来源 :</span>
+      <a href="https://4ark.me">https://4ark.me</a>
+    </div>
+    <div class="copy-license">著作权归作者所有，转载请联系作者获得授权。</div>
+  </div>
+</article>
+
+<div class="blog-post-comments">
+  <div id="load-disqus">
+    <p onclick="loadDisqus()" style="cursor: pointer; text-align: center">
+      🥳&nbsp;加载 Disqus 评论
+    </p>
+  </div>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments.</noscript>
+  </div>
+</div>
+ 
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Writing</a></li>
+         
+          <li><a href="/weekly">Weekly</a></li>
+         
+          <li><a href="/tags">Tags</a></li>
+         
+          <li><a href="/search">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="toc-number">1.</span> <span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A3%E6%96%87"><span class="toc-number">2.</span> <span class="toc-text">正文</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B9%A6%E5%91%86%E5%AD%90%E4%B8%8D%E5%8F%97%E6%AC%A2%E8%BF%8E"><span class="toc-number">2.1.</span> <span class="toc-text">1、为什么书呆子不受欢迎</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E9%BB%91%E5%AE%A2%E4%B8%8E%E7%94%BB%E5%AE%B6"><span class="toc-number">2.2.</span> <span class="toc-text">2、黑客与画家</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E4%B8%8D%E8%83%BD%E8%AF%B4%E7%9A%84%E8%AF%9D"><span class="toc-number">2.3.</span> <span class="toc-text">3、不能说的话</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81%E8%89%AF%E5%A5%BD%E7%9A%84%E5%9D%8F%E4%B9%A0%E6%83%AF"><span class="toc-number">2.4.</span> <span class="toc-text">4、良好的坏习惯</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5%E3%80%81%E5%8F%A6%E4%B8%80%E6%9D%A1%E8%B7%AF"><span class="toc-number">2.5.</span> <span class="toc-text">5、另一条路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6%E3%80%81%E5%A6%82%E4%BD%95%E5%88%9B%E9%80%A0%E8%B4%A2%E5%AF%8C"><span class="toc-number">2.6.</span> <span class="toc-text">6、如何创造财富</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7%E3%80%81%E5%85%B3%E6%B3%A8%E8%B4%AB%E5%AF%8C%E5%88%86%E5%8C%96"><span class="toc-number">2.7.</span> <span class="toc-text">7、关注贫富分化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8%E3%80%81%E9%98%B2%E6%AD%A2%E5%9E%83%E5%9C%BE%E9%82%AE%E4%BB%B6%E7%9A%84%E4%B8%80%E4%B8%AA%E6%96%B9%E6%B3%95"><span class="toc-number">2.8.</span> <span class="toc-text">8、防止垃圾邮件的一个方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9%E3%80%81%E8%AE%BE%E8%AE%A1%E8%80%85%E7%9A%84%E5%93%81%E5%91%B3"><span class="toc-number">2.9.</span> <span class="toc-text">9、设计者的品味</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10%E3%80%81%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E8%A7%A3%E6%9E%90"><span class="toc-number">2.10.</span> <span class="toc-text">10、编程语言解析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11%E3%80%81%E4%B8%80%E7%99%BE%E5%B9%B4%E5%90%8E%E7%9A%84%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80"><span class="toc-number">2.11.</span> <span class="toc-text">11、一百年后的编程语言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12%E3%80%81%E6%8B%92%E7%BB%9D%E5%B9%B3%E5%BA%B8"><span class="toc-number">2.12.</span> <span class="toc-text">12、拒绝平庸</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#13%E3%80%81%E4%B9%A6%E5%91%86%E5%AD%90%E7%9A%84%E5%A4%8D%E4%BB%87"><span class="toc-number">2.13.</span> <span class="toc-text">13、书呆子的复仇</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#14-%E6%A2%A6%E5%AF%90%E4%BB%A5%E6%B1%82%E7%9A%84%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80"><span class="toc-number">2.14.</span> <span class="toc-text">14.梦寐以求的编程语言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#15%E3%80%81%E8%AE%BE%E8%AE%A1%E4%B8%8E%E7%A0%94%E7%A9%B6"><span class="toc-number">2.15.</span> <span class="toc-text">15、设计与研究</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/d94be22b.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/d94be22b.html&text=《黑客与画家》-读书笔记"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/d94be22b.html&title=《黑客与画家》-读书笔记"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/d94be22b.html&is_video=false&description=《黑客与画家》-读书笔记"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=《黑客与画家》-读书笔记&body=Check out this article: https://4ark.me/post/d94be22b.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/d94be22b.html&title=《黑客与画家》-读书笔记"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/d94be22b.html&title=《黑客与画家》-读书笔记"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/d94be22b.html&title=《黑客与画家》-读书笔记"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/d94be22b.html&title=《黑客与画家》-读书笔记"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/d94be22b.html&name=《黑客与画家》-读书笔记&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/d94be22b.html&t=《黑客与画家》-读书笔记"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="dark-mobile" class="icon"><i class="fa fa-sun" id="dark-btn" aria-hidden="true"></i> Switch</a>
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    4Ark
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-190615898-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-190615898-1');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<script type="text/javascript">
+  function loadDisqus() {
+    var disqus_shortname = 'https-4ark-me'
+
+    ;(function () {
+      var dsq = document.createElement('script')
+      dsq.type = 'text/javascript'
+      dsq.async = true
+      dsq.src =
+        '//' +
+        disqus_shortname +
+        '.disqus.com/embed.js'
+      ;(
+        document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]
+      ).appendChild(dsq)
+    })()
+
+    $('#load-disqus').hide()
+  }
+</script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

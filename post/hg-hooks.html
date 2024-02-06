@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="故事的开始  💬 提交代码前记得 lint  💬 又有人没跑测试就提交代码  💬 project-config 有改动，麻烦 yarn setup 一下  相信使用 Hg 的同学们已经非常熟悉上面这几句话了，我们每次在提交或者拉取代码时总需要手动执行某些命令，实在繁琐。 但现在已经 2022 年了，难道就没有更好的解决方法吗？ 有的，我们知道，在 Git 有个东西叫做 hooks（钩子），可">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hg hooks 实践历程">
+<meta property="og:url" content="https://4ark.me/post/hg-hooks.html">
+<meta property="og:site_name" content="4Ark × Blog">
+<meta property="og:description" content="故事的开始  💬 提交代码前记得 lint  💬 又有人没跑测试就提交代码  💬 project-config 有改动，麻烦 yarn setup 一下  相信使用 Hg 的同学们已经非常熟悉上面这几句话了，我们每次在提交或者拉取代码时总需要手动执行某些命令，实在繁琐。 但现在已经 2022 年了，难道就没有更好的解决方法吗？ 有的，我们知道，在 Git 有个东西叫做 hooks（钩子），可">
+<meta property="og:locale">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202203191549957.jpg">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202204042021847.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202203191703719.gif">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202203201415448.png">
+<meta property="article:published_time" content="2022-03-17T00:00:00.000Z">
+<meta property="article:modified_time" content="2024-02-06T18:11:56.000Z">
+<meta property="article:author" content="4Ark">
+<meta property="article:tag" content="vcs">
+<meta property="article:tag" content="hg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202203191549957.jpg">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Hg hooks 实践历程</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script>localStorage.getItem("dark_mode")==="dark"&&document.write(`<link rel="stylesheet" href="${location.origin}/css/dark.css">`)</script>
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+    <meta name="google-site-verification" content="DwDg4EuywHWNZUkTC7sG0WGv_UQekM4uRtOoaGuDJHc" />
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="4Ark × Blog" type="application/atom+xml">
+<link rel="alternate" href="/rss.xml" title="4Ark × Blog" type="application/rss+xml">
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/post/weekly-05.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/post/weekly-04.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon"><i class="fa fa-moon" id="dark-btn" aria-hidden="true" onmouseover="$('#i-dark').toggle()" onmouseout="$('#i-dark').toggle()"></i></a></li>
+        <li><a class="icon" target="_blank" rel="noopener" href="https://4ark.me/atom.xml" aria-label="rss"><i class="fas fa-rss"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-dark" class="info" style="display: none;">Switch mode</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/hg-hooks.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/hg-hooks.html&text=Hg hooks 实践历程"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/hg-hooks.html&title=Hg hooks 实践历程"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/hg-hooks.html&is_video=false&description=Hg hooks 实践历程"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Hg hooks 实践历程&body=Check out this article: https://4ark.me/post/hg-hooks.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/hg-hooks.html&title=Hg hooks 实践历程"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/hg-hooks.html&title=Hg hooks 实践历程"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/hg-hooks.html&title=Hg hooks 实践历程"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/hg-hooks.html&title=Hg hooks 实践历程"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/hg-hooks.html&name=Hg hooks 实践历程&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/hg-hooks.html&t=Hg hooks 实践历程"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%85%E4%BA%8B%E7%9A%84%E5%BC%80%E5%A7%8B"><span class="toc-number">1.</span> <span class="toc-text">故事的开始</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9F%B3%E5%99%A8%E6%97%B6%E4%BB%A3"><span class="toc-number">2.</span> <span class="toc-text">石器时代</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%92%E9%93%9C%E6%97%B6%E4%BB%A3"><span class="toc-number">3.</span> <span class="toc-text">青铜时代</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hg-hooks-%E4%BB%8B%E7%BB%8D"><span class="toc-number">3.1.</span> <span class="toc-text">Hg hooks 介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hg-hooks-%E5%AE%9E%E8%B7%B5"><span class="toc-number">3.2.</span> <span class="toc-text">Hg hooks 实践</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8F%90%E4%BA%A4%E4%BB%A3%E7%A0%81%E5%89%8D%EF%BC%88precommit%EF%BC%89"><span class="toc-number">3.2.1.</span> <span class="toc-text">提交代码前（precommit）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8B%89%E5%8F%96%E4%BB%A3%E7%A0%81%E5%90%8E%EF%BC%88changegroup%EF%BC%89"><span class="toc-number">3.2.2.</span> <span class="toc-text">拉取代码后（changegroup）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#commit-message-%E6%A3%80%E6%9F%A5%EF%BC%88pretxncommit%EF%BC%89"><span class="toc-number">3.2.3.</span> <span class="toc-text">commit message 检查（pretxncommit）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%93%81%E5%99%A8%E6%97%B6%E4%BB%A3%EF%BC%9F"><span class="toc-number">4.</span> <span class="toc-text">铁器时代？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E5%90%8E%E7%9A%84%E4%B8%80%E4%BA%9B%E4%BA%8C%E4%B8%89%E4%BA%8B"><span class="toc-number">5.</span> <span class="toc-text">背后的一些二三事</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E9%9A%90%E8%97%8F%E5%AD%97%E7%AC%A6%E5%BC%95%E5%8F%91%E7%9A%84%E5%89%8D%E7%AB%AF%E4%BA%8B%E6%95%85"><span class="toc-number">5.1.</span> <span class="toc-text">一个隐藏字符引发的前端事故</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%99%E6%98%AF-VSCode-%E7%9A%84%E9%94%85%EF%BC%9F"><span class="toc-number">5.1.1.</span> <span class="toc-text">这是 VSCode 的锅？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%84%E9%81%BF%E6%96%B9%E6%A1%88"><span class="toc-number">5.1.2.</span> <span class="toc-text">规避方案</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%A9%E7%94%A8-VSCode-%E6%89%A9%E5%B1%95%E8%87%AA%E5%8A%A8%E5%88%A0%E9%99%A4"><span class="toc-number">5.1.2.1.</span> <span class="toc-text">利用 VSCode 扩展自动删除</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8F%90%E4%BA%A4%E4%BB%A3%E7%A0%81%E5%89%8D%E8%87%AA%E5%8A%A8%E5%88%A0%E9%99%A4"><span class="toc-number">5.1.2.2.</span> <span class="toc-text">提交代码前自动删除</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A9-vscode-hg-%E6%8F%90%E4%BA%A4%E4%BB%A3%E7%A0%81%E6%97%B6%E6%98%BE%E7%A4%BA-ESLint-%E6%8A%A5%E9%94%99%E7%9A%84%E8%A7%84%E5%88%99"><span class="toc-number">5.2.</span> <span class="toc-text">让 vscode-hg 提交代码时显示 ESLint 报错的规则</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-number">6.</span> <span class="toc-text">结语</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Hg hooks 实践历程
+    </h1>
+
+
+
+    <div class="meta">
+      <span
+        class="author"
+        itemprop="author"
+        itemscope
+        itemtype="http://schema.org/Person"
+      >
+        <span itemprop="name"
+          >4Ark</span
+        >
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-03-17T00:00:00.000Z" itemprop="datePublished">2022-03-17</time>
+        
+      
+    </div>
+
+ 
+      
+        
+ 
+        
+    <div class="article-tag">
+        <i class="fas fa-hashtag"></i>
+        <a class="tag-link-link" href="/tags/hg/" rel="tag">hg</a>, <a class="tag-link-link" href="/tags/vcs/" rel="tag">vcs</a>
+    </div>
+
+
+      
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody"><h2 id="故事的开始"><a href="#故事的开始" class="headerlink" title="故事的开始"></a>故事的开始</h2><blockquote>
+<aside> 💬 提交代码前记得 lint</aside>
+<aside> 💬 又有人没跑测试就提交代码</aside>
+<aside> 💬 project-config 有改动，麻烦 yarn setup 一下</aside>
+</blockquote>
+<p>相信使用 Hg 的同学们已经非常熟悉上面这几句话了，我们每次在提交或者拉取代码时总需要手动执行某些命令，实在繁琐。</p>
+<p>但现在已经 2022 年了，难道就没有更好的解决方法吗？</p>
+<p>有的，我们知道，在 Git 有个东西叫做 hooks（钩子），可以在特定事件发生之前或之后执行特定动作。</p>
+<p>同样的，Hg 也有 <a target="_blank" rel="noopener" href="https://www.mercurial-scm.org/wiki/hook">hooks</a>，不过并不像 Git 一样生态蓬勃发展，也没有太多现有的开源工具可供大家使用。</p>
+<p>本文就来介绍一下我们从 0 到 1 的 Hg hooks 实践过程，同时也希望能够起到抛砖引玉的作用。</p>
+<h2 id="石器时代"><a href="#石器时代" class="headerlink" title="石器时代"></a>石器时代</h2><p>在没有引入 Hg hooks 之前，我们常常会面对几种情况：</p>
+<ol>
+<li>有同学在提交代码时忘记执行 <code>yarn lint</code>、<code>yarn test</code></li>
+<li>修改了 <code>project-config</code> 的常量，却忘记通知大家，或者有人错过了这条信息。</li>
+</ol>
+<p>这都有可能会导致其他小伙伴拉取代码后，发现页面上的某个功能突然异常，花费一段时间排查才发现原来是没有执行 <code>yarn setup</code>。</p>
+<p>可能有部分同学会想到，那我自定义一个命令在提交或者拉取代码时自动做这件事不就好了吗？</p>
+<p>比如这样：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; yarn lint &amp;&amp; hg commit -m <span class="string">&quot;xxx&quot;</span></span><br><span class="line"></span><br><span class="line">&gt; hg pull --update &amp;&amp; yarn setup</span><br></pre></td></tr></table></figure>
+
+<p>这样也不是不行，但是会存在一些问题：</p>
+<ol>
+<li>由于每个人的拉取代码的命令不一样，如果项目开发流程发生变化，则每个人都需要同步修改</li>
+<li>有些同学习惯使用图形化界面，比如 SourceTree、vscode-hg 等，则无法自定义操作命令</li>
+</ol>
+<p>因此，我们另辟蹊径，寻找更好的解决方案。</p>
+<h2 id="青铜时代"><a href="#青铜时代" class="headerlink" title="青铜时代"></a>青铜时代</h2><p>我们最主要想解决的问题就是：</p>
+<ol>
+<li>在提交代码前自动执行 <code>yarn lint</code>、<code>yarn test</code>，不通过则直接终止提交。</li>
+<li>在拉取代码后，检测到如果 project-config 目录发生改动，则自动执行 <code>yarn setup</code>。</li>
+<li>还有更多：<ol>
+<li>检查 commit message 规范</li>
+<li>统一代码的格式化风格</li>
+</ol>
+</li>
+</ol>
+<p>这些都可以通过 Hg hooks 解决，所以开始之前，我们先对 Hg hooks 做一个简单的认识。</p>
+<h3 id="Hg-hooks-介绍"><a href="#Hg-hooks-介绍" class="headerlink" title="Hg hooks 介绍"></a>Hg hooks 介绍</h3><p>Hg hooks 能做什么，这次再介绍一遍：<strong>它可以在特定事件发生之前或之后执行特定动作。</strong></p>
+<p>特定事件，指的就是我们在对 Hg 仓库进行操作时的一些钩子，比如提交前（precommit）、提交后（commit），可以在这里查看全部 hooks 列表：<a target="_blank" rel="noopener" href="https://www.mercurial-scm.org/repo/hg/help/hgrc">hooks</a>。</p>
+<p>下面介绍一下如何使用 hook，我们可以通过以下两个文件进行配置：</p>
+<ol>
+<li><code>~/.hgrc</code>：全局的，将对所有 hg 仓库起作用。</li>
+<li> 项目根目录的 <code>.hg/hgrc</code> ：仅对当前仓库起作用。</li>
+</ol>
+<p>比如我们想要实现一个简单的需求：在提交代码前进行 <code>yarn lint</code>。</p>
+<p>首先编辑 <code>.hg/hgrc</code>文件：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">hooks</span>]</span><br><span class="line"><span class="string">precommit</span> <span class="string">=</span> <span class="string">./bin/hooks/precommit.sh</span> <span class="comment"># 这个路径是相对于项目根目录的</span></span><br></pre></td></tr></table></figure>
+
+<p>然后编写脚本 <code>bin/hooks/precommit.sh</code>（也可以使用 python）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">PATH=/usr/<span class="built_in">local</span>/bin:/opt/homebrew/bin:<span class="variable">$PATH</span></span><br><span class="line"></span><br><span class="line">yarn lint</span><br><span class="line"></span><br><span class="line"><span class="comment"># lint 没有通过直接退出</span></span><br><span class="line"><span class="keyword">if</span> [ $? -ne 0 ]; <span class="keyword">then</span> <span class="built_in">exit</span> 1; <span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<p>这里需要特别指出，之所以需要重新声明 <code>PATH</code> 变量：</p>
+<ol>
+<li>hooks 脚本的运行环境取决于同学提交代码的地方，比如通过 SourceTree 提交，由于环境不一样，就可能会出现 <code>yarn: command not found</code> 的报错，参见：<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/22883197/git-command-not-found-in-the-custom-action-for-sourcetree">‘Git Command Not found’ in the custom action for SourceTree - Stack Overflow</a>。</li>
+<li>每个同学安装 hg 的方式可能不一样，有通过 brew、pip、甚至自己手动编译的，它们的可执行文件路径不一样。<ul>
+<li>可以通过 <code>which hg</code> 查看这个命令的可执行文件路径。</li>
+</ul>
+</li>
+</ol>
+<p>这样，一个简单的 hook 就配置完成了，这时候提交代码就会触发 <code>precommit.sh</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; hg commit -m <span class="string">&quot;ci: precommit hooks&quot;</span></span><br><span class="line"></span><br><span class="line">$ eslint <span class="string">&#x27;**/*.js&#x27;</span> --cache --fix</span><br></pre></td></tr></table></figure>
+
+<p>当 hook 脚本的 exit code 不为 0 的时候，则会终止当前的 Hg 操作，对于某些具有事务性的 hook（e.g. pretxncommit），还会自动进行回滚。</p>
+<p>可以通过以下链接对 Hg hooks 进行更深入地学习：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.mercurial-scm.org/wiki/hookExamples">hookExamples</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.mercurial-scm.org/wiki/Usefulhooks">Usefulhooks</a></li>
+<li><a target="_blank" rel="noopener" href="http://hgbook.red-bean.com/read/handling-repository-events-with-hooks.html">Chapter 10. Handling repository events with hooks (red-bean.com)</a></li>
+</ul>
+<h3 id="Hg-hooks-实践"><a href="#Hg-hooks-实践" class="headerlink" title="Hg hooks 实践"></a>Hg hooks 实践</h3><h4 id="提交代码前（precommit）"><a href="#提交代码前（precommit）" class="headerlink" title="提交代码前（precommit）"></a>提交代码前（precommit）</h4><p>这里需要用到的 hook 是 precommit，它的运行时机在提交之前，exit code 非 0 时将终止提交。</p>
+<p> <code>precommit.sh</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">PATH=/usr/<span class="built_in">local</span>/bin:/opt/homebrew/bin:<span class="variable">$PATH</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$SKIP_LINT</span>&quot;</span> = <span class="string">&quot;1&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">exit</span> 0</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 需要 lint 的项目</span></span><br><span class="line">apps=(</span><br><span class="line">    <span class="string">&#x27;miniprogram&#x27;</span></span><br><span class="line">    <span class="string">&#x27;dashboard&#x27;</span></span><br><span class="line">    <span class="string">&#x27;core&#x27;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> app <span class="keyword">in</span> <span class="string">&quot;<span class="variable">$&#123;apps[@]&#125;</span>&quot;</span>; <span class="keyword">do</span></span><br><span class="line">    <span class="comment"># 判断是否修改该项目，无则跳过 lint</span></span><br><span class="line">    has_change=$(hg status | grep <span class="string">&quot;<span class="variable">$&#123;app&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$has_change</span>&quot;</span> ]; <span class="keyword">then</span> <span class="built_in">continue</span>; <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">cd</span> <span class="string">&quot;<span class="variable">$app</span>&quot;</span> || <span class="built_in">exit</span> 1</span><br><span class="line"></span><br><span class="line">    yarn &amp;&amp; yarn lint</span><br><span class="line"></span><br><span class="line">    <span class="comment"># lint 是否报错，是则直接退出脚本</span></span><br><span class="line">    <span class="keyword">if</span> [ $? -ne 0 ]; <span class="keyword">then</span> <span class="built_in">exit</span> 1; <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">cd</span> -</span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 针对当前修改或新增的文件批量进行 prettier 格式化</span></span><br><span class="line">hg status | grep -E <span class="string">&quot;^(M|A).*.(js|json|wxss)$&quot;</span> | sed <span class="string">&#x27;s|^M||g; s|^A||g&#x27;</span> | xargs ./node_modules/.bin/prettier --write &gt;/dev/null 2&gt;&amp;1</span><br></pre></td></tr></table></figure>
+
+<p>比较浅显易懂，由于是 Monorepo 架构，所以仅针对当前改动的子项目执行 <code>yarn lint</code> ，当 lint 不通过时终止提交；然后仅对当前变更的文件做 prettier 格式化，并且忽略这行命令的输出和错误。</p>
+<p>ps：其实这里的 prettier 机制有点问题，原本的目的是仅格式化当前提交的文件，但 Hg 没有 staging area 的概念，故只能粗暴处理，如果有更好的解决方法欢迎指教。</p>
+<ul>
+<li>hg commit 可以只提交指定的部分文件，所以是有 changed files 和 commited files 两个概念，但是没有找到办法获取 commited files，参见：<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/24565802/mercurial-pre-commit-hook-how-to-tell-apart-changed-and-committed-files">Mercurial pre-commit hook: How to tell apart changed and committed files - Stack Overflow</a></li>
+<li>另一种思路：使用 pretxncommit 钩子，就可通过 $Hg_NODE 变量拿到当前 commit 的信息，但缺点是 pretxncommit 阶段将不能再对文件进行改动，则格式化后需要重新提交一遍。</li>
+</ul>
+<p>随着版本迭代，在 precommit 钩子中增加了检测 utils、test 目录改动则自动执行单元测试 ：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 修改以下文件需要执行单元测试</span></span><br><span class="line">apps=(</span><br><span class="line">    <span class="string">&#x27;miniprogram/utils miniprogram/test&#x27;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> app <span class="keyword">in</span> <span class="string">&quot;<span class="variable">$&#123;apps[@]&#125;</span>&quot;</span>; <span class="keyword">do</span></span><br><span class="line">    dir=(<span class="variable">$app</span>)</span><br><span class="line">    pass=0</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> d <span class="keyword">in</span> <span class="string">&quot;<span class="variable">$&#123;dir[@]&#125;</span>&quot;</span>; <span class="keyword">do</span></span><br><span class="line">        <span class="comment"># 判断是否修改工具方法、测试用例，无则跳过</span></span><br><span class="line">        has_change=$(hg status | grep <span class="string">&quot;<span class="variable">$&#123;d&#125;</span>&quot;</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$has_change</span>&quot;</span> ]; <span class="keyword">then</span> <span class="built_in">continue</span>; <span class="keyword">fi</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 同一个项目只执行一次</span></span><br><span class="line">        [ <span class="variable">$pass</span> -eq 1 ] &amp;&amp; <span class="built_in">break</span></span><br><span class="line"></span><br><span class="line">        <span class="built_in">cd</span> <span class="string">&quot;<span class="variable">$d</span>&quot;</span> || <span class="built_in">exit</span> 1</span><br><span class="line">        yarn &amp;&amp; yarn <span class="built_in">test</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># test 是否报错，是则直接退出脚本</span></span><br><span class="line">        <span class="keyword">if</span> [ $? -ne 0 ]; <span class="keyword">then</span> <span class="built_in">exit</span> 1; <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">        pass=1</span><br><span class="line"></span><br><span class="line">        <span class="built_in">cd</span> -</span><br><span class="line">    <span class="keyword">done</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="拉取代码后（changegroup）"><a href="#拉取代码后（changegroup）" class="headerlink" title="拉取代码后（changegroup）"></a>拉取代码后（changegroup）</h4><p>主要想解决的问题是：当拉取代码后，检测到 project-config 目录发生变更，则执行 <code>yarn setup</code>。</p>
+<p>首先要解决第一点，如何获取从远端拉取代码所改动的文件？有下面几种方法：</p>
+<ol>
+<li><p><a target="_blank" rel="noopener" href="https://backend.bolt80.com/hgdoc/hg-incoming.html">hg incoming</a>：显示远端中的新 commit</p>
+<ul>
+<li>缺点：该方法只是显示新的 commit，后面仍需要再进行一次 pull 才能将新 commit 拉取下来，导致拉取代码时间翻倍。</li>
+</ul>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://backend.bolt80.com/hgdoc/hg-pull.html">hg pull</a>：在拉取代码之后、进行 update 或 rebase 之前，通过 <code>hg log</code> 对比本地 head 和 远端拉取下来的 head。</p>
+</li>
+<li><p>hooks：</p>
+<ol>
+<li>update：工作目录发生改变时，所以只要进行提交、储藏、切换分支都会触发，<strong>不考虑</strong>。</li>
+<li>incoming：每一个新的 commit 被传入时都会触发一次，过于频繁，<strong>不考虑</strong>。</li>
+<li>changegroup：在 push、pull、unbundle 时都会触发，但多个 commit 被传入也只会触发一次，<strong>可考虑</strong>。</li>
+<li>还有一些不太满足的 hooks 不一一介绍了。</li>
+</ol>
+</li>
+</ol>
+<p>在一开始，我们曾尝试使用第二种方法解决该问题：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">hgpl</span></span>() &#123;</span><br><span class="line">    no_shelve=$(hg shelve | grep <span class="string">&quot;nothing changed&quot;</span>)</span><br><span class="line"></span><br><span class="line">    hg pull</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 改动文件</span></span><br><span class="line">    regex=<span class="string">&#x27;\bproject-config&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 获取本次 pull 变更集的改动文件列表，判断是否有改动相关文件</span></span><br><span class="line">    <span class="comment"># @link：https://stackoverflow.com/questions/3277334/what-files-will-be-changed-vs-added-when-i-do-an-hg-pull-and-hg-update</span></span><br><span class="line">    has_change=$(hg <span class="built_in">log</span> --verbose -r .:tip | grep <span class="string">&quot;files:&quot;</span> | grep -E <span class="string">&quot;<span class="variable">$regex</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 参考 hg update --rebase 的实现，先尝试 rebase，如果不需要 rebase，则直接 update</span></span><br><span class="line">    <span class="comment"># @link：https://stackoverflow.com/questions/35327163/what-is-the-rebase-command-used-in-hg-pull-rebase</span></span><br><span class="line">    <span class="comment"># @link：https://www.mercurial-scm.org/repo/hg/file/tip/hgext/rebase.py#l2172</span></span><br><span class="line">    has_rebase=$(hg rebase -b . -d <span class="string">&#x27;last(branch(.))&#x27;</span> | grep <span class="string">&quot;nothing to rebase&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> [ ! -z <span class="string">&quot;<span class="variable">$has_rebase</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">        hg update</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 有改动相关文件，需要执行 yarn setup</span></span><br><span class="line">    <span class="keyword">if</span> [ ! -z <span class="string">&quot;<span class="variable">$has_change</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">        yarn setup</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 如果之前有 shelve，需要恢复 shelve</span></span><br><span class="line">    <span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$no_shelve</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">        hg unshelve</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个方法可以很好地工作，它可以满足：</p>
+<ul>
+<li>拉取代码时自动储藏、恢复本地改动</li>
+<li>当两端都同时修改 project-config 时，可以 update 或者 rebase 后再统一 <code>yarn setup</code></li>
+</ul>
+<p>后来发现使用 changegroup  hook 配合 <code>hg log</code> 一样可以解决问题，于是就有了 <code>changegroup.sh</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">PATH=/usr/<span class="built_in">local</span>/bin:/opt/homebrew/bin:<span class="variable">$PATH</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 改动文件</span></span><br><span class="line">regex=<span class="string">&#x27;\bproject-config&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取本次变更集的改动文件列表，判断是否有改动相关文件</span></span><br><span class="line"><span class="comment"># @see：https://stackoverflow.com/questions/3277334/what-files-will-be-changed-vs-added-when-i-do-an-hg-pull-and-hg-update</span></span><br><span class="line">has_change=$(hg <span class="built_in">log</span> -v -r <span class="variable">$Hg_NODE</span>: | grep <span class="string">&quot;files:&quot;</span> | grep -E <span class="string">&quot;<span class="variable">$regex</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 有改动相关文件，需要执行 yarn setup</span></span><br><span class="line"><span class="keyword">if</span> [ ! -z <span class="string">&quot;<span class="variable">$has_change</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">cd</span> $(hg root) || <span class="built_in">exit</span> 1</span><br><span class="line">    yarn setup</span><br><span class="line">    <span class="built_in">cd</span> -</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<p> 因此 <code>hgpl</code> 可以精简成这样：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">hgpl</span></span>() &#123;</span><br><span class="line">    has_shelve=$(hg shelve | grep <span class="string">&quot;nothing changed&quot;</span>)</span><br><span class="line"></span><br><span class="line">    hg pull --rebase</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 如果之前有 shelve，需要恢复 shelve</span></span><br><span class="line">    <span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$has_shelve</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">        hg unshelve</span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="commit-message-检查（pretxncommit）"><a href="#commit-message-检查（pretxncommit）" class="headerlink" title="commit message 检查（pretxncommit）"></a>commit message 检查（pretxncommit）</h4><p>使用 pretxncommit 钩子可对当前提交信息进行检查，如检查 commit message：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">PATH=/usr/<span class="built_in">local</span>/bin:/opt/homebrew/bin:<span class="variable">$PATH</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$SKIP_LINT</span>&quot;</span> = <span class="string">&quot;1&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">exit</span> 0</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">shelve_user=<span class="string">&quot;shelve@localhost&quot;</span></span><br><span class="line"></span><br><span class="line">commit_user=$(hg tip --template &#123;user&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 因为 hg shelve 也会触发 pretxncommit 钩子，所以要进行忽略</span></span><br><span class="line"><span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$commit_user</span>&quot;</span> == <span class="string">&quot;<span class="variable">$shelve_user</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">exit</span> 0</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">commit_message=$(hg tip --template &#123;desc&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;[msg] <span class="variable">$commit_message</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$commit_message</span>&quot;</span> | ./node_modules/.bin/commitlint</span><br></pre></td></tr></table></figure>
+
+<h2 id="铁器时代？"><a href="#铁器时代？" class="headerlink" title="铁器时代？"></a>铁器时代？</h2><p>这个标题之所以打上一个问号，是因为该方案仍在 POC 阶段，尚未落地实施，但也可作为一个对未来的展望。</p>
+<p>迄今为止，我们的 Hg hooks 已经能够满足大部分场景了，那还存在些什么问题呢？</p>
+<p>相信不少同学已经发现这样操作会存在有一个很明显的问题，那就是：hooks 配置如何同步？</p>
+<p>我们知道 <code>.hg</code> 目录是不会加入版本控制的，这是非常合理且必要的，因为 hooks 本身是一些权限极高的可执行脚本，所以出于安全考虑（你也不想你 clone 一个仓库后，它会自动执行某些你不想执行的命令），<strong>因此是不会有任何一个 VSC 会将 hooks 加入版本控制的。</strong></p>
+<p>可是这就会导致：</p>
+<ol>
+<li>假如项目新增了一个 hook，需要通知项目成员同步修改本地的 hooks 配置。</li>
+<li>新成员加入项目，需要手动配置 hooks。</li>
+</ol>
+<p>如果这个问题不能得到解决，那归根到底还是无法绕过通知项目成员手动操作的过程。</p>
+<p>所幸，以上问题在 Git 中同样存在，并且已经有很多非常成熟的方案，如： <a target="_blank" rel="noopener" href="https://github.com/typicode/husky">huksy</a>、<a target="_blank" rel="noopener" href="https://pre-commit.com/">pre-commit</a> 。</p>
+<p>那有没有人在 Hg 生态上解决这个问题呢？粗略找到了两个：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/TobiasTimm/husky-hg">husky-hg</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/theylom/tdog-husky-hg">tdog-husky-hg</a>（前者的 fork</li>
+</ol>
+<p>都是基于 husky <a target="_blank" rel="noopener" href="https://github.com/tobiastimm/husky-hg/commit/fcd100f4f1a7bdf04c05f51ddd80af9f87687ddc#diff-7ae45ad102eab3b6d7e7896acd08c427a9b25b346470d7bc6507b6481575d519R2">v0.14.3</a> 改造的，最后提交时间都在三年前（2019），然而 husky 现在已经迭代到 <a target="_blank" rel="noopener" href="https://github.com/typicode/husky/releases/tag/v7.0.4">v7</a> 版本了，这 3 年间经过无数迭代，使用方式和实现原理都发生翻天覆地的变化，于是我们决定基于 husky v7 自行改造。</p>
+<p>但是在此之前，我们先了解一下 Git 如何配置 hooks：</p>
+<ol>
+<li>在以前的 Git 版本中，如果要配置一个 hooks 则需要在 <code>.git/hooks</code> 目录新增一个 hook 同名的可执行文件，并且出于前面说的安全考虑， <code>.git</code>  目录是不会被加入版本控制的，<strong>因此也存在上面所说的问题</strong>。</li>
+<li>在 Git v2.9 以后，支持通过配置 core.hooksPath 自定义项目的 hooks 的存放路径，也即意味着可将 hooks 加入版本控制，项目成员只需要在第一次配置 core.hooksPath 即可，后续增删 hooks 都可直接使用。</li>
+</ol>
+<p>因为 Git 支持 core.hooksPath ，所以 husky 直接采用了新的实现原理重构：</p>
+<ol>
+<li><p>在 huksy v4 的时候，由于 Git hooks 目录无法被加入版本控制，它们是这样解决这个问题的：</p>
+<ol>
+<li>在初始化的时候就在 <code>.git/hooks</code> 目录预先创建所有的 hooks 可执行文件，然后在 hooks 文件中执行定义在 <code>package.json</code> 中的 hooks 命令。</li>
+<li> 这样很显然可以解决 hooks 无法同步的问题，但是这个实现原理也被不少人诟病，见 <a target="_blank" rel="noopener" href="https://github.com/typicode/husky/issues/260">#260</a> 。</li>
+</ol>
+</li>
+<li><p>由于 Git v2.9 的升级，在 husky v7 中使用了新的实现方式：</p>
+<ol>
+<li>将 hooks 可执行文件存放在一个可以被进行版本控制的目录（默认是 <code>.husky</code>），然后初始化的时候只需要配置  core.hooksPath 即可。</li>
+</ol>
+</li>
+</ol>
+<p>显然，v7 的实现方式更加方便快捷了，除此之外，它们的使用方式也有很大的不同：</p>
+<ol>
+<li>在 v4 中，通过在 <code>package.json</code>  中配置 <code>husky</code> 字段来定义 hooks。</li>
+<li>在 v7 中，<strong>它不再仅限于 Node.js 项目</strong>，可以直接通过 CLI 的方式进行配置，参见：<a target="_blank" rel="noopener" href="https://blog.typicode.com/husky-git-hooks-javascript-config/">Why husky has dropped conventional JS config</a>。</li>
+</ol>
+<p>在深入了解背后的实现原理后，我们得出了结论：</p>
+<ol>
+<li>v4 版本的代码<strong>有较多历史包袱，不利于改造，故基于 v7 版本修改</strong>。</li>
+<li>但 v7 版本的实现方式对 Hg 并不完全适用，所以需要继续沿用 v4 的部分实现方式，所以这样设计：<ol>
+<li>将 hooks 脚本存放在可被版本控制的 <code>.husky</code> 目录</li>
+<li>但不通过预注册所有的 hooks 的方式，而是采用按需配置，初始化时根据 <code>.husky</code> 的 hooks 可执行文件列表注入 hooks 配置。<ol>
+<li>比如在 Node.js 项目中可以通过 npm 的 <a target="_blank" rel="noopener" href="https://docs.npmjs.com/cli/v8/using-npm/scripts#prepare-and-prepublish">prepare</a> 钩子来自动初始化。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>因此，使用方式与 husky <a target="_blank" rel="noopener" href="https://typicode.github.io/husky/">文档</a> 中基本一致。<ol>
+<li><code>husky install</code>、<code>husky add .husky/pre-commit</code></li>
+</ol>
+</li>
+</ol>
+<p>以上的心路历程、改造进展可以通过这个 <a target="_blank" rel="noopener" href="https://github.com/gd4Ark/husky/pull/1">PR</a> 查看，感兴趣的同学可自行尝试：</p>
+<ol>
+<li>clone 项目，安装依赖，执行 npm link。</li>
+<li>参考  husky <a target="_blank" rel="noopener" href="https://typicode.github.io/husky/">文档</a> 进行使用。</li>
+</ol>
+<h2 id="背后的一些二三事"><a href="#背后的一些二三事" class="headerlink" title="背后的一些二三事"></a>背后的一些二三事</h2><p>最后分享一些我们在实践 Hg hooks 时的小插曲。</p>
+<h3 id="一个隐藏字符引发的前端事故"><a href="#一个隐藏字符引发的前端事故" class="headerlink" title="一个隐藏字符引发的前端事故"></a>一个隐藏字符引发的前端事故</h3><p>有一天下午，在群里收到这么一个反馈：</p>
+<img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202203191549957.jpg"  alt="2471647676117_.pic" style="margin-left: 0;" />
+
+<p>点开大图一看，好家伙！赫然一个「口」字就这么明目张胆地贴在页面的左下角，看它「浓眉大眼」的。</p>
+<p>到底是哪里出了问题呢？</p>
+<p>仔细看清楚，才发现它其实不是一个「口」字，而是「□」，学名叫做 <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hans/%E8%99%9A%E7%BC%BA%E5%8F%B7">虚缺号</a>，通俗地讲就是一个特殊字符。</p>
+<p>于是打开对应的代码文件，果然一个红底白色 BS 字符引入眼帘：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202204042021847.png"></p>
+<h4 id="这是-VSCode-的锅？"><a href="#这是-VSCode-的锅？" class="headerlink" title="这是 VSCode 的锅？"></a>这是 VSCode 的锅？</h4><p>在网上有一番搜寻后，发现早就已经有不少人遇到过这个问题：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/wangduanduan/wangduanduan.github.io/issues/158">vscode控制字符引起的问题以及解决思路</a></li>
+<li><a target="_blank" rel="noopener" href="https://jiangxiaokun.com/css/2018/11/15/ghost_chars/">隐藏字符引发的血案</a></li>
+</ul>
+<p>看下他们提供的复现过程：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202203191703719.gif" alt="hmmm"></p>
+<p>直接说下这个 Bug 的结论：</p>
+<ol>
+<li>VSCode 开启 webview 的情况下，使用中文输入法时按下退格键，就会导致出现退格符。</li>
+<li>VSCode 底层是 Electron，Electron 底层用的 chromium，这个 BUG 是 chromium 的。</li>
+<li>该 BUG 已经在 VSCode v1.4.0 得到修复，参见这个 <a target="_blank" rel="noopener" href="https://github.com/microsoft/vscode/issues/37114#issuecomment-544236959">issue</a>。</li>
+</ol>
+<p>但既然该问题在 2019 年已经修复，那为什么在 2022 年的今天还会出现这个退格符呢？</p>
+<p>由于已经复现不了，根源追求也就只能不了了之，但影响又如此之大，所以我们应该怎么去规避它呢？</p>
+<h4 id="规避方案"><a href="#规避方案" class="headerlink" title="规避方案"></a>规避方案</h4><h5 id="利用-VSCode-扩展自动删除"><a href="#利用-VSCode-扩展自动删除" class="headerlink" title="利用 VSCode 扩展自动删除"></a>利用 VSCode 扩展自动删除</h5><p>有一个 VSCode 扩展 <a target="_blank" rel="noopener" href="https://github.com/satokaz/vscode-bs-ctrlchar-remover">Remove backspace control character</a> 专门用于解决此类问题，安装后我们只需要在 setting.json 添加如下配置：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;[wxml]&quot;</span>: &#123;</span><br><span class="line">  <span class="attr">&quot;editor.formatOnSave&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">&quot;editor.defaultFormatter&quot;</span>: <span class="string">&quot;satokaz.vscode-bs-ctrlchar-remover&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>即可在保存代码的时候自动移除这些特殊的隐藏字符。</p>
+<p>实现方式主要是通过正则去匹配这类隐藏字符：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/[\u0000]|[\u0001]|[\u0002]|[\u0003]|[\u0004]|[\u0005]|[\u0006]|[\u0007]|[\u0008]|[\u000b]|[\u000c]|[\u000d]|[\u000e]|[\u000f]|[\u0010]|[\u0011]|[\u0012]|[\u0013]|[\u0014]|[\u0015]|[\u0016]|[\u0017]|[\u0018]|[\u0019]|[\u001a]|[\u001b]|[\u001c]|[\u001d]|[\u001e]|[\u001f]|[\u001c]|[\u007f]/gm</span><br></pre></td></tr></table></figure>
+
+<p>在这里查看所有字符的介绍：<a target="_blank" rel="noopener" href="https://www.techonthenet.com/unicode/chart.php">Unicode</a>，本文所出现的 BS 正是 [\u0008]，也就是退格符。</p>
+<h5 id="提交代码前自动删除"><a href="#提交代码前自动删除" class="headerlink" title="提交代码前自动删除"></a>提交代码前自动删除</h5><p>更好的方式是：我们可以在 precommit 钩子自动做这件事：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">find . -name <span class="string">&quot;*.wxml&quot;</span> -<span class="built_in">exec</span> perl -i -p -e <span class="string">&quot;s/[\x08]//g&quot;</span> &#123;&#125; +</span><br><span class="line"></span><br><span class="line"><span class="comment"># 这行命令的 time total</span></span><br><span class="line">0.10s user 0.80s system 93% cpu 0.953 total</span><br></pre></td></tr></table></figure>
+
+<h3 id="让-vscode-hg-提交代码时显示-ESLint-报错的规则"><a href="#让-vscode-hg-提交代码时显示-ESLint-报错的规则" class="headerlink" title="让 vscode-hg 提交代码时显示 ESLint 报错的规则"></a>让 vscode-hg 提交代码时显示 ESLint 报错的规则</h3><p>起因是某位同学反映在 vscode-hg 提交代码的时候，无法显示 ESLint 校验不通过的规则提示：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202203201415448.png" alt="image-20220320141520784"></p>
+<p>通常我们提交代码时，如果 yarn lint 不通过，会输出如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ eslint <span class="string">&#x27;**/*.js&#x27;</span> --cache --fix</span><br><span class="line"></span><br><span class="line">/Users/4ark/project/helper/404.js</span><br><span class="line">  9:7  error  <span class="string">&#x27;a&#x27;</span> is assigned a value but never used  no-unused-vars</span><br><span class="line"></span><br><span class="line">✖ 1 problem (1 error, 0 warnings)</span><br><span class="line"></span><br><span class="line">error Command failed with <span class="built_in">exit</span> code 1.</span><br><span class="line">info Visit https://yarnpkg.com/en/docs/cli/run <span class="keyword">for</span> documentation about this <span class="built_in">command</span>.</span><br><span class="line">abort: pre-commit hook exited with status 1</span><br></pre></td></tr></table></figure>
+
+<p>而 vscode-hg 只输出如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">error Command failed with <span class="built_in">exit</span> code 1.</span><br><span class="line">abort: pre-commit hook exited with status 1</span><br></pre></td></tr></table></figure>
+
+<p>不过经测试在 VSCode 中进行 Git 代码提交时并不存在该问题，所以猜测是 vscode-hg 这个扩展的原因。</p>
+<p>于是抱着怀疑的态度看一下源码，发现果然如此：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/hg.ts#L620</span></span><br><span class="line"><span class="keyword">if</span> (options.logErrors !== <span class="literal">false</span> &amp;&amp; result.stderr) &#123;</span><br><span class="line">    <span class="built_in">this</span>.log(<span class="string">`<span class="subst">$&#123;result.stderr&#125;</span>\n`</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里只输出了 stderr，但是 ESLint 的规则输出是 stdout。</p>
+<p>于是我们为了更好地使用 Hg hooks，让它支持了输出 ESLint 规则，见 <a target="_blank" rel="noopener" href="https://github.com/mrcrowl/vscode-hg/issues/185">#185</a>。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>以上就是我们在实践 Hg hooks 过程的一些经历和心得，未必是最佳解决方案，正如文本开头所说，撰写本文的目的是希望能起到抛砖引玉的作用，与大家一起进一步的深入探讨。</p>
+<p>对于本文的实践思路、代码实现有任何的意见和建议，都请不吝指教。</p>
+<p>最后感谢大家的阅读。</p>
+</div>
+  <hr class="copy-line" />
+  <div class="post-copyright">
+    <div class="copy-author">
+      <span>作者 :</span>
+      <span
+        >4Ark</span
+      >
+    </div>
+    <div class="copy-url">
+      <span>地址 :</span>
+      <a href="https://4ark.me/post/hg-hooks.html">https://4ark.me/post/hg-hooks.html</a>
+    </div>
+    <div class="copy-origin">
+      <span>来源 :</span>
+      <a href="https://4ark.me">https://4ark.me</a>
+    </div>
+    <div class="copy-license">著作权归作者所有，转载请联系作者获得授权。</div>
+  </div>
+</article>
+
+<div class="blog-post-comments">
+  <div id="load-disqus">
+    <p onclick="loadDisqus()" style="cursor: pointer; text-align: center">
+      🥳&nbsp;加载 Disqus 评论
+    </p>
+  </div>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments.</noscript>
+  </div>
+</div>
+ 
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Writing</a></li>
+         
+          <li><a href="/weekly">Weekly</a></li>
+         
+          <li><a href="/tags">Tags</a></li>
+         
+          <li><a href="/search">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%85%E4%BA%8B%E7%9A%84%E5%BC%80%E5%A7%8B"><span class="toc-number">1.</span> <span class="toc-text">故事的开始</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9F%B3%E5%99%A8%E6%97%B6%E4%BB%A3"><span class="toc-number">2.</span> <span class="toc-text">石器时代</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%92%E9%93%9C%E6%97%B6%E4%BB%A3"><span class="toc-number">3.</span> <span class="toc-text">青铜时代</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hg-hooks-%E4%BB%8B%E7%BB%8D"><span class="toc-number">3.1.</span> <span class="toc-text">Hg hooks 介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hg-hooks-%E5%AE%9E%E8%B7%B5"><span class="toc-number">3.2.</span> <span class="toc-text">Hg hooks 实践</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8F%90%E4%BA%A4%E4%BB%A3%E7%A0%81%E5%89%8D%EF%BC%88precommit%EF%BC%89"><span class="toc-number">3.2.1.</span> <span class="toc-text">提交代码前（precommit）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8B%89%E5%8F%96%E4%BB%A3%E7%A0%81%E5%90%8E%EF%BC%88changegroup%EF%BC%89"><span class="toc-number">3.2.2.</span> <span class="toc-text">拉取代码后（changegroup）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#commit-message-%E6%A3%80%E6%9F%A5%EF%BC%88pretxncommit%EF%BC%89"><span class="toc-number">3.2.3.</span> <span class="toc-text">commit message 检查（pretxncommit）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%93%81%E5%99%A8%E6%97%B6%E4%BB%A3%EF%BC%9F"><span class="toc-number">4.</span> <span class="toc-text">铁器时代？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E5%90%8E%E7%9A%84%E4%B8%80%E4%BA%9B%E4%BA%8C%E4%B8%89%E4%BA%8B"><span class="toc-number">5.</span> <span class="toc-text">背后的一些二三事</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E9%9A%90%E8%97%8F%E5%AD%97%E7%AC%A6%E5%BC%95%E5%8F%91%E7%9A%84%E5%89%8D%E7%AB%AF%E4%BA%8B%E6%95%85"><span class="toc-number">5.1.</span> <span class="toc-text">一个隐藏字符引发的前端事故</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%99%E6%98%AF-VSCode-%E7%9A%84%E9%94%85%EF%BC%9F"><span class="toc-number">5.1.1.</span> <span class="toc-text">这是 VSCode 的锅？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%84%E9%81%BF%E6%96%B9%E6%A1%88"><span class="toc-number">5.1.2.</span> <span class="toc-text">规避方案</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%88%A9%E7%94%A8-VSCode-%E6%89%A9%E5%B1%95%E8%87%AA%E5%8A%A8%E5%88%A0%E9%99%A4"><span class="toc-number">5.1.2.1.</span> <span class="toc-text">利用 VSCode 扩展自动删除</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8F%90%E4%BA%A4%E4%BB%A3%E7%A0%81%E5%89%8D%E8%87%AA%E5%8A%A8%E5%88%A0%E9%99%A4"><span class="toc-number">5.1.2.2.</span> <span class="toc-text">提交代码前自动删除</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%A9-vscode-hg-%E6%8F%90%E4%BA%A4%E4%BB%A3%E7%A0%81%E6%97%B6%E6%98%BE%E7%A4%BA-ESLint-%E6%8A%A5%E9%94%99%E7%9A%84%E8%A7%84%E5%88%99"><span class="toc-number">5.2.</span> <span class="toc-text">让 vscode-hg 提交代码时显示 ESLint 报错的规则</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-number">6.</span> <span class="toc-text">结语</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/hg-hooks.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/hg-hooks.html&text=Hg hooks 实践历程"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/hg-hooks.html&title=Hg hooks 实践历程"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/hg-hooks.html&is_video=false&description=Hg hooks 实践历程"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Hg hooks 实践历程&body=Check out this article: https://4ark.me/post/hg-hooks.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/hg-hooks.html&title=Hg hooks 实践历程"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/hg-hooks.html&title=Hg hooks 实践历程"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/hg-hooks.html&title=Hg hooks 实践历程"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/hg-hooks.html&title=Hg hooks 实践历程"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/hg-hooks.html&name=Hg hooks 实践历程&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/hg-hooks.html&t=Hg hooks 实践历程"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="dark-mobile" class="icon"><i class="fa fa-sun" id="dark-btn" aria-hidden="true"></i> Switch</a>
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    4Ark
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-190615898-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-190615898-1');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<script type="text/javascript">
+  function loadDisqus() {
+    var disqus_shortname = 'https-4ark-me'
+
+    ;(function () {
+      var dsq = document.createElement('script')
+      dsq.type = 'text/javascript'
+      dsq.async = true
+      dsq.src =
+        '//' +
+        disqus_shortname +
+        '.disqus.com/embed.js'
+      ;(
+        document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]
+      ).appendChild(dsq)
+    })()
+
+    $('#load-disqus').hide()
+  }
+</script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

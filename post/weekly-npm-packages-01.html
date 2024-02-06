@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="需求首先我们来提一个团队开发中很常见的需求：一般来说每个团队都会统一规定项目内只使用同一个包管理器，譬如 npm、yarn、pnpm 等，如果成员使用了不同的包管理器，则可能会因为 lock file 失效而导致项目无法正常运行，虽然这种情况一般都可以通过项目的上手文档来形容共识，但有没有更好的解决方案，比如在项目安装依赖时检测如果使用了不同的包管理器就抛出错误信息？ 当然是可以的，pnpm 就有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="每周轮子之 only-allow：统一规范团队包管理器">
+<meta property="og:url" content="https://4ark.me/post/weekly-npm-packages-01.html">
+<meta property="og:site_name" content="4Ark × Blog">
+<meta property="og:description" content="需求首先我们来提一个团队开发中很常见的需求：一般来说每个团队都会统一规定项目内只使用同一个包管理器，譬如 npm、yarn、pnpm 等，如果成员使用了不同的包管理器，则可能会因为 lock file 失效而导致项目无法正常运行，虽然这种情况一般都可以通过项目的上手文档来形容共识，但有没有更好的解决方案，比如在项目安装依赖时检测如果使用了不同的包管理器就抛出错误信息？ 当然是可以的，pnpm 就有">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-05-16T00:00:00.000Z">
+<meta property="article:modified_time" content="2024-02-06T18:11:56.000Z">
+<meta property="article:author" content="4Ark">
+<meta property="article:tag" content="每周轮子">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>每周轮子之 only-allow：统一规范团队包管理器</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script>localStorage.getItem("dark_mode")==="dark"&&document.write(`<link rel="stylesheet" href="${location.origin}/css/dark.css">`)</script>
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+    <meta name="google-site-verification" content="DwDg4EuywHWNZUkTC7sG0WGv_UQekM4uRtOoaGuDJHc" />
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="4Ark × Blog" type="application/atom+xml">
+<link rel="alternate" href="/rss.xml" title="4Ark × Blog" type="application/rss+xml">
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/post/weekly-12.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/post/weekly-11.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon"><i class="fa fa-moon" id="dark-btn" aria-hidden="true" onmouseover="$('#i-dark').toggle()" onmouseout="$('#i-dark').toggle()"></i></a></li>
+        <li><a class="icon" target="_blank" rel="noopener" href="https://4ark.me/atom.xml" aria-label="rss"><i class="fas fa-rss"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-dark" class="info" style="display: none;">Switch mode</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/weekly-npm-packages-01.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/weekly-npm-packages-01.html&text=每周轮子之 only-allow：统一规范团队包管理器"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/weekly-npm-packages-01.html&title=每周轮子之 only-allow：统一规范团队包管理器"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/weekly-npm-packages-01.html&is_video=false&description=每周轮子之 only-allow：统一规范团队包管理器"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=每周轮子之 only-allow：统一规范团队包管理器&body=Check out this article: https://4ark.me/post/weekly-npm-packages-01.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/weekly-npm-packages-01.html&title=每周轮子之 only-allow：统一规范团队包管理器"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/weekly-npm-packages-01.html&title=每周轮子之 only-allow：统一规范团队包管理器"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/weekly-npm-packages-01.html&title=每周轮子之 only-allow：统一规范团队包管理器"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/weekly-npm-packages-01.html&title=每周轮子之 only-allow：统一规范团队包管理器"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/weekly-npm-packages-01.html&name=每周轮子之 only-allow：统一规范团队包管理器&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/weekly-npm-packages-01.html&t=每周轮子之 only-allow：统一规范团队包管理器"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9C%80%E6%B1%82"><span class="toc-number">1.</span> <span class="toc-text">需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E8%B7%B5"><span class="toc-number">2.</span> <span class="toc-text">实践</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-number">3.</span> <span class="toc-text">结语</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        每周轮子之 only-allow：统一规范团队包管理器
+    </h1>
+
+
+
+    <div class="meta">
+      <span
+        class="author"
+        itemprop="author"
+        itemscope
+        itemtype="http://schema.org/Person"
+      >
+        <span itemprop="name"
+          >4Ark</span
+        >
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-05-16T00:00:00.000Z" itemprop="datePublished">2022-05-16</time>
+        
+      
+    </div>
+
+ 
+      
+        
+ 
+        
+    <div class="article-tag">
+        <i class="fas fa-hashtag"></i>
+        <a class="tag-link-link" href="/tags/%E6%AF%8F%E5%91%A8%E8%BD%AE%E5%AD%90/" rel="tag">每周轮子</a>
+    </div>
+
+
+      
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody"><h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>首先我们来提一个团队开发中很常见的需求：一般来说每个团队都会统一规定项目内只使用同一个包管理器，譬如 npm、yarn、pnpm 等，如果成员使用了不同的包管理器，则可能会因为 <em>lock file</em> 失效而导致项目无法正常运行，虽然这种情况一般都可以通过项目的上手文档来形容共识，但有没有更好的解决方案，比如在项目安装依赖时检测如果使用了不同的包管理器就抛出错误信息？</p>
+<p>当然是可以的，pnpm 就有一个包叫做 <a target="_blank" rel="noopener" href="https://www.npmjs.com/package/only-allow">only-allow</a> ，连 <a target="_blank" rel="noopener" href="https://github.com/vitejs/vite/blob/c7fc1d4a532eae7b519bd70c6eba701e23b0635a/package.json#L16">vite</a> 都在使用它，所以本周我们就从 0 到 1 实现这个工具，以此对它的工作原理一探究竟。</p>
+<h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><p>说干就干，我们先在 <a target="_blank" rel="noopener" href="https://docs.npmjs.com/cli/v8/using-npm/scripts#life-cycle-operation-order">npm 文档</a> 搜寻一番，发现有一个钩子叫做 <code>preinstall</code>：</p>
+<blockquote>
+<p>可以在运行 npm instal 之前执行某个命令，当 exit code 非 0 时终止运行</p>
+</blockquote>
+<p>所以第一步是在 <code>package.json</code> 中添加以下代码：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;scripts&quot;</span>: &#123;</span><br><span class="line">  <span class="attr">&quot;preinstall&quot;</span>: <span class="string">&quot;node check-npm.js&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接下来的问题就是：我们如何知道用户使用了哪一个包管理器？</p>
+<p>我们知道 <code>process.env</code> 会包含当前脚本的运行环境，首先我们将它打印看看</p>
+<p>分别使用 <code>yarn</code> 和 <code>npm install</code> 后，发现了以下几个相关字段的区别：</p>
+<p>使用 <code>yarn</code> 安装：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  npm_config_registry: &#x27;https:<span class="comment">//registry.yarnpkg.com&#x27;,</span></span><br><span class="line">  npm_execpath: &#x27;/usr/local/lib/node_modules/yarn/bin/yarn.js&#x27;,</span><br><span class="line">  npm_config_user_agent: &#x27;yarn/<span class="number">1.22</span><span class="number">.11</span> npm/? node/v16<span class="number">.13</span><span class="number">.2</span> darwin arm64&#x27;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>npm</code> 安装：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  npm_config_metrics_registry: &#x27;https:<span class="comment">//registry.npmjs.org/&#x27;,</span></span><br><span class="line">  npm_execpath: &#x27;/opt/homebrew/lib/node_modules/npm/bin/npm-cli.js&#x27;,</span><br><span class="line">  npm_config_user_agent: &#x27;npm/<span class="number">8.5</span><span class="number">.5</span> node/v16<span class="number">.13</span><span class="number">.2</span> darwin arm64 workspaces/<span class="literal">false</span>&#x27;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以下是三者的解释：</p>
+<ol>
+<li>npm_config_metrics_registry：npm 源，就是当我们安装 npm 包会从这个服务器上获取，可以通过 <code>npm config set registry</code> 或者     等工具进行配置。</li>
+<li>npm_execpath：当前 npm 包管理器的执行目录，这个路径会根据你安装的方式而不同。</li>
+<li>npm_config_user_agent：由包管理器设置的 UA，每个包管理器都不一样，比如 npm  <a target="_blank" rel="noopener" href="https://github.com/npm/cli/blob/8a49e3ab6499c6196c5d7a0f6dad3b345944b992/lib/utils/config/definitions.js#L2190">lib/utils/config/definitions.js#L2190</a>，因此我们可以使用这个信息来判断客户端。</li>
+</ol>
+<p>因此我们可以通过 <code>process.env.npm_config_user_agent</code> 获取当前用户使用的包管理器，那么接下来的工作很简单了。</p>
+<p>我们先写一个最 Low 的解决方案：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> wantedPM = <span class="string">&#x27;yarn&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> usedPM = process.env.npm_config_user_agent.split(<span class="string">&#x27;/&#x27;</span>)[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (usedPM !== wantedPM) &#123;</span><br><span class="line">  <span class="built_in">console</span>.error(<span class="string">`You are using <span class="subst">$&#123;usedPM&#125;</span> but wanted <span class="subst">$&#123;wantedPM&#125;</span>`</span>)</span><br><span class="line"></span><br><span class="line">  process.exit(<span class="number">1</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>至此，我们的核心功能就已经实现了，还不赶紧发到 GitHub 开源一波坐等 stars？</p>
+<p>别急，我们来思考下这段代码存在哪些不足：</p>
+<ol>
+<li>应该由用户指定可以使用哪一个包管理器。</li>
+<li>这段代码的健壮性如何？</li>
+</ol>
+<p>那我们再修改一波，首先是接收用户传递参数，指定使用的包管理器：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;scripts&quot;</span>: &#123;</span><br><span class="line">  <span class="attr">&quot;preinstall&quot;</span>: <span class="string">&quot;node check-npm.js yarn&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后改为通过接收参数：</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="addition">+ const argv = process.argv.slice(2)</span></span><br><span class="line"></span><br><span class="line"><span class="addition">+ const wantedPM = argv[0]</span></span><br><span class="line"><span class="deletion">- const wantedPM = &#x27;yarn&#x27;</span></span><br><span class="line"></span><br><span class="line">const usedPM = process.env.npm_config_user_agent.split(&#x27;/&#x27;)[0]</span><br><span class="line"></span><br><span class="line">if (usedPM !== wantedPM) &#123;</span><br><span class="line">  console.error(`You are using $&#123;usedPM&#125; but wanted $&#123;wantedPM&#125;`)</span><br><span class="line"></span><br><span class="line">  process.exit(1)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>还有第二个问题，这段代码的健壮性如何？譬如以下情况：</p>
+<ol>
+<li>用户不传或乱传参数怎么办？</li>
+<li>如果以后有新需求：除了要限制包管理器，还要限制到具体某个版本怎么办？</li>
+</ol>
+<p>所以，我们再调整一波代码，检测传入的参数：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> PACKAGE_MANAGER_LIST = [<span class="string">&#x27;npm&#x27;</span>, <span class="string">&#x27;yarn&#x27;</span>, <span class="string">&#x27;pnpm&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> argv = process.argv.slice(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (argv.length === <span class="number">0</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> name = PACKAGE_MANAGER_LIST.join(<span class="string">&#x27;|&#x27;</span>)</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`Please specify the wanted package manager: only-allow &lt;<span class="subst">$&#123;name&#125;</span>&gt;`</span>)</span><br><span class="line"></span><br><span class="line">  process.exit(<span class="number">1</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> wantedPM = argv[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (!PACKAGE_MANAGER_LIST.includes(wantedPM)) &#123;</span><br><span class="line">  <span class="keyword">const</span> name = PACKAGE_MANAGER_LIST.join(<span class="string">&#x27;,&#x27;</span>)</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(</span><br><span class="line">    <span class="string">`&quot;<span class="subst">$&#123;wantedPM&#125;</span>&quot; is not a valid package manager. Available package managers are: <span class="subst">$&#123;name&#125;</span>.`</span></span><br><span class="line">  )</span><br><span class="line"></span><br><span class="line">  process.exit(<span class="number">1</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后，我们将获取 UA 的代码抽离出来，并使其可以获取版本，以便后续扩展：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getPackageManagerByUserAgent</span>(<span class="params">userAgent</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!userAgent) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">`&#x27;userAgent&#x27; arguments required`</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> spec = userAgent.split(<span class="string">&#x27; &#x27;</span>)[<span class="number">0</span>]</span><br><span class="line">  <span class="keyword">const</span> [name, version] = spec.split(<span class="string">&#x27;/&#x27;</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    name,</span><br><span class="line">    version</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>完整代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> PACKAGE_MANAGER_LIST = [<span class="string">&#x27;npm&#x27;</span>, <span class="string">&#x27;yarn&#x27;</span>, <span class="string">&#x27;pnpm&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> argv = process.argv.slice(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (argv.length === <span class="number">0</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> name = PACKAGE_MANAGER_LIST.join(<span class="string">&#x27;|&#x27;</span>)</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`Please specify the wanted package manager: only-allow &lt;<span class="subst">$&#123;name&#125;</span>&gt;`</span>)</span><br><span class="line"></span><br><span class="line">  process.exit(<span class="number">1</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> wantedPM = argv[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (!PACKAGE_MANAGER_LIST.includes(wantedPM)) &#123;</span><br><span class="line">  <span class="keyword">const</span> name = PACKAGE_MANAGER_LIST.join(<span class="string">&#x27;,&#x27;</span>)</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(</span><br><span class="line">    <span class="string">`&quot;<span class="subst">$&#123;wantedPM&#125;</span>&quot; is not a valid package manager. Available package managers are: <span class="subst">$&#123;name&#125;</span>.`</span></span><br><span class="line">  )</span><br><span class="line"></span><br><span class="line">  process.exit(<span class="number">1</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> usedPM = getPackageManagerByUserAgent(</span><br><span class="line">  process.env.npm_config_user_agent</span><br><span class="line">).name</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (usedPM !== wantedPM) &#123;</span><br><span class="line">  <span class="built_in">console</span>.error(<span class="string">`You are using <span class="subst">$&#123;usedPM&#125;</span> but wanted <span class="subst">$&#123;wantedPM&#125;</span>`</span>)</span><br><span class="line"></span><br><span class="line">  process.exit(<span class="number">1</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getPackageManagerByUserAgent</span>(<span class="params">userAgent</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!userAgent) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">`&#x27;userAgent&#x27; arguments required`</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> spec = userAgent.split(<span class="string">&#x27; &#x27;</span>)[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> [name, version] = spec.split(<span class="string">&#x27;/&#x27;</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    name,</span><br><span class="line">    version</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>很好，现在我们已经将这个 npm 包的功能给实现了：<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/only-allow">only-allow</a>，可以看下它的源码：<a target="_blank" rel="noopener" href="https://github.com/pnpm/only-allow/blob/master/bin.js">bin.js</a>。</p>
+<p><strong>不过发现了一个问题：</strong>上面提到过 <code>preinstall</code>  钩子会在安装依赖时触发，但是经验证，npm 和 yarn 调用 <code>preinstall</code> 的时机不一样，npm 仅会在 <code>npm install</code> 时运行，而 <code>npm install &lt;pkg-name&gt;</code> 则不会，但 yarn 则会在 <code>yarn</code> 和 <code>yarn add &lt;pkg-name&gt;</code> 时都运行，所以如果想用这种方式限制 npm 使用者，可能无法达到预期，该问题在 2021 年<a target="_blank" rel="noopener" href="https://github.com/npm/rfcs/issues/325">就有人提出</a>，但目前仍未有解决方案出现。</p>
+</div>
+  <hr class="copy-line" />
+  <div class="post-copyright">
+    <div class="copy-author">
+      <span>作者 :</span>
+      <span
+        >4Ark</span
+      >
+    </div>
+    <div class="copy-url">
+      <span>地址 :</span>
+      <a href="https://4ark.me/post/weekly-npm-packages-01.html">https://4ark.me/post/weekly-npm-packages-01.html</a>
+    </div>
+    <div class="copy-origin">
+      <span>来源 :</span>
+      <a href="https://4ark.me">https://4ark.me</a>
+    </div>
+    <div class="copy-license">著作权归作者所有，转载请联系作者获得授权。</div>
+  </div>
+</article>
+
+<div class="blog-post-comments">
+  <div id="load-disqus">
+    <p onclick="loadDisqus()" style="cursor: pointer; text-align: center">
+      🥳&nbsp;加载 Disqus 评论
+    </p>
+  </div>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments.</noscript>
+  </div>
+</div>
+ 
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Writing</a></li>
+         
+          <li><a href="/weekly">Weekly</a></li>
+         
+          <li><a href="/tags">Tags</a></li>
+         
+          <li><a href="/search">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9C%80%E6%B1%82"><span class="toc-number">1.</span> <span class="toc-text">需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E8%B7%B5"><span class="toc-number">2.</span> <span class="toc-text">实践</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-number">3.</span> <span class="toc-text">结语</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/weekly-npm-packages-01.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/weekly-npm-packages-01.html&text=每周轮子之 only-allow：统一规范团队包管理器"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/weekly-npm-packages-01.html&title=每周轮子之 only-allow：统一规范团队包管理器"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/weekly-npm-packages-01.html&is_video=false&description=每周轮子之 only-allow：统一规范团队包管理器"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=每周轮子之 only-allow：统一规范团队包管理器&body=Check out this article: https://4ark.me/post/weekly-npm-packages-01.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/weekly-npm-packages-01.html&title=每周轮子之 only-allow：统一规范团队包管理器"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/weekly-npm-packages-01.html&title=每周轮子之 only-allow：统一规范团队包管理器"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/weekly-npm-packages-01.html&title=每周轮子之 only-allow：统一规范团队包管理器"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/weekly-npm-packages-01.html&title=每周轮子之 only-allow：统一规范团队包管理器"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/weekly-npm-packages-01.html&name=每周轮子之 only-allow：统一规范团队包管理器&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/weekly-npm-packages-01.html&t=每周轮子之 only-allow：统一规范团队包管理器"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="dark-mobile" class="icon"><i class="fa fa-sun" id="dark-btn" aria-hidden="true"></i> Switch</a>
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    4Ark
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-190615898-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-190615898-1');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<script type="text/javascript">
+  function loadDisqus() {
+    var disqus_shortname = 'https-4ark-me'
+
+    ;(function () {
+      var dsq = document.createElement('script')
+      dsq.type = 'text/javascript'
+      dsq.async = true
+      dsq.src =
+        '//' +
+        disqus_shortname +
+        '.disqus.com/embed.js'
+      ;(
+        document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]
+      ).appendChild(dsq)
+    })()
+
+    $('#load-disqus').hide()
+  }
+</script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

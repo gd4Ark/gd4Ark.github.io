@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="本周轮子本周我们来实现一个被广泛使用的工具，那就是鼎鼎大名的 husky，几乎所有现代前端项目、以及 Node.js 项目都会接入这个工具，它的用途主要是统一管理项目中的 Git Hooks 脚本，不熟悉该工具的同学也不要紧，下面我们先来简单介绍一下 husky，它到底解决了什么问题，我们为什么需要使用 husky。 本周轮子：《每周轮子之 husky：统一规范团队 Git Hooks》 本周见闻">
+<meta property="og:type" content="article">
+<meta property="og:title" content="周刊第13期：一些图像 AI 模型、冒名顶替综合症">
+<meta property="og:url" content="https://4ark.me/post/weekly-13.html">
+<meta property="og:site_name" content="4Ark × Blog">
+<meta property="og:description" content="本周轮子本周我们来实现一个被广泛使用的工具，那就是鼎鼎大名的 husky，几乎所有现代前端项目、以及 Node.js 项目都会接入这个工具，它的用途主要是统一管理项目中的 Git Hooks 脚本，不熟悉该工具的同学也不要紧，下面我们先来简单介绍一下 husky，它到底解决了什么问题，我们为什么需要使用 husky。 本周轮子：《每周轮子之 husky：统一规范团队 Git Hooks》 本周见闻">
+<meta property="og:locale">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202205312334384.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202205312247639.jpeg">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202205312333952.png">
+<meta property="article:published_time" content="2022-05-31T00:00:00.000Z">
+<meta property="article:modified_time" content="2024-02-06T18:11:56.000Z">
+<meta property="article:author" content="4Ark">
+<meta property="article:tag" content="weekly">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202205312334384.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>周刊第13期：一些图像 AI 模型、冒名顶替综合症</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script>localStorage.getItem("dark_mode")==="dark"&&document.write(`<link rel="stylesheet" href="${location.origin}/css/dark.css">`)</script>
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+    <meta name="google-site-verification" content="DwDg4EuywHWNZUkTC7sG0WGv_UQekM4uRtOoaGuDJHc" />
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="4Ark × Blog" type="application/atom+xml">
+<link rel="alternate" href="/rss.xml" title="4Ark × Blog" type="application/rss+xml">
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/post/weekly-14.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/post/weekly-npm-packages-02.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon"><i class="fa fa-moon" id="dark-btn" aria-hidden="true" onmouseover="$('#i-dark').toggle()" onmouseout="$('#i-dark').toggle()"></i></a></li>
+        <li><a class="icon" target="_blank" rel="noopener" href="https://4ark.me/atom.xml" aria-label="rss"><i class="fas fa-rss"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-dark" class="info" style="display: none;">Switch mode</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/weekly-13.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/weekly-13.html&text=周刊第13期：一些图像 AI 模型、冒名顶替综合症"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/weekly-13.html&title=周刊第13期：一些图像 AI 模型、冒名顶替综合症"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/weekly-13.html&is_video=false&description=周刊第13期：一些图像 AI 模型、冒名顶替综合症"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=周刊第13期：一些图像 AI 模型、冒名顶替综合症&body=Check out this article: https://4ark.me/post/weekly-13.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/weekly-13.html&title=周刊第13期：一些图像 AI 模型、冒名顶替综合症"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/weekly-13.html&title=周刊第13期：一些图像 AI 模型、冒名顶替综合症"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/weekly-13.html&title=周刊第13期：一些图像 AI 模型、冒名顶替综合症"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/weekly-13.html&title=周刊第13期：一些图像 AI 模型、冒名顶替综合症"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/weekly-13.html&name=周刊第13期：一些图像 AI 模型、冒名顶替综合症&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/weekly-13.html&t=周刊第13期：一些图像 AI 模型、冒名顶替综合症"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%91%A8%E8%BD%AE%E5%AD%90"><span class="toc-number">1.</span> <span class="toc-text">本周轮子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%91%A8%E8%A7%81%E9%97%BB"><span class="toc-number">2.</span> <span class="toc-text">本周见闻</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#AI-%E7%94%BB%E7%94%BB"><span class="toc-number">2.1.</span> <span class="toc-text">AI 画画</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90%E5%9B%BE%E7%89%87"><span class="toc-number">2.2.</span> <span class="toc-text">文本生成图片</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Edge-%E7%9A%84-AI-%E5%9B%BE%E5%83%8F%E5%A2%9E%E5%BC%BA%E5%8A%9F%E8%83%BD"><span class="toc-number">2.3.</span> <span class="toc-text">Edge 的 AI 图像增强功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%92%E5%90%8D%E9%A1%B6%E6%9B%BF%E7%BB%BC%E5%90%88%E7%97%87"><span class="toc-number">2.4.</span> <span class="toc-text">冒名顶替综合症</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B-tips"><span class="toc-number">3.</span> <span class="toc-text">一些 tips</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B2%A1%E6%9C%89-Docker-Desktop-%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%E8%BF%90%E8%A1%8C-Docker"><span class="toc-number">3.1.</span> <span class="toc-text">没有 Docker Desktop 的情况下运行 Docker</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E4%BA%AB%E6%96%87%E7%AB%A0"><span class="toc-number">4.</span> <span class="toc-text">分享文章</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E7%89%88%E6%9C%AC%E5%8F%B7%E4%B8%8D%E6%98%AF%E7%A5%9E%E5%9C%A3%E7%9A%84"><span class="toc-number">4.1.</span> <span class="toc-text">主要版本号不是神圣的</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%89%E8%B6%A3%E7%9A%84%E9%93%BE%E6%8E%A5"><span class="toc-number">5.</span> <span class="toc-text">有趣的链接</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        周刊第13期：一些图像 AI 模型、冒名顶替综合症
+    </h1>
+
+
+
+    <div class="meta">
+      <span
+        class="author"
+        itemprop="author"
+        itemscope
+        itemtype="http://schema.org/Person"
+      >
+        <span itemprop="name"
+          >4Ark</span
+        >
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-05-31T00:00:00.000Z" itemprop="datePublished">2022-05-31</time>
+        
+      
+    </div>
+
+ 
+      
+        <div class="article-tag">
+            <i class="fa fa-calendar-week"></i>
+            <a href="/weekly">Weekly</a>
+        </div>
+      
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody"><h2 id="本周轮子"><a href="#本周轮子" class="headerlink" title="本周轮子"></a>本周轮子</h2><p>本周我们来实现一个被广泛使用的工具，那就是鼎鼎大名的 husky，几乎所有现代前端项目、以及 Node.js 项目都会接入这个工具，它的用途主要是统一管理项目中的 Git Hooks 脚本，不熟悉该工具的同学也不要紧，下面我们先来简单介绍一下 husky，它到底解决了什么问题，我们为什么需要使用 husky。</p>
+<p>本周轮子：<a href="https://4ark.me/post/weekly-npm-packages-02.html">《每周轮子之 husky：统一规范团队 Git Hooks》</a></p>
+<h2 id="本周见闻"><a href="#本周见闻" class="headerlink" title="本周见闻"></a>本周见闻</h2><h3 id="AI-画画"><a href="#AI-画画" class="headerlink" title="AI 画画"></a>AI 画画</h3><p>上周和菜头在公众号分享了一篇文章<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/abcMo8pxi9Gnu40m8DIFhg">《新玩具，新瘾头》</a>，里面介绍了一个谷歌的 AI 图像生成程序 <a target="_blank" rel="noopener" href="https://colab.research.google.com/github/alembics/disco-diffusion/blob/main/Disco_Diffusion.ipynb">Disco Diffusion</a>，它可以根据描述场景的关键词渲染出对应的图像，真的非常惊艳，有兴趣可以玩一下。</p>
+<p>从文中借一张图来展示下效果：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202205312334384.png" alt="图片"></p>
+<h3 id="文本生成图片"><a href="#文本生成图片" class="headerlink" title="文本生成图片"></a>文本生成图片</h3><p>这是谷歌的一个 AI 模型 <a target="_blank" rel="noopener" href="https://imagen.research.google/">Imagen</a>，可以根据输入文字生成写实的图片，下面这个弹吉他的猫就是它生成的：</p>
+<img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202205312247639.jpeg" alt="img"/>
+
+<h3 id="Edge-的-AI-图像增强功能"><a href="#Edge-的-AI-图像增强功能" class="headerlink" title="Edge 的 AI 图像增强功能"></a><a target="_blank" rel="noopener" href="https://blogs.bing.com/search-quality-insights/may-2022/Turing-Image-Super-Resolution">Edge 的 AI 图像增强功能</a></h3><p>微软图灵团队发布了一个 AI 模型  Super-Resolution (T-ISR)，它可以提高图片的质量，它将应用在 Bing 地图以及 Edge 浏览器中，目前已经在 <a target="_blank" rel="noopener" href="https://www.microsoftedgeinsider.com/en-us/download/canary">Edge Canary</a> 中发布，将会在未来几个月推广给用户使用。</p>
+<p>附上对比效果：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202205312333952.png" alt="image-20220531233321460"></p>
+<h3 id="冒名顶替综合症"><a href="#冒名顶替综合症" class="headerlink" title="冒名顶替综合症"></a>冒名顶替综合症</h3><blockquote>
+<p>冒名顶替综合症是一种心理现象，即一个人怀疑自己的技能、才能或成就，并有一种持续的内在恐惧，害怕被揭穿自己是个骗子。</p>
+</blockquote>
+<p>老实讲，从我开始写博客一直到今天，期间也写过一些较有深度的技术文章，往往这个时候都能感觉到自己知识的匮乏，而当我将这些文章发布到技术论坛时，一方面我自然希望可以帮助到更多人，另一方面也希望可以通过这些文章结识到更多志同道合的朋友，可是每当有人称赞我的文章写得不错的时候，我在开心之余，也隐约担心自己是否承受得起，其实这些文章是我花费了数天晚上才勉强肝出来的，并不轻松，我深知自己并没有他们口中说的那么厉害，甚至很多时候我会忘记自己在文章中写过的知识，但是好处是我可以非常快地重新拾起来，所以为了让自己可以持续地输出对别人有帮助的文章，我需要花费更多的时间在写作这件事情上，其实收益最大的是自己。</p>
+<h2 id="一些-tips"><a href="#一些-tips" class="headerlink" title="一些 tips"></a>一些 tips</h2><h3 id="没有-Docker-Desktop-的情况下运行-Docker"><a href="#没有-Docker-Desktop-的情况下运行-Docker" class="headerlink" title="没有 Docker Desktop 的情况下运行 Docker"></a><a target="_blank" rel="noopener" href="https://www.swyx.io/running-docker-without-docker-desktop/">没有 Docker Desktop 的情况下运行 Docker</a></h3><p>Docker 几乎是每一位开发者都必备的工具，然而 Docker Desktop for Mac 也被无数人吐槽过，现在我们终于可以摆脱 Docker Desktop，使用 <a target="_blank" rel="noopener" href="https://github.com/abiosoft/colima/">Colima</a> 即可在你的电脑上运行 Docker。</p>
+<p>不过笔者按照文档上的步骤，遇到了这个报错：</p>
+<blockquote>
+<p>FATA[0000] error starting vm: error at ‘starting’: exit status 1</p>
+</blockquote>
+<p>如果你也遇到同样的问题，可以试试这个操作步骤：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt; brew unlink colima <span class="comment"># 已经安装的话，先卸载</span></span><br><span class="line"></span><br><span class="line">&gt; brew install --HEAD colima</span><br><span class="line"></span><br><span class="line">&gt; colima start --runtime docker</span><br><span class="line"></span><br><span class="line">&gt; docker ps <span class="comment"># 成功</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="分享文章"><a href="#分享文章" class="headerlink" title="分享文章"></a>分享文章</h2><h3 id="主要版本号不是神圣的"><a href="#主要版本号不是神圣的" class="headerlink" title="主要版本号不是神圣的"></a><a target="_blank" rel="noopener" href="https://tom.preston-werner.com/2022/05/23/major-version-numbers-are-not-sacred.html">主要版本号不是神圣的</a></h3><p>本文的作者是 <a target="_blank" rel="noopener" href="https://semver.org/lang/zh-CN/">语义化版本控制规范</a> 的提出者，相信大家对这个规范都不陌生，它规定了版本格式应该为：主版本号.次版本号.修订号。</p>
+<p>版本号递增规则如下：</p>
+<ol>
+<li>主版本号：当你做了不兼容的 API 修改，</li>
+<li>次版本号：当你做了向下兼容的功能性新增，</li>
+<li>修订号：当你做了向下兼容的问题修正。</li>
+</ol>
+<p>但作者在提出这个规范十年后的今天，发现了一个问题：大家把主版本号的升级看得太重要。</p>
+<p>文章主要传递一个观点：<strong>主版本号的升级不应该作为一种营销的噱头，只要有 breaking change（重大改变） 时就应该升级，没有例外。</strong></p>
+<p>下面聊些不太成熟的观点，在项目的实践中，特别是开源前端组件库，经常会面临一个选择困境：我们不得不对某个 API 做出 breaking change，然而这个  API 仅在少数场景下被使用到，如果严格遵循语义化版本，那我们将要升级主版本号，但是对于用户而言，会认为是整个组件库得到了升级，所以我认为这一点上还是需要根据实际情况做考虑。</p>
+<h2 id="有趣的链接"><a href="#有趣的链接" class="headerlink" title="有趣的链接"></a>有趣的链接</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://acapela.com/">Acapela</a>：一个收件箱搞定所有工作通知。</li>
+</ul>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://uiverse.io/switches">uiverse.io</a>：一些开源的 UI 元素，可以直接复制代码。</li>
+</ul>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://henryheffernan.com/">Henry Heffernan - Portfolio 2022</a>：一个惊艳的个人网站。</li>
+</ul>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://sideproject.guide/">Side Project 指南</a>：一本关于程序员开发 Side Project 指南的小册。</li>
+</ul>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://bionic-reading.com/">Bionic Reading</a>：这是一种英文阅读方式，它认为将每个单词的首字母变成大写后会使阅读效率提高，Reeder 也使用了这个服务。</li>
+</ul>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://ooooooooooooooooooooooo.ooo/">ooooooooooooooooooooooo.ooo | URL Lengthner</a>：输入任意 URL，将它转换为全是 oooo。</li>
+</ul>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://psychology-tools.com/">心理学工具</a>：一个经过学术验证的心理评估工具，如果这段时间感到焦虑、压力大的话可以简单做下测试。</li>
+</ul>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://browser.engineering/index.html">Web Browser Engineering</a>：一本教你使用 1000 行的 Python 代码构建一个基本但完整的Web浏览器的书。</li>
+</ul>
+</div>
+  <hr class="copy-line" />
+  <div class="post-copyright">
+    <div class="copy-author">
+      <span>作者 :</span>
+      <span
+        >4Ark</span
+      >
+    </div>
+    <div class="copy-url">
+      <span>地址 :</span>
+      <a href="https://4ark.me/post/weekly-13.html">https://4ark.me/post/weekly-13.html</a>
+    </div>
+    <div class="copy-origin">
+      <span>来源 :</span>
+      <a href="https://4ark.me">https://4ark.me</a>
+    </div>
+    <div class="copy-license">著作权归作者所有，转载请联系作者获得授权。</div>
+  </div>
+</article>
+
+<div class="blog-post-comments">
+  <div id="load-disqus">
+    <p onclick="loadDisqus()" style="cursor: pointer; text-align: center">
+      🥳&nbsp;加载 Disqus 评论
+    </p>
+  </div>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments.</noscript>
+  </div>
+</div>
+ 
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Writing</a></li>
+         
+          <li><a href="/weekly">Weekly</a></li>
+         
+          <li><a href="/tags">Tags</a></li>
+         
+          <li><a href="/search">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%91%A8%E8%BD%AE%E5%AD%90"><span class="toc-number">1.</span> <span class="toc-text">本周轮子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%91%A8%E8%A7%81%E9%97%BB"><span class="toc-number">2.</span> <span class="toc-text">本周见闻</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#AI-%E7%94%BB%E7%94%BB"><span class="toc-number">2.1.</span> <span class="toc-text">AI 画画</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90%E5%9B%BE%E7%89%87"><span class="toc-number">2.2.</span> <span class="toc-text">文本生成图片</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Edge-%E7%9A%84-AI-%E5%9B%BE%E5%83%8F%E5%A2%9E%E5%BC%BA%E5%8A%9F%E8%83%BD"><span class="toc-number">2.3.</span> <span class="toc-text">Edge 的 AI 图像增强功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%92%E5%90%8D%E9%A1%B6%E6%9B%BF%E7%BB%BC%E5%90%88%E7%97%87"><span class="toc-number">2.4.</span> <span class="toc-text">冒名顶替综合症</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B-tips"><span class="toc-number">3.</span> <span class="toc-text">一些 tips</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B2%A1%E6%9C%89-Docker-Desktop-%E7%9A%84%E6%83%85%E5%86%B5%E4%B8%8B%E8%BF%90%E8%A1%8C-Docker"><span class="toc-number">3.1.</span> <span class="toc-text">没有 Docker Desktop 的情况下运行 Docker</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E4%BA%AB%E6%96%87%E7%AB%A0"><span class="toc-number">4.</span> <span class="toc-text">分享文章</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E7%89%88%E6%9C%AC%E5%8F%B7%E4%B8%8D%E6%98%AF%E7%A5%9E%E5%9C%A3%E7%9A%84"><span class="toc-number">4.1.</span> <span class="toc-text">主要版本号不是神圣的</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%89%E8%B6%A3%E7%9A%84%E9%93%BE%E6%8E%A5"><span class="toc-number">5.</span> <span class="toc-text">有趣的链接</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/weekly-13.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/weekly-13.html&text=周刊第13期：一些图像 AI 模型、冒名顶替综合症"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/weekly-13.html&title=周刊第13期：一些图像 AI 模型、冒名顶替综合症"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/weekly-13.html&is_video=false&description=周刊第13期：一些图像 AI 模型、冒名顶替综合症"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=周刊第13期：一些图像 AI 模型、冒名顶替综合症&body=Check out this article: https://4ark.me/post/weekly-13.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/weekly-13.html&title=周刊第13期：一些图像 AI 模型、冒名顶替综合症"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/weekly-13.html&title=周刊第13期：一些图像 AI 模型、冒名顶替综合症"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/weekly-13.html&title=周刊第13期：一些图像 AI 模型、冒名顶替综合症"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/weekly-13.html&title=周刊第13期：一些图像 AI 模型、冒名顶替综合症"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/weekly-13.html&name=周刊第13期：一些图像 AI 模型、冒名顶替综合症&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/weekly-13.html&t=周刊第13期：一些图像 AI 模型、冒名顶替综合症"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="dark-mobile" class="icon"><i class="fa fa-sun" id="dark-btn" aria-hidden="true"></i> Switch</a>
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    4Ark
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-190615898-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-190615898-1');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<script type="text/javascript">
+  function loadDisqus() {
+    var disqus_shortname = 'https-4ark-me'
+
+    ;(function () {
+      var dsq = document.createElement('script')
+      dsq.type = 'text/javascript'
+      dsq.async = true
+      dsq.src =
+        '//' +
+        disqus_shortname +
+        '.disqus.com/embed.js'
+      ;(
+        document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]
+      ).appendChild(dsq)
+    })()
+
+    $('#load-disqus').hide()
+  }
+</script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="本周轮子以前看过一个小册子 《一天学习一个 npm 轮子，十天后变成轮子哥 》，觉得这种「首先实现一个最 Low 的解决方案，然后慢慢优化，进而推导出最终的源码」的学习思路非常不错，所以我也决定从现在开始，每周都学习造一个 npm 轮子。 当然前期只要专注于那些日常使用、相对简单的 npm 包，毕竟能力有限，太复杂的包就很难可以讲透。 这是本周的轮子：《每周轮子之 only-allow：统一规范团">
+<meta property="og:type" content="article">
+<meta property="og:title" content="周刊第12期：每周轮子计划、程序员应该如何写博客">
+<meta property="og:url" content="https://4ark.me/post/weekly-12.html">
+<meta property="og:site_name" content="4Ark × Blog">
+<meta property="og:description" content="本周轮子以前看过一个小册子 《一天学习一个 npm 轮子，十天后变成轮子哥 》，觉得这种「首先实现一个最 Low 的解决方案，然后慢慢优化，进而推导出最终的源码」的学习思路非常不错，所以我也决定从现在开始，每周都学习造一个 npm 轮子。 当然前期只要专注于那些日常使用、相对简单的 npm 包，毕竟能力有限，太复杂的包就很难可以讲透。 这是本周的轮子：《每周轮子之 only-allow：统一规范团">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-05-16T00:00:00.000Z">
+<meta property="article:modified_time" content="2024-02-06T18:11:56.000Z">
+<meta property="article:author" content="4Ark">
+<meta property="article:tag" content="weekly">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>周刊第12期：每周轮子计划、程序员应该如何写博客</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script>localStorage.getItem("dark_mode")==="dark"&&document.write(`<link rel="stylesheet" href="${location.origin}/css/dark.css">`)</script>
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+    <meta name="google-site-verification" content="DwDg4EuywHWNZUkTC7sG0WGv_UQekM4uRtOoaGuDJHc" />
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="4Ark × Blog" type="application/atom+xml">
+<link rel="alternate" href="/rss.xml" title="4Ark × Blog" type="application/rss+xml">
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/post/weekly-npm-packages-02.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/post/weekly-npm-packages-01.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon"><i class="fa fa-moon" id="dark-btn" aria-hidden="true" onmouseover="$('#i-dark').toggle()" onmouseout="$('#i-dark').toggle()"></i></a></li>
+        <li><a class="icon" target="_blank" rel="noopener" href="https://4ark.me/atom.xml" aria-label="rss"><i class="fas fa-rss"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-dark" class="info" style="display: none;">Switch mode</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/weekly-12.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/weekly-12.html&text=周刊第12期：每周轮子计划、程序员应该如何写博客"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/weekly-12.html&title=周刊第12期：每周轮子计划、程序员应该如何写博客"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/weekly-12.html&is_video=false&description=周刊第12期：每周轮子计划、程序员应该如何写博客"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=周刊第12期：每周轮子计划、程序员应该如何写博客&body=Check out this article: https://4ark.me/post/weekly-12.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/weekly-12.html&title=周刊第12期：每周轮子计划、程序员应该如何写博客"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/weekly-12.html&title=周刊第12期：每周轮子计划、程序员应该如何写博客"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/weekly-12.html&title=周刊第12期：每周轮子计划、程序员应该如何写博客"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/weekly-12.html&title=周刊第12期：每周轮子计划、程序员应该如何写博客"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/weekly-12.html&name=周刊第12期：每周轮子计划、程序员应该如何写博客&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/weekly-12.html&t=周刊第12期：每周轮子计划、程序员应该如何写博客"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%91%A8%E8%BD%AE%E5%AD%90"><span class="toc-number">1.</span> <span class="toc-text">本周轮子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%91%A8%E8%A7%81%E9%97%BB"><span class="toc-number">2.</span> <span class="toc-text">本周见闻</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BA%94%E8%AF%A5%E6%80%8E%E4%B9%88%E5%86%99%E5%8D%9A%E5%AE%A2%EF%BC%9F"><span class="toc-number">2.1.</span> <span class="toc-text">程序员应该怎么写博客？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B-tips"><span class="toc-number">3.</span> <span class="toc-text">一些 tips</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#QOTD-%E5%8D%8F%E8%AE%AE"><span class="toc-number">3.1.</span> <span class="toc-text">QOTD 协议</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E4%BA%AB%E6%96%87%E7%AB%A0"><span class="toc-number">4.</span> <span class="toc-text">分享文章</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Bash-Pitfalls-%E7%BC%96%E7%A8%8B%E6%98%93%E7%8A%AF%E7%9A%84%E9%94%99%E8%AF%AF"><span class="toc-number">4.1.</span> <span class="toc-text">Bash Pitfalls: 编程易犯的错误</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker-%E9%95%9C%E5%83%8F%E6%9E%84%E5%BB%BA%E7%9A%84%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7"><span class="toc-number">4.2.</span> <span class="toc-text">Docker 镜像构建的一些技巧</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JavaScript-%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BB%84%E5%90%88%EF%BC%9A%E6%9C%89%E4%BB%80%E4%B9%88%E5%A4%A7%E4%B8%8D%E4%BA%86%E7%9A%84%EF%BC%9F"><span class="toc-number">4.3.</span> <span class="toc-text">JavaScript 函数式组合：有什么大不了的？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%AD%E5%9B%BD%E9%BB%91%E5%AE%A2%E5%85%B3%E7%B3%BB%E5%9B%BE"><span class="toc-number">4.4.</span> <span class="toc-text">中国黑客关系图</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%89%E8%B6%A3%E7%9A%84%E9%93%BE%E6%8E%A5"><span class="toc-number">5.</span> <span class="toc-text">有趣的链接</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        周刊第12期：每周轮子计划、程序员应该如何写博客
+    </h1>
+
+
+
+    <div class="meta">
+      <span
+        class="author"
+        itemprop="author"
+        itemscope
+        itemtype="http://schema.org/Person"
+      >
+        <span itemprop="name"
+          >4Ark</span
+        >
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-05-16T00:00:00.000Z" itemprop="datePublished">2022-05-16</time>
+        
+      
+    </div>
+
+ 
+      
+        <div class="article-tag">
+            <i class="fa fa-calendar-week"></i>
+            <a href="/weekly">Weekly</a>
+        </div>
+      
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody"><h2 id="本周轮子"><a href="#本周轮子" class="headerlink" title="本周轮子"></a>本周轮子</h2><p>以前看过一个小册子 <a target="_blank" rel="noopener" href="https://github.yanhaixiang.com/make-wheels/">《一天学习一个 npm 轮子，十天后变成轮子哥 》</a>，觉得这种「首先实现一个最 Low 的解决方案，然后慢慢优化，进而推导出最终的源码」的学习思路非常不错，所以我也决定从现在开始，每周都学习造一个 npm 轮子。</p>
+<p>当然前期只要专注于那些日常使用、相对简单的 npm 包，毕竟能力有限，太复杂的包就很难可以讲透。</p>
+<p>这是本周的轮子：<a href="/post/weekly-npm-packages-01.html">《每周轮子之 only-allow：统一规范团队包管理器》</a>。</p>
+<h2 id="本周见闻"><a href="#本周见闻" class="headerlink" title="本周见闻"></a>本周见闻</h2><h3 id="程序员应该怎么写博客？"><a href="#程序员应该怎么写博客？" class="headerlink" title="程序员应该怎么写博客？"></a><a target="_blank" rel="noopener" href="https://www.v2ex.com/t/851549">程序员应该怎么写博客？</a></h3><p>这是在 V2EX 上看到的一个帖子，OP 是之前周刊有提到过的 <a target="_blank" rel="noopener" href="https://hutusi.com/">胡涂说</a> 的博主，在这个帖子中，我收获不少有用的建议，也意外地发现到几个不错的博客。我也想借此机会聊一聊关于这个话题的一些想法，也算是当作我个人写作的总结与反思。</p>
+<p>回顾本站的第一篇文章<a href="/post/d69467be.html">《锐捷无线AP学习笔记 - 入门篇》</a>，写于 2018 年，到现在也就第 4 个年头，相比有些人动不动建站十几年，自然算得上年轻，但我认为我在写博客这件事上有过不少的挣扎与坚持，总结起来一共经历了以下几个阶段，但其实以下阶段并不是层层递进式的，它们有可能会同时进行：</p>
+<ol>
+<li><strong>记录学习笔记</strong>，这个阶段的产出主要是一些较为基础的学习笔记，原创度也较低，属于网上一搜一大把那种，对他人的帮助接近于无，还记得当时把一篇文章分享到技术社区上，被某些暴躁的老哥说我误人子弟，更有甚者直接开怼让我干脆把整本书都抄过来，当时有点气馁，但也承认自己的确是很菜，也曾自我怀疑过是否应该继续往中文社区「倒垃圾」，但最后还是坚持下来了。据我了解很多程序员刚开始写博客都是写这类学习笔记，也有很多人仅仅停留在这个阶段，甚至放弃，实在是太可惜了。</li>
+<li><strong>资源分享类</strong>，写技术文章很难写，有深度的技术文更是难上加上，所以曾有一段时间我特别喜欢写「资源分享」类的文章，譬如<a href="/posts/share-site.html">《分享一些好用的网站》</a>、<a href="/post/549a6198.html">《分享一些好用的 Chrome 扩展》</a>，这类文章写起来压根不费多少时间和经历，你只需要把平时经常使用的网站、工具分享一一罗列出来，，就能在社区上收获不少的点赞收藏，这也是为什么 GitHub 上简体中文项目的 Markdown 项目如此之多的原因，但是我后来意识到，写这类文章对我个人能力的提升并没有多大帮助，如果你知道一些非常有用的工具，你确实应该将它分享出去给更多人，这是非常有价值的，但我的建议是千万不要满足于只写这类文章。</li>
+<li><strong>较有深度的技术文章</strong>，随着工作时间的增长，在技术上有了一些的积累，我开始尝试写一些较有深度的技术文章，包括一些经典面试题讲解、源码阅读、某个知识点深入剖析、一些工具类库的踩坑记录等，写这类文章是最痛苦的，因为你会发现在写的过程突然在某个地方你自己也无法讲清楚，说明你并没有理解透彻，于是只能逼迫自己一边查阅文档、一边根据自己的理解用自己的话把它讲透，这过程中的收获自然也是非常大，对其他人的帮助也不小。</li>
+<li><strong>与技术无关的</strong>，人都是有感情的动物，除了技术以来，总需要聊点其他的东西，有可能是生活上的一些感悟，也有可能是你针对某个事情的看法，这类文章，它既有可能会引起读者的共鸣，也有可能会因为与读者的看法不同而遭到反感，且很多时候，自己也不确定这些看法到底是不是正确的，所以会害怕被别人看到自己不成熟的一面，我也曾有过这方面的顾虑，不敢在博客上公开谈论太多与技术无关的事情，但后来发现是我多虑了，因为这类文章，往往最终的读者只有你自己，因为读者看你的文章，他也只会关心对他有帮助的地方，而且即便你当时所记录下来的自己可能是不成熟的，这也是你成长的印记，比如我常常会在迷茫的时候翻看起之前刚踏入职场时写下的<a href="/posts/why-i-became-a-programmer.html">《我为什么会成为一名程序员》</a>，告诉自己不要忘了为什么会走上技术这条路，所以不要害怕写技术以外的东西，这些稚嫩的文字很有可能会在多年以后一直激励着你。</li>
+</ol>
+<p>可能还有些同学会认为自己文笔不好、词穷，写不了这么多文字，其实也是多虑了，我坦白我的文笔其实很差，不能像别人那样出口成章、行云流水，但其实你只要把意思表达清楚、并且注入你的感情即可，总之多写、坚持写。</p>
+<h2 id="一些-tips"><a href="#一些-tips" class="headerlink" title="一些 tips"></a>一些 tips</h2><h3 id="QOTD-协议"><a href="#QOTD-协议" class="headerlink" title="QOTD 协议"></a><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/QOTD">QOTD 协议</a></h3><p>QOTD 的全程是 <strong>Quote of the Day</strong>，翻译过来就是「每日报价」，在 <a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/html/rfc865">RFC 865</a> 中定义，监听的端口是 17，这是一个非常少用到的协议，目前仅剩的公共 QOTD 服务器只有几个：</p>
+<table>
+<thead>
+<tr>
+<th>服务器地址</th>
+<th>TCP 端口</th>
+<th>UDP 端口</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>djxmmx.net</td>
+<td>17</td>
+<td>17</td>
+</tr>
+<tr>
+<td>alpha.mike-r.com</td>
+<td>17</td>
+<td>17</td>
+</tr>
+<tr>
+<td>cygnus-x.net</td>
+<td>17</td>
+<td>17</td>
+</tr>
+</tbody></table>
+<p>可以用它做什么呢？</p>
+<p>比如<a target="_blank" rel="noopener" href="https://github.com/daya0576/daya0576">这里</a>就有一个在 GitHub Action 上利用该协议定时获取 djxmmx.net 服务器上的名人名言，将它更新到 Github Profile 中。</p>
+<h2 id="分享文章"><a href="#分享文章" class="headerlink" title="分享文章"></a>分享文章</h2><h3 id="Bash-Pitfalls-编程易犯的错误"><a href="#Bash-Pitfalls-编程易犯的错误" class="headerlink" title="Bash Pitfalls: 编程易犯的错误"></a><a target="_blank" rel="noopener" href="https://kodango.com/bash-pitfalls-part-1">Bash Pitfalls: 编程易犯的错误</a></h3><p>本文是<a target="_blank" rel="noopener" href="http://mywiki.wooledge.org/BashPitfalls">《Bash Pitfalls》</a>的中文翻译版，介绍了40多条日常 Bash 编程中，老手和新手都容易忽略的错误编程习惯。作者会在每条给出错误的范例上，详细分析与解释错误的原因，同时给出正确的改写建议。</p>
+<h3 id="Docker-镜像构建的一些技巧"><a href="#Docker-镜像构建的一些技巧" class="headerlink" title="Docker 镜像构建的一些技巧"></a><a target="_blank" rel="noopener" href="https://www.kawabangga.com/posts/4676">Docker 镜像构建的一些技巧</a></h3><p>本文分享几个 Docker 镜像构建的一些技巧，可以帮助你提高 Docker 镜像构建的效率，对于老手来说已经是非常基本的事情了，但是对于新手还是很有帮助的。</p>
+<p>原文一共举例了 4 个技巧，在此我只详细讲解第一个技巧，其余的麻烦移步<a target="_blank" rel="noopener" href="https://www.kawabangga.com/posts/4676">原文</a>查看。</p>
+<ol>
+<li>删除缓存</li>
+</ol>
+<p>使用 apt、pip 等包管理器下载包时一般都会产生缓存，以便后续下载时使用，但是在 Docker Image 中，我们不需要这些缓存，所以一般都会在下载后，手动清除缓存：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">RUN dnf install -y --setopt=tsflags=nodocs \</span><br><span class="line">    httpd vim &amp;&amp; \</span><br><span class="line">    systemctl enable httpd &amp;&amp; \</span><br><span class="line">    dnf clean all</span><br></pre></td></tr></table></figure>
+
+<p>要切记千万不要像这样分开写，因为 Dockerfile 里面的每一个 <code>RUN</code> 都会创建一层新的 layer，这样其实是创建了 3 层 layer，前 2 层带来了缓存，第三层删除了缓存：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">FROM fedora</span><br><span class="line">RUN dnf install -y mariadb</span><br><span class="line">RUN dnf install -y wordpress</span><br><span class="line">RUN dnf clean all</span><br></pre></td></tr></table></figure>
+
+<p>但其实 Docker 在 <a target="_blank" rel="noopener" href="https://www.docker.com/blog/whats-new-in-docker-1-13/">v1.13</a> 中引入了 <em>–squash</em> 参数，可以在完成构建后将所有的 layers <strong>压缩成一个 layer</strong>，也就是说，最终构建出来的 Docker image 只有一层，所以，如上在多个 <code>RUN</code> 中写 clean 命令，其实也可以。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build --squash</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>改动不频繁的内容往前放</li>
+<li>构建和运行 Image 分离</li>
+<li>检查构建产物</li>
+</ol>
+<h3 id="JavaScript-函数式组合：有什么大不了的？"><a href="#JavaScript-函数式组合：有什么大不了的？" class="headerlink" title="JavaScript 函数式组合：有什么大不了的？"></a><a target="_blank" rel="noopener" href="https://jrsinclair.com/articles/2022/javascript-function-composition-whats-the-big-deal/">JavaScript 函数式组合：有什么大不了的？</a></h3><p>这是我看到过所有写 JavaScript 函数式组合里面最通俗易懂的一篇文章，作者从头开始一步步地实现 compose、pipe、flow 等方法，并且让对函数式组合了解不多的同学知道，函数式组合的好处在哪？</p>
+<p>举个例子，假如我们使用 Array 的方法是这样写的：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> comments = commentStrs</span><br><span class="line">    .filter(noNazi)</span><br><span class="line">    .slice(<span class="number">0</span>, <span class="number">10</span>)</span><br><span class="line">    .map(emphasize)</span><br><span class="line">    .map(itemize)</span><br><span class="line">    .join(<span class="string">&#x27;\n&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>而改用函数式组合的方式，则是这样：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> comments = pipe(commentStrs,</span><br><span class="line">    filter(noNazi),</span><br><span class="line">    take(<span class="number">10</span>),</span><br><span class="line">    map(emphasize),</span><br><span class="line">    map(itemize),</span><br><span class="line">    join(<span class="string">&#x27;\n&#x27;</span>),</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>这样写的好处在哪呢？</p>
+<p>首先，我们可以增加任何 Array 原型上没有的自定义方法：</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">const comments = pipe(commentStrs,</span><br><span class="line">    filter(noNazi),</span><br><span class="line">    take(10),</span><br><span class="line">    map(emphasize),</span><br><span class="line">    map(itemize),</span><br><span class="line">    join(&#x27;\n&#x27;),</span><br><span class="line"><span class="addition">+   chaoticListify,</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>另外，我们可以自由地实现像 map 这些方法，比如用生成器的方式改成它，而无需改变调用它们的方式：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> map = <span class="function"><span class="params">f</span> =&gt;</span> <span class="function"><span class="keyword">function</span>*(<span class="params">iterable</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> x <span class="keyword">of</span> iterable) <span class="keyword">yield</span> f(x);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> join = <span class="function"><span class="params">s</span> =&gt;</span> <span class="function"><span class="params">iterable</span> =&gt;</span> [...iterable].join(s);</span><br></pre></td></tr></table></figure>
+
+<p>综上所述，使用函数式组合的方式编写代码可以让我们写出更加简洁、优雅的代码，更重要的是它给我们提供了另一种思考的方式。</p>
+<h3 id="中国黑客关系图"><a href="#中国黑客关系图" class="headerlink" title="中国黑客关系图"></a><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/gowGNyJ_MaP6meQDQlSSZw">中国黑客关系图</a></h3><p>本文是新书《沸腾信安志》的一篇预热文章，主要讲述了中国上个世纪末到本世纪初的传奇黑客们的故事，想要了解有哪些著名的黑客，以及他们今何在的同学可以看看。</p>
+<blockquote>
+<p>网络安全行业和武侠江湖是很像的，有门派组织，有江湖名号，有武林大会，有绝计和宝物，而且都是大侠少而恶盗多，甚至连朝廷的管制方式都很相似。</p>
+<p>这种氛围里，竟然出了这样一群奇人。</p>
+<p>他们在最艰苦的岁月里，只要把道德底线稍微降低一点，就可以衣食无忧，然而他们没有；</p>
+<p>他们掌握着最高超的技术，却拿着流量行业一半甚至更低的薪水，只要稍微做点灰产，就能摆脱困境，然而他们没有；</p>
+<p>他们忍受着社会的质疑，承担着行业流氓带来的负面，却仍然坚持着自己热爱的技术创新。</p>
+<p>直到现在，他们终于等到了自己的时代。</p>
+</blockquote>
+<h2 id="有趣的链接"><a href="#有趣的链接" class="headerlink" title="有趣的链接"></a>有趣的链接</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/zonemeen/musicn">zonemeen/musicn</a>：🎵 一个下载高质量音乐的命令行工具</li>
+</ul>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.similarweb.com/zh/">Similarweb</a>：查看并分析任何网站流量，站长必备工具</li>
+</ul>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://codeit.codes/">Codeit</a>：手机连接 Git 查看代码的神器 APP</li>
+</ul>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.queue.so/">Queue</a>：使用 Notion 发布 Twitter 的工具</li>
+</ul>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://coverview.vercel.app/">Coverview</a>：生成文章题图的工具</li>
+</ul>
+</div>
+  <hr class="copy-line" />
+  <div class="post-copyright">
+    <div class="copy-author">
+      <span>作者 :</span>
+      <span
+        >4Ark</span
+      >
+    </div>
+    <div class="copy-url">
+      <span>地址 :</span>
+      <a href="https://4ark.me/post/weekly-12.html">https://4ark.me/post/weekly-12.html</a>
+    </div>
+    <div class="copy-origin">
+      <span>来源 :</span>
+      <a href="https://4ark.me">https://4ark.me</a>
+    </div>
+    <div class="copy-license">著作权归作者所有，转载请联系作者获得授权。</div>
+  </div>
+</article>
+
+<div class="blog-post-comments">
+  <div id="load-disqus">
+    <p onclick="loadDisqus()" style="cursor: pointer; text-align: center">
+      🥳&nbsp;加载 Disqus 评论
+    </p>
+  </div>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments.</noscript>
+  </div>
+</div>
+ 
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Writing</a></li>
+         
+          <li><a href="/weekly">Weekly</a></li>
+         
+          <li><a href="/tags">Tags</a></li>
+         
+          <li><a href="/search">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%91%A8%E8%BD%AE%E5%AD%90"><span class="toc-number">1.</span> <span class="toc-text">本周轮子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%91%A8%E8%A7%81%E9%97%BB"><span class="toc-number">2.</span> <span class="toc-text">本周见闻</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BA%94%E8%AF%A5%E6%80%8E%E4%B9%88%E5%86%99%E5%8D%9A%E5%AE%A2%EF%BC%9F"><span class="toc-number">2.1.</span> <span class="toc-text">程序员应该怎么写博客？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B-tips"><span class="toc-number">3.</span> <span class="toc-text">一些 tips</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#QOTD-%E5%8D%8F%E8%AE%AE"><span class="toc-number">3.1.</span> <span class="toc-text">QOTD 协议</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E4%BA%AB%E6%96%87%E7%AB%A0"><span class="toc-number">4.</span> <span class="toc-text">分享文章</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Bash-Pitfalls-%E7%BC%96%E7%A8%8B%E6%98%93%E7%8A%AF%E7%9A%84%E9%94%99%E8%AF%AF"><span class="toc-number">4.1.</span> <span class="toc-text">Bash Pitfalls: 编程易犯的错误</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Docker-%E9%95%9C%E5%83%8F%E6%9E%84%E5%BB%BA%E7%9A%84%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7"><span class="toc-number">4.2.</span> <span class="toc-text">Docker 镜像构建的一些技巧</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JavaScript-%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BB%84%E5%90%88%EF%BC%9A%E6%9C%89%E4%BB%80%E4%B9%88%E5%A4%A7%E4%B8%8D%E4%BA%86%E7%9A%84%EF%BC%9F"><span class="toc-number">4.3.</span> <span class="toc-text">JavaScript 函数式组合：有什么大不了的？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%AD%E5%9B%BD%E9%BB%91%E5%AE%A2%E5%85%B3%E7%B3%BB%E5%9B%BE"><span class="toc-number">4.4.</span> <span class="toc-text">中国黑客关系图</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%89%E8%B6%A3%E7%9A%84%E9%93%BE%E6%8E%A5"><span class="toc-number">5.</span> <span class="toc-text">有趣的链接</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/weekly-12.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/weekly-12.html&text=周刊第12期：每周轮子计划、程序员应该如何写博客"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/weekly-12.html&title=周刊第12期：每周轮子计划、程序员应该如何写博客"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/weekly-12.html&is_video=false&description=周刊第12期：每周轮子计划、程序员应该如何写博客"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=周刊第12期：每周轮子计划、程序员应该如何写博客&body=Check out this article: https://4ark.me/post/weekly-12.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/weekly-12.html&title=周刊第12期：每周轮子计划、程序员应该如何写博客"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/weekly-12.html&title=周刊第12期：每周轮子计划、程序员应该如何写博客"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/weekly-12.html&title=周刊第12期：每周轮子计划、程序员应该如何写博客"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/weekly-12.html&title=周刊第12期：每周轮子计划、程序员应该如何写博客"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/weekly-12.html&name=周刊第12期：每周轮子计划、程序员应该如何写博客&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/weekly-12.html&t=周刊第12期：每周轮子计划、程序员应该如何写博客"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="dark-mobile" class="icon"><i class="fa fa-sun" id="dark-btn" aria-hidden="true"></i> Switch</a>
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    4Ark
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-190615898-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-190615898-1');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<script type="text/javascript">
+  function loadDisqus() {
+    var disqus_shortname = 'https-4ark-me'
+
+    ;(function () {
+      var dsq = document.createElement('script')
+      dsq.type = 'text/javascript'
+      dsq.async = true
+      dsq.src =
+        '//' +
+        disqus_shortname +
+        '.disqus.com/embed.js'
+      ;(
+        document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]
+      ).appendChild(dsq)
+    })()
+
+    $('#load-disqus').hide()
+  }
+</script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

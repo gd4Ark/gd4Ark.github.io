@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="提高效率设置别名Hg 本身支持简写，如：  hg status &#x3D;&gt; hg st hg shelve &#x3D;&gt; hg she hg unshelve &#x3D;&gt; hg unshe hg update &#x3D;&gt; hg up hg commit &#x3D;&gt; hg ci hg diff &#x3D;&gt; hg d  也可以通过下面几种方式来自定义想要的别名。 方式一：hg alias12345678">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hg tips">
+<meta property="og:url" content="https://4ark.me/post/hg-tips.html">
+<meta property="og:site_name" content="4Ark × Blog">
+<meta property="og:description" content="提高效率设置别名Hg 本身支持简写，如：  hg status &#x3D;&gt; hg st hg shelve &#x3D;&gt; hg she hg unshelve &#x3D;&gt; hg unshe hg update &#x3D;&gt; hg up hg commit &#x3D;&gt; hg ci hg diff &#x3D;&gt; hg d  也可以通过下面几种方式来自定义想要的别名。 方式一：hg alias12345678">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-03-02T00:00:00.000Z">
+<meta property="article:modified_time" content="2024-02-06T18:11:56.000Z">
+<meta property="article:author" content="4Ark">
+<meta property="article:tag" content="vcs">
+<meta property="article:tag" content="hg">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Hg tips</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script>localStorage.getItem("dark_mode")==="dark"&&document.write(`<link rel="stylesheet" href="${location.origin}/css/dark.css">`)</script>
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+    <meta name="google-site-verification" content="DwDg4EuywHWNZUkTC7sG0WGv_UQekM4uRtOoaGuDJHc" />
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="4Ark × Blog" type="application/atom+xml">
+<link rel="alternate" href="/rss.xml" title="4Ark × Blog" type="application/rss+xml">
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/post/git-tips.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/post/weekly-02.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon"><i class="fa fa-moon" id="dark-btn" aria-hidden="true" onmouseover="$('#i-dark').toggle()" onmouseout="$('#i-dark').toggle()"></i></a></li>
+        <li><a class="icon" target="_blank" rel="noopener" href="https://4ark.me/atom.xml" aria-label="rss"><i class="fas fa-rss"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-dark" class="info" style="display: none;">Switch mode</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/hg-tips.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/hg-tips.html&text=Hg tips"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/hg-tips.html&title=Hg tips"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/hg-tips.html&is_video=false&description=Hg tips"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Hg tips&body=Check out this article: https://4ark.me/post/hg-tips.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/hg-tips.html&title=Hg tips"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/hg-tips.html&title=Hg tips"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/hg-tips.html&title=Hg tips"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/hg-tips.html&title=Hg tips"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/hg-tips.html&name=Hg tips&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/hg-tips.html&t=Hg tips"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E9%AB%98%E6%95%88%E7%8E%87"><span class="toc-number">1.</span> <span class="toc-text">提高效率</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E5%88%AB%E5%90%8D"><span class="toc-number">1.1.</span> <span class="toc-text">设置别名</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E5%BC%8F%E4%B8%80%EF%BC%9Ahg-alias"><span class="toc-number">1.1.1.</span> <span class="toc-text">方式一：hg alias</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E5%BC%8F%E4%BA%8C%EF%BC%9Abash-alias"><span class="toc-number">1.1.2.</span> <span class="toc-text">方式二：bash alias</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E5%BC%8F%E4%B8%89%EF%BC%9Abash-function"><span class="toc-number">1.1.3.</span> <span class="toc-text">方式三：bash function</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E5%BC%8F%E5%9B%9B%EF%BC%9Abash-function-hg-alias"><span class="toc-number">1.1.4.</span> <span class="toc-text">方式四：bash function + hg alias</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%8D%E5%88%B6%E5%85%B6%E5%AE%83%E5%88%86%E6%94%AF%E7%9A%84-commit"><span class="toc-number">1.2.</span> <span class="toc-text">复制其它分支的 commit</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9B%B4%E5%A4%9A%E4%BE%8B%E5%AD%90"><span class="toc-number">1.2.1.</span> <span class="toc-text">更多例子</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8C%E4%B8%80%E4%B8%AA%E4%BB%93%E5%BA%93%E9%93%BE%E6%8E%A5%E5%88%B0%E5%A4%9A%E4%B8%AA%E7%9B%AE%E5%BD%95%EF%BC%88worktree%EF%BC%89"><span class="toc-number">1.3.</span> <span class="toc-text">同一个仓库链接到多个目录（worktree）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E5%8E%86%E5%8F%B2"><span class="toc-number">2.</span> <span class="toc-text">操作历史</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%92%A4%E9%94%80%E5%89%8D%E4%B8%80%E6%AC%A1%E6%8F%90%E4%BA%A4"><span class="toc-number">2.1.</span> <span class="toc-text">撤销前一次提交</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9E%E6%BB%9A%E6%9F%90%E4%B8%AA-commit"><span class="toc-number">2.2.</span> <span class="toc-text">回滚某个 commit</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%92%A4%E9%94%80%E6%9F%90%E4%B8%AA-commit-%E5%8F%8A%E5%85%B6%E5%90%8E%E4%BB%A3"><span class="toc-number">2.3.</span> <span class="toc-text">撤销某个 commit 及其后代</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E5%89%8D%E4%B8%80%E6%AC%A1%E6%8F%90%E4%BA%A4"><span class="toc-number">2.4.</span> <span class="toc-text">修改前一次提交</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E5%89%8D-N-%E6%AC%A1%E6%8F%90%E4%BA%A4"><span class="toc-number">2.5.</span> <span class="toc-text">修改前 N 次提交</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E6%89%BE%E5%8E%86%E5%8F%B2"><span class="toc-number">3.</span> <span class="toc-text">查找历史</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B-commit-%E7%9A%84%E4%BF%A1%E6%81%AF"><span class="toc-number">3.1.</span> <span class="toc-text">查看 commit 的信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%9F%90%E4%B8%AA%E6%96%87%E4%BB%B6%E6%AF%8F%E4%B8%80%E8%A1%8C%E7%9A%84%E6%9C%80%E5%90%8E%E6%94%B9%E5%8A%A8%E8%80%85"><span class="toc-number">3.2.</span> <span class="toc-text">查看某个文件每一行的最后改动者</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E5%88%86%E6%B3%95%E5%AE%9A%E4%BD%8D%E5%87%BA%E9%97%AE%E9%A2%98%E7%9A%84-commit"><span class="toc-number">3.3.</span> <span class="toc-text">二分法定位出问题的 commit</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90"><span class="toc-number">4.</span> <span class="toc-text">工具推荐</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#diff-tool-%E5%B7%AE%E5%BC%82%E5%AF%B9%E6%AF%94%E5%B7%A5%E5%85%B7"><span class="toc-number">4.1.</span> <span class="toc-text">diff tool 差异对比工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#vscode-hg"><span class="toc-number">4.2.</span> <span class="toc-text">vscode-hg</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Hg tips
+    </h1>
+
+
+
+    <div class="meta">
+      <span
+        class="author"
+        itemprop="author"
+        itemscope
+        itemtype="http://schema.org/Person"
+      >
+        <span itemprop="name"
+          >4Ark</span
+        >
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-03-02T00:00:00.000Z" itemprop="datePublished">2022-03-02</time>
+        
+      
+    </div>
+
+ 
+      
+        
+ 
+        
+    <div class="article-tag">
+        <i class="fas fa-hashtag"></i>
+        <a class="tag-link-link" href="/tags/hg/" rel="tag">hg</a>, <a class="tag-link-link" href="/tags/vcs/" rel="tag">vcs</a>
+    </div>
+
+
+      
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody"><h2 id="提高效率"><a href="#提高效率" class="headerlink" title="提高效率"></a>提高效率</h2><h3 id="设置别名"><a href="#设置别名" class="headerlink" title="设置别名"></a>设置别名</h3><p>Hg 本身支持简写，如：</p>
+<ul>
+<li>hg status =&gt; hg st</li>
+<li>hg shelve =&gt; hg she</li>
+<li>hg unshelve =&gt; hg unshe</li>
+<li>hg update =&gt; hg up</li>
+<li>hg commit =&gt; hg ci</li>
+<li>hg diff =&gt; hg d</li>
+</ul>
+<p>也可以通过下面几种方式来自定义想要的别名。</p>
+<h4 id="方式一：hg-alias"><a href="#方式一：hg-alias" class="headerlink" title="方式一：hg alias"></a>方式一：hg alias</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&gt; vim ~/.hgrc</span><br><span class="line"></span><br><span class="line">[<span class="built_in">alias</span>]</span><br><span class="line">amend = commit --amend</span><br><span class="line">br = branch</span><br><span class="line">brs = branches</span><br><span class="line">wip = !<span class="variable">$HG</span> addremove &gt;/dev/null 2&gt;&amp;1 &amp;&amp; <span class="variable">$HG</span> ci -m <span class="string">&quot;--wip-- [skip ci]&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Using</span></span><br><span class="line">&gt; hg amend</span><br><span class="line">&gt; hg br</span><br><span class="line">&gt; hg brs</span><br><span class="line">&gt; hg wip</span><br></pre></td></tr></table></figure>
+
+<h4 id="方式二：bash-alias"><a href="#方式二：bash-alias" class="headerlink" title="方式二：bash alias"></a>方式二：bash alias</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt; vim ~/.bash_profile</span><br><span class="line"></span><br><span class="line"><span class="built_in">alias</span> hgst=<span class="string">&quot;hg status&quot;</span></span><br><span class="line"><span class="built_in">alias</span> hgd=<span class="string">&quot;hg diff&quot;</span></span><br><span class="line"><span class="built_in">alias</span> hga=<span class="string">&quot;hg add&quot;</span></span><br><span class="line"></span><br><span class="line">&gt; <span class="built_in">source</span> ~/.bash_profile</span><br><span class="line"></span><br><span class="line"><span class="comment"># Using</span></span><br><span class="line">&gt; hgst</span><br></pre></td></tr></table></figure>
+
+<h4 id="方式三：bash-function"><a href="#方式三：bash-function" class="headerlink" title="方式三：bash function"></a>方式三：bash function</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&gt; vim ~/.bash_profile</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">hgpl</span></span>() &#123;</span><br><span class="line">  hg pull --rebase</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&gt; <span class="built_in">source</span> ~/.bash_profile</span><br><span class="line"></span><br><span class="line"><span class="comment"># Using</span></span><br><span class="line">&gt; hgpl</span><br></pre></td></tr></table></figure>
+
+<h4 id="方式四：bash-function-hg-alias"><a href="#方式四：bash-function-hg-alias" class="headerlink" title="方式四：bash function + hg alias"></a>方式四：bash function + hg alias</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&gt; vim ~/.bash_profile</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">hgpl</span></span>() &#123;</span><br><span class="line">  hg pull --rebase</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&gt; vim ~/.hgrc</span><br><span class="line"></span><br><span class="line">[<span class="built_in">alias</span>]</span><br><span class="line">pl = !<span class="built_in">source</span> ~/.bash_profile &amp;&amp; hgpl</span><br><span class="line"></span><br><span class="line"><span class="comment"># Using</span></span><br><span class="line">&gt; hg pl</span><br></pre></td></tr></table></figure>
+
+<h3 id="复制其它分支的-commit"><a href="#复制其它分支的-commit" class="headerlink" title="复制其它分支的 commit"></a>复制其它分支的 commit</h3><p>假设我们有多个分支在并行开发，在 A 分支做了某些改动，希望把这些改动也应用到 B 分支。</p>
+<p>这时候可以用 <a target="_blank" rel="noopener" href="https://www.mercurial-scm.org/repo/hg/help/graft">graft</a> 命令将这个 commit 从别的分支复制到当前分支，类似于 Git  <a target="_blank" rel="noopener" href="https://git-scm.com/docs/git-cherry-pick">cherry-pick</a> 功能。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&gt; hg brs</span><br><span class="line">feature/v1                     6:f8528de0eb4c</span><br><span class="line">feature/v1.1                   5:288d0414598d</span><br><span class="line"></span><br><span class="line">&gt; hg <span class="built_in">log</span> -G --style compact</span><br><span class="line">@  6[tip]:1   f8528de0eb4c   2021-12-14 13:04 +0800   4Ark</span><br><span class="line">|    feat: feature-v1-04</span><br><span class="line">|</span><br><span class="line">| o  5   288d0414598d   2021-12-14 12:57 +0800   4Ark</span><br><span class="line">| |    feat: feature-v1.1-03</span><br><span class="line">| |</span><br><span class="line">| o  4   d72548bcd32b   2021-12-14 12:56 +0800   4Ark</span><br><span class="line">| |    feat: feature-v1.1-02</span><br><span class="line">| |</span><br><span class="line">| o  3   8719f541d5d8   2021-12-14 12:55 +0800   4Ark</span><br><span class="line">| |    feat: feature-v1.1-00</span><br><span class="line">| |</span><br><span class="line">| o  2   e7eb9420534e   2021-12-14 12:55 +0800   4Ark</span><br><span class="line">|/     feat: feature-v1.1-00</span><br><span class="line">|</span><br><span class="line">o  1   431a3844a58c   2021-12-14 12:54 +0800   4Ark</span><br><span class="line">|    feat: feature-v1-01</span><br><span class="line">|</span><br><span class="line">o  0   5d35d7d5baf8   2021-12-14 12:53 +0800   4Ark</span><br><span class="line">     feat: feature-v1</span><br></pre></td></tr></table></figure>
+
+<p>feature/v1.1 分支是基于 feature/v1 创建的，目前两个分支都分别提交了一些东西，我们希望将 feature/1.1 的最后一个提交（5:288d0414598d）复制到 feature/1 中：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; hg update feature/v1</span><br><span class="line">&gt; hg graft -r 5</span><br><span class="line"></span><br><span class="line">&gt; hg <span class="built_in">log</span> -r tip --style compact</span><br><span class="line">7[tip]   42cf5e6dfe1e   2021-12-14 12:57 +0800   4Ark</span><br><span class="line">  feat: feature-v1.1-03</span><br></pre></td></tr></table></figure>
+
+<h4 id="更多例子"><a href="#更多例子" class="headerlink" title="更多例子"></a>更多例子</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 复制单个并且编辑提交信息</span></span><br><span class="line">&gt; hg graft --edit 5</span><br><span class="line"></span><br><span class="line"><span class="comment"># 复制多个并且编辑提交信息</span></span><br><span class="line">&gt; hg graft --edit 2 3 4</span><br><span class="line"></span><br><span class="line"><span class="comment"># 连续复制多个</span></span><br><span class="line">&gt; hg graft -D <span class="string">&quot;2:5&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 连续复制多个，但有一个例外</span></span><br><span class="line">&gt; hg graft -D <span class="string">&quot;2::5 and not 3&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 连续复制多个并且编辑提交信息</span></span><br><span class="line">&gt; hg graft --edit <span class="string">&quot;2:5&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将整个分支作为一个提交复制过来，如果要编辑提交信息将 -r 改成 --edi</span></span><br><span class="line">&gt; hg graft -r feature/v1.1 --base <span class="string">&quot;ancestor(&#x27;feature/v1.1&#x27;,&#x27;feature/v1&#x27;)&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果在 graft 过程中有冲突，可以解决后使用 <code>hg graft --continue</code> 继续进行，或者使用 <code>hg graft --abort</code> 终止本次操作。</p>
+<h3 id="同一个仓库链接到多个目录（worktree）"><a href="#同一个仓库链接到多个目录（worktree）" class="headerlink" title="同一个仓库链接到多个目录（worktree）"></a>同一个仓库链接到多个目录（worktree）</h3><p>如果熟悉 git 的同学应该知道 git 有一个 <a target="_blank" rel="noopener" href="https://git-scm.com/docs/git-worktree">worktree</a> 命令，它可以将多个目录链接同一个仓库，并且可以在各自的目录下切换到不同的分支，特别适合以下场景：</p>
+<ol>
+<li>并行开发：在两个不同的分支上开发，不需要频繁回来地切换。</li>
+<li>快速试验、修复：在开发中需要验证、或修复某个 BUG，但不想影响现有的工作目录，就可以在新的工作目录中进行开发。</li>
+<li>代码迁移合并：假如 A 分支和 B 分支版本区别过大，无法直接使用 <code>graft</code>，这时候就可以从新的工作目录中直接拷贝文件。</li>
+</ol>
+<p>其实 hg 也有类似的命令，那就是 <a target="_blank" rel="noopener" href="https://www.mercurial-scm.org/wiki/ShareExtension">share</a>，需要先开启扩展：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; vim ~/.hgrc </span><br><span class="line"></span><br><span class="line">[extensions]</span><br><span class="line">share =</span><br></pre></td></tr></table></figure>
+
+<p>然后这样操作：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; hg share xxx-project project-v2</span><br><span class="line">&gt; <span class="built_in">cd</span> project-v2</span><br><span class="line">&gt; hg up feature/xxx</span><br></pre></td></tr></table></figure>
+
+<h2 id="操作历史"><a href="#操作历史" class="headerlink" title="操作历史"></a>操作历史</h2><p style="color: red; font-weight: bold;">注意：以下操作请谨慎执行，除非有特别声明，否则均只能操作未发布的提交。</p>
+
+<h3 id="撤销前一次提交"><a href="#撤销前一次提交" class="headerlink" title="撤销前一次提交"></a>撤销前一次提交</h3><p>如果提交后发现某个文件忘记添加了，可以使用 <a target="_blank" rel="noopener" href="https://www.mercurial-scm.org/repo/hg/help/rollback">rollback</a> 进行回滚：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; hg commit -m <span class="string">&quot;feat: do something&quot;</span></span><br><span class="line">&gt; hg rollback </span><br></pre></td></tr></table></figure>
+
+<p>该操作会把最后一次 commit 移除，但这个 commit 的改动仍在。</p>
+<h3 id="回滚某个-commit"><a href="#回滚某个-commit" class="headerlink" title="回滚某个 commit"></a>回滚某个 commit</h3><p>如果想要回滚某个 commit，可以使用 <a target="_blank" rel="noopener" href="https://www.mercurial-scm.org/repo/hg/help/backout">backout</a>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 回滚最后一个提交</span></span><br><span class="line">&gt; hg backout -r .</span><br><span class="line"></span><br><span class="line"><span class="comment"># 回滚某个提交</span></span><br><span class="line">&gt; hg backout -r 9487</span><br><span class="line"></span><br><span class="line"><span class="comment"># 回滚某个提交，但先不提交（推荐使用这种方式）</span></span><br><span class="line">&gt; hg backout -r 9487 --no-commit</span><br></pre></td></tr></table></figure>
+
+<p>效果就和 <code>git revert</code> 一样。</p>
+<h3 id="撤销某个-commit-及其后代"><a href="#撤销某个-commit-及其后代" class="headerlink" title="撤销某个 commit 及其后代"></a>撤销某个 commit 及其后代</h3><p>如果想要撤销某个 commit 及以后的所有改动，可以使用 <a target="_blank" rel="noopener" href="https://www.mercurial-scm.org/repo/hg/help/strip">strip</a>，需要先开启扩展：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; vim ~/.hgrc</span><br><span class="line"></span><br><span class="line">[extensions]</span><br><span class="line">strip =</span><br></pre></td></tr></table></figure>
+
+<p>然后这样使用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 移除单个</span></span><br><span class="line">&gt; hg strip -r 9487</span><br><span class="line"></span><br><span class="line"><span class="comment"># 移除多个</span></span><br><span class="line">&gt; hg strip -r 9487 9488</span><br><span class="line"></span><br><span class="line"><span class="comment"># 移除 commit，但保留改动</span></span><br><span class="line">&gt; hg strip -r 9487--keep</span><br></pre></td></tr></table></figure>
+
+<p>注意：该操作不属于修改历史，可用于已发布的 commit。</p>
+<h3 id="修改前一次提交"><a href="#修改前一次提交" class="headerlink" title="修改前一次提交"></a>修改前一次提交</h3><p>如果我们在提交一次 commit 后，想要修改 commit 信息，或者想要再做一些改动，可以使用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; hg add .</span><br><span class="line">&gt; hg commit -m <span class="string">&quot;feat: first commit&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改一下</span></span><br><span class="line">&gt; hg commit --amend</span><br></pre></td></tr></table></figure>
+
+<h3 id="修改前-N-次提交"><a href="#修改前-N-次提交" class="headerlink" title="修改前 N 次提交"></a>修改前 N 次提交</h3><p>如果要支持更复杂的修改历史操作，我们可以使用 <a target="_blank" rel="noopener" href="https://www.mercurial-scm.org/wiki/HisteditExtension">histedit</a> 扩展，类似于 <code>git rebase -i</code>，使用它能够实现：</p>
+<ul>
+<li>修改某个 commit 的 commit 信息</li>
+<li>移除某个提交</li>
+<li>合并多次提交</li>
+<li>等等..</li>
+</ul>
+<p>需要在 <code>.hgrc</code> 开启：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; vim ~/.hgrc</span><br><span class="line"></span><br><span class="line">[extensions]</span><br><span class="line">histedit =</span><br></pre></td></tr></table></figure>
+
+<p>注意：</p>
+<ul>
+<li>每次修改后 changeset 都会改变。</li>
+</ul>
+<p>假设，我们现在有下面几个提交：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&gt; hg <span class="built_in">log</span> -b . --style compact</span><br><span class="line"></span><br><span class="line">5   288d0414598d   2021-12-14 12:57 +0800   4Ark</span><br><span class="line">  feat: feature-v1.1-03</span><br><span class="line"></span><br><span class="line">4   d72548bcd32b   2021-12-14 12:56 +0800   4Ark</span><br><span class="line">  feat: feature-v1.1-02</span><br><span class="line"></span><br><span class="line">3   8719f541d5d8   2021-12-14 12:55 +0800   4Ark</span><br><span class="line">  feat: feature-v1.1-00</span><br><span class="line"></span><br><span class="line">2   e7eb9420534e   2021-12-14 12:55 +0800   4Ark</span><br><span class="line">  feat: feature-v1.1-00</span><br></pre></td></tr></table></figure>
+
+<p>如果只是修改最后一个 commit 信息，我们可以使用 <code>hg commit --amend</code>，如果要修改前几个的 commit 信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 想要修改倒数第三个的 commit 信息</span></span><br><span class="line">&gt; hg histedit 8719f541d5d8</span><br><span class="line"></span><br><span class="line"><span class="comment"># 编辑内容：</span></span><br><span class="line">pick 8719f541d5d8 3 feat: feature-v1.1-00</span><br><span class="line">pick d72548bcd32b 4 feat: feature-v1.1-02</span><br><span class="line">pick 288d0414598d 5 feat: feature-v1.1-03</span><br><span class="line"><span class="comment"># Edit history between 8719f541d5d8 and 288d0414598d</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Commits are listed from least to most recent</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># You can reorder changesets by reordering the lines</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Commands:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#  e, edit = use commit, but allow edits before making new commit</span></span><br><span class="line"><span class="comment">#  m, mess = edit commit message without changing commit content</span></span><br><span class="line"><span class="comment">#  p, pick = use commit</span></span><br><span class="line"><span class="comment">#  b, base = checkout changeset and apply further changesets from there</span></span><br><span class="line"><span class="comment">#  d, drop = remove commit from history</span></span><br><span class="line"><span class="comment">#  f, fold = use commit, but combine it with the one above</span></span><br><span class="line"><span class="comment">#  r, roll = like fold, but discard this commit&#x27;s description and date</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>根据描述，如果我们只是想要修改 commit 信息，我们可以直接在这里改：</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="deletion">- pick 8719f541d5d8 3 feat: feature-v1.1-00</span></span><br><span class="line"><span class="addition">+ mess 8719f541d5d8 3 feat: feature-v1.1-00</span></span><br><span class="line">	pick d72548bcd32b 4 feat: feature-v1.1-02</span><br><span class="line">	pick 288d0414598d 5 feat: feature-v1.1-03</span><br></pre></td></tr></table></figure>
+
+<p>但是如果想要修改这个 commit 的改动内容，比如新增一个文件，我们改成这样：</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="deletion">- pick 8719f541d5d8 3 feat: feature-v1.1-00</span></span><br><span class="line"><span class="addition">+ edit 8719f541d5d8 3 feat: feature-v1.1-00</span></span><br><span class="line">	pick d72548bcd32b 4 feat: feature-v1.1-02</span><br><span class="line">	pick 288d0414598d 5 feat: feature-v1.1-03</span><br></pre></td></tr></table></figure>
+
+<p>这时候就可以改动文件内容，最后再进行提交：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="built_in">echo</span> <span class="string">&#x27;new&#x27;</span> &gt; new-file.txt</span><br><span class="line">&gt; hg add .</span><br><span class="line">&gt; hg commit -m <span class="string">&quot;feat: feat: feature-v1.1-00(changed)&quot;</span></span><br><span class="line">created new head</span><br><span class="line"></span><br><span class="line">&gt; hg histedit --<span class="built_in">continue</span> <span class="comment"># 你也可以使用 hg histedit --abort 来终止本次操作</span></span><br></pre></td></tr></table></figure>
+
+<p>如果要移除某个 commit：</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="deletion">- edit 8719f541d5d8 3 feat: feature-v1.1-00</span></span><br><span class="line"><span class="addition">+ drop 8719f541d5d8 3 feat: feature-v1.1-00</span></span><br><span class="line">	pick d72548bcd32b 4 feat: feature-v1.1-02</span><br><span class="line">	pick 288d0414598d 5 feat: feature-v1.1-03</span><br></pre></td></tr></table></figure>
+
+<p>如果要合并多个 commit，并且保留所有提交信息：</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">	pick 8719f541d5d8 3 feat: feature-v1.1-00  # 只能合并到第一个 commit</span><br><span class="line"><span class="deletion">- pick d72548bcd32b 4 feat: feature-v1.1-02</span></span><br><span class="line"><span class="deletion">- pick 288d0414598d 5 feat: feature-v1.1-03</span></span><br><span class="line"><span class="addition">+ fold d72548bcd32b 4 feat: feature-v1.1-02</span></span><br><span class="line"><span class="addition">+ fold 288d0414598d 5 feat: feature-v1.1-03</span></span><br></pre></td></tr></table></figure>
+
+<p>如果要合并多个 commit，并且不保留提交信息（直接采用第一个 commit 信息），只需要将 <code>fold</code> 改成 <code>roll</code>。</p>
+<h2 id="查找历史"><a href="#查找历史" class="headerlink" title="查找历史"></a>查找历史</h2><h3 id="查看-commit-的信息"><a href="#查看-commit-的信息" class="headerlink" title="查看 commit 的信息"></a>查看 commit 的信息</h3><p>使用 <a target="_blank" rel="noopener" href="https://www.mercurial-scm.org/repo/hg/help/log">log</a> 命令某个提交的信息，通常我们使用 source tree 能够满足大部分日常需求。</p>
+<p>但 log 还支持很多高阶操作，这里举几个最常使用的，推荐配合别名使用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看当前分支的的 log</span></span><br><span class="line">&gt; hg <span class="built_in">log</span> -b .</span><br><span class="line"></span><br><span class="line"><span class="comment"># 更清晰地查看 log 历史</span></span><br><span class="line">&gt; hg <span class="built_in">log</span> --template <span class="string">&quot;&#123;label(&#x27;custom.rev&#x27;, rev)&#125;\t&#123;label(&#x27;custom.node&#x27;,node|short)&#125; &#123;label(&#x27;custom.phase&#x27;,phase)&#125; \t&#123;label(&#x27;custom.age&#x27;,date|age)&#125;\t&#123;desc|firstline&#125; &#123;label(&#x27;custom.user&#x27;, author|user)&#125; &#123;label(&#x27;custom.branch&#x27;,branch)&#125; &#123;label(&#x27;custom.tag&#x27;,tags)&#125; &#123;label(&#x27;custom.book&#x27;,bookmarks)&#125;\n&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看某个提交的信息以及文件改动</span></span><br><span class="line">&gt; hg <span class="built_in">log</span> -p -r 9487</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看某个文件的改动信息</span></span><br><span class="line">&lt; hg <span class="built_in">log</span> package.json</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看某个文件的改动信息（包括删除）</span></span><br><span class="line">&gt; hg <span class="built_in">log</span> --remove package</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看某个目录的改动信息</span></span><br><span class="line">&gt; hg <span class="built_in">log</span> -M src</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看某个文件某几行的所有改动信息</span></span><br><span class="line">&gt; hg <span class="built_in">log</span> -L package.json,1:23 --follow</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看多个文件某几行的所有改动信息</span></span><br><span class="line">&gt; hg <span class="built_in">log</span> -L package.json,1:23 -L package2.json,1:23 --follow</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看未发布的提交</span></span><br><span class="line">&gt; hg <span class="built_in">log</span> -r <span class="string">&quot;draft()&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="查看某个文件每一行的最后改动者"><a href="#查看某个文件每一行的最后改动者" class="headerlink" title="查看某个文件每一行的最后改动者"></a>查看某个文件每一行的最后改动者</h3><p>可以使用 <a target="_blank" rel="noopener" href="https://www.mercurial-scm.org/repo/hg/help/annotate">annotate</a> 命令查看文件中每一行的最后改动者：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; hg annotate -ulc package.json</span><br></pre></td></tr></table></figure>
+
+<p>ps：该命令还有另一个别名 blame。</p>
+<h3 id="二分法定位出问题的-commit"><a href="#二分法定位出问题的-commit" class="headerlink" title="二分法定位出问题的 commit"></a>二分法定位出问题的 commit</h3><p>如果想知道哪一次代码提交引入了错误，可以使用 <a target="_blank" rel="noopener" href="https://www.mercurial-scm.org/repo/hg/help/bisect">bisect</a> 命令。</p>
+<p>具体操作看阮一峰老师的这篇文章： <a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2018/12/git-bisect.html">《git bisect 命令教程》</a> 。</p>
+<h2 id="工具推荐"><a href="#工具推荐" class="headerlink" title="工具推荐"></a>工具推荐</h2><h3 id="diff-tool-差异对比工具"><a href="#diff-tool-差异对比工具" class="headerlink" title="diff tool 差异对比工具"></a>diff tool 差异对比工具</h3><p>使用一个称手的 diff 工具可帮助你提高很多效率，比如：</p>
+<ul>
+<li>快速对比两个版本的差异</li>
+<li>快速对比两个文件、文件夹的差异</li>
+</ul>
+<p>我个人使用 <a target="_blank" rel="noopener" href="https://www.scootersoftware.com/index.php">Beyond Compare</a>，不过这个软件略贵，也可以使用其它同类工具，例如：<a target="_blank" rel="noopener" href="https://apps.kde.org/en/kdiff3">KDiff3</a>、<a target="_blank" rel="noopener" href="https://winmerge.org/">WinMergeU</a>、<a target="_blank" rel="noopener" href="https://www.perforce.com/zh-hans/chanpin/helix-core-apps/merge-diff-tool-p4merge">P4Merge 等。</a></p>
+<p>下面以 Beyond Compare 为例进行配置，其实基本大同小异：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&gt; vim ~/.hgrc</span><br><span class="line"></span><br><span class="line">[extensions]</span><br><span class="line"><span class="comment"># uncomment the lines below to enable some popular extensions</span></span><br><span class="line"><span class="comment"># (see &#x27;hg help extensions&#x27; for more info)</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line">extdiff =</span><br><span class="line">hgext.extdiff =</span><br><span class="line"></span><br><span class="line">[extdiff]</span><br><span class="line">cmd.bcomp = bcomp</span><br><span class="line">opts.bcomp = -leftreadonly -solo</span><br><span class="line"></span><br><span class="line">[merge-tools]</span><br><span class="line">bcomp.executable = Applications/Beyond Compare.app/Contents/MacOS/bcomp</span><br><span class="line">bcomp.priority=-1</span><br><span class="line">bcomp.args=<span class="variable">$local</span> <span class="variable">$other</span> <span class="variable">$base</span> /mergeoutput=<span class="variable">$output</span> /ro /lefttitle=<span class="built_in">local</span> /centertitle=base /righttitle=other /outputtitle=merged /automerge /reviewconflicts /solo</span><br><span class="line">bcomp.premerge=False</span><br><span class="line">bcomp.regname=ExePath</span><br><span class="line">bcomp.gui=True</span><br><span class="line">bcomp.diffargs=/lro /lefttitle=<span class="string">&#x27;$plabel1&#x27;</span> /righttitle=<span class="string">&#x27;$clabel&#x27;</span> /solo /expandall <span class="variable">$parent</span> <span class="variable">$child</span></span><br><span class="line">bcomp.diff3args=<span class="variable">$parent1</span> <span class="variable">$parent2</span> <span class="variable">$child</span> /lefttitle=<span class="string">&#x27;$plabel1&#x27;</span> /centertitle=<span class="string">&#x27;$clabel&#x27;</span> /righttitle=<span class="string">&#x27;$plabel2&#x27;</span> /solo /ro</span><br><span class="line">bcomp.dirdiff=True</span><br><span class="line">bcomp.binary=True</span><br></pre></td></tr></table></figure>
+
+<p>使用方式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 对比某个版本与当前工作区</span></span><br><span class="line">&gt; hg bcomp -r 9816 -r .</span><br><span class="line"></span><br><span class="line"><span class="comment"># 比较两个版本、分支</span></span><br><span class="line">&gt; hg bcomp -r 9646 -r 9677</span><br><span class="line">&gt; hg bcomp -r default -r 9677</span><br><span class="line"></span><br><span class="line"><span class="comment"># 比较两个版本的某个文件、文件夹</span></span><br><span class="line">&gt; hg bcomp -r 9552 -r 9553 filepath</span><br><span class="line"></span><br><span class="line"><span class="comment"># 比较两个文件夹</span></span><br><span class="line">&gt; bcomp dir-a dir-b</span><br></pre></td></tr></table></figure>
+
+
+
+<p>Beyond Compare 还支持三路比较、合并，就是比较 A 版本、B 版本、C 版本（两者共同祖先），不过要支持这个功能价格就更贵了。</p>
+<h3 id="vscode-hg"><a href="#vscode-hg" class="headerlink" title="vscode-hg"></a>vscode-hg</h3><p>在使用 VSCode 的同学，推荐使用 <a target="_blank" rel="noopener" href="https://marketplace.visualstudio.com/items?itemName=mrcrowl.hg">vscode-hg</a> 这个扩展，可支持大部分 hg 操作。</p>
+<p>如果遇到 Mercurial installation not found. 报错 ，在 settings.json 添加配置并重启：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;hg.path&quot;</span>: <span class="string">&quot;/opt/homebrew/bin/hg&quot;</span> <span class="comment">// 可通过 which hg 查看 hg 的可执行脚本路径</span></span><br></pre></td></tr></table></figure>
+
+<p>另外推荐开启  <code>hg.lineAnnotationEnabled</code> ，即可轻松查看当前文件每一行最后改动，类似于 GitLens 扩展。</p>
+</div>
+  <hr class="copy-line" />
+  <div class="post-copyright">
+    <div class="copy-author">
+      <span>作者 :</span>
+      <span
+        >4Ark</span
+      >
+    </div>
+    <div class="copy-url">
+      <span>地址 :</span>
+      <a href="https://4ark.me/post/hg-tips.html">https://4ark.me/post/hg-tips.html</a>
+    </div>
+    <div class="copy-origin">
+      <span>来源 :</span>
+      <a href="https://4ark.me">https://4ark.me</a>
+    </div>
+    <div class="copy-license">著作权归作者所有，转载请联系作者获得授权。</div>
+  </div>
+</article>
+
+<div class="blog-post-comments">
+  <div id="load-disqus">
+    <p onclick="loadDisqus()" style="cursor: pointer; text-align: center">
+      🥳&nbsp;加载 Disqus 评论
+    </p>
+  </div>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments.</noscript>
+  </div>
+</div>
+ 
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Writing</a></li>
+         
+          <li><a href="/weekly">Weekly</a></li>
+         
+          <li><a href="/tags">Tags</a></li>
+         
+          <li><a href="/search">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E9%AB%98%E6%95%88%E7%8E%87"><span class="toc-number">1.</span> <span class="toc-text">提高效率</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E5%88%AB%E5%90%8D"><span class="toc-number">1.1.</span> <span class="toc-text">设置别名</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E5%BC%8F%E4%B8%80%EF%BC%9Ahg-alias"><span class="toc-number">1.1.1.</span> <span class="toc-text">方式一：hg alias</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E5%BC%8F%E4%BA%8C%EF%BC%9Abash-alias"><span class="toc-number">1.1.2.</span> <span class="toc-text">方式二：bash alias</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E5%BC%8F%E4%B8%89%EF%BC%9Abash-function"><span class="toc-number">1.1.3.</span> <span class="toc-text">方式三：bash function</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%B9%E5%BC%8F%E5%9B%9B%EF%BC%9Abash-function-hg-alias"><span class="toc-number">1.1.4.</span> <span class="toc-text">方式四：bash function + hg alias</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%8D%E5%88%B6%E5%85%B6%E5%AE%83%E5%88%86%E6%94%AF%E7%9A%84-commit"><span class="toc-number">1.2.</span> <span class="toc-text">复制其它分支的 commit</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9B%B4%E5%A4%9A%E4%BE%8B%E5%AD%90"><span class="toc-number">1.2.1.</span> <span class="toc-text">更多例子</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%8C%E4%B8%80%E4%B8%AA%E4%BB%93%E5%BA%93%E9%93%BE%E6%8E%A5%E5%88%B0%E5%A4%9A%E4%B8%AA%E7%9B%AE%E5%BD%95%EF%BC%88worktree%EF%BC%89"><span class="toc-number">1.3.</span> <span class="toc-text">同一个仓库链接到多个目录（worktree）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E5%8E%86%E5%8F%B2"><span class="toc-number">2.</span> <span class="toc-text">操作历史</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%92%A4%E9%94%80%E5%89%8D%E4%B8%80%E6%AC%A1%E6%8F%90%E4%BA%A4"><span class="toc-number">2.1.</span> <span class="toc-text">撤销前一次提交</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9E%E6%BB%9A%E6%9F%90%E4%B8%AA-commit"><span class="toc-number">2.2.</span> <span class="toc-text">回滚某个 commit</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%92%A4%E9%94%80%E6%9F%90%E4%B8%AA-commit-%E5%8F%8A%E5%85%B6%E5%90%8E%E4%BB%A3"><span class="toc-number">2.3.</span> <span class="toc-text">撤销某个 commit 及其后代</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E5%89%8D%E4%B8%80%E6%AC%A1%E6%8F%90%E4%BA%A4"><span class="toc-number">2.4.</span> <span class="toc-text">修改前一次提交</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E5%89%8D-N-%E6%AC%A1%E6%8F%90%E4%BA%A4"><span class="toc-number">2.5.</span> <span class="toc-text">修改前 N 次提交</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E6%89%BE%E5%8E%86%E5%8F%B2"><span class="toc-number">3.</span> <span class="toc-text">查找历史</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B-commit-%E7%9A%84%E4%BF%A1%E6%81%AF"><span class="toc-number">3.1.</span> <span class="toc-text">查看 commit 的信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%9F%90%E4%B8%AA%E6%96%87%E4%BB%B6%E6%AF%8F%E4%B8%80%E8%A1%8C%E7%9A%84%E6%9C%80%E5%90%8E%E6%94%B9%E5%8A%A8%E8%80%85"><span class="toc-number">3.2.</span> <span class="toc-text">查看某个文件每一行的最后改动者</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E5%88%86%E6%B3%95%E5%AE%9A%E4%BD%8D%E5%87%BA%E9%97%AE%E9%A2%98%E7%9A%84-commit"><span class="toc-number">3.3.</span> <span class="toc-text">二分法定位出问题的 commit</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90"><span class="toc-number">4.</span> <span class="toc-text">工具推荐</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#diff-tool-%E5%B7%AE%E5%BC%82%E5%AF%B9%E6%AF%94%E5%B7%A5%E5%85%B7"><span class="toc-number">4.1.</span> <span class="toc-text">diff tool 差异对比工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#vscode-hg"><span class="toc-number">4.2.</span> <span class="toc-text">vscode-hg</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/hg-tips.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/hg-tips.html&text=Hg tips"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/hg-tips.html&title=Hg tips"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/hg-tips.html&is_video=false&description=Hg tips"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Hg tips&body=Check out this article: https://4ark.me/post/hg-tips.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/hg-tips.html&title=Hg tips"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/hg-tips.html&title=Hg tips"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/hg-tips.html&title=Hg tips"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/hg-tips.html&title=Hg tips"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/hg-tips.html&name=Hg tips&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/hg-tips.html&t=Hg tips"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="dark-mobile" class="icon"><i class="fa fa-sun" id="dark-btn" aria-hidden="true"></i> Switch</a>
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    4Ark
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-190615898-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-190615898-1');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<script type="text/javascript">
+  function loadDisqus() {
+    var disqus_shortname = 'https-4ark-me'
+
+    ;(function () {
+      var dsq = document.createElement('script')
+      dsq.type = 'text/javascript'
+      dsq.async = true
+      dsq.src =
+        '//' +
+        disqus_shortname +
+        '.disqus.com/embed.js'
+      ;(
+        document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]
+      ).appendChild(dsq)
+    })()
+
+    $('#load-disqus').hide()
+  }
+</script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

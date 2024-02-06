@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="前言最近有个想法，希望在一个 yarn workspace 项目中实现任意一个子包中安装依赖时，都执行一些类似于初始化、同步配置的动作。 然而在操作过程中遇到了一个关于 yarn --cwd 有趣的问题，特地记录下来，希望能对后来者有所帮助。 遇到什么问题呢先交代一下我们项目的基本情况，它是一个通过 yarn workspace 管理的 monorepo 项目，使用的是 yarn v1.22.11">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从一次 yarn 命令死循环说起">
+<meta property="og:url" content="https://4ark.me/post/yarn-cwd-issue.html">
+<meta property="og:site_name" content="4Ark × Blog">
+<meta property="og:description" content="前言最近有个想法，希望在一个 yarn workspace 项目中实现任意一个子包中安装依赖时，都执行一些类似于初始化、同步配置的动作。 然而在操作过程中遇到了一个关于 yarn --cwd 有趣的问题，特地记录下来，希望能对后来者有所帮助。 遇到什么问题呢先交代一下我们项目的基本情况，它是一个通过 yarn workspace 管理的 monorepo 项目，使用的是 yarn v1.22.11">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-07-23T00:00:00.000Z">
+<meta property="article:modified_time" content="2024-02-06T18:11:56.000Z">
+<meta property="article:author" content="4Ark">
+<meta property="article:tag" content="前端">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>从一次 yarn 命令死循环说起</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script>localStorage.getItem("dark_mode")==="dark"&&document.write(`<link rel="stylesheet" href="${location.origin}/css/dark.css">`)</script>
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+    <meta name="google-site-verification" content="DwDg4EuywHWNZUkTC7sG0WGv_UQekM4uRtOoaGuDJHc" />
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="4Ark × Blog" type="application/atom+xml">
+<link rel="alternate" href="/rss.xml" title="4Ark × Blog" type="application/rss+xml">
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/post/live-sentiment.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/post/weekly-14.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon"><i class="fa fa-moon" id="dark-btn" aria-hidden="true" onmouseover="$('#i-dark').toggle()" onmouseout="$('#i-dark').toggle()"></i></a></li>
+        <li><a class="icon" target="_blank" rel="noopener" href="https://4ark.me/atom.xml" aria-label="rss"><i class="fas fa-rss"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-dark" class="info" style="display: none;">Switch mode</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/yarn-cwd-issue.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/yarn-cwd-issue.html&text=从一次 yarn 命令死循环说起"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/yarn-cwd-issue.html&title=从一次 yarn 命令死循环说起"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/yarn-cwd-issue.html&is_video=false&description=从一次 yarn 命令死循环说起"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=从一次 yarn 命令死循环说起&body=Check out this article: https://4ark.me/post/yarn-cwd-issue.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/yarn-cwd-issue.html&title=从一次 yarn 命令死循环说起"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/yarn-cwd-issue.html&title=从一次 yarn 命令死循环说起"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/yarn-cwd-issue.html&title=从一次 yarn 命令死循环说起"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/yarn-cwd-issue.html&title=从一次 yarn 命令死循环说起"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/yarn-cwd-issue.html&name=从一次 yarn 命令死循环说起&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/yarn-cwd-issue.html&t=从一次 yarn 命令死循环说起"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%81%87%E5%88%B0%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%E5%91%A2"><span class="toc-number">2.</span> <span class="toc-text">遇到什么问题呢</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90%E5%8E%9F%E5%9B%A0"><span class="toc-number">3.</span> <span class="toc-text">分析原因</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90%E6%BA%90%E7%A0%81"><span class="toc-number">4.</span> <span class="toc-text">分析源码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">5.</span> <span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-number">6.</span> <span class="toc-text">结语</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        从一次 yarn 命令死循环说起
+    </h1>
+
+
+
+    <div class="meta">
+      <span
+        class="author"
+        itemprop="author"
+        itemscope
+        itemtype="http://schema.org/Person"
+      >
+        <span itemprop="name"
+          >4Ark</span
+        >
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2022-07-23T00:00:00.000Z" itemprop="datePublished">2022-07-23</time>
+        
+      
+    </div>
+
+ 
+      
+        
+ 
+        
+    <div class="article-tag">
+        <i class="fas fa-hashtag"></i>
+        <a class="tag-link-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a>
+    </div>
+
+
+      
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近有个想法，希望在一个 yarn workspace 项目中实现任意一个子包中安装依赖时，都执行一些类似于初始化、同步配置的动作。</p>
+<p>然而在操作过程中遇到了一个关于 <code>yarn --cwd</code> 有趣的问题，特地记录下来，希望能对后来者有所帮助。</p>
+<h2 id="遇到什么问题呢"><a href="#遇到什么问题呢" class="headerlink" title="遇到什么问题呢"></a>遇到什么问题呢</h2><p>先交代一下我们项目的基本情况，它是一个通过 yarn workspace 管理的 monorepo 项目，使用的是 yarn v1.22.11 版本，目录结构大致如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">monorepo</span><br><span class="line">├── package.json</span><br><span class="line">├── app-a</span><br><span class="line">│   └── package.json</span><br><span class="line">├── app-b</span><br><span class="line">│   └── package.json</span><br><span class="line">└── config</span><br><span class="line">    └── package.json</span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>app-a</code> 和 <code>app-b</code> 都使用了 <code>config</code> 这个共享包：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;dependencies&quot;</span>: &#123;</span><br><span class="line">  <span class="attr">&quot;@monorepo/config&quot;</span>: <span class="string">&quot;../config&quot;</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们需要在根目录的 <code>package.json</code> 中的 <code>preinstall</code> 钩子做一些初始化操作：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;scripts&quot;</span>: &#123;</span><br><span class="line">  <span class="attr">&quot;preinstall&quot;</span>: <span class="string">&quot;./bin/init.sh&quot;</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此时我们在根目录执行 <code>yarn</code> 或者 <code>yarn add &lt;pkg-name&gt;</code>，都会触发 <code>preinstall</code> 这个钩子，但在 <code>app-a</code> 中执行 <code>yarn</code>是不会触发根目录的 <code>preinstall</code> 钩子的。</p>
+<p>因此，我们需要分别在每个子包上都加上这行，也即在每个子包安装依赖时都执行一下根目录的 <code>preinstall</code> 命令：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;scripts&quot;</span>: &#123;</span><br><span class="line">  <span class="attr">&quot;preinstall&quot;</span>: <span class="string">&quot;yarn --cwd ../ preinstall&quot;</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>于是，奇怪的事情就发生了，当我在 <code>app-a</code> 中执行 <code>yarn</code> 的时候，它停留在安装 <code>@monorepo/config</code> 的阶段，同时我的电脑明显变得卡顿，于是打开 <code>htop</code> 一看，好家伙，满屏都是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">4ark   40987  26.3  0.5 409250368  78624   ??  R  8:36下午   0:00.09 /usr/<span class="built_in">local</span>/bin/node /usr/<span class="built_in">local</span>/bin/yarn --cwd ../ preinstall</span><br></pre></td></tr></table></figure>
+
+<p>CPU 占用率直接达到 100%，吓得我赶紧 kill 掉这些进程：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps aux | grep preinstall | awk <span class="string">&#x27;&#123;print $2&#125;&#x27;</span> | xargs <span class="built_in">kill</span> -9</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析原因"><a href="#分析原因" class="headerlink" title="分析原因"></a>分析原因</h2><p>惊吓过后，来分析一下原因，很显然这段命令陷入了死循环，导致越来越多进程，于是尝试在每个子包中都手动执行一遍 <code>yarn --cwd ../ preinstall</code> 后，发现一切正常，那问题出在哪呢？</p>
+<p>于是我再执行了一遍 <code>yarn</code>，并且用以下命令将进程信息复制出来，以便分析：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef | pbcopy</span><br></pre></td></tr></table></figure>
+
+<p>随后验证我刚刚的猜测，的确是这个命令在不断触发自己，导致死循环：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">UID   PID  PPID   C STIME   TTY     TIME CMD</span><br><span class="line">501 50399 50379   0  8:50下午 ??   0:00.10 /usr/local/bin/node /usr/local/bin/yarn --cwd ../ preinstall</span><br><span class="line">501 50400 50399   0  8:50下午 ??   0:00.11 /usr/local/bin/node /usr/local/bin/yarn --cwd ../ preinstall</span><br><span class="line">501 50401 50400   0  8:50下午 ??   0:00.11 /usr/local/bin/node /usr/local/bin/yarn --cwd ../ preinstall</span><br><span class="line">501 50402 50401   0  8:50下午 ??   0:00.12 /usr/local/bin/node /usr/local/bin/yarn --cwd ../ preinstall</span><br></pre></td></tr></table></figure>
+
+<p>由于三个分包执行的命令都一样，不清楚是不是由于某个分包引起，于是修改一下命令以便区分：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;scripts&quot;</span>: &#123;</span><br><span class="line">  <span class="attr">&quot;preinstall&quot;</span>: <span class="string">&quot;echo app-a &amp;&amp; yarn --cwd ../ preinstall&quot;</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>随后发现问题是出现在 <code>config</code> 这个子包，于是我把这个子包的 <code>preinstall</code> 命令去掉，果然没有这个问题了，非常奇怪。</p>
+<p>难道是 <code>--cwd ../</code> 这个路径有问题？验证一下，把命令改成这样：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;scripts&quot;</span>: &#123;</span><br><span class="line">  <span class="attr">&quot;preinstall&quot;</span>: <span class="string">&quot;pwd &amp;&amp; yarn --cwd ../ preinstall&quot;</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>发现 <code>pwd</code> 输出是这样子的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/4ark/projects/monorepo/app-a/node_modules/@monorepo/config</span><br></pre></td></tr></table></figure>
+
+<p>从这里的输出我们发现了两个问题，第一个问题是：</p>
+<ul>
+<li>yarn workspace 共享包的 <code>preinstall</code> 被执行的时候，其实已经被拷贝到 <code>app-a</code> 的 <code>node_modules</code> 中，而不是在当前目录，因此 <code>--cwd ../</code> 并不指向项目根目录。</li>
+</ul>
+<p>这一点比较好理解，毕竟 <code>config</code> 作为一个依赖包，确实应该被拷贝到应用的 <code>node_modules</code> 。</p>
+<p>而第二个问题就不太理解了，为什么明明设置了 <code>--cwd ../</code>，却依然在当前目录执行呢？按照预期 cwd 的指向应该是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/4ark/projects/monorepo/app-a/node_modules/@monorepo</span><br></pre></td></tr></table></figure>
+
+<p>难道是我对 cwd 参数的理解有偏差？看一下 yarn 的文档中对 cwd 描述：</p>
+<blockquote>
+<p>Specifies a current working directory, instead of the default <code>./</code>. Use this flag to perform an operation in a working directory that is not the current one.</p>
+<p>This can make scripts nicer by avoiding the need to <code>cd</code> into a folder and then <code>cd</code> back out.</p>
+</blockquote>
+<p>从文档的描述来看，cwd 的作用不就是代替 <code>cd</code> 吗，但现在的结果看来 <code>yarn --cwd ../ preinstall</code> 并不等价于 <code>cd ../ &amp;&amp; yarn preinstall</code> 。</p>
+<p>这就不得不让人疑惑 cwd 的定位方式了，在网上搜寻一番没找到相关的讨论，那只能自己动手丰衣足食，直接从 yarn 源码中寻找答案。</p>
+<h2 id="分析源码"><a href="#分析源码" class="headerlink" title="分析源码"></a>分析源码</h2><p>前面我们说到，我们使用的是 yarn v1.22.11，在 yarn 的 GitHub 仓库中发现 v1 版本的最新版本停留在 v1.23.0-0，那我们就从这个版本的源码来进行分析，首先克隆代码到本地：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> --depth=1 https://github.com/yarnpkg/yarn</span><br></pre></td></tr></table></figure>
+
+<p>然后安装依赖并运行起来：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn &amp;&amp; yarn watch</span><br></pre></td></tr></table></figure>
+
+<p>这时候它就会自动监听代码修改然后重新编译，我们查看 <code>package.json</code> 发现 yarn 的 bin 主要是调用 <code> ./bin/yarn.js</code>:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;bin&quot;</span>: &#123;</span><br><span class="line">  <span class="attr">&quot;yarn&quot;</span>: <span class="string">&quot;./bin/yarn.js&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;yarnpkg&quot;</span>: <span class="string">&quot;./bin/yarn.js&quot;</span></span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<p>也就是我们直接执行 <code>bin/yarn.js</code> 的效果就如同执行 <code>yarn</code>，试一下查看版本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; /Users/4ark/projects/yarn/bin/yarn -v</span><br><span class="line">1.23.0-0</span><br></pre></td></tr></table></figure>
+
+<p>PS：当然你也可以在项目目录下使用 <code>npm link</code> 把它挂载到本地中。</p>
+<p>接下就是一番调试，终于定位到可以回答我们疑问的代码，<a target="_blank" rel="noopener" href="https://github.dev/yarnpkg/yarn/blob/6db39cf0ff684ce4e7de29669046afb8103fce3d/src/cli/index.js#L37-L51">在这里</a>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">findProjectRoot</span>(<span class="params">base: string</span>): <span class="title">string</span> </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> prev = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">let</span> dir = base;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (fs.existsSync(path.join(dir, constants.NODE_PACKAGE_JSON))) &#123;</span><br><span class="line">      <span class="keyword">return</span> dir;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    prev = dir;</span><br><span class="line">    dir = path.dirname(dir);</span><br><span class="line">  &#125; <span class="keyword">while</span> (dir !== prev);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> base;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> cwd = command.shouldRunInCurrentCwd ? commander.cwd : findProjectRoot(commander.cwd);</span><br></pre></td></tr></table></figure>
+
+<p>可以看到 cwd 的定位方式是从当前目录寻找是否存在 <code>package.json</code>，若存在，则返回此目录，否则将目录经过 <code>path.dirname</code> 处理一遍，继续寻找，直到寻找到最外层。</p>
+<p>那么这里最关键的是 <code>path.dirname</code> 的返回值，我们先看一下文档对于它的描述：</p>
+<blockquote>
+<p>The <code>path.dirname()</code> method returns the directory name of a <code>path</code>, similar to the Unix <code>dirname</code> command. Trailing directory separators are ignored,</p>
+</blockquote>
+<p>就是返回一个路径中的目录部分，作用与 unix 下的 dirname 命令一致，通常是这么使用的：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; dirname /4ark/app/index.js</span><br><span class="line">/4ark/app</span><br><span class="line"></span><br><span class="line">&gt; dirname /4ark/app/packages/index.js</span><br><span class="line">/4ark/app/packages</span><br></pre></td></tr></table></figure>
+
+<p>是不是会肤浅地认为它的作用就是返回一个路径的上一级目录？如果传入的是一个绝对路径，确实可以这么肤浅地认为，然而当传入的是一个相对路径时，情况就不一样了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt; dirname ../app/index.js</span><br><span class="line">../app</span><br><span class="line"></span><br><span class="line">&gt; dirname ../../</span><br><span class="line">../</span><br><span class="line"></span><br><span class="line">&gt; dirname ../</span><br><span class="line">问: 会返回什么呢？</span><br></pre></td></tr></table></figure>
+
+<p>答案是：<code>.</code>，也就是当前目录。</p>
+<p>那这里就能回答我们之前的问题，为什么在 <code>node_module/@monorepo/config</code> 中使用 <code>yarn --cwd ../ preinstall</code> 却在当前目录执行，因为它的上一级 <code>node_modules/@monorepo</code> 不存在 <code>package.json</code>，所以经过 <code>dirname ../</code> 处理后 cwd 的指向就是当前目录。</p>
+<p>如果对 node.js 中 <code>path.dirname</code> 的实现方式感兴趣，可以看这里 <a target="_blank" rel="noopener" href="https://github.com/jinder/path/blob/master/path.js#L538-L554">path.js#L538-L554</a>。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>摸清楚原因后，那解决这个问题也不是难事，只要我们把相对路径改成绝对路径，是不是就能解决这个问题了？</p>
+<p>思考一下，其实 <code>yarn --cwd ../ preinstall</code>，把 <code>../</code> 改成绝对路径行不行呢？比如在本文的场景，<code>../</code> 其实就是项目的根目录，那我们完全可以通过别的方式获取到项目的根目录，比如 在 git 中：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rev-parse --show-toplevel</span><br></pre></td></tr></table></figure>
+
+<p>所以，我们把命令改成这样，问题就迎刃而解了：</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="deletion">- yarn --cwd ../ preinstall</span></span><br><span class="line"><span class="addition">+ yarn --cwd $(git rev-parse --show-toplevel) preinstall</span></span><br></pre></td></tr></table></figure>
+
+<p>那就不得不提一下，其实在 yarn v2 中新增了一个 <code>--top-level</code>  属性，它的作用刚好就是为了解决这个问题。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>其实我们再回过头来想，在本文的例子中，根本不需要在 <code>config</code> 目录中添加 <code>preinstall</code> 这个钩子，因为它作为共享包，每次修改都必然要在其它使用这个包的地方，重新安装一次，所以只要确保这些地方会执行 <code>preinstall</code> 就可以了，那也就意味着不会出现本文遇到的问题。</p>
+<p>不过，多踩坑也不是坏事，只要搞清楚背后的原因，问题也就不是问题。</p>
+</div>
+  <hr class="copy-line" />
+  <div class="post-copyright">
+    <div class="copy-author">
+      <span>作者 :</span>
+      <span
+        >4Ark</span
+      >
+    </div>
+    <div class="copy-url">
+      <span>地址 :</span>
+      <a href="https://4ark.me/post/yarn-cwd-issue.html">https://4ark.me/post/yarn-cwd-issue.html</a>
+    </div>
+    <div class="copy-origin">
+      <span>来源 :</span>
+      <a href="https://4ark.me">https://4ark.me</a>
+    </div>
+    <div class="copy-license">著作权归作者所有，转载请联系作者获得授权。</div>
+  </div>
+</article>
+
+<div class="blog-post-comments">
+  <div id="load-disqus">
+    <p onclick="loadDisqus()" style="cursor: pointer; text-align: center">
+      🥳&nbsp;加载 Disqus 评论
+    </p>
+  </div>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments.</noscript>
+  </div>
+</div>
+ 
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Writing</a></li>
+         
+          <li><a href="/weekly">Weekly</a></li>
+         
+          <li><a href="/tags">Tags</a></li>
+         
+          <li><a href="/search">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%81%87%E5%88%B0%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%E5%91%A2"><span class="toc-number">2.</span> <span class="toc-text">遇到什么问题呢</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90%E5%8E%9F%E5%9B%A0"><span class="toc-number">3.</span> <span class="toc-text">分析原因</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90%E6%BA%90%E7%A0%81"><span class="toc-number">4.</span> <span class="toc-text">分析源码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">5.</span> <span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-number">6.</span> <span class="toc-text">结语</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/yarn-cwd-issue.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/yarn-cwd-issue.html&text=从一次 yarn 命令死循环说起"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/yarn-cwd-issue.html&title=从一次 yarn 命令死循环说起"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/yarn-cwd-issue.html&is_video=false&description=从一次 yarn 命令死循环说起"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=从一次 yarn 命令死循环说起&body=Check out this article: https://4ark.me/post/yarn-cwd-issue.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/yarn-cwd-issue.html&title=从一次 yarn 命令死循环说起"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/yarn-cwd-issue.html&title=从一次 yarn 命令死循环说起"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/yarn-cwd-issue.html&title=从一次 yarn 命令死循环说起"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/yarn-cwd-issue.html&title=从一次 yarn 命令死循环说起"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/yarn-cwd-issue.html&name=从一次 yarn 命令死循环说起&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/yarn-cwd-issue.html&t=从一次 yarn 命令死循环说起"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="dark-mobile" class="icon"><i class="fa fa-sun" id="dark-btn" aria-hidden="true"></i> Switch</a>
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    4Ark
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-190615898-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-190615898-1');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<script type="text/javascript">
+  function loadDisqus() {
+    var disqus_shortname = 'https-4ark-me'
+
+    ;(function () {
+      var dsq = document.createElement('script')
+      dsq.type = 'text/javascript'
+      dsq.async = true
+      dsq.src =
+        '//' +
+        disqus_shortname +
+        '.disqus.com/embed.js'
+      ;(
+        document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]
+      ).appendChild(dsq)
+    })()
+
+    $('#load-disqus').hide()
+  }
+</script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

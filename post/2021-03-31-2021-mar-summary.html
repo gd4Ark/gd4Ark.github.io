@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="uni-app 踩坑小记这是我去年在工作中使用 uni-app 和 uView 踩的一些坑，虽然大部分通过搜索引擎能够找到解决方法，但这些记录更为深入的探究了背后的原因，主要是途径就是看 uni-app 的源码或者分析编译后的代码，本着共享精神，也希望大家不要重复踩坑，相信能够对大家有所帮助。 另外由于在语雀上也能支持互联网索引，也就没必要再搬过来了，且在语雀上的阅读体验要更好。 这是链接：uni">
+<meta property="og:type" content="article">
+<meta property="og:title" content="三月总结">
+<meta property="og:url" content="https://4ark.me/post/2021-03-31-2021-mar-summary.html">
+<meta property="og:site_name" content="4Ark × Blog">
+<meta property="og:description" content="uni-app 踩坑小记这是我去年在工作中使用 uni-app 和 uView 踩的一些坑，虽然大部分通过搜索引擎能够找到解决方法，但这些记录更为深入的探究了背后的原因，主要是途径就是看 uni-app 的源码或者分析编译后的代码，本着共享精神，也希望大家不要重复踩坑，相信能够对大家有所帮助。 另外由于在语雀上也能支持互联网索引，也就没必要再搬过来了，且在语雀上的阅读体验要更好。 这是链接：uni">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-03-30T23:49:42.000Z">
+<meta property="article:modified_time" content="2024-02-06T18:11:56.000Z">
+<meta property="article:author" content="4Ark">
+<meta property="article:tag" content="总结">
+<meta property="article:tag" content="每月总结">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>三月总结</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script>localStorage.getItem("dark_mode")==="dark"&&document.write(`<link rel="stylesheet" href="${location.origin}/css/dark.css">`)</script>
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+    <meta name="google-site-verification" content="DwDg4EuywHWNZUkTC7sG0WGv_UQekM4uRtOoaGuDJHc" />
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="4Ark × Blog" type="application/atom+xml">
+<link rel="alternate" href="/rss.xml" title="4Ark × Blog" type="application/rss+xml">
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/post/about-si-ma-qian.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/post/2021-03-04-2020-feb-summary.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon"><i class="fa fa-moon" id="dark-btn" aria-hidden="true" onmouseover="$('#i-dark').toggle()" onmouseout="$('#i-dark').toggle()"></i></a></li>
+        <li><a class="icon" target="_blank" rel="noopener" href="https://4ark.me/atom.xml" aria-label="rss"><i class="fas fa-rss"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-dark" class="info" style="display: none;">Switch mode</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/2021-03-31-2021-mar-summary.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/2021-03-31-2021-mar-summary.html&text=三月总结"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/2021-03-31-2021-mar-summary.html&title=三月总结"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/2021-03-31-2021-mar-summary.html&is_video=false&description=三月总结"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=三月总结&body=Check out this article: https://4ark.me/post/2021-03-31-2021-mar-summary.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/2021-03-31-2021-mar-summary.html&title=三月总结"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/2021-03-31-2021-mar-summary.html&title=三月总结"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/2021-03-31-2021-mar-summary.html&title=三月总结"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/2021-03-31-2021-mar-summary.html&title=三月总结"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/2021-03-31-2021-mar-summary.html&name=三月总结&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/2021-03-31-2021-mar-summary.html&t=三月总结"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#uni-app-%E8%B8%A9%E5%9D%91%E5%B0%8F%E8%AE%B0"><span class="toc-number">1.</span> <span class="toc-text">uni-app 踩坑小记</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E4%BA%AB%E5%8F%91%E7%8E%B0"><span class="toc-number">2.</span> <span class="toc-text">分享发现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E7%AB%A0"><span class="toc-number">2.1.</span> <span class="toc-text">文章</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E7%AB%A0%EF%BC%88%E6%8A%80%E6%9C%AF%E7%B1%BB%EF%BC%89"><span class="toc-number">2.2.</span> <span class="toc-text">文章（技术类）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7"><span class="toc-number">2.3.</span> <span class="toc-text">工具</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        三月总结
+    </h1>
+
+
+
+    <div class="meta">
+      <span
+        class="author"
+        itemprop="author"
+        itemscope
+        itemtype="http://schema.org/Person"
+      >
+        <span itemprop="name"
+          >4Ark</span
+        >
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-03-30T23:49:42.000Z" itemprop="datePublished">2021-03-30</time>
+        
+      
+    </div>
+
+ 
+      
+        
+ 
+        
+    <div class="article-tag">
+        <i class="fas fa-hashtag"></i>
+        <a class="tag-link-link" href="/tags/%E6%80%BB%E7%BB%93/" rel="tag">总结</a>, <a class="tag-link-link" href="/tags/%E6%AF%8F%E6%9C%88%E6%80%BB%E7%BB%93/" rel="tag">每月总结</a>
+    </div>
+
+
+      
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody"><h2 id="uni-app-踩坑小记"><a href="#uni-app-踩坑小记" class="headerlink" title="uni-app 踩坑小记"></a>uni-app 踩坑小记</h2><p>这是我去年在工作中使用 uni-app 和 uView 踩的一些坑，虽然大部分通过搜索引擎能够找到解决方法，但这些记录更为深入的探究了背后的原因，主要是途径就是看 uni-app 的源码或者分析编译后的代码，本着共享精神，也希望大家不要重复踩坑，相信能够对大家有所帮助。</p>
+<p>另外由于在语雀上也能支持互联网索引，也就没必要再搬过来了，且在语雀上的阅读体验要更好。</p>
+<p>这是链接：<a target="_blank" rel="noopener" href="https://www.yuque.com/4ark/cya7sq/tvs0tu">uni-app 踩坑小记 · 语雀 (yuque.com)</a></p>
+<h2 id="分享发现"><a href="#分享发现" class="headerlink" title="分享发现"></a>分享发现</h2><h3 id="文章"><a href="#文章" class="headerlink" title="文章"></a>文章</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://dbanotes.net/review/the_students.html">现在的计算机专业学生怎么这个样？</a><ul>
+<li>冯大辉在 2004 年发表的文章，讲了计算机专业的大学生有多浮躁，今天看来依然没变。</li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://blog.dteam.top/posts/2019-05/%E4%B8%BA%E4%BB%80%E4%B9%88%E7%A8%8B%E5%BA%8F%E5%91%98%E5%80%BC%E5%BE%97%E8%8A%B1%E6%97%B6%E9%97%B4%E5%9F%B9%E5%85%BB%E8%87%AA%E5%B7%B1%E7%9A%84%E5%95%86%E4%B8%9A%E6%80%9D%E7%BB%B4.html">为什么程序员值得花时间培养自己的商业思维？</a><ul>
+<li><a target="_blank" rel="noopener" href="https://blog.dteam.top/posts/2019-06/%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E5%95%86%E4%B8%9A%E6%80%9D%E7%BB%B4%E5%AD%A6%E4%BC%9A%E7%AE%97%E8%B4%A6.html">程序员的商业思维：学会算账</a>：要考虑成本，除了成本，我们还应放眼于所得收益，毕竟：每个收益都有其合理的成本要求。</li>
+<li><a target="_blank" rel="noopener" href="https://blog.dteam.top/posts/2019-06/%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E5%95%86%E4%B8%9A%E6%80%9D%E7%BB%B4%E5%AD%A6%E4%BC%9A%E8%A1%A8%E8%BE%BE.html">程序员的商业思维：学会表达</a>：提升表达力的渠道有写文章、尝试演讲等，另外代码能力本质上也是表达能力的一种。</li>
+<li><a target="_blank" rel="noopener" href="https://blog.dteam.top/posts/2019-07/%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E5%95%86%E4%B8%9A%E6%80%9D%E7%BB%B4%E5%BB%BA%E7%AB%8B%E8%87%AA%E5%B7%B1%E7%9A%84%E4%BE%9B%E5%BA%94%E9%93%BE.html">程序员的商业思维：建立自己的供应链</a>：1）找到你在供应链的位置；2）让外界知道你的能力，打造你的品牌。</li>
+<li><a target="_blank" rel="noopener" href="https://blog.dteam.top/posts/2019-08/%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E5%95%86%E4%B8%9A%E6%80%9D%E7%BB%B4%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98.htmlhttps://blog.dteam.top/posts/2019-08/%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E5%95%86%E4%B8%9A%E6%80%9D%E7%BB%B4%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98.html">程序员的商业思维：解决问题</a>：1）你掌握的技能不值钱，真正值钱的是你运用技能的能力；2）问题本身的价值越大，那么解决能力的价值也就越大；3）自己解决问题的能力固然重要，但是借助外部资源解决问题的能力同样重要；4）不要打着解决问题的幌子制造问题。</li>
+<li><a target="_blank" rel="noopener" href="https://blog.dteam.top/posts/2019-11/%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E5%95%86%E4%B8%9A%E6%80%9D%E7%BB%B4%E5%90%9B%E5%AD%90%E4%B9%9F%E8%A6%81%E8%A8%80%E5%88%A9.html">程序员的商业思维：君子也要言利</a>：谈钱效率高，钱本来就是一种最有效的量化手段。</li>
+<li><a target="_blank" rel="noopener" href="https://blog.dteam.top/posts/2019-12/%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E5%95%86%E4%B8%9A%E6%80%9D%E7%BB%B4%E5%AD%A6%E4%BC%9A%E5%A4%96%E4%BA%A4.html">程序员的商业思维：学会外交</a>：1）外交不是拉关系，“关系”很重要，但仅仅认为这就是“拉关系”就是大错特错；2）当客户总强调你需要替他考虑而不替你考虑时，请果断放弃；策略：守住底线、双赢思维、有的放矢、明确定价。</li>
+<li><a target="_blank" rel="noopener" href="https://blog.dteam.top/posts/2020-03/something-about-personal-leverage.html">程序员的商业思维：关注杠杆率</a>：1）从字面上看，杠杆率并不高深，无外乎代表你一份努力能撬动多大的结果；2）产品化思维有助于提高你的个人杠杆率；3）杠杆率是你的变现能力，了解自己的杠杆率，也是你跟老板谈判的筹码。</li>
+</ul>
+</li>
+</ul>
+<h3 id="文章（技术类）"><a href="#文章（技术类）" class="headerlink" title="文章（技术类）"></a>文章（技术类）</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://web.dev/content-visibility/">content-visibility: the new CSS property that boosts your rendering performance</a><ul>
+<li>Chrome CSS 新属性，跳过屏幕外内容的渲染，从而提高初始加载时间。</li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://2ality.com/2021/01/import-assertions.html?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed:+2ality+(2ality+%E2%80%93+JavaScript+and+more)">ECMAScript proposal: Import assertions</a><ul>
+<li>ECMAScript 提案：Import assertions，在 JS 中 import 文件时断言它的类型。</li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://zhongsp.gitbooks.io/typescript-handbook/content/doc/wiki/coding_guidelines.html">TypeScript 代码风格</a>：可以参考一下。</li>
+<li><a target="_blank" rel="noopener" href="https://web.dev/how-to-use-local-https/">How to use HTTPS for local development</a>：使用 <a target="_blank" rel="noopener" href="https://github.com/FiloSottile/mkcert">mkcert</a> 工具来让本地网站支持 HTTPS。</li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6936448887360077831">no-stream 似乎比 js 原生数组方法快</a>：没有黑魔法，仅仅是因为它只遍历一遍数组。</li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/WakeLock">WakeLock</a>：一个实验性的 WEB API，用于使设备保持唤醒状态</li>
+<li><a target="_blank" rel="noopener" href="https://adamschwartz.co/magic-of-css/">Magic of CSS</a>：一些 CSS 知识</li>
+<li><a target="_blank" rel="noopener" href="https://blog.techbridge.cc/2021/03/28/how-source-map-works/">Source map 运行原理</a></li>
+</ul>
+<h3 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/google/gts">google/gts</a>：Google 的 TypeScript 代码风格，用于格式化和 lint。</li>
+<li><a target="_blank" rel="noopener" href="https://www.tabnine.com/">tabnine</a>：使用 AI 更快的完成代码，支持各大 IDE 扩展（PS：在我电脑上内存占用有时候会飙升）。</li>
+<li><a target="_blank" rel="noopener" href="https://estimator.dev/">EStimator</a>：通过提供现代 JavaScript 语法来计算网站的大小和性能改进。</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/GitSquared/edex-ui">eDEX-UI</a>：跨平台终端工具，炫酷就完了。</li>
+<li><a target="_blank" rel="noopener" href="https://jspm.org/docs/cdn">JSPM</a>：原生 ES 模块 CDN。</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/qeeqbox/social-analyzer">Social Analyzer</a>：一个通过 API/CLI/Web App 在 350+ 个网站分析、找寻特定用户资料的工具。它提供了不同的字符串分析和检测模块，可自由在“调查”过程中组合使用。</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/swc-project/swc">swc</a>：一个用 rust 开发的 typescript 编译器</li>
+<li><a target="_blank" rel="noopener" href="https://danger.systems/js/">danger-js</a>：一个审查危险代码的 CI 工具</li>
+<li><a target="_blank" rel="noopener" href="https://clinicjs.org/">Clinic.js</a>：一个帮助诊断和检查 Node.js 性能问题的工具</li>
+<li><a target="_blank" rel="noopener" href="https://qwerty-learner.vercel.app/">Qwerty Learner</a>：为键盘工作者设计的单词记忆与英语肌肉记忆锻炼软件</li>
+</ul>
+</div>
+  <hr class="copy-line" />
+  <div class="post-copyright">
+    <div class="copy-author">
+      <span>作者 :</span>
+      <span
+        >4Ark</span
+      >
+    </div>
+    <div class="copy-url">
+      <span>地址 :</span>
+      <a href="https://4ark.me/post/2021-03-31-2021-mar-summary.html">https://4ark.me/post/2021-03-31-2021-mar-summary.html</a>
+    </div>
+    <div class="copy-origin">
+      <span>来源 :</span>
+      <a href="https://4ark.me">https://4ark.me</a>
+    </div>
+    <div class="copy-license">著作权归作者所有，转载请联系作者获得授权。</div>
+  </div>
+</article>
+
+<div class="blog-post-comments">
+  <div id="load-disqus">
+    <p onclick="loadDisqus()" style="cursor: pointer; text-align: center">
+      🥳&nbsp;加载 Disqus 评论
+    </p>
+  </div>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments.</noscript>
+  </div>
+</div>
+ 
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Writing</a></li>
+         
+          <li><a href="/weekly">Weekly</a></li>
+         
+          <li><a href="/tags">Tags</a></li>
+         
+          <li><a href="/search">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#uni-app-%E8%B8%A9%E5%9D%91%E5%B0%8F%E8%AE%B0"><span class="toc-number">1.</span> <span class="toc-text">uni-app 踩坑小记</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E4%BA%AB%E5%8F%91%E7%8E%B0"><span class="toc-number">2.</span> <span class="toc-text">分享发现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E7%AB%A0"><span class="toc-number">2.1.</span> <span class="toc-text">文章</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E7%AB%A0%EF%BC%88%E6%8A%80%E6%9C%AF%E7%B1%BB%EF%BC%89"><span class="toc-number">2.2.</span> <span class="toc-text">文章（技术类）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7"><span class="toc-number">2.3.</span> <span class="toc-text">工具</span></a></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/2021-03-31-2021-mar-summary.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/2021-03-31-2021-mar-summary.html&text=三月总结"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/2021-03-31-2021-mar-summary.html&title=三月总结"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/2021-03-31-2021-mar-summary.html&is_video=false&description=三月总结"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=三月总结&body=Check out this article: https://4ark.me/post/2021-03-31-2021-mar-summary.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/2021-03-31-2021-mar-summary.html&title=三月总结"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/2021-03-31-2021-mar-summary.html&title=三月总结"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/2021-03-31-2021-mar-summary.html&title=三月总结"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/2021-03-31-2021-mar-summary.html&title=三月总结"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/2021-03-31-2021-mar-summary.html&name=三月总结&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/2021-03-31-2021-mar-summary.html&t=三月总结"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="dark-mobile" class="icon"><i class="fa fa-sun" id="dark-btn" aria-hidden="true"></i> Switch</a>
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    4Ark
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-190615898-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-190615898-1');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<script type="text/javascript">
+  function loadDisqus() {
+    var disqus_shortname = 'https-4ark-me'
+
+    ;(function () {
+      var dsq = document.createElement('script')
+      dsq.type = 'text/javascript'
+      dsq.async = true
+      dsq.src =
+        '//' +
+        disqus_shortname +
+        '.disqus.com/embed.js'
+      ;(
+        document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]
+      ).appendChild(dsq)
+    })()
+
+    $('#load-disqus').hide()
+  }
+</script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="前言今天打算实践一下 Wordpress 主题开发，但由于电脑上没有 PHP 和 MySQL 的环境，于是折腾了一下，结果发现安装配置过程一堆的坑，虽然最终选择了 Docker 环境开发，但毕竟已经踩坑了，就记录一下。 本文记录如何在 Mac OS 上配置 Ngnix + PHP + MySQL，以及最后如何成功安装 Wordpress。  过程 Nginx 1. 安装1brew install">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mac 上配置 MNMP 环境">
+<meta property="og:url" content="https://4ark.me/post/41f45ee.html">
+<meta property="og:site_name" content="4Ark × Blog">
+<meta property="og:description" content="前言今天打算实践一下 Wordpress 主题开发，但由于电脑上没有 PHP 和 MySQL 的环境，于是折腾了一下，结果发现安装配置过程一堆的坑，虽然最终选择了 Docker 环境开发，但毕竟已经踩坑了，就记录一下。 本文记录如何在 Mac OS 上配置 Ngnix + PHP + MySQL，以及最后如何成功安装 Wordpress。  过程 Nginx 1. 安装1brew install">
+<meta property="og:locale">
+<meta property="article:published_time" content="2020-11-30T21:38:14.000Z">
+<meta property="article:modified_time" content="2024-02-06T18:11:56.000Z">
+<meta property="article:author" content="4Ark">
+<meta property="article:tag" content="折腾">
+<meta property="article:tag" content="MNMP">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Mac 上配置 MNMP 环境</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script>localStorage.getItem("dark_mode")==="dark"&&document.write(`<link rel="stylesheet" href="${location.origin}/css/dark.css">`)</script>
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+    <meta name="google-site-verification" content="DwDg4EuywHWNZUkTC7sG0WGv_UQekM4uRtOoaGuDJHc" />
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="4Ark × Blog" type="application/atom+xml">
+<link rel="alternate" href="/rss.xml" title="4Ark × Blog" type="application/rss+xml">
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/posts/2020-summary.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/post/edb9a744.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon"><i class="fa fa-moon" id="dark-btn" aria-hidden="true" onmouseover="$('#i-dark').toggle()" onmouseout="$('#i-dark').toggle()"></i></a></li>
+        <li><a class="icon" target="_blank" rel="noopener" href="https://4ark.me/atom.xml" aria-label="rss"><i class="fas fa-rss"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-dark" class="info" style="display: none;">Switch mode</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/41f45ee.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/41f45ee.html&text=Mac 上配置 MNMP 环境"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/41f45ee.html&title=Mac 上配置 MNMP 环境"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/41f45ee.html&is_video=false&description=Mac 上配置 MNMP 环境"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Mac 上配置 MNMP 环境&body=Check out this article: https://4ark.me/post/41f45ee.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/41f45ee.html&title=Mac 上配置 MNMP 环境"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/41f45ee.html&title=Mac 上配置 MNMP 环境"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/41f45ee.html&title=Mac 上配置 MNMP 环境"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/41f45ee.html&title=Mac 上配置 MNMP 环境"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/41f45ee.html&name=Mac 上配置 MNMP 环境&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/41f45ee.html&t=Mac 上配置 MNMP 环境"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Nginx"><span class="toc-number">2.1.</span> <span class="toc-text">Nginx</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E5%AE%89%E8%A3%85"><span class="toc-number">2.1.1.</span> <span class="toc-text">1. 安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E5%BC%80%E5%90%AF"><span class="toc-number">2.1.2.</span> <span class="toc-text">2. 开启</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E8%AE%BF%E9%97%AE"><span class="toc-number">2.1.3.</span> <span class="toc-text">3. 访问</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E9%85%8D%E7%BD%AE%E4%B8%BB%E6%9C%BA"><span class="toc-number">2.1.4.</span> <span class="toc-text">4. 配置主机</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PHP"><span class="toc-number">2.2.</span> <span class="toc-text">PHP</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E5%AE%89%E8%A3%85-1"><span class="toc-number">2.2.1.</span> <span class="toc-text">1. 安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E9%85%8D%E7%BD%AE"><span class="toc-number">2.2.2.</span> <span class="toc-text">2. 配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E9%85%8D%E7%BD%AE-nginx"><span class="toc-number">2.2.3.</span> <span class="toc-text">3. 配置 nginx</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MySQL"><span class="toc-number">2.3.</span> <span class="toc-text">MySQL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Wordpress"><span class="toc-number">2.4.</span> <span class="toc-text">Wordpress</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-number">3.</span> <span class="toc-text">参考链接</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Mac 上配置 MNMP 环境
+    </h1>
+
+
+
+    <div class="meta">
+      <span
+        class="author"
+        itemprop="author"
+        itemscope
+        itemtype="http://schema.org/Person"
+      >
+        <span itemprop="name"
+          >4Ark</span
+        >
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2020-11-30T21:38:14.000Z" itemprop="datePublished">2020-11-30</time>
+        
+      
+    </div>
+
+ 
+      
+        
+ 
+        
+    <div class="article-tag">
+        <i class="fas fa-hashtag"></i>
+        <a class="tag-link-link" href="/tags/MNMP/" rel="tag">MNMP</a>, <a class="tag-link-link" href="/tags/%E6%8A%98%E8%85%BE/" rel="tag">折腾</a>
+    </div>
+
+
+      
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>今天打算实践一下 Wordpress 主题开发，但由于电脑上没有 PHP 和 MySQL 的环境，于是折腾了一下，结果发现安装配置过程一堆的坑，虽然最终选择了 Docker 环境开发，但毕竟已经踩坑了，就记录一下。</p>
+<p>本文记录如何在 Mac OS 上配置 Ngnix + PHP + MySQL，以及最后如何成功安装 Wordpress。</p>
+<p><a name="UovYc"></a></p>
+<h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><p><a name="EeiNv"></a></p>
+<h3 id="Nginx"><a href="#Nginx" class="headerlink" title="Nginx"></a>Nginx</h3><p><a name="8LI7s"></a></p>
+<h4 id="1-安装"><a href="#1-安装" class="headerlink" title="1. 安装"></a>1. 安装</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install nginx</span><br></pre></td></tr></table></figure>
+
+<p><a name="rc4Yt"></a></p>
+<h4 id="2-开启"><a href="#2-开启" class="headerlink" title="2. 开启"></a>2. 开启</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启动</span></span><br><span class="line">brew services start nginx</span><br><span class="line"><span class="comment"># 停止</span></span><br><span class="line">brew services stop nginx</span><br><span class="line"><span class="comment"># 重启</span></span><br><span class="line">brew services restart nginx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开机启动</span></span><br><span class="line">sudo cp /usr/<span class="built_in">local</span>/opt/nginx/homebrew.mxcl.nginx.plist /Library/LaunchDaemons/</span><br><span class="line">sudo launchctl load -w /Library/LaunchDaemons/homebrew.mxcl.nginx.plist</span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭开机启动</span></span><br><span class="line">sudo launchctl unload -w ~/Library/LaunchAgents/homebrew.mxcl.nginx.plist</span><br></pre></td></tr></table></figure>
+
+<p><a name="HpcvU"></a></p>
+<h4 id="3-访问"><a href="#3-访问" class="headerlink" title="3. 访问"></a>3. 访问</h4><p>nginx 默认监听 8080 端口，可以这样看一下是否能够访问：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">curl localhost:8080</span><br><span class="line"></span><br><span class="line"><span class="comment">## 看到这个返回表示 ok</span></span><br><span class="line"></span><br><span class="line">&lt;html&gt;&lt;body&gt;&lt;h1&gt;It works!&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+<p><a name="lqRdT"></a></p>
+<h4 id="4-配置主机"><a href="#4-配置主机" class="headerlink" title="4. 配置主机"></a>4. 配置主机</h4><p>为了方便管理，我们在 nginx 配置目录下的 <code>servers</code>   新增一个配置文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /usr/<span class="built_in">local</span>/etc/nginx/servers/www.conf</span><br></pre></td></tr></table></figure>
+
+<p>并填充以下内容：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>       <span class="number">80</span>;</span><br><span class="line">  	<span class="comment"># 如果需要域名访问的话，注意需要修改 /etc/hosts 文件</span></span><br><span class="line">    <span class="comment"># server_name  4ark.dev;</span></span><br><span class="line">  	<span class="comment"># 项目根目录</span></span><br><span class="line">    <span class="attribute">root</span> /Users/4ark/www;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">location</span> / &#123;</span><br><span class="line">        <span class="attribute">index</span> index.php index.html;</span><br><span class="line">        <span class="attribute">autoindex</span> <span class="literal">on</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意：最好每个项目都单独一个配置文件。</p>
+<p>从上面的配置可以看到我们将项目放在用户下的 <code>www</code>   下，在这个目录新建一个 html 文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir ~/www</span><br><span class="line"></span><br><span class="line">vim ~/www/index.html</span><br></pre></td></tr></table></figure>
+
+<p>这时候重启一下 nginx 服务，访问刚刚配置的主机，就可以访问到上面这个 html 文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">brew services restart nginx</span><br><span class="line"></span><br><span class="line">curl localhost</span><br></pre></td></tr></table></figure>
+
+<p><a name="Qdk9Q"></a></p>
+<h3 id="PHP"><a href="#PHP" class="headerlink" title="PHP"></a>PHP</h3><p><a name="CezDV"></a></p>
+<h4 id="1-安装-1"><a href="#1-安装-1" class="headerlink" title="1. 安装"></a>1. 安装</h4><p>Mac 已经自带有 PHP，你可以通过以下命令查看本机是否存在 PHP：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew list | grep php</span><br></pre></td></tr></table></figure>
+
+<p>如果没有，或者你想安装其他版本的话，那就先安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 可以先搜索以下是否有你想要的版本</span></span><br><span class="line">brew search php</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装 php 7.3</span></span><br><span class="line">brew search php@7.3</span><br></pre></td></tr></table></figure>
+
+<p><a name="qlUNa"></a></p>
+<h4 id="2-配置"><a href="#2-配置" class="headerlink" title="2. 配置"></a>2. 配置</h4><p>配置 php-fpm 权限</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /usr/<span class="built_in">local</span>/etc/php/7.3/php-fpm.d/www.conf</span><br></pre></td></tr></table></figure>
+
+<p>修改如下：</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="deletion">- user = _www</span></span><br><span class="line"><span class="addition">+ user = 4ark # 你的用户名</span></span><br><span class="line">group = _www</span><br></pre></td></tr></table></figure>
+
+<p>如果正在运行 php-fpm，那就先关闭</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo killall php-fpm</span><br></pre></td></tr></table></figure>
+
+<p>然后启动：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo php-fpm -D</span><br></pre></td></tr></table></figure>
+
+<p>这时候如果遇到以下报错：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ERROR: failed to open configuration file <span class="string">&#x27;/private/etc/php-fpm.conf&#x27;</span>: No such file or directory (2)</span><br><span class="line">ERROR: failed to load configuration file <span class="string">&#x27;/private/etc/php-fpm.conf&#x27;</span></span><br><span class="line">ERROR: FPM initialization failed</span><br></pre></td></tr></table></figure>
+
+<p>错误信息显示，不能打开配置文件， <code>cd /private/etc</code> ，发现没有  <strong>php-fpm.conf</strong>  文件，但是有  <strong>php-fpm.conf.default</strong>  文件。这个文件是默认配置，我们可以复制一份，改名为  <strong>php-fpm.conf</strong>，然后再根据需要改动配置。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo cp /private/etc/php-fpm.conf.default /private/etc/php-fpm.conf</span><br><span class="line"></span><br><span class="line">sudo cp /private/etc/php-fpm.d/www.conf.default /private/etc/php-fpm.d/www.conf</span><br></pre></td></tr></table></figure>
+
+<p>执行   <code>php-fpm</code> ，再次报错：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ERROR: failed to open error_log (/usr/var/<span class="built_in">log</span>/php-fpm.log): No such file or directory (2)</span><br><span class="line">ERROR: failed to post process the configuration</span><br><span class="line">ERROR: FPM initialization failed</span><br></pre></td></tr></table></figure>
+
+<p>错误信息显示，不能打开错误日志文件。 <code>cd /usr/var/log</code>   发现根本没有这个目录，甚至连  <strong>var</strong>  目录都没有，加上为了避免权限问题，干脆配置到  <strong>/usr/local/var/log</strong>  目录。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vim /private/etc/php-fpm.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将 error_log 改为 /usr/local/var/log/php-fpm.log</span></span><br><span class="line">error_log = /usr/<span class="built_in">local</span>/var/<span class="built_in">log</span>/php-fpm.log</span><br></pre></td></tr></table></figure>
+
+<p>执行   <code>sudo php-fpm</code> ，再次报错：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ERROR: unable to <span class="built_in">bind</span> listening socket <span class="keyword">for</span> address <span class="string">&#x27;127.0.0.1:9000&#x27;</span>: Address already <span class="keyword">in</span> use (48)</span><br><span class="line">ERROR: FPM initialization failed</span><br></pre></td></tr></table></figure>
+
+<p>说是 9000 端口被占用了，但 <code>lsof -i:9000</code>   又看不见，于是只能换个端口：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vim /private/etc/php-fpm.d/www.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改监听端口为 9999</span></span><br><span class="line">listen = 9999</span><br></pre></td></tr></table></figure>
+
+<p>再执行 <code>sudo php-fpm -D</code>  ，就能够正常启动了。</p>
+<p><a name="Ih0Fu"></a></p>
+<h4 id="3-配置-nginx"><a href="#3-配置-nginx" class="headerlink" title="3. 配置 nginx"></a>3. 配置 nginx</h4><p>这时候我们修改 nginx 的主机配置，使它支持 PHP</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    server_name  4ark.dev;</span><br><span class="line">    root /Users/4ark/www;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        index index.php index.html;</span><br><span class="line">        autoindex on;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="addition">+    location ~ \.php$ &#123;</span></span><br><span class="line"><span class="addition">+        fastcgi_pass   127.0.0.1:9999;</span></span><br><span class="line"><span class="addition">+        fastcgi_index  index.php;</span></span><br><span class="line"><span class="addition">+        fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;</span></span><br><span class="line"><span class="addition">+        include        fastcgi_params;</span></span><br><span class="line"><span class="addition">+    &#125;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后重启 nginx 服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew services restart nginx</span><br></pre></td></tr></table></figure>
+
+<p>这时候在项目根目录新增一个 php 文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vim ~/www/index.php</span><br><span class="line"></span><br><span class="line"><span class="comment"># 内容</span></span><br><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;hello world!&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>测试一下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">curl localhost</span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回结果</span></span><br><span class="line">hello world!</span><br></pre></td></tr></table></figure>
+
+<p><a name="zJVB5"></a></p>
+<h3 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h3><p>通常来说 Mac OS 也是自带有 MySQL，你可以通过以下命令查看本机是否存在 MySQL</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew list --formula | grep mysql</span><br></pre></td></tr></table></figure>
+
+<p>如果没有安装的话，那就先安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install mysql</span><br></pre></td></tr></table></figure>
+
+<p>安装完成以后，会发现并没有让我们设置密码，运行以下进入密码设置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql_secure_installation</span><br></pre></td></tr></table></figure>
+
+<p>设置完密码之后，就可以登录了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -p</span><br><span class="line"><span class="comment"># 输入密码</span></span><br></pre></td></tr></table></figure>
+
+<p><a name="HeiO2"></a></p>
+<h3 id="Wordpress"><a href="#Wordpress" class="headerlink" title="Wordpress"></a>Wordpress</h3><p>环境终于配置好了，终于可以安装 Wordpress 啦，然而事情并没有这么简单，当我满心欢喜把 wordpress 下载到项目根目录下，就好像这样：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp -r ~/download/wordpress ~/www/wordpress</span><br></pre></td></tr></table></figure>
+
+<p>然后我们创建一个数据库：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@host]<span class="comment"># mysql -u root -p</span></span><br><span class="line">Enter password:******  <span class="comment"># 登录后进入终端</span></span><br><span class="line"></span><br><span class="line">mysql&gt; create DATABASE `wordpress-test`;</span><br></pre></td></tr></table></figure>
+
+<p>然后我们通过浏览器访问 <code>localhost/wordpress</code>  ，就可以看到一个 Wordpress 的安装界面，输入数据库相关的信息后，本以为可以像往常一样成功进入下一步，结果我看到了这个错误：<strong>WordPress 建立数据库连接时出错</strong>。</p>
+<p>结果再尝试了几次，确保所有表单都已经填写正确，依然无法正常建立数据库连接，意识到事情可能并没有这么简单， 于是我在网上找到了一个解决方案，大概就是说无法使用 root 进行登录，需要新增一个用户：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grant all on wordpress-test.* to <span class="string">&#x27;wp-test&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span> identified by <span class="string">&#x27;password&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后使用这个用户进行登录，然后在我这里却行不通，依然显示同样的错误，于是我开启一下 <code>debug</code>  ，看一下导致是什么问题</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cp wp-config-sample.php wp-config.php</span><br><span class="line"></span><br><span class="line">vim wp-config.php</span><br></pre></td></tr></table></figure>
+
+<p>做以下改动：</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">// 填写以下数据库信息</span><br><span class="line"></span><br><span class="line">// ** MySQL 设置 - 具体信息来自您正在使用的主机 ** //</span><br><span class="line">/** WordPress数据库的名称 */</span><br><span class="line">define( &#x27;DB_NAME&#x27;, &#x27;database_name_here&#x27; );</span><br><span class="line"></span><br><span class="line">/** MySQL数据库用户名 */</span><br><span class="line">define( &#x27;DB_USER&#x27;, &#x27;username_here&#x27; );</span><br><span class="line"></span><br><span class="line">/** MySQL数据库密码 */</span><br><span class="line">define( &#x27;DB_PASSWORD&#x27;, &#x27;password_here&#x27; );</span><br><span class="line"></span><br><span class="line">/** MySQL主机 */</span><br><span class="line">define( &#x27;DB_HOST&#x27;, &#x27;localhost&#x27; );</span><br><span class="line"></span><br><span class="line">// 开启 DEBUG</span><br><span class="line"></span><br><span class="line"><span class="deletion">- define(&#x27;WP_DEBUG&#x27;, false);</span></span><br><span class="line"><span class="addition">+ define(&#x27;WP_DEBUG&#x27;, true);</span></span><br></pre></td></tr></table></figure>
+
+<p>再访问一下，可以看到以下错误：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">No such file or directory 建立数据库连接时出错</span><br></pre></td></tr></table></figure>
+
+<p>其实原因是 PHP 配置中的 <code>mysql.sock</code>   与本机的 MySQL 中的路径不一致，可以通过这样查看：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vim ~/www/phpinfo.php</span><br><span class="line"></span><br><span class="line"><span class="comment"># 内容</span></span><br><span class="line">&lt;?php</span><br><span class="line">phpinfo();</span><br></pre></td></tr></table></figure>
+
+<p>然后打开 <code>localhost/phpinfo</code>  ，搜索 <code>default_socket</code>  。</p>
+<p>然后再查看 MySQL 的 <code>socket</code>   路径：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">[root@host]<span class="comment"># mysql -u root -p</span></span><br><span class="line">Enter password:******  <span class="comment"># 登录后进入终端</span></span><br><span class="line"></span><br><span class="line">mysql&gt; status;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 输出</span></span><br><span class="line">mysql  Ver 8.0.22 <span class="keyword">for</span> osx10.16 on x86_64 (Homebrew)</span><br><span class="line"></span><br><span class="line">Connection id:		114</span><br><span class="line">Current database:</span><br><span class="line">Current user:		root@localhost</span><br><span class="line">SSL:			Not <span class="keyword">in</span> use</span><br><span class="line">Current pager:		less</span><br><span class="line">Using outfile:		<span class="string">&#x27;&#x27;</span></span><br><span class="line">Using delimiter:	;</span><br><span class="line">Server version:		8.0.22 Homebrew</span><br><span class="line">Protocol version:	10</span><br><span class="line">Connection:		Localhost via UNIX socket</span><br><span class="line">Server characterset:	utf8mb4</span><br><span class="line">Db     characterset:	utf8mb4</span><br><span class="line">Client characterset:	utf8mb4</span><br><span class="line">Conn.  characterset:	utf8mb4</span><br><span class="line">UNIX socket:		/tmp/mysql.sock</span><br><span class="line">Binary data as:		Hexadecimal</span><br><span class="line">Uptime:			14 hours 59 min 44 sec</span><br></pre></td></tr></table></figure>
+
+<p>如果与 PHP 中的 <code>mysql.sock</code>   路径不一致，则需要修改：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sudo cp /private/etc/php.ini.default /private/etc/php.ini</span><br><span class="line"></span><br><span class="line">vim /private/etc/php.ini</span><br><span class="line"></span><br><span class="line"><span class="comment">## 修改为以下</span></span><br><span class="line"></span><br><span class="line">pdo_mysql.default_socket= /tmp/mysql.sock</span><br><span class="line">mysqli.default_socket = /tmp/mysql.sock</span><br></pre></td></tr></table></figure>
+
+<p>然后重启一下 <code>php-fpm</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo killall php-fpm</span><br><span class="line">sudo php-fpm -D</span><br></pre></td></tr></table></figure>
+
+<p>再看看 <code>phpinfo</code>  ，应该就生效了。</p>
+<p>然后再尝试登录一下 Wordpress，又发现了以下错误：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">error: The server requested authentication method unknown to the client [duplicate]</span><br></pre></td></tr></table></figure>
+
+<p>解决方案如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@host]<span class="comment"># mysql -u root -p</span></span><br><span class="line">Enter password:******  <span class="comment"># 登录后进入终端</span></span><br><span class="line"></span><br><span class="line">mysql&gt; ALTER USER <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span> IDENTIFIED WITH mysql_native_password</span><br><span class="line">BY <span class="string">&#x27;your_root_password&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>应该就可以了。</p>
+<p><a name="rgfRu"></a></p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://ismdeep.com/posts/2020-04-22-install-nginx-mysql-php-on-macos.html">安装 Nginx + MySQL + PHP 环境（ macOS 篇 ）</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/musicode/test/issues/5">[开发环境]Mac 配置 php-fpm</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/52364415/php-with-mysql-8-0-error-the-server-requested-authentication-method-unknown-to">PHP with MySQL 8.0+ error: The server requested authentication method unknown to the client [duplicate]</a></li>
+</ul>
+</div>
+  <hr class="copy-line" />
+  <div class="post-copyright">
+    <div class="copy-author">
+      <span>作者 :</span>
+      <span
+        >4Ark</span
+      >
+    </div>
+    <div class="copy-url">
+      <span>地址 :</span>
+      <a href="https://4ark.me/post/41f45ee.html">https://4ark.me/post/41f45ee.html</a>
+    </div>
+    <div class="copy-origin">
+      <span>来源 :</span>
+      <a href="https://4ark.me">https://4ark.me</a>
+    </div>
+    <div class="copy-license">著作权归作者所有，转载请联系作者获得授权。</div>
+  </div>
+</article>
+
+<div class="blog-post-comments">
+  <div id="load-disqus">
+    <p onclick="loadDisqus()" style="cursor: pointer; text-align: center">
+      🥳&nbsp;加载 Disqus 评论
+    </p>
+  </div>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments.</noscript>
+  </div>
+</div>
+ 
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Writing</a></li>
+         
+          <li><a href="/weekly">Weekly</a></li>
+         
+          <li><a href="/tags">Tags</a></li>
+         
+          <li><a href="/search">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%87%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Nginx"><span class="toc-number">2.1.</span> <span class="toc-text">Nginx</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E5%AE%89%E8%A3%85"><span class="toc-number">2.1.1.</span> <span class="toc-text">1. 安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E5%BC%80%E5%90%AF"><span class="toc-number">2.1.2.</span> <span class="toc-text">2. 开启</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E8%AE%BF%E9%97%AE"><span class="toc-number">2.1.3.</span> <span class="toc-text">3. 访问</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E9%85%8D%E7%BD%AE%E4%B8%BB%E6%9C%BA"><span class="toc-number">2.1.4.</span> <span class="toc-text">4. 配置主机</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PHP"><span class="toc-number">2.2.</span> <span class="toc-text">PHP</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E5%AE%89%E8%A3%85-1"><span class="toc-number">2.2.1.</span> <span class="toc-text">1. 安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E9%85%8D%E7%BD%AE"><span class="toc-number">2.2.2.</span> <span class="toc-text">2. 配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E9%85%8D%E7%BD%AE-nginx"><span class="toc-number">2.2.3.</span> <span class="toc-text">3. 配置 nginx</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MySQL"><span class="toc-number">2.3.</span> <span class="toc-text">MySQL</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Wordpress"><span class="toc-number">2.4.</span> <span class="toc-text">Wordpress</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-number">3.</span> <span class="toc-text">参考链接</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/41f45ee.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/41f45ee.html&text=Mac 上配置 MNMP 环境"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/41f45ee.html&title=Mac 上配置 MNMP 环境"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/41f45ee.html&is_video=false&description=Mac 上配置 MNMP 环境"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Mac 上配置 MNMP 环境&body=Check out this article: https://4ark.me/post/41f45ee.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/41f45ee.html&title=Mac 上配置 MNMP 环境"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/41f45ee.html&title=Mac 上配置 MNMP 环境"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/41f45ee.html&title=Mac 上配置 MNMP 环境"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/41f45ee.html&title=Mac 上配置 MNMP 环境"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/41f45ee.html&name=Mac 上配置 MNMP 环境&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/41f45ee.html&t=Mac 上配置 MNMP 环境"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="dark-mobile" class="icon"><i class="fa fa-sun" id="dark-btn" aria-hidden="true"></i> Switch</a>
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    4Ark
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-190615898-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-190615898-1');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<script type="text/javascript">
+  function loadDisqus() {
+    var disqus_shortname = 'https-4ark-me'
+
+    ;(function () {
+      var dsq = document.createElement('script')
+      dsq.type = 'text/javascript'
+      dsq.async = true
+      dsq.src =
+        '//' +
+        disqus_shortname +
+        '.disqus.com/embed.js'
+      ;(
+        document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]
+      ).appendChild(dsq)
+    })()
+
+    $('#load-disqus').hide()
+  }
+</script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>

@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="写在前面这里记录一些使用 uni-app 和 uView 开发时踩过的坑，希望能对后来者有所帮助。 1. 微信开发者工具关闭 ES6 转 ES5如果微信开发者工具开启了 ES6 转 ES5 的功能，会导致引入的 uView 组件无法正常使用，会报类似于下面这样的错：  解决方案：把微信开发者工具的 ES6 转 ES5 功能关掉，设置 -&gt; 项目设置 -&gt; 本地设置。 2. ref 不要">
+<meta property="og:type" content="article">
+<meta property="og:title" content="uni-app 踩坑小记">
+<meta property="og:url" content="https://4ark.me/post/uni-app-issues.html">
+<meta property="og:site_name" content="4Ark × Blog">
+<meta property="og:description" content="写在前面这里记录一些使用 uni-app 和 uView 开发时踩过的坑，希望能对后来者有所帮助。 1. 微信开发者工具关闭 ES6 转 ES5如果微信开发者工具开启了 ES6 转 ES5 的功能，会导致引入的 uView 组件无法正常使用，会报类似于下面这样的错：  解决方案：把微信开发者工具的 ES6 转 ES5 功能关掉，设置 -&gt; 项目设置 -&gt; 本地设置。 2. ref 不要">
+<meta property="og:locale">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728092428.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728092634.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728092644.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728092659.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728094252.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728100012.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728100327.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728093109.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728093132.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728093202.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728093223.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728093432.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728093448.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728093530.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728093542.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728093710.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728093759.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728094505.gif">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728094538.gif">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728094614.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728094625.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728094742.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728094757.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728094913.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728094944.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728094951.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728095001.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728095014.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728095027.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728095039.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728095053.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728095103.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728095113.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728095125.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728095125.png">
+<meta property="og:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728095253.png">
+<meta property="article:published_time" content="2021-04-01T00:00:00.000Z">
+<meta property="article:modified_time" content="2024-02-06T18:11:56.000Z">
+<meta property="article:author" content="4Ark">
+<meta property="article:tag" content="前端">
+<meta property="article:tag" content="小程序">
+<meta property="article:tag" content="uni-app">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728092428.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>uni-app 踩坑小记</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <script>localStorage.getItem("dark_mode")==="dark"&&document.write(`<link rel="stylesheet" href="${location.origin}/css/dark.css">`)</script>
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+    <meta name="google-site-verification" content="DwDg4EuywHWNZUkTC7sG0WGv_UQekM4uRtOoaGuDJHc" />
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="4Ark × Blog" type="application/atom+xml">
+<link rel="alternate" href="/rss.xml" title="4Ark × Blog" type="application/rss+xml">
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/post/vuex-score-code.html"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/post/about-si-ma-qian.html"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon"><i class="fa fa-moon" id="dark-btn" aria-hidden="true" onmouseover="$('#i-dark').toggle()" onmouseout="$('#i-dark').toggle()"></i></a></li>
+        <li><a class="icon" target="_blank" rel="noopener" href="https://4ark.me/atom.xml" aria-label="rss"><i class="fas fa-rss"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-dark" class="info" style="display: none;">Switch mode</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/uni-app-issues.html"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/uni-app-issues.html&text=uni-app 踩坑小记"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/uni-app-issues.html&title=uni-app 踩坑小记"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/uni-app-issues.html&is_video=false&description=uni-app 踩坑小记"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=uni-app 踩坑小记&body=Check out this article: https://4ark.me/post/uni-app-issues.html"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/uni-app-issues.html&title=uni-app 踩坑小记"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/uni-app-issues.html&title=uni-app 踩坑小记"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/uni-app-issues.html&title=uni-app 踩坑小记"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/uni-app-issues.html&title=uni-app 踩坑小记"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/uni-app-issues.html&name=uni-app 踩坑小记&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/uni-app-issues.html&t=uni-app 踩坑小记"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="toc-number">1.</span> <span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91%E8%80%85%E5%B7%A5%E5%85%B7%E5%85%B3%E9%97%AD-ES6-%E8%BD%AC-ES5"><span class="toc-number">2.</span> <span class="toc-text">1. 微信开发者工具关闭 ES6 转 ES5</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-ref-%E4%B8%8D%E8%A6%81%E6%94%BE%E5%9C%A8-computed"><span class="toc-number">3.</span> <span class="toc-text">2. ref 不要放在 computed</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%AB%AF%E7%9A%84%E7%BB%84%E4%BB%B6%E6%A0%B7%E5%BC%8F%E9%97%AE%E9%A2%98"><span class="toc-number">4.</span> <span class="toc-text">3. 小程序端的组件样式问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%AB%AF%E4%BF%AE%E6%94%B9%E7%9A%84%E5%A4%96%E9%83%A8%E7%BB%84%E4%BB%B6%E6%A0%B7%E5%BC%8F%E6%97%A0%E6%95%88%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">5.</span> <span class="toc-text">4. 小程序端修改的外部组件样式无效的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0"><span class="toc-number">5.1.</span> <span class="toc-text">问题描述</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">5.1.1.</span> <span class="toc-text">解决方案</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%AB%AF%E4%BF%AE%E6%94%B9-shadow-root-%E5%86%85%E9%83%A8%E6%A0%B7%E5%BC%8F"><span class="toc-number">5.2.</span> <span class="toc-text">小程序端修改 shadow-root 内部样式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-1"><span class="toc-number">5.2.1.</span> <span class="toc-text">解决方案</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%9C%A8-HBuilder-%E8%BF%90%E8%A1%8C%E9%A1%B9%E7%9B%AE"><span class="toc-number">6.</span> <span class="toc-text">5. 在 HBuilder 运行项目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%8A%A8%E6%80%81%E6%8F%92%E6%A7%BD%E5%90%8D"><span class="toc-number">7.</span> <span class="toc-text">6. 动态插槽名</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">7.1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#H5-%E5%92%8C-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%AB%AF"><span class="toc-number">7.2.</span> <span class="toc-text">H5 和 小程序端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#APP-%E7%AB%AF"><span class="toc-number">7.3.</span> <span class="toc-text">APP 端</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-2"><span class="toc-number">7.3.1.</span> <span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8E%92%E6%9F%A5%E9%97%AE%E9%A2%98"><span class="toc-number">7.3.2.</span> <span class="toc-text">排查问题</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%AB%AF-v-for-%E4%B8%AD%E4%BD%BF%E7%94%A8-v-if-%E9%97%AE%E9%A2%98"><span class="toc-number">8.</span> <span class="toc-text">7. 小程序端 v-for 中使用 v-if 问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0-1"><span class="toc-number">8.1.</span> <span class="toc-text">问题描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%92%E6%9F%A5%E8%BF%87%E7%A8%8B"><span class="toc-number">8.2.</span> <span class="toc-text">排查过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-3"><span class="toc-number">8.3.</span> <span class="toc-text">解决方案</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%AB%AF%E7%A6%81%E6%AD%A2%E4%BA%8B%E4%BB%B6%E5%86%92%E6%B3%A1"><span class="toc-number">9.</span> <span class="toc-text">8. 小程序端禁止事件冒泡</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0-2"><span class="toc-number">9.1.</span> <span class="toc-text">问题描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-4"><span class="toc-number">9.2.</span> <span class="toc-text">解决方案</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-uView-%E4%B8%A4%E5%B1%82-tabsSwiper-left-%E8%AE%A1%E7%AE%97%E9%97%AE%E9%A2%98"><span class="toc-number">10.</span> <span class="toc-text">9. uView 两层 tabsSwiper left 计算问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-scss-%E6%96%87%E4%BB%B6%E8%BF%9B%E8%A1%8C%E6%9D%A1%E4%BB%B6%E6%B8%B2%E6%9F%93"><span class="toc-number">11.</span> <span class="toc-text">10. scss 文件进行条件渲染</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-%E6%96%B9%E6%B3%95%E5%90%8D%E4%B8%8D%E8%83%BD%E4%B8%8E%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%90%8D%E5%AD%97%E5%86%B2%E7%AA%81"><span class="toc-number">12.</span> <span class="toc-text">11. 方法名不能与生命周期名字冲突</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-%E8%B0%83%E8%AF%95-uView-%E7%BB%84%E4%BB%B6"><span class="toc-number">13.</span> <span class="toc-text">12. 调试 uView 组件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13-SwipeAction-%E7%BB%84%E4%BB%B6%E6%97%A0%E6%B3%95%E8%87%AA%E5%8A%A8%E9%9A%90%E8%97%8F%E6%8C%89%E9%92%AE"><span class="toc-number">14.</span> <span class="toc-text">13. SwipeAction 组件无法自动隐藏按钮</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0-3"><span class="toc-number">14.1.</span> <span class="toc-text">问题描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-5"><span class="toc-number">14.2.</span> <span class="toc-text">解决方案</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#14-IOS-%E5%BA%95%E9%83%A8%E7%A9%BA%E7%99%BD%E5%AE%89%E5%85%A8%E5%8C%BA%E5%9F%9F"><span class="toc-number">15.</span> <span class="toc-text">14. IOS 底部空白安全区域</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#15-APP-%E7%AB%AF%E9%94%81%E5%AE%9A%E5%B1%8F%E5%B9%95%E6%96%B9%E5%90%91"><span class="toc-number">16.</span> <span class="toc-text">15. APP 端锁定屏幕方向</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#16-uButton-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A0%B7%E5%BC%8F"><span class="toc-number">17.</span> <span class="toc-text">16. uButton 自定义样式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#17-uButton-%E6%97%A0%E6%B3%95%E8%87%AA%E5%AE%9A%E4%B9%89-hover-class"><span class="toc-number">18.</span> <span class="toc-text">17. uButton 无法自定义 hover-class</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#18-uni-app-%E5%8F%AA%E8%83%BD%E5%9C%A8-main-js-%E6%B3%A8%E5%86%8C%E5%85%A8%E5%B1%80%E7%BB%84%E4%BB%B6"><span class="toc-number">19.</span> <span class="toc-text">18. uni-app 只能在 main.js 注册全局组件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0-4"><span class="toc-number">19.1.</span> <span class="toc-text">问题描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA%E5%85%88%E8%A1%8C"><span class="toc-number">19.2.</span> <span class="toc-text">结论先行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90"><span class="toc-number">19.3.</span> <span class="toc-text">问题分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E5%9C%A8%E6%9C%80%E5%90%8E"><span class="toc-number">20.</span> <span class="toc-text">写在最后</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        uni-app 踩坑小记
+    </h1>
+
+
+
+    <div class="meta">
+      <span
+        class="author"
+        itemprop="author"
+        itemscope
+        itemtype="http://schema.org/Person"
+      >
+        <span itemprop="name"
+          >4Ark</span
+        >
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-04-01T00:00:00.000Z" itemprop="datePublished">2021-04-01</time>
+        
+      
+    </div>
+
+ 
+      
+        
+ 
+        
+    <div class="article-tag">
+        <i class="fas fa-hashtag"></i>
+        <a class="tag-link-link" href="/tags/uni-app/" rel="tag">uni-app</a>, <a class="tag-link-link" href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag">前端</a>, <a class="tag-link-link" href="/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/" rel="tag">小程序</a>
+    </div>
+
+
+      
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody"><h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>这里记录一些使用 uni-app 和 uView 开发时踩过的坑，希望能对后来者有所帮助。</p>
+<h2 id="1-微信开发者工具关闭-ES6-转-ES5"><a href="#1-微信开发者工具关闭-ES6-转-ES5" class="headerlink" title="1. 微信开发者工具关闭 ES6 转 ES5"></a>1. 微信开发者工具关闭 ES6 转 ES5</h2><p>如果微信开发者工具开启了 ES6 转 ES5 的功能，会导致引入的 uView 组件无法正常使用，会报类似于下面这样的错：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728092428.png"></p>
+<p>解决方案：把微信开发者工具的 ES6 转 ES5 功能关掉，设置 -&gt; 项目设置 -&gt; 本地设置。</p>
+<h2 id="2-ref-不要放在-computed"><a href="#2-ref-不要放在-computed" class="headerlink" title="2. ref 不要放在 computed"></a>2. ref 不要放在 computed</h2><p>下面这份代码，在小程序端运行异常：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">&quot;container&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">ref</span>=<span class="string">&quot;button&quot;</span>&gt;</span>button<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">  <span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span><br><span class="line"><span class="javascript">    <span class="attr">computed</span>: &#123;</span></span><br><span class="line"><span class="javascript">      <span class="function"><span class="title">buttonRef</span>(<span class="params"></span>)</span> &#123;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">return</span> <span class="built_in">this</span>.$refs.button</span></span><br><span class="line"><span class="javascript">      &#125;</span></span><br><span class="line"><span class="javascript">    &#125;,</span></span><br><span class="line"><span class="javascript"></span></span><br><span class="line"><span class="javascript">    <span class="function"><span class="title">mounted</span>(<span class="params"></span>)</span> &#123;</span></span><br><span class="line"><span class="javascript">      <span class="built_in">this</span>.buttonRef.someMethods() <span class="comment">// 在 mp-weixin 会报：buttonRef 为空</span></span></span><br><span class="line"><span class="javascript">    &#125;</span></span><br><span class="line"><span class="javascript">  &#125;</span></span><br><span class="line"><span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>解决方案：不要把 refs 的定义放在 computed，每次使用都直接通过 <code>this.$refs.button</code> 获取 。</p>
+<h2 id="3-小程序端的组件样式问题"><a href="#3-小程序端的组件样式问题" class="headerlink" title="3. 小程序端的组件样式问题"></a>3. 小程序端的组件样式问题</h2><p>有可能你在 h5 编写好一个组件的样式，运行好好的，结果在小程序端却不正常了，原因在于小程序端会在组件外额外增加一层视图容器，这可能会导致诸如一些高度、外边距之类的样式失效，解决方案就是修改这个外层的样式，使它与我们这个组件的最外层样式一致：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">lang</span>=<span class="string">&quot;scss&quot;</span>&gt;</span><span class="css"></span></span><br><span class="line"><span class="css">  // <span class="selector-id">#ifdef</span> MP-WEIXIN</span></span><br><span class="line"><span class="css">  // HACk: 微信小程序端组件外面会多一层，需要给它也设置高度</span></span><br><span class="line"><span class="css">  [data-ref=<span class="string">&#x27;basicLayout&#x27;</span>], // 这里的值在微信开发者工具查看</span></span><br><span class="line"><span class="css">// #endif</span></span><br><span class="line"><span class="css">.basic-layout,</span></span><br><span class="line"><span class="css">.page-content &#123;</span></span><br><span class="line"><span class="css">    flex: <span class="number">1</span>;</span></span><br><span class="line"><span class="css">    <span class="attribute">display</span>: flex;</span></span><br><span class="line"><span class="css">    <span class="attribute">flex-direction</span>: column;</span></span><br><span class="line"><span class="css">  &#125;</span></span><br><span class="line"><span class="css"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>注意：由于这个选择器只针对小程序端，所以我们要加一个条件渲染。</p>
+<h2 id="4-小程序端修改的外部组件样式无效的问题"><a href="#4-小程序端修改的外部组件样式无效的问题" class="headerlink" title="4. 小程序端修改的外部组件样式无效的问题"></a>4. 小程序端修改的外部组件样式无效的问题</h2><h3 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h3><p>如果要在 <code>.vue </code> 中修改外部组件的样式（如 uni-app 和 uView），像下面这样可能会无效：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">&quot;container&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">u-search</span> <span class="attr">v-model</span>=<span class="string">&quot;keyword&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;日照香炉生紫烟&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">u-search</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">  <span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span><br><span class="line"><span class="javascript">    <span class="function"><span class="title">data</span>(<span class="params"></span>)</span> &#123;</span></span><br><span class="line"><span class="javascript">      <span class="keyword">return</span> &#123;</span></span><br><span class="line"><span class="javascript">        <span class="attr">keyword</span>: <span class="string">&#x27;&#x27;</span></span></span><br><span class="line"><span class="javascript">      &#125;</span></span><br><span class="line"><span class="javascript">    &#125;</span></span><br><span class="line"><span class="javascript">  &#125;</span></span><br><span class="line"><span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">lang</span>=<span class="string">&quot;scss&quot;</span>&gt;</span><span class="css"></span></span><br><span class="line"><span class="css">  <span class="selector-class">.container</span> &#123;</span></span><br><span class="line"><span class="css">    <span class="selector-class">.u-search</span> <span class="selector-class">.u-input</span> &#123;</span></span><br><span class="line"><span class="css">      <span class="attribute">color</span>: red <span class="meta">!important</span>;</span></span><br><span class="line"><span class="css">    &#125;</span></span><br><span class="line"><span class="css">  &#125;</span></span><br><span class="line"><span class="css"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>运行结果：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728092634.png"><br><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728092644.png"></p>
+<h4 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h4><p>这是因为在 uni-app <code>&lt;style&gt;</code>   默认都是 <code>scope</code> 的，所以需要改成下面这样：</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;style lang=&quot;scss&quot;&gt;</span><br><span class="line">.container &#123;</span><br><span class="line"><span class="deletion">-  .u-search .u-input &#123;</span></span><br><span class="line"><span class="addition">+  /deep/ .u-search .u-input &#123;</span></span><br><span class="line">    color: red !important;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这样 H5 也能运行正常了：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728092659.png"></p>
+<h3 id="小程序端修改-shadow-root-内部样式"><a href="#小程序端修改-shadow-root-内部样式" class="headerlink" title="小程序端修改 shadow-root 内部样式"></a>小程序端修改 shadow-root 内部样式</h3><p>但是还有一种情况，就是如果你要修改的组件位于 <code>#shadow-root</code> 下，就有可能无法修改，比如下面这样：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.nav-bar</span> &#123;</span><br><span class="line">  /deep/ <span class="selector-class">.uni-navbar__content</span> &#123;</span><br><span class="line">    <span class="attribute">overflow</span>: unset <span class="meta">!important</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其实根本没有修改到：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728094252.png"></p>
+<h4 id="解决方案-1"><a href="#解决方案-1" class="headerlink" title="解决方案"></a>解决方案</h4><p>这种情况，我们必须在 <code>App.vue</code> 下的 <code>&lt;style&gt;</code> 才能进行样式覆盖，但为了方便维护，我们新增了一个 <code>uni-custom-app.scss</code> 专门做这件事，用于解决上面这种情况：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">// 文件路径：<span class="attribute">src</span>/styles/uni-custom<span class="selector-class">.scss</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 这个文件用于修改 uni 或者其他 ui 组件库的样式</span></span><br><span class="line"><span class="comment">* 由于微信小程序的限制，无法在组件内部修改其他外部组件的样式，只能在全局设置</span></span><br><span class="line"><span class="comment">* @link https://ask.dcloud.net.cn/question/68411</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">* 注意：如果不是全局修改，为避免影响其它，需要指定在外层页面和组件</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line">// 全局修改</span><br><span class="line">// <span class="selector-class">.u-btn</span> &#123;</span><br><span class="line">//   <span class="attribute">color</span>: red;</span><br><span class="line">// &#125;</span><br><span class="line"></span><br><span class="line">// 局部修改</span><br><span class="line">// <span class="selector-class">.page-xxx</span> &#123;</span><br><span class="line">//   <span class="selector-class">.container</span> &#123;</span><br><span class="line">//     <span class="selector-class">.u-btn</span> &#123;</span><br><span class="line">//       <span class="attribute">color</span>: red;</span><br><span class="line">//     &#125;</span><br><span class="line">//   &#125;</span><br><span class="line">// &#125;</span><br></pre></td></tr></table></figure>
+
+<p>也就是说，我们只要把上面的样式移动到这个文件即可：</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// 文件路径：src/styles/uni-custom.scss</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="addition">+.page-message &#123;</span></span><br><span class="line"><span class="addition">+  .nav-bar &#123;</span></span><br><span class="line"><span class="addition">+    /deep/ .uni-navbar__content &#123;</span></span><br><span class="line"><span class="addition">+      overflow: unset !important;</span></span><br><span class="line"><span class="addition">+    &#125;</span></span><br><span class="line"><span class="addition">+  &#125;</span></span><br><span class="line"><span class="addition">+&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到是有样式的：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728100012.png"></p>
+<p>但是你会看到我们写的样式权重似乎不够高，但其实样式已经被应用上去了，所以不用在意这里，至于为什么会这样，可能会微信开发者工具的问题吧？</p>
+<p>注意：如果此样式只针对某个页面下的组件，建议在外面包一层该页面的唯一 class 名字，以防影响其它页面。</p>
+<p>参考链接：<a target="_blank" rel="noopener" href="https://ask.dcloud.net.cn/question/68411">https://ask.dcloud.net.cn/question/68411</a></p>
+<p>如果是自定义 uButton 样式无效，可以看看：[18. 自定义 uButton 样式](</p>
+<h2 id="5-在-HBuilder-运行项目"><a href="#5-在-HBuilder-运行项目" class="headerlink" title="5. 在 HBuilder 运行项目"></a>5. 在 HBuilder 运行项目</h2><p>由于我们是使用 cli 的方式生成的项目，所以基本开发只需要在命令行运行 <code>npm run dev:xxx</code> 即可，但是如果要调试 APP 端，还是使用 HBuilder 要更方便，然而如果在 在 HBuilder 运行 cli 项目 你可能会遇到以下错误：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Node Sass could not find a binding <span class="keyword">for</span> your current environment: OS X 64-bit with Node.js 8.x</span><br></pre></td></tr></table></figure>
+
+<p>说白就是 node-sass 出了问题了，HBuilder 默认使用的 Node 版本是 v8.x，所以我们要修改一下配置，让它使用我们本机的 Node 版本。</p>
+<p>在 偏好设置 -&gt; 运行配置 中修改 npm 和 Node 的路径即可：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728100327.png"></p>
+<p>如果你不知道 Node 的路径在哪，可以这样：</p>
+<ul>
+<li>Linux/Mac： <code>where node</code></li>
+<li>Windows：直接看系统环境变量</li>
+</ul>
+<p>参考：<a target="_blank" rel="noopener" href="https://ask.dcloud.net.cn/question/67852">https://ask.dcloud.net.cn/question/67852</a></p>
+<h2 id="6-动态插槽名"><a href="#6-动态插槽名" class="headerlink" title="6. 动态插槽名"></a>6. 动态插槽名</h2><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>要在 uni-app 中使用动态 slot 名字，会比较麻烦，因为：在 MP-WEIXIN、APP-PLUS 都会有坑。</p>
+<h3 id="H5-和-小程序端"><a href="#H5-和-小程序端" class="headerlink" title="H5 和 小程序端"></a>H5 和 小程序端</h3><p>我们先说比较常用的 H5 和 MP-WEIXIN 好了：</p>
+<p>定义：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- <span class="doctag">HACK:</span> uni-app 处理动态 slot 名字不兼容，需要使用不同的语法 --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- #ifdef H5 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">slot</span> <span class="attr">:name</span>=<span class="string">&quot;`tab:$&#123;item.key&#125;`&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">slot</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- #endif --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- #ifdef MP-WEIXIN--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">slot</span> <span class="attr">name</span>=<span class="string">&quot;tab:&#123;&#123;item.key&#125;&#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">slot</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- #endif --&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>使用 slot：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">view</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- <span class="doctag">HACK:</span> uni-app 处理动态 slot 名字不兼容，需要使用不同的语法 --&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- #ifdef H5 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">template</span> <span class="attr">v-for</span>=<span class="string">&quot;item in list&quot;</span> <span class="attr">:slot</span>=<span class="string">&quot;`tab:$&#123;item.id&#125;`&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">post-list</span> <span class="attr">:key</span>=<span class="string">&quot;item.id&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- #endif --&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">&lt;!-- #ifdef MP-WEIXIN--&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">template</span> <span class="attr">v-for</span>=<span class="string">&quot;item in lits&quot;</span> <span class="attr">slot</span>=<span class="string">&quot;tab:professional:&#123;&#123;item.id&#125;&#125;&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">post-list</span> <span class="attr">:key</span>=<span class="string">&quot;item.id&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- #endif  --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>参考链接：<a target="_blank" rel="noopener" href="https://ask.dcloud.net.cn/question/82506">https://ask.dcloud.net.cn/question/82506</a></p>
+<h3 id="APP-端"><a href="#APP-端" class="headerlink" title="APP 端"></a>APP 端</h3><p>如果还要兼容 APP 端（vue 文件），则情况会变得稍微复杂一点，以上两种情况都不适用，先说结论：</p>
+<ol>
+<li><strong>不支持拿 data 的数据用于拼接动态 slot 名字</strong></li>
+<li><strong>在 v-for 中要根据当前项的字段来拼接 slot 名字，则要将 key 指向 <code>item</code>  本身（不推荐</strong></li>
+<li><strong>能拿 v-for 的 index 来拼接 slot 名字（推荐</strong></li>
+</ol>
+<h4 id="解决方案-2"><a href="#解决方案-2" class="headerlink" title="解决方案"></a>解决方案</h4><p>也即，如果是上面的例子，需要改写为如下：：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">swiper-item</span> <span class="attr">v-for</span>=<span class="string">&quot;(item, index) in tabs&quot;</span> <span class="attr">:key</span>=<span class="string">&quot;item.id&quot;</span> <span class="attr">class</span>=<span class="string">&quot;swiper-item&quot;</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- <span class="doctag">HACK:</span> uni-app 处理动态 slot 名字不兼容，需要使用不同的语法 --&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- #ifdef H5 || APP-PLUS --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">slot</span> <span class="attr">:name</span>=<span class="string">&quot;`tab:$&#123;index&#125;`&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">slot</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- #endif --&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- #ifdef MP-WEIXIN--&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">slot</span> <span class="attr">name</span>=<span class="string">&quot;tab:&#123;&#123;index&#125;&#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">slot</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- #endif --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">swiper-item</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>使用的时候：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">tab-swiper</span></span></span><br><span class="line"><span class="tag">  <span class="attr">ref</span>=<span class="string">&quot;tabSwiper&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">:tabs</span>=<span class="string">&quot;list&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">:current.sync</span>=<span class="string">&quot;current&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">:swiper-current.sync</span>=<span class="string">&quot;swiperCurrent&quot;</span></span></span><br><span class="line"><span class="tag">&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- <span class="doctag">HACK:</span> uni-app 处理动态 slot 名字不兼容，需要使用不同的语法 --&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- #ifndef H5 || APP-PLUS --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">template</span> <span class="attr">v-for</span>=<span class="string">&quot;(item, index) in list&quot;</span> <span class="attr">:slot</span>=<span class="string">&quot;`tab:$&#123;index&#125;`&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">post-list</span> <span class="attr">:key</span>=<span class="string">&quot;item.id&quot;</span> <span class="attr">:stagger</span>=<span class="string">&quot;index % 2 !== 0&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- #endif --&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">&lt;!-- #ifdef MP-WEIXIN--&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">template</span> <span class="attr">v-for</span>=<span class="string">&quot;(item, index) in list&quot;</span> <span class="attr">slot</span>=<span class="string">&quot;tab:&#123;&#123;item.id&#125;&#125;&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">post-list</span> <span class="attr">:key</span>=<span class="string">&quot;item.id&quot;</span> <span class="attr">:stagger</span>=<span class="string">&quot;index % 2 !== 0&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- #endif  --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">tab-swiper</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="排查问题"><a href="#排查问题" class="headerlink" title="排查问题"></a>排查问题</h4><p>下面开始排查问题，首先我们用以下代码测试用 data 的数据来作为 slot 名字：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">view</span>&gt;</span></span><br><span class="line">    testing dynamic slot</span><br><span class="line">    <span class="tag">&lt;<span class="name">slot</span> <span class="attr">:name</span>=<span class="string">&quot;key&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">slot</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">view</span> <span class="attr">:class</span>=<span class="string">&quot;key&quot;</span>&gt;</span> test key value <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">  <span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span><br><span class="line"><span class="javascript">    <span class="function"><span class="title">data</span>(<span class="params"></span>)</span> &#123;</span></span><br><span class="line"><span class="javascript">      <span class="keyword">return</span> &#123;</span></span><br><span class="line"><span class="javascript">        <span class="attr">key</span>: <span class="string">&#x27;slot-1&#x27;</span></span></span><br><span class="line"><span class="javascript">      &#125;</span></span><br><span class="line"><span class="javascript">    &#125;</span></span><br><span class="line"><span class="javascript">  &#125;</span></span><br><span class="line"><span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后使用命令行或者 HBuilderx 编译 APP 端代码后，我们在 <code>dist/dev/app-plus/app-view.js</code></p>
+<p>搜索 <code>testing dynamic slot</code> ，然后可以看到以下代码：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728093109.png"><br>可以看到，即便同样使用了 key 作为属性，但它们编译后的代码是不一样的，slot 节点直接使用 <code>_vm._key</code> ，而 view 节点变成了 <code>_vm._$(2,&#39;c&#39;)</code> ，由此也推断出 uni-app 内部并没有对 slot 的 <code>name</code> 属性做额外处理，其实如果打印 <code>_vm.key</code> 的值， 会发现是空的：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728093132.png"></p>
+<p><strong>所以结论一：不支持拿 data 的数据用于拼接动态 slot 名字。</strong></p>
+<p>但直接拿 data 数据来拼接 slot 名字的情况比较少，更多时候是在 v-for 循环内部，所以我们再拿以下代码做测试：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">view</span>&gt;</span></span><br><span class="line">    testing dynamic slot</span><br><span class="line">    <span class="tag">&lt;<span class="name">view</span> <span class="attr">v-for</span>=<span class="string">&quot;item in list&quot;</span> <span class="attr">:key</span>=<span class="string">&quot;item.id&quot;</span>&gt;</span></span><br><span class="line">      &#123;&#123; item.name &#125;&#125;</span><br><span class="line">      <span class="tag">&lt;<span class="name">slot</span> <span class="attr">:name</span>=<span class="string">&quot;`tab:$&#123;item.id&#125;`&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">slot</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">  <span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span><br><span class="line"><span class="javascript">    <span class="function"><span class="title">data</span>(<span class="params"></span>)</span> &#123;</span></span><br><span class="line"><span class="javascript">      <span class="keyword">return</span> &#123;</span></span><br><span class="line"><span class="javascript">        <span class="attr">list</span>: [</span></span><br><span class="line"><span class="javascript">          &#123;</span></span><br><span class="line"><span class="javascript">            <span class="attr">id</span>: <span class="string">&#x27;a&#x27;</span>,</span></span><br><span class="line"><span class="javascript">            <span class="attr">name</span>: <span class="string">&#x27;item-a&#x27;</span></span></span><br><span class="line"><span class="javascript">          &#125;,</span></span><br><span class="line"><span class="javascript">          &#123;</span></span><br><span class="line"><span class="javascript">            <span class="attr">id</span>: <span class="string">&#x27;b&#x27;</span>,</span></span><br><span class="line"><span class="javascript">            <span class="attr">name</span>: <span class="string">&#x27;item-b&#x27;</span></span></span><br><span class="line"><span class="javascript">          &#125;,</span></span><br><span class="line"><span class="javascript">          &#123;</span></span><br><span class="line"><span class="javascript">            <span class="attr">id</span>: <span class="string">&#x27;c&#x27;</span>,</span></span><br><span class="line"><span class="javascript">            <span class="attr">name</span>: <span class="string">&#x27;item-c&#x27;</span></span></span><br><span class="line"><span class="javascript">          &#125;</span></span><br><span class="line"><span class="javascript">        ]</span></span><br><span class="line"><span class="javascript">      &#125;</span></span><br><span class="line"><span class="javascript">    &#125;</span></span><br><span class="line"><span class="javascript">  &#125;</span></span><br><span class="line"><span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>以上代码在 APP 端依然是不正常的，我们看看编译后的代码：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728093202.png"></p>
+<p>代码看上去好像挺正常的是吧，但有一点很奇怪：为什么 key 直接指向了 <code>item</code> ？</p>
+<p>果不其然，打印 <code>item</code> 发现这里的 <code>item</code> 并不是 v-for 中的那个 <code>item</code> 对象 ，而是用于指定 <code>key</code> 的值：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728093223.png"></p>
+<p>所以 <code>item.id</code> 依然是空的，实际上这里的 <code>item</code> === 外部的 <code>item.id</code> 。</p>
+<p>既然如此，我们似乎得到两个解决方案：</p>
+<ol>
+<li>将 v-for 的 key 直接指向 item 本身，使 <code>item.id</code> 能正常访问</li>
+<li>拼接 slot 名字时不使用 <code>item.id</code>  而是使用 <code>item</code></li>
+</ol>
+<p>结论是，方案一可行；方案二不可行。</p>
+<p>至于为什么方案二不可行，我认为是 uni-app 的问题，因为打印出来的值是正确的。</p>
+<p>但根据 Vue <a target="_blank" rel="noopener" href="https://cn.vuejs.org/v2/guide/list.html#%E7%BB%B4%E6%8A%A4%E7%8A%B6%E6%80%81">官方文档</a>指出：</p>
+<blockquote>
+<p>不要使用对象或数组之类的非基本类型值作为 v-for 的 key。请用字符串或数值类型的值。</p>
+</blockquote>
+<p><strong>结论二：在 v-for 中要根据当前项的字段来拼接 slot 名字，则要将 key 指向 <code>item</code>   本身。</strong></p>
+<p>最后一个解决方案，那就是通过 index 拼接 slot 名字：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">view</span>&gt;</span></span><br><span class="line">    testing dynamic slot</span><br><span class="line">    <span class="tag">&lt;<span class="name">view</span> <span class="attr">v-for</span>=<span class="string">&quot;(item, index) in list&quot;</span> <span class="attr">:key</span>=<span class="string">&quot;item.id&quot;</span>&gt;</span></span><br><span class="line">      &#123;&#123; item.name &#125;&#125;</span><br><span class="line">      <span class="tag">&lt;<span class="name">slot</span> <span class="attr">:name</span>=<span class="string">&quot;`tab:$&#123;index&#125;`&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">slot</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">  <span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span><br><span class="line"><span class="javascript">    <span class="function"><span class="title">data</span>(<span class="params"></span>)</span> &#123;</span></span><br><span class="line"><span class="javascript">      <span class="keyword">return</span> &#123;</span></span><br><span class="line"><span class="javascript">        <span class="attr">list</span>: [</span></span><br><span class="line"><span class="javascript">          &#123;</span></span><br><span class="line"><span class="javascript">            <span class="attr">id</span>: <span class="string">&#x27;a&#x27;</span>,</span></span><br><span class="line"><span class="javascript">            <span class="attr">name</span>: <span class="string">&#x27;item-a&#x27;</span></span></span><br><span class="line"><span class="javascript">          &#125;,</span></span><br><span class="line"><span class="javascript">          &#123;</span></span><br><span class="line"><span class="javascript">            <span class="attr">id</span>: <span class="string">&#x27;b&#x27;</span>,</span></span><br><span class="line"><span class="javascript">            <span class="attr">name</span>: <span class="string">&#x27;item-b&#x27;</span></span></span><br><span class="line"><span class="javascript">          &#125;,</span></span><br><span class="line"><span class="javascript">          &#123;</span></span><br><span class="line"><span class="javascript">            <span class="attr">id</span>: <span class="string">&#x27;c&#x27;</span>,</span></span><br><span class="line"><span class="javascript">            <span class="attr">name</span>: <span class="string">&#x27;item-c&#x27;</span></span></span><br><span class="line"><span class="javascript">          &#125;</span></span><br><span class="line"><span class="javascript">        ]</span></span><br><span class="line"><span class="javascript">      &#125;</span></span><br><span class="line"><span class="javascript">    &#125;</span></span><br><span class="line"><span class="javascript">  &#125;</span></span><br><span class="line"><span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>以上代码能在 APP 端正常运行。</p>
+<p><strong>结论三：拿 v-for 的 index 来拼接 slot 名字。</strong></p>
+<p>但毕竟是 HACK，终究原因是 uni-app 目前仍没有在 APP 端支持定义动态 slot ，可见相关的讨论：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://ask.dcloud.net.cn/question/95109">https://ask.dcloud.net.cn/question/95109</a></li>
+<li>如何评价 uni-app？ - 蘑菇王的回答 - 知乎 <a target="_blank" rel="noopener" href="https://www.zhihu.com/question/309490398/answer/1181409781">https://www.zhihu.com/question/309490398/answer/1181409781</a></li>
+</ul>
+<p>所以 uni-app 官方什么时候支持动态 slot 名字呢？</p>
+<h2 id="7-小程序端-v-for-中使用-v-if-问题"><a href="#7-小程序端-v-for-中使用-v-if-问题" class="headerlink" title="7. 小程序端 v-for 中使用 v-if 问题"></a>7. 小程序端 v-for 中使用 v-if 问题</h2><h3 id="问题描述-1"><a href="#问题描述-1" class="headerlink" title="问题描述"></a>问题描述</h3><p>这个问题需要同时满足以下条件才会触发：</p>
+<ol>
+<li>在 v-for 内部使用了 v-if</li>
+<li>v-if 的断言依赖了 methods 或者 闭包 computed（就是需要根据入参动态返回结果</li>
+<li>在 v-for 内部直接使用了小程序端的语法</li>
+</ol>
+<h3 id="排查过程"><a href="#排查过程" class="headerlink" title="排查过程"></a>排查过程</h3><p>复现代码如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">// tab-swiper.vue</span><br><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">&quot;list&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">view</span> <span class="attr">v-for</span>=<span class="string">&quot;(item, index) in list&quot;</span> <span class="attr">:key</span>=<span class="string">&quot;item.id&quot;</span> <span class="attr">class</span>=<span class="string">&quot;item&quot;</span>&gt;</span></span><br><span class="line">      <span class="comment">&lt;!-- <span class="doctag">HACK:</span> uni-app 处理动态 slot 名字不兼容，需要使用不同的语法 --&gt;</span></span><br><span class="line">      <span class="comment">&lt;!-- #ifdef H5 --&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">slot</span> <span class="attr">:name</span>=<span class="string">&quot;`tab:$&#123;item.id&#125;`&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">slot</span>&gt;</span></span><br><span class="line">      <span class="comment">&lt;!-- #endif --&gt;</span></span><br><span class="line">      <span class="comment">&lt;!-- #ifndef H5--&gt;</span></span><br><span class="line">      <span class="comment">&lt;!-- @see https://ask.dcloud.net.cn/question/82506 --&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">slot</span> <span class="attr">name</span>=<span class="string">&quot;tab:&#123;&#123;item.id&#125;&#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">slot</span>&gt;</span></span><br><span class="line">      <span class="comment">&lt;!-- #endif --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">  <span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span><br><span class="line"><span class="javascript">    <span class="function"><span class="title">data</span>(<span class="params"></span>)</span> &#123;</span></span><br><span class="line"><span class="javascript">      <span class="keyword">return</span> &#123;</span></span><br><span class="line"><span class="javascript">        <span class="attr">list</span>: [</span></span><br><span class="line"><span class="javascript">          &#123;</span></span><br><span class="line"><span class="javascript">            <span class="attr">id</span>: <span class="string">&#x27;recommend&#x27;</span>,</span></span><br><span class="line"><span class="javascript">            <span class="attr">name</span>: <span class="string">&#x27;推荐&#x27;</span></span></span><br><span class="line"><span class="javascript">          &#125;,</span></span><br><span class="line"><span class="javascript">          &#123;</span></span><br><span class="line"><span class="javascript">            <span class="attr">id</span>: <span class="string">&#x27;public&#x27;</span>,</span></span><br><span class="line"><span class="javascript">            <span class="attr">name</span>: <span class="string">&#x27;公共知识&#x27;</span></span></span><br><span class="line"><span class="javascript">          &#125;,</span></span><br><span class="line"><span class="javascript">          &#123;</span></span><br><span class="line"><span class="javascript">            <span class="attr">id</span>: <span class="string">&#x27;professional&#x27;</span>,</span></span><br><span class="line"><span class="javascript">            <span class="attr">name</span>: <span class="string">&#x27;专业项知识&#x27;</span></span></span><br><span class="line"><span class="javascript">          &#125;</span></span><br><span class="line"><span class="javascript">        ]</span></span><br><span class="line"><span class="javascript">      &#125;</span></span><br><span class="line"><span class="javascript">    &#125;</span></span><br><span class="line"><span class="javascript">  &#125;</span></span><br><span class="line"><span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>index.vue</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">tab-swiper</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">view</span> <span class="attr">slot</span>=<span class="string">&quot;tab:recommend&quot;</span>&gt;</span>recommend<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">view</span> <span class="attr">slot</span>=<span class="string">&quot;tab:public&quot;</span>&gt;</span>public<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">view</span> <span class="attr">slot</span>=<span class="string">&quot;tab:professional&quot;</span>&gt;</span>professional<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">tab-swiper</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">  <span class="keyword">import</span> TabSwiper <span class="keyword">from</span> <span class="string">&#x27;@/components/tab-swiper&#x27;</span></span></span><br><span class="line"><span class="javascript">  <span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span><br><span class="line"><span class="javascript">    <span class="attr">components</span>: &#123;</span></span><br><span class="line"><span class="javascript">      TabSwiper</span></span><br><span class="line"><span class="javascript">    &#125;</span></span><br><span class="line"><span class="javascript">  &#125;</span></span><br><span class="line"><span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面代码一切运行正常，slot 也能正常显示：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728093432.png"><br>然而，只要我把代码改成这样：</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;view class=&quot;list&quot;&gt;</span><br><span class="line">    &lt;view v-for=&quot;(item, index) in list&quot; :key=&quot;item.id&quot; class=&quot;item&quot;&gt;</span><br><span class="line"><span class="addition">+      &lt;block v-if=&quot;isShow(index)&quot;&gt;</span></span><br><span class="line"><span class="addition">+        &lt;view&gt;显示我&lt;/view&gt;</span></span><br><span class="line"><span class="addition">+      &lt;/block&gt;</span></span><br><span class="line">      &lt;!-- HACK: uni-app 处理动态 slot 名字不兼容，需要使用不同的语法 --&gt;</span><br><span class="line">      &lt;!-- #ifdef H5 --&gt;</span><br><span class="line">      &lt;slot :name=&quot;`tab:$&#123;item.id&#125;`&quot;&gt;&lt;/slot&gt;</span><br><span class="line">      &lt;!-- #endif --&gt;</span><br><span class="line">      &lt;!-- #ifndef H5--&gt;</span><br><span class="line">      &lt;!-- @see https://ask.dcloud.net.cn/question/82506 --&gt;</span><br><span class="line">      &lt;slot name=&quot;tab:&#123;&#123;item.id&#125;&#125;&quot;&gt;&lt;/slot&gt;</span><br><span class="line">      &lt;!-- #endif --&gt;</span><br><span class="line">    &lt;/view&gt;</span><br><span class="line">  &lt;/view&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      list: [</span><br><span class="line">        &#123;</span><br><span class="line">          id: &#x27;recommend&#x27;,</span><br><span class="line">          name: &#x27;推荐&#x27;,</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          id: &#x27;public&#x27;,</span><br><span class="line">          name: &#x27;公共知识&#x27;,</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          id: &#x27;professional&#x27;,</span><br><span class="line">          name: &#x27;专业项知识&#x27;,</span><br><span class="line">        &#125;,</span><br><span class="line">      ],</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line"><span class="addition">+  methods: &#123;</span></span><br><span class="line"><span class="addition">+   isShow(index) &#123;</span></span><br><span class="line"><span class="addition">+     return index % 2 === 0</span></span><br><span class="line"><span class="addition">+   &#125;,</span></span><br><span class="line"><span class="addition">+  &#125;,</span></span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>结果立马变成这样了：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728093448.png"></p>
+<p>那三个 slot 哪去了？别急，让我们对比一下两者生成的微信小程序代码：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 这是正常的 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">&quot;list&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">block</span> <span class="attr">wx:for</span>=<span class="string">&quot;&#123;&#123;list&#125;&#125;&quot;</span> <span class="attr">wx:for-item</span>=<span class="string">&quot;item&quot;</span> <span class="attr">wx:for-index</span>=<span class="string">&quot;index&quot;</span> <span class="attr">wx:key</span>=<span class="string">&quot;id&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">&quot;item&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">slot</span> <span class="attr">name</span>=<span class="string">&quot;tab:&#123;&#123;item.id&#125;&#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">slot</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">block</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 这是异常的 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">&quot;list&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">block</span></span></span><br><span class="line"><span class="tag">    <span class="attr">wx:for</span>=<span class="string">&quot;&#123;&#123;$root.l0&#125;&#125;&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">wx:for-item</span>=<span class="string">&quot;item&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">wx:for-index</span>=<span class="string">&quot;index&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">wx:key</span>=<span class="string">&quot;id&quot;</span></span></span><br><span class="line"><span class="tag">  &gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">&quot;item&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">block</span> <span class="attr">wx:if</span>=<span class="string">&quot;&#123;&#123;item.m0&#125;&#125;&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">block</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">view</span>&gt;</span>显示我<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">block</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">block</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">slot</span> <span class="attr">name</span>=<span class="string">&quot;tab:&#123;&#123;item.id&#125;&#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">slot</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">block</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>下面开始「找不同」，我们发现最大的不同是： <code>wx:for</code> 的值不一样，于是我们看下 <code>$root.l0</code> 的定义：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728093530.png"></p>
+<p>我们发现，在 <code>$root.l0</code> 下的每一个 item 项都多了一层 <code>$orig</code> 放置原本的内容，所以我们下面这行代码并不能访问到它的 id 值：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">slot</span> <span class="attr">name</span>=<span class="string">&quot;tab:&#123;&#123;item.id&#125;&#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">slot</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>我们试着把这个值输出来看看：</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="addition">+ 当前：&#123;&#123; item.id &#125;&#125;</span></span><br><span class="line">&lt;slot name=&quot;tab:&#123;&#123;item.id&#125;&#125;&quot;&gt;&lt;/slot&gt;</span><br></pre></td></tr></table></figure>
+
+<p>你会发现居然能显示出来：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728093542.png"></p>
+<p>再看看生成的微信小程序代码，终于知道其中的奥妙：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">&quot;list&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">block</span></span></span><br><span class="line"><span class="tag">    <span class="attr">wx:for</span>=<span class="string">&quot;&#123;&#123;$root.l0&#125;&#125;&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">wx:for-item</span>=<span class="string">&quot;item&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">wx:for-index</span>=<span class="string">&quot;index&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">wx:key</span>=<span class="string">&quot;id&quot;</span></span></span><br><span class="line"><span class="tag">  &gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">&quot;item&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">block</span> <span class="attr">wx:if</span>=<span class="string">&quot;&#123;&#123;item.m0&#125;&#125;&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">block</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">view</span>&gt;</span>显示我<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">block</span>&gt;</span> &lt;/block</span><br><span class="line">      &gt;&#123;&#123;&#x27;当前：&#x27;+item.$orig.id+&#x27;&#x27;&#125;&#125;<span class="tag">&lt;<span class="name">slot</span> <span class="attr">name</span>=<span class="string">&quot;tab:&#123;&#123;item.id&#125;&#125;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">slot</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">block</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="解决方案-3"><a href="#解决方案-3" class="headerlink" title="解决方案"></a>解决方案</h3><p>原来是 uni-app 自动帮我们添加了 <code>$orig</code> ，但由于 slot 那一行我们直接用了微信小程序的语法，所以并没有帮我们添加 <code>$orig</code> ，那么解决方案就是自己手动加上呗：</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="deletion">- &lt;slot name=&quot;tab:&#123;&#123;item.id&#125;&#125;&quot;&gt;&lt;/slot&gt;</span></span><br><span class="line"><span class="addition">+ &lt;slot name=&quot;tab:&#123;&#123;item.$orig.id&#125;&#125;&quot;&gt;&lt;/slot&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>问题是解决了，那么为什么会这样呢？应该是 uni-app 的转换机制，发现 v-for 和 v-if 存在一定关联，就把它们给缓存了，才会出现这种问题。</p>
+<p><strong>核心要点：当微信小程序端异常时，不妨看看生成的代码，说不定有收获哦。</strong></p>
+<h2 id="8-小程序端禁止事件冒泡"><a href="#8-小程序端禁止事件冒泡" class="headerlink" title="8. 小程序端禁止事件冒泡"></a>8. 小程序端禁止事件冒泡</h2><h3 id="问题描述-2"><a href="#问题描述-2" class="headerlink" title="问题描述"></a>问题描述</h3><p>在小程序端无法动态阻止事件冒泡，也即，在 js 中使用如下无效：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">handleClick</span>(<span class="params">e</span>)</span> &#123;</span><br><span class="line">    e.stopPropagation() <span class="comment">// 除了在 h5，其它端均无效</span></span><br><span class="line">    e.preventDefault() <span class="comment">// 同上</span></span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<p>只能使用修饰符：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">u-button</span> @<span class="attr">click.native.stop</span>=<span class="string">&quot;doSomething&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">u-button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>注意：需要加 <code>native</code> ，否则可能无法无效。</p>
+<p>参考链接：<a target="_blank" rel="noopener" href="https://github.com/dcloudio/uni-app/issues/1067">https://github.com/dcloudio/uni-app/issues/1067</a></p>
+<p>关于 uni-app 中的修饰符兼容情况：<a target="_blank" rel="noopener" href="https://uniapp.dcloud.io/vue-basics?id=%E4%BA%8B%E4%BB%B6%E4%BF%AE%E9%A5%B0%E7%AC%A6">事件修饰符 —— uni-app</a></p>
+<p>很显然， 使用事件修饰符的缺点是无法动态决定是否阻止事件冒泡，如果有这种需求，提供个 hack 思路：</p>
+<ul>
+<li>在外面包一层，利用 css 的 pointer-events 属性决定是否触发内层的 dom 事件</li>
+</ul>
+<p>另外还有一个坑，假设有如下代码：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">&quot;container&quot;</span> @<span class="attr">click</span>=<span class="string">&quot;show = false&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">u-icon</span> <span class="attr">name</span>=<span class="string">&quot;plus-circle-fill&quot;</span> @<span class="attr">click.native.stop</span>=<span class="string">&quot;show = !show&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">view</span> <span class="attr">v-show</span>=<span class="string">&quot;show&quot;</span> <span class="attr">class</span>=<span class="string">&quot;message&quot;</span>&gt;</span>这是一条信息<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">  <span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span><br><span class="line"><span class="javascript">    <span class="function"><span class="title">data</span>(<span class="params"></span>)</span> &#123;</span></span><br><span class="line"><span class="javascript">      <span class="keyword">return</span> &#123;</span></span><br><span class="line"><span class="javascript">        <span class="attr">show</span>: <span class="literal">false</span></span></span><br><span class="line"><span class="javascript">      &#125;</span></span><br><span class="line"><span class="javascript">    &#125;</span></span><br><span class="line"><span class="javascript">  &#125;</span></span><br><span class="line"><span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>上述代码想要实现当点击 icon 时切换显示 message，而点击 icon 以外的任意地方则隐藏 message。</p>
+<p>在 H5 运行正常，但是在小程序端却会报如下错误：</p>
+<blockquote>
+<p>TypeError: Cannot read property ‘stopPropagation’ of undefined</p>
+</blockquote>
+<p>这是因为我们直接在 <code>@click</code> 的事件绑定中写了代码，而如果改成绑定 <code>methods</code> 则没有该问题：</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;view class=&quot;container&quot; @click=&quot;show = false&quot;&gt;</span><br><span class="line"><span class="deletion">-    &lt;u-icon name=&quot;plus-circle-fill&quot; @click.native.stop=&quot;show = !show&quot; /&gt;</span></span><br><span class="line"><span class="addition">+    &lt;u-icon name=&quot;plus-circle-fill&quot; @click.native.stop=&quot;toggleShowMessage&quot; /&gt;</span></span><br><span class="line">    &lt;view v-show=&quot;show&quot; class=&quot;message&quot;&gt;这是一条信息&lt;/view&gt;</span><br><span class="line">  &lt;/view&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      show: false,</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line"><span class="addition">+  methods: &#123;</span></span><br><span class="line"><span class="addition">+    toggleShowMessage() &#123;</span></span><br><span class="line"><span class="addition">+      this.show = !this.show</span></span><br><span class="line"><span class="addition">+    &#125;,</span></span><br><span class="line"><span class="addition">+  &#125;,</span></span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>出现该问题的原因：如果直接在 Vue 的事件绑定中编写单行代码（不是绑定具体的方法），而 uni-app 转换为小程序端代码时会将它放到 <code>.js</code> 文件的方法中，并且由于使用了 <code>.stop</code> 事件修饰符，也在该方法中添加了 <code>$event.stopPropagation()</code> ，然而小程序端打印 <code>$event</code> 根本就是 <code>undefind</code> ，所以导致错误，可以看看生成的小程序代码：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728093710.png"></p>
+<p>这应该是 uni-app 的问题，关于这个问题更详细的描述可以看我在 uni-app 仓库提的这个 <a target="_blank" rel="noopener" href="https://github.com/dcloudio/uni-app/issues/2400">issue</a>。</p>
+<h3 id="解决方案-4"><a href="#解决方案-4" class="headerlink" title="解决方案"></a>解决方案</h3><p><strong>总之：尽量不要在事件绑定中使用单行代码，特别是使用了事件修饰符的时候。</strong></p>
+<h2 id="9-uView-两层-tabsSwiper-left-计算问题"><a href="#9-uView-两层-tabsSwiper-left-计算问题" class="headerlink" title="9. uView 两层 tabsSwiper left 计算问题"></a>9. uView 两层 tabsSwiper left 计算问题</h2><p>使用 uView 的 tabSwiper 组件时，如果存在两层或多层嵌套，会出现内层的 swiper-item 的 left 值计算错误，这是 uView 的 bug，具体问题描述和临时解决方案可见：<a target="_blank" rel="noopener" href="https://github.com/YanxinNet/uView/issues/749">https://github.com/YanxinNet/uView/issues/749</a></p>
+<h2 id="10-scss-文件进行条件渲染"><a href="#10-scss-文件进行条件渲染" class="headerlink" title="10. scss 文件进行条件渲染"></a>10. scss 文件进行条件渲染</h2><p>在 <code>.scss</code>   文件中进行 uni-app 的条件渲染，必须为多行注释，如下：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* #ifdef MP-WEIXIN */</span></span><br><span class="line"><span class="selector-class">.u-btn</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: red <span class="meta">!important</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* #endif */</span></span><br></pre></td></tr></table></figure>
+
+<p>另外，如果在 <code>.vue</code>   中的 <code>style</code>   标签，则无论使用单行注释还是多行注释，都是有效的。</p>
+<h2 id="11-方法名不能与生命周期名字冲突"><a href="#11-方法名不能与生命周期名字冲突" class="headerlink" title="11. 方法名不能与生命周期名字冲突"></a>11. 方法名不能与生命周期名字冲突</h2><p>如题，写在 <code>methods</code>   下的方法名字不要与生命周期一致，否则会出现错误，这里的生命周期包括：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://uniapp.dcloud.io/use?id=%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E9%92%A9%E5%AD%90">Vue 生命周期</a></li>
+<li><a target="_blank" rel="noopener" href="https://uniapp.dcloud.io/collocation/frame/lifecycle?id=%E5%BA%94%E7%94%A8%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F">uni-app 生命周期</a></li>
+</ul>
+<h2 id="12-调试-uView-组件"><a href="#12-调试-uView-组件" class="headerlink" title="12. 调试 uView 组件"></a>12. 调试 uView 组件</h2><p>如果使用 uView 组件过程中遇到莫名其妙的问题，建议使用断点调试，可帮助你快速定位问题。</p>
+<p>举个例子，想看看 <code>u-tabs-swiper</code>    组件的某个方法执行过程，可以到 <code>node_modules/uview-ui/components/u-tabs-swiper/u-tabs-swiper.vue</code>  ，找到你想调试的方法，打个断点：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728093759.png">然后在浏览器刷新，进行某些操作以便触发你想调试的方法，然后就可以进行断点调试了：</p>
+<p>遗憾的是 uni-app 的自带组件，虽然也可以在 node-module 目录下找到对应的源码位置，但因为是预编译好的，所以进行修改无效，自然也不能打断点。</p>
+<p>大部分 uni-app 的组件都在： <code>node_modules/@dcloudio/uni-h5/src</code>   下。</p>
+<p><strong>核心要点：当组件莫名其妙地表现不正常时，别忘了使用断点调试。</strong></p>
+<h2 id="13-SwipeAction-组件无法自动隐藏按钮"><a href="#13-SwipeAction-组件无法自动隐藏按钮" class="headerlink" title="13. SwipeAction 组件无法自动隐藏按钮"></a>13. SwipeAction 组件无法自动隐藏按钮</h2><h3 id="问题描述-3"><a href="#问题描述-3" class="headerlink" title="问题描述"></a>问题描述</h3><p>在使用 SwipeAction 组件时，发现在小程序端下的「点击收藏按钮后隐藏按钮」功能不正常，在官方示例程序也可复现该问题：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728094505.gif" alt="img"></p>
+<p>但实际上在 H5 端它是正常的：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728094538.gif" alt="img"></p>
+<p>深入分析源码后，发现点击收藏按钮时， <code>btnClick</code> 和 <code>touchend</code> 两个方法的执行顺序在 H5 和 小程序端中表现不一致，分别在两个方法中加入 <code>console.log</code> ，运行结果是：</p>
+<ul>
+<li>H5</li>
+</ul>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728094614.png" alt="img"></p>
+<ul>
+<li>MP-WEIXIN</li>
+</ul>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728094625.png" alt="img"></p>
+<p>而之所以在小程序端运行异常， 就是因为先执行了 <code>btnClick</code> 方法，而 <code>btnClick</code> 内部将 <code>this.status = false</code> ，导致随后执行 <code>touchend</code> 时进入了错误的条件分支。</p>
+<h3 id="解决方案-5"><a href="#解决方案-5" class="headerlink" title="解决方案"></a>解决方案</h3><p>这问题怎么解决？在不修改组件源代码的时候下，只能使用下面这种方式 HACK：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">methods: &#123;</span><br><span class="line">    click(index, index1) &#123;</span><br><span class="line">      if (index1 == 1) &#123;</span><br><span class="line">        this.list.splice(index, 1)</span><br><span class="line">        this.$u.toast(`删除了第$&#123;index&#125;个cell`)</span><br><span class="line">      &#125; else &#123;</span><br><span class="line">        // #ifdef MP-WEIXIN</span><br><span class="line">        /**</span><br><span class="line">         * HACK: 在 MP-WEIXN 表现异常，为避免被覆盖，需要过一段时间再更新值</span><br><span class="line">         * @see https://github.com/YanxinNet/uView/issues/761</span><br><span class="line">         */</span><br><span class="line">        setTimeout(() =&gt; &#123;</span><br><span class="line">          this.list[index].show = false</span><br><span class="line">        &#125;, 100)</span><br><span class="line">        // #endif</span><br><span class="line">        // #ifndef MP-WEIXIN</span><br><span class="line">        this.list[index].show = false</span><br><span class="line">        // #endif</span><br><span class="line">        this.$u.toast(`收藏成功`)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
+
+<p>已向 uView 提 issue：<a target="_blank" rel="noopener" href="https://github.com/YanxinNet/uView/issues/761">https://github.com/YanxinNet/uView/issues/761</a></p>
+<h2 id="14-IOS-底部空白安全区域"><a href="#14-IOS-底部空白安全区域" class="headerlink" title="14. IOS 底部空白安全区域"></a>14. IOS 底部空白安全区域</h2><p>子页面在 IOS 会出现一个空白的安全区域，可以通过修改 <code>manifest.json</code>   禁用它：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;app-plus&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;safearea&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;bottom&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;offset&quot;</span>: <span class="string">&quot;none&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>参考文档：<a target="_blank" rel="noopener" href="https://ask.dcloud.net.cn/article/35564">uni-app 全面屏、刘海屏适配（iphoneX 适配）及安全区设置</a></p>
+<h2 id="15-APP-端锁定屏幕方向"><a href="#15-APP-端锁定屏幕方向" class="headerlink" title="15. APP 端锁定屏幕方向"></a>15. APP 端锁定屏幕方向</h2><p>通过 <code>manifest.json</code> 的 <a target="_blank" rel="noopener" href="https://uniapp.dcloud.io/collocation/manifest?id=distribute">orientation</a> 选项可以进行横竖屏配置：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;distribute&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;orientation&quot;</span>: [<span class="string">&quot;portrait-primary&quot;</span>]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但如果在测试基座， 以上选项会失效，所以最保险的方式是在 <code>APP.vue</code>   中进行配置：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="function"><span class="title">onLaunch</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="comment">// #ifdef APP-PLUS</span></span><br><span class="line">    <span class="comment">// 锁定竖屏</span></span><br><span class="line">    plus.screen.lockOrientation(<span class="string">&#x27;portrait-primary&#x27;</span>)</span><br><span class="line">    <span class="comment">// #endif</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用该 API 还可以实现仅允许特定页面旋转方向，关于更多可见：<a target="_blank" rel="noopener" href="https://www.html5plus.org/doc/zh_cn/device.html">HTML+ API Reference</a></p>
+<p>关于屏幕旋转的更多可参考：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://uniapp.dcloud.io/collocation/pages?id=globalstyle">globalStyle.pageOrientation</a></li>
+<li><a target="_blank" rel="noopener" href="https://uniapp.dcloud.io/collocation/manifest?id=distribute">orientation</a></li>
+</ul>
+<h2 id="16-uButton-自定义样式"><a href="#16-uButton-自定义样式" class="headerlink" title="16. uButton 自定义样式"></a>16. uButton 自定义样式</h2><p>根据 uView <a target="_blank" rel="noopener" href="https://uviewui.com/components/button.html">文档</a> 说明，如果想要给 button 自定义样式，为了兼容小程序，则要在组件中传递 <code>custom-style</code>   属性，也就意味着需要把 CSS 写在 JS 中，这不是我们想要的，毕竟这样就无法使用 Scss 中的变量了。</p>
+<p>为什么要这么麻烦呢？因为在小程序端，原本是一层的元素，被它搞成两层了，所以我们传递过去的 class 属性只应用在外层，而内层才是真正 button。</p>
+<p>举个例子：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">&quot;test-page&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">u-button</span> <span class="attr">class</span>=<span class="string">&quot;btn&quot;</span>&gt;</span>按钮<span class="tag">&lt;/<span class="name">u-button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">lang</span>=<span class="string">&quot;scss&quot;</span>&gt;</span><span class="css"></span></span><br><span class="line"><span class="css">  <span class="selector-class">.test-page</span> &#123;</span></span><br><span class="line"><span class="css">    <span class="selector-class">.btn</span> &#123;</span></span><br><span class="line"><span class="css">      <span class="attribute">color</span>: red;</span></span><br><span class="line"><span class="css">    &#125;</span></span><br><span class="line"><span class="css">  &#125;</span></span><br><span class="line"><span class="css"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>以上代码在 H5 的表现是正常的：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728094742.png"><br>但在小程序的表现却是这样的：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728094757.png"></p>
+<p>如果想 CSS 层面解决该问题，那就是都将它们都作为选择器即可：</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;view class=&quot;test-page&quot;&gt;</span><br><span class="line">    &lt;u-button class=&quot;btn&quot;&gt;按钮&lt;/u-button&gt;</span><br><span class="line">  &lt;/view&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;style lang=&quot;scss&quot;&gt;</span><br><span class="line">.test-page &#123;</span><br><span class="line">  .btn &#123;</span><br><span class="line"><span class="addition">+    &amp;,</span></span><br><span class="line"><span class="addition">+    button &#123;</span></span><br><span class="line">      color: red;</span><br><span class="line"><span class="addition">+    &#125;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+<p>虽然看上去很丑，但能 work，且兼容性较好，所以推荐使用该方式。</p>
+<h2 id="17-uButton-无法自定义-hover-class"><a href="#17-uButton-无法自定义-hover-class" class="headerlink" title="17. uButton 无法自定义 hover-class"></a>17. uButton 无法自定义 hover-class</h2><p>根据 uView <a target="_blank" rel="noopener" href="https://uviewui.com/components/button.html">文档</a> 说明，Button 组件有 hover-class 属性，可自定义 hover 时的 class，但实际使用并无效果，查看源代码后发现代码存在问题。</p>
+<p>目前 GitHub 上已有人指出该问题，但维护者仍未处理：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/YanxinNet/uView/issues/662">u-button hover-class 无效</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/YanxinNet/uView/pull/741/files">修复 button 组件 hoverClass 不生效的问题</a></li>
+</ul>
+<p>在不修改原组件的情况下，只能通过强制覆盖它默认的 hover-class 的样式来解决该问题：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">&quot;test-page&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">u-button</span> <span class="attr">class</span>=<span class="string">&quot;btn&quot;</span>&gt;</span>退出登录<span class="tag">&lt;/<span class="name">u-button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">lang</span>=<span class="string">&quot;scss&quot;</span>&gt;</span><span class="css"></span></span><br><span class="line"><span class="css">  <span class="selector-class">.test-page</span> &#123;</span></span><br><span class="line"><span class="css">    // HACK: 由于 uButton 的 hover-class 传递无效，暂时只能通过该方式自定义</span></span><br><span class="line"><span class="css">    /deep/ .btn &#123;</span></span><br><span class="line"><span class="css">      &amp;.u-default-hover,</span></span><br><span class="line"><span class="css">    // 兼容小程序</span></span><br><span class="line"><span class="css">    button.u-default-hover &#123;</span></span><br><span class="line"><span class="css">        color: white <span class="meta">!important</span>;</span></span><br><span class="line"><span class="css">        <span class="attribute">background</span>: <span class="built_in">rgba</span>($color-primary, <span class="number">0.8</span>) <span class="meta">!important</span>;</span></span><br><span class="line"><span class="css">      &#125;</span></span><br><span class="line"><span class="css">    &#125;</span></span><br><span class="line"><span class="css">  &#125;</span></span><br><span class="line"><span class="css"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>注意：</p>
+<ol>
+<li>为了避免影响其它 button，需要限制选择器范围</li>
+<li>class 不一定是 <code>u-default-hover</code> ，可以自行测试该 button hover 时实际使用哪个 class</li>
+<li>兼容小程序那里详见：<a href="#9WQn6">18. uButton 自定义样式</a></li>
+</ol>
+<h2 id="18-uni-app-只能在-main-js-注册全局组件"><a href="#18-uni-app-只能在-main-js-注册全局组件" class="headerlink" title="18. uni-app 只能在 main.js 注册全局组件"></a>18. uni-app 只能在 main.js 注册全局组件</h2><h3 id="问题描述-4"><a href="#问题描述-4" class="headerlink" title="问题描述"></a>问题描述</h3><p>在开发过程中，不可避免需要注册一些全局组件，为了方便管理，我们希望放到一个单独的文件中进行管理，类似下面这样：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/plugins/element.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> BasicLayout <span class="keyword">from</span> <span class="string">&#x27;@/layouts/basic&#x27;</span></span><br><span class="line"><span class="keyword">import</span> FullLoading <span class="keyword">from</span> <span class="string">&#x27;@/components/full-loading&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="attr">install</span>: <span class="function">(<span class="params">Vue</span>) =&gt;</span> &#123;</span><br><span class="line">    Vue.component(<span class="string">&#x27;BasicLayout&#x27;</span>, BasicLayout)</span><br><span class="line">    Vue.component(<span class="string">&#x27;FullLoading&#x27;</span>, FullLoading)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// src/main.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> element <span class="keyword">from</span> <span class="string">&#x27;./plugins/element&#x27;</span></span><br><span class="line"></span><br><span class="line">Vue.use(element)</span><br></pre></td></tr></table></figure>
+
+<p>这也是在开发 Vue 项目时常用的方案，但这在微信小程序端会运行异常，根本没有注册到全局组件。</p>
+<p>但如果将注册全局组件的工作放到 <code>main.js</code>  ，则是可以正常运行的：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> element <span class="keyword">from</span> <span class="string">&#x27;./plugins/element&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">FIXME:</span> 因不明原因，在 main.js 外的文件注册全局组件会导致组件在 mp-weixin 端表现不正常</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">import</span> BasicLayout <span class="keyword">from</span> <span class="string">&#x27;@/layouts/basic&#x27;</span></span><br><span class="line"><span class="keyword">import</span> FullLoading <span class="keyword">from</span> <span class="string">&#x27;@/components/full-loading&#x27;</span></span><br><span class="line"></span><br><span class="line">Vue.component(<span class="string">&#x27;BasicLayout&#x27;</span>, BasicLayout)</span><br><span class="line">Vue.component(<span class="string">&#x27;FullLoading&#x27;</span>, FullLoading)</span><br></pre></td></tr></table></figure>
+
+<p>该问题也早就有人提出过，但至今仍未看到官方团队有所回应，可见：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://ask.dcloud.net.cn/question/86931">uni-app 全局组件 app 不显示</a></li>
+<li><a target="_blank" rel="noopener" href="https://ask.dcloud.net.cn/question/93821">【报 Bug】使用 Vue.use 注册全局组件，小程序不支持！</a></li>
+</ul>
+<p>而在 uni-app 官方文档的 <a target="_blank" rel="noopener" href="https://uniapp.dcloud.io/use?id=%E5%85%A8%E5%B1%80%E7%BB%84%E4%BB%B6">全局组件</a> 是这样描述的：<br><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728094913.png"></p>
+<p>虽然说了文档需在 <code>main.js</code> 中进行全局注册，但根据我们以往对 Vue 的认知，这个工作是可以放到外部文件去的，而 uni-app 也没有明确指出一定只能在 <code>main.js</code> 进行注册全局组件，这就造成不少用户困扰。</p>
+<p>虽然集中在 <code>main.js</code> 注册全局组件也并不是不能接受，但我们需要知道背后的原因，为什么在外部文件注册就无效？</p>
+<p>本文就来一探究竟，了解背后真正的原因。</p>
+<h3 id="结论先行"><a href="#结论先行" class="headerlink" title="结论先行"></a>结论先行</h3><p>先说结论，说白了就是 uni-app 转换小程序代码时，检测全局组件的方式是通过静态分析 <code>main.js</code>   文件，所以在其他文件注册全局组件的话，uni-app 就无法得知了。</p>
+<p>如果想知道更多细节，欢迎继续往下阅读 👇</p>
+<h3 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h3><p>首先，我们来看一下在 <code>main.js</code>   注册全局组件时，生成的微信小程序端 <code>pages.json</code>   的 <code>usingComponents</code> :</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728094944.png"><br>很明显这是正常的，那我们再看看如果放在外部文件注册全局组件的话，它是空的：<br><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728094951.png"><br>所以，问题肯定是发生在 uni-app 转换为小程序的过程中，下面就来定位 uni-app 的源码，看看究竟是什么情况。</p>
+<p>但问题是，我们并不知道这部分代码在哪个位置，根本不知道从何看起？？</p>
+<p>别着急，既然我们关心的代码是与 <code>usingComponents</code>   的赋值相关的，那我们可以试试在 <code>node_modules/@dcloudio</code> 搜索关键词 <code>usingComponents = </code></p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728095001.png"></p>
+<p>可以看到结果比较多，我们快速扫一眼，发现几个比较可疑的：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728095014.png"></p>
+<p>那我们的做法就是进入这几个文件，分别添加一行 <code>console.log</code>  ，以文件名为区分：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728095027.png"> ，如果执行了这个文件，就会打印对应的值：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728095039.png"></p>
+<blockquote>
+<p>注意：这时候是把全局组件注册放在 <code>main.js</code>   中</p>
+</blockquote>
+<p>很明显，我们运气不错，这个 <a target="_blank" rel="noopener" href="https://github.com/dcloudio/uni-app/blob/master/packages/webpack-uni-mp-loader/lib/main-new.js">main-new.js</a>  应该就是我们想要的代码，下面我们就来看看 <code>components</code>   这个值到底是怎么出来的， <code>components</code>   的定义在 <a target="_blank" rel="noopener" href="https://github.com/dcloudio/uni-app/blob/master/packages/webpack-uni-mp-loader/lib/main-new.js#L84">第 84 行</a>：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728095053.png"><br>可以看到， <code>components</code>   是根据传入 <code>content</code>   到 <code>traverse()</code>   方法后得到的，我们先来打印一下 <code>content</code> （为避免干扰，可以先把之前的 console.log 去掉），然后我们看到以下：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728095103.png"><br>可以看到这是 <code>main.js</code>   的内容，难道是通过解析这个文件的内容得到全局组件的？</p>
+<p>我们还是看一下它给 <code>traverse()</code>   传递的参数，发现是一个通过 babel 解析后的 AST 树：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728095113.png"><br>然后我们再看看 <code>traverse()</code>   内部，在 <a target="_blank" rel="noopener" href="https://github.com/dcloudio/uni-app/blob/master/packages/webpack-uni-mp-loader/lib/babel/global-component-traverse.js">global-component-traverse.js</a>：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728095125.png"><br>那看来的确如此，但这时候我还有一个疑问：<strong>上面只是说明 uni-app 是通过静态解析文件内容得到全局组件，那为什么不可以针对其它文件进行解析呢？</strong></p>
+<p>我们看到其实 <code>content</code>   是从外部传入的，也就是说是别的文件传入了 <code>main.js</code>   的内容：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728095125.png"><br>于是搜索当前文件的引用，一路顺藤摸瓜，找到起始的入口，它确实是只针对 <code>main.js</code>   进行解析，在 <a target="_blank" rel="noopener" href="https://github.com/dcloudio/uni-app/blob/master/packages/vue-cli-plugin-uni/lib/mp/index.js#L112">vue-cli-plugin-uni/lib/mp/index.js</a>：</p>
+<p><img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/20210728095253.png"></p>
+<p>到此为止，我们已经知道为什么 uni-app 只能在 <code>main.js</code>   才能注册全局组件，而其它文件无效了。</p>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>最后还是得心平气和地评价几句，虽然在使用 uni-app 开发过程中踩了不少的坑，心里也曾不止一次有十万个草泥马奔腾而过，但是不可否认这么一个开发跨平台应用的前端框架来说，它做的还是有值得称赞的地方，至少从生态上面就足以秒杀其它同样是 Vue 语法的开发跨平台框架。</p>
+</div>
+  <hr class="copy-line" />
+  <div class="post-copyright">
+    <div class="copy-author">
+      <span>作者 :</span>
+      <span
+        >4Ark</span
+      >
+    </div>
+    <div class="copy-url">
+      <span>地址 :</span>
+      <a href="https://4ark.me/post/uni-app-issues.html">https://4ark.me/post/uni-app-issues.html</a>
+    </div>
+    <div class="copy-origin">
+      <span>来源 :</span>
+      <a href="https://4ark.me">https://4ark.me</a>
+    </div>
+    <div class="copy-license">著作权归作者所有，转载请联系作者获得授权。</div>
+  </div>
+</article>
+
+<div class="blog-post-comments">
+  <div id="load-disqus">
+    <p onclick="loadDisqus()" style="cursor: pointer; text-align: center">
+      🥳&nbsp;加载 Disqus 评论
+    </p>
+  </div>
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments.</noscript>
+  </div>
+</div>
+ 
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about">About</a></li>
+         
+          <li><a href="/archives">Writing</a></li>
+         
+          <li><a href="/weekly">Weekly</a></li>
+         
+          <li><a href="/tags">Tags</a></li>
+         
+          <li><a href="/search">Search</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="toc-number">1.</span> <span class="toc-text">写在前面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91%E8%80%85%E5%B7%A5%E5%85%B7%E5%85%B3%E9%97%AD-ES6-%E8%BD%AC-ES5"><span class="toc-number">2.</span> <span class="toc-text">1. 微信开发者工具关闭 ES6 转 ES5</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-ref-%E4%B8%8D%E8%A6%81%E6%94%BE%E5%9C%A8-computed"><span class="toc-number">3.</span> <span class="toc-text">2. ref 不要放在 computed</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%AB%AF%E7%9A%84%E7%BB%84%E4%BB%B6%E6%A0%B7%E5%BC%8F%E9%97%AE%E9%A2%98"><span class="toc-number">4.</span> <span class="toc-text">3. 小程序端的组件样式问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%AB%AF%E4%BF%AE%E6%94%B9%E7%9A%84%E5%A4%96%E9%83%A8%E7%BB%84%E4%BB%B6%E6%A0%B7%E5%BC%8F%E6%97%A0%E6%95%88%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">5.</span> <span class="toc-text">4. 小程序端修改的外部组件样式无效的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0"><span class="toc-number">5.1.</span> <span class="toc-text">问题描述</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">5.1.1.</span> <span class="toc-text">解决方案</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%AB%AF%E4%BF%AE%E6%94%B9-shadow-root-%E5%86%85%E9%83%A8%E6%A0%B7%E5%BC%8F"><span class="toc-number">5.2.</span> <span class="toc-text">小程序端修改 shadow-root 内部样式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-1"><span class="toc-number">5.2.1.</span> <span class="toc-text">解决方案</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%9C%A8-HBuilder-%E8%BF%90%E8%A1%8C%E9%A1%B9%E7%9B%AE"><span class="toc-number">6.</span> <span class="toc-text">5. 在 HBuilder 运行项目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%8A%A8%E6%80%81%E6%8F%92%E6%A7%BD%E5%90%8D"><span class="toc-number">7.</span> <span class="toc-text">6. 动态插槽名</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">7.1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#H5-%E5%92%8C-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%AB%AF"><span class="toc-number">7.2.</span> <span class="toc-text">H5 和 小程序端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#APP-%E7%AB%AF"><span class="toc-number">7.3.</span> <span class="toc-text">APP 端</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-2"><span class="toc-number">7.3.1.</span> <span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8E%92%E6%9F%A5%E9%97%AE%E9%A2%98"><span class="toc-number">7.3.2.</span> <span class="toc-text">排查问题</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%AB%AF-v-for-%E4%B8%AD%E4%BD%BF%E7%94%A8-v-if-%E9%97%AE%E9%A2%98"><span class="toc-number">8.</span> <span class="toc-text">7. 小程序端 v-for 中使用 v-if 问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0-1"><span class="toc-number">8.1.</span> <span class="toc-text">问题描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%92%E6%9F%A5%E8%BF%87%E7%A8%8B"><span class="toc-number">8.2.</span> <span class="toc-text">排查过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-3"><span class="toc-number">8.3.</span> <span class="toc-text">解决方案</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%AB%AF%E7%A6%81%E6%AD%A2%E4%BA%8B%E4%BB%B6%E5%86%92%E6%B3%A1"><span class="toc-number">9.</span> <span class="toc-text">8. 小程序端禁止事件冒泡</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0-2"><span class="toc-number">9.1.</span> <span class="toc-text">问题描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-4"><span class="toc-number">9.2.</span> <span class="toc-text">解决方案</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-uView-%E4%B8%A4%E5%B1%82-tabsSwiper-left-%E8%AE%A1%E7%AE%97%E9%97%AE%E9%A2%98"><span class="toc-number">10.</span> <span class="toc-text">9. uView 两层 tabsSwiper left 计算问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-scss-%E6%96%87%E4%BB%B6%E8%BF%9B%E8%A1%8C%E6%9D%A1%E4%BB%B6%E6%B8%B2%E6%9F%93"><span class="toc-number">11.</span> <span class="toc-text">10. scss 文件进行条件渲染</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-%E6%96%B9%E6%B3%95%E5%90%8D%E4%B8%8D%E8%83%BD%E4%B8%8E%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%90%8D%E5%AD%97%E5%86%B2%E7%AA%81"><span class="toc-number">12.</span> <span class="toc-text">11. 方法名不能与生命周期名字冲突</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#12-%E8%B0%83%E8%AF%95-uView-%E7%BB%84%E4%BB%B6"><span class="toc-number">13.</span> <span class="toc-text">12. 调试 uView 组件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13-SwipeAction-%E7%BB%84%E4%BB%B6%E6%97%A0%E6%B3%95%E8%87%AA%E5%8A%A8%E9%9A%90%E8%97%8F%E6%8C%89%E9%92%AE"><span class="toc-number">14.</span> <span class="toc-text">13. SwipeAction 组件无法自动隐藏按钮</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0-3"><span class="toc-number">14.1.</span> <span class="toc-text">问题描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-5"><span class="toc-number">14.2.</span> <span class="toc-text">解决方案</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#14-IOS-%E5%BA%95%E9%83%A8%E7%A9%BA%E7%99%BD%E5%AE%89%E5%85%A8%E5%8C%BA%E5%9F%9F"><span class="toc-number">15.</span> <span class="toc-text">14. IOS 底部空白安全区域</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#15-APP-%E7%AB%AF%E9%94%81%E5%AE%9A%E5%B1%8F%E5%B9%95%E6%96%B9%E5%90%91"><span class="toc-number">16.</span> <span class="toc-text">15. APP 端锁定屏幕方向</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#16-uButton-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%A0%B7%E5%BC%8F"><span class="toc-number">17.</span> <span class="toc-text">16. uButton 自定义样式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#17-uButton-%E6%97%A0%E6%B3%95%E8%87%AA%E5%AE%9A%E4%B9%89-hover-class"><span class="toc-number">18.</span> <span class="toc-text">17. uButton 无法自定义 hover-class</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#18-uni-app-%E5%8F%AA%E8%83%BD%E5%9C%A8-main-js-%E6%B3%A8%E5%86%8C%E5%85%A8%E5%B1%80%E7%BB%84%E4%BB%B6"><span class="toc-number">19.</span> <span class="toc-text">18. uni-app 只能在 main.js 注册全局组件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0-4"><span class="toc-number">19.1.</span> <span class="toc-text">问题描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA%E5%85%88%E8%A1%8C"><span class="toc-number">19.2.</span> <span class="toc-text">结论先行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90"><span class="toc-number">19.3.</span> <span class="toc-text">问题分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E5%9C%A8%E6%9C%80%E5%90%8E"><span class="toc-number">20.</span> <span class="toc-text">写在最后</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://4ark.me/post/uni-app-issues.html"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://4ark.me/post/uni-app-issues.html&text=uni-app 踩坑小记"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://4ark.me/post/uni-app-issues.html&title=uni-app 踩坑小记"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://4ark.me/post/uni-app-issues.html&is_video=false&description=uni-app 踩坑小记"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=uni-app 踩坑小记&body=Check out this article: https://4ark.me/post/uni-app-issues.html"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://4ark.me/post/uni-app-issues.html&title=uni-app 踩坑小记"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://4ark.me/post/uni-app-issues.html&title=uni-app 踩坑小记"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://4ark.me/post/uni-app-issues.html&title=uni-app 踩坑小记"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://4ark.me/post/uni-app-issues.html&title=uni-app 踩坑小记"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://4ark.me/post/uni-app-issues.html&name=uni-app 踩坑小记&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://4ark.me/post/uni-app-issues.html&t=uni-app 踩坑小记"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="dark-mobile" class="icon"><i class="fa fa-sun" id="dark-btn" aria-hidden="true"></i> Switch</a>
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    4Ark
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about">About</a></li><!--
+     --><!--
+       --><li><a href="/archives">Writing</a></li><!--
+     --><!--
+       --><li><a href="/weekly">Weekly</a></li><!--
+     --><!--
+       --><li><a href="/tags">Tags</a></li><!--
+     --><!--
+       --><li><a href="/search">Search</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-190615898-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-190615898-1');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<script type="text/javascript">
+  function loadDisqus() {
+    var disqus_shortname = 'https-4ark-me'
+
+    ;(function () {
+      var dsq = document.createElement('script')
+      dsq.type = 'text/javascript'
+      dsq.async = true
+      dsq.src =
+        '//' +
+        disqus_shortname +
+        '.disqus.com/embed.js'
+      ;(
+        document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]
+      ).appendChild(dsq)
+    })()
+
+    $('#load-disqus').hide()
+  }
+</script>
+
+<!-- utterances Comments -->
+
+</body>
+</html>
