@@ -15,6 +15,7 @@ module.exports = {
     // if one breakpoint is not enough for you
     screens: {
       sm: "640px",
+      lg: "1280px",
     },
 
     extend: {

@@ -8,6 +8,7 @@ import type { CollectionEntry } from "astro:content";
 import { slugifyStr } from "@utils/slugify";
 import ShareLinks from "@components/ShareLinks.astro";
 import Disqus from "@components/Disqus.astro";
+import TOC from "@components/Toc.astro";
 import { SITE } from "@config";
 
 export interface Props {
@@ -27,7 +28,7 @@ const {
   tags,
 } = post.data;
 
-const { Content } = await post.render();
+const { Content, headings } = await post.render();
 
 const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
 const ogUrl = new URL(
@@ -74,6 +75,7 @@ const layoutProps = {
       size="lg"
       className="my-2"
     />
+    {!!headings.length && <TOC headings={headings} />}
     <article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl">
       <Content />
     </article>
