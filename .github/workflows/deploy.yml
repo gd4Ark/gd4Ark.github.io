@@ -1,0 +1,20 @@
+name: 'build'
+
+on:
+  push:
+    branches:
+      - hexo-cactus
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Build and Deploy
+        uses: theme-keep/hexo-deploy-github-pages-action@master
+        env:
+          PERSONAL_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          PUBLISH_REPOSITORY: gd4Ark/gd4Ark.github.io
+          BRANCH: master
