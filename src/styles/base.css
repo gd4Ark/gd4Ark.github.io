@@ -166,7 +166,7 @@ html .astro-code .highlighted {
   transition: background-color 0.5s;
   margin: 0 -1rem;
   padding: 0 1rem;
-  width: 46rem;
+  width: calc(100% + 2rem);
   display: inline-block;
 }
 
@@ -174,7 +174,7 @@ html .astro-code .diff {
   transition: background-color 0.5s;
   margin: 0 -1rem;
   padding: 0 1rem;
-  width: 46rem;
+  width: calc(100% + 2rem);
   display: inline-block;
 }
 
