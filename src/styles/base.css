@@ -11,6 +11,11 @@
     --color-card: 230, 230, 230;
     --color-card-muted: 205, 205, 205;
     --color-border: 236, 233, 233;
+    --color-highlighted-bg-color: rgba(142, 150, 170, 0.14);
+    --color-diff-add-color: rgba(16, 185, 129, 0.14);
+    --color-diff-remove-color: rgba(244, 63, 94, 0.14);
+    --color-diff-add-text-color: rgb(24, 121, 78);
+    --color-diff-remove-text-color: rgb(179, 78, 82);
   }
   html[data-theme="dark"] {
     --color-fill: 33, 39, 55;
@@ -19,6 +24,11 @@
     --color-card: 52, 63, 96;
     --color-card-muted: 138, 51, 2;
     --color-border: 171, 75, 8;
+    --color-highlighted-bg-color: rgba(101, 117, 133, 0.16);
+    --color-diff-add-color: rgba(16, 185, 129, 0.16);
+    --color-diff-remove-color: rgba(244, 63, 94, 0.16);
+    --color-diff-add-text-color: rgb(61, 214, 140);
+    --color-diff-remove-text-color: rgb(203, 118, 118);
   }
   #sun-svg,
   html[data-theme="dark"] #moon-svg {
@@ -142,11 +152,47 @@ html[data-theme="dark"] .astro-code {
   font-weight: var(--shiki-dark-font-weight) !important;
   text-decoration: var(--shiki-dark-text-decoration) !important;
 }
+
 html[data-theme="dark"] .astro-code span {
   color: var(--shiki-dark) !important;
-  background-color: var(--shiki-dark-bg) !important;
   /* Optional, if you also want font styles */
   font-style: var(--shiki-dark-font-style) !important;
   font-weight: var(--shiki-dark-font-weight) !important;
   text-decoration: var(--shiki-dark-text-decoration) !important;
+}
+
+html .astro-code .highlighted {
+  background-color: var(--color-highlighted-bg-color) !important;
+  transition: background-color 0.5s;
+  margin: 0 -1rem;
+  padding: 0 1rem;
+  width: 46rem;
+  display: inline-block;
+}
+
+html .astro-code .diff {
+  transition: background-color 0.5s;
+  margin: 0 -1rem;
+  padding: 0 1rem;
+  width: 46rem;
+  display: inline-block;
+}
+
+html .astro-code .diff.add {
+  background-color: var(--color-diff-add-color) !important;
+}
+
+html .astro-code .diff.remove {
+  background-color: var(--color-diff-remove-color) !important;
+  opacity: 0.7;
+}
+
+html .astro-code .diff.add:before {
+  content: "+";
+  color: var(--color-diff-add-text-color);
+}
+
+html .astro-code .diff.remove:before {
+  content: "-";
+  color: var(--color-diff-remove-text-color);
 }

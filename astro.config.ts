@@ -5,6 +5,10 @@ import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
 import sitemap from "@astrojs/sitemap";
 import { SITE } from "./src/config";
+import {
+  transformerNotationDiff,
+  transformerNotationHighlight,
+} from "@shikijs/transformers";
 
 // https://astro.build/config
 export default defineConfig({
@@ -32,6 +36,7 @@ export default defineConfig({
         dark: "vitesse-dark",
       },
       wrap: true,
+      transformers: [transformerNotationDiff(), transformerNotationHighlight()],
     },
   },
   vite: {
