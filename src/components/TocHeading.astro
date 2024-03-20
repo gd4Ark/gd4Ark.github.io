@@ -13,7 +13,7 @@ const {
 <li class={`${depth > 2 ? "ms-2" : ""}`}>
   <a
     aria-label={`Scroll to section: ${text}`}
-    class={`block line-clamp-2 hover:text-accent ${depth <= 2 ? "mt-3" : "mt-2 text-[0.80rem]"}`}
+    class={`block line-clamp-2 hover:text-accent text-nowrap max-w-[14rem] overflow-hidden overflow-ellipsis ${depth <= 2 ? "mt-3" : "mt-2 text-[0.80rem]"}`}
     href={`#${slug}`}><span class="me-0.5"></span>{text}</a
   >
   {
