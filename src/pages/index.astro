@@ -18,7 +18,35 @@ const sortedPosts = getSortedPosts(posts);
     {
       sortedPosts.length > 0 && (
         <section id="recent-posts">
-          <h2>Recent Posts</h2>
+          <h2>
+            Recent Posts
+            <a
+              target="_blank"
+              href="/rss.xml"
+              class="astro-j7pv25f6 rss-link"
+              aria-label="rss feed"
+              title="RSS Feed"
+            >
+              {" "}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="astro-j7pv25f6 rss-icon"
+              >
+                <>
+                  <path
+                    d="M19 20.001C19 11.729 12.271 5 4 5v2c7.168 0 13 5.832 13 13.001h2z"
+                    class="astro-j7pv25f6"
+                  />
+                  <path
+                    d="M12 20.001h2C14 14.486 9.514 10 4 10v2c4.411 0 8 3.589 8 8.001z"
+                    class="astro-j7pv25f6"
+                  />
+                  <circle cx="6" cy="18" r="2" class="astro-j7pv25f6" />
+                </>{" "}
+              </svg>{" "}
+              <span class="astro-j7pv25f6 sr-only">RSS Feed</span>{" "}
+            </a>
+          </h2>
           <ul>
             {sortedPosts.map(
               ({ data, slug }, index) =>
