@@ -41,4 +41,10 @@ export const SOCIALS: SocialObjects = [
     linkTitle: `${SITE.title} on Twitter`,
     active: true,
   },
+  {
+    name: "RSS",
+    href: "https://4ark.me/rss.xml",
+    linkTitle: `${SITE.title} on RSS`,
+    active: true,
+  },
 ];
