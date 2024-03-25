@@ -15,7 +15,8 @@ export async function getStaticPaths() {
   const permalinkPosts = await getCollection(
     "blog",
     ({ data }) =>
-      !data.draft && data.permalink && data.permalink.startsWith("/posts/")
+      (!data.draft && data.permalink && data.permalink.startsWith("/posts/")) ||
+      data.permalinks?.length
   );
 
   const postResult = posts.map(post => ({
@@ -23,10 +24,36 @@ export async function getStaticPaths() {
     props: { post },
   }));
 
-  const permalinkPostsResult = permalinkPosts.map(post => ({
-    params: { slug: post.data.permalink!.replace("/posts/", "") },
-    props: { post },
-  }));
+  let permalinkPostsResult = permalinkPosts
+    .map(post => {
+      let result = [];
+
+      if (post.data?.permalink) {
+        result.push({
+          params: {
+            slug: post.data.permalink!.replace("/posts/", ""),
+          },
+          props: { post },
+        });
+      }
+
+      if (post.data?.permalinks.length) {
+        result = [
+          ...result,
+          ...post.data?.permalinks
+            .filter(link => link.startsWith("/posts/"))
+            .map(link => ({
+              params: {
+                slug: link?.replace("/posts/", ""),
+              },
+              props: { post },
+            })),
+        ];
+      }
+
+      return result;
+    })
+    .flat();
 
   const pagePaths = getPageNumbers(posts.length).map(pageNum => ({
     params: { slug: String(pageNum) },

@@ -14,15 +14,41 @@ export async function getStaticPaths() {
   const posts = await getCollection(
     "blog",
     ({ data }) =>
-      !data.draft && data.permalink && !data.permalink.includes("posts/")
+      !data.draft &&
+      (data.permalink || data.permalinks?.length) &&
+      !data.permalink?.includes("posts/")
   );
 
-  const postResult = posts.map(post => ({
-    params: {
-      slug: post.data.permalink!.replace("/post/", ""),
-    },
-    props: { post },
-  }));
+  let postResult = posts
+    .map(post => {
+      let result = [];
+
+      if (post.data?.permalink) {
+        result.push({
+          params: {
+            slug: post.data.permalink!.replace("/post/", ""),
+          },
+          props: { post },
+        });
+      }
+
+      if (post.data?.permalinks.length) {
+        result = [
+          ...result,
+          ...post.data?.permalinks
+            .filter(link => link.startsWith("/post/"))
+            .map(link => ({
+              params: {
+                slug: link?.replace("/post/", ""),
+              },
+              props: { post },
+            })),
+        ];
+      }
+
+      return result;
+    })
+    .flat();
 
   const pagePaths = getPageNumbers(posts.length).map(pageNum => ({
     params: { slug: String(pageNum) },

@@ -1,7 +1,10 @@
 ---
 title: composition-api 源码解析
 pubDatetime: 2021-07-15
-permalink: /post/composition-api-score-code.html
+permalinks:
+  - /post/composition-api-score-code.html
+  - /post/composition-api-score-code
+  - /posts/composition-api
 tags:
   - 前端
   - Vue
@@ -27,10 +30,10 @@ tags:
 if (isVueRegistered(Vue)) {
   if (__DEV__) {
     warn(
-      '[vue-composition-api] already installed. Vue.use(VueCompositionAPI) should be called only once.'
-    )
+      "[vue-composition-api] already installed. Vue.use(VueCompositionAPI) should be called only once."
+    );
   }
-  return
+  return;
 }
 ```
 
@@ -55,13 +58,13 @@ export function isVueRegistered(Vue: VueConstructor) {
 ```javascript
 if (__DEV__) {
   if (Vue.version) {
-    if (Vue.version[0] !== '2' || Vue.version[1] !== '.') {
+    if (Vue.version[0] !== "2" || Vue.version[1] !== ".") {
       warn(
         `[vue-composition-api] only works with Vue 2, v${Vue.version} found.`
-      )
+      );
     }
   } else {
-    warn('[vue-composition-api] no Vue version found')
+    warn("[vue-composition-api] no Vue version found");
   }
 }
 ```
@@ -115,9 +118,9 @@ export function setVueConstructor(Vue: VueConstructor) {
 
 ```javascript
 Vue.mixin({
-  beforeCreate: functionApiInit
+  beforeCreate: functionApiInit,
   // ... other
-})
+});
 ```
 
 然后添加一个全局的 `mixin` ，在每个组件的 `beforeCreate` 生命周期执行一下 `functionApiInit` 方法。
@@ -132,9 +135,9 @@ Vue.mixin({
 
 ```javascript
 Vue.mixin({
-  beforeCreate: functionApiInit
+  beforeCreate: functionApiInit,
   // ... other
-})
+});
 ```
 
 下面是这个方法主要做的事。
@@ -166,16 +169,16 @@ ps：值得说明的是即便我们写的是 `template` ，但到了目前这个
 
 ```javascript
 if (!setup) {
-  return
+  return;
 }
-if (typeof setup !== 'function') {
+if (typeof setup !== "function") {
   if (__DEV__) {
     warn(
       'The "setup" option should be a function that returns a object in component definitions.',
       vm
-    )
+    );
   }
-  return
+  return;
 }
 ```
 
@@ -273,7 +276,7 @@ function initSetup(vm: ComponentInstance, props: Record < any, any > = {}) {
 这个 `ctx` 是 `setup` 中接受的第二个参数，这个对象里面的内容是怎么生成的呢？
 
 ```javascript
-const ctx = createSetupContext(vm)
+const ctx = createSetupContext(vm);
 ```
 
 下面是 `createSetupContext` 所做的事，首先是定义 `ctx` 对象中所有的 `key` ：
@@ -299,15 +302,15 @@ const methodReturnVoid = ['emit']
 接下来就是给这些属性利用 `Object.defineProperty` 做一层代理，当然它们都是只读的：
 
 ```javascript
-propsPlain.forEach((key) => {
-  let srcKey = `$${key}`
+propsPlain.forEach(key => {
+  let srcKey = `$${key}`;
   proxy(ctx, key, {
     get: () => vm[srcKey],
     set() {
-      warn(`Cannot assign to '${key}' because it is a read-only property`, vm)
-    }
-  })
-})
+      warn(`Cannot assign to '${key}' because it is a read-only property`, vm);
+    },
+  });
+});
 ```
 
 另外两个 `propsReactiveProxy` 和 `methodReturnVoid` 也差不多，这里就略过了。
@@ -317,11 +320,11 @@ propsPlain.forEach((key) => {
 接着就是将 `props` 对象进行一遍 Observer：
 
 ```javascript
-def(props, '__ob__', createObserver())
+def(props, "__ob__", createObserver());
 
 // src/reactivity/reactive.ts
 export function createObserver() {
-  return observe < any > {}.__ob__
+  return observe < any > {}.__ob__;
 }
 ```
 
@@ -334,7 +337,7 @@ export function createObserver() {
 接着就是把当前实例的 `slots` 给代理到前面定义的 `ctx.slots` 中，这时候它只是一个空对象：
 
 ```javascript
-resolveScopedSlots(vm, ctx.slots)
+resolveScopedSlots(vm, ctx.slots);
 ```
 
 下面是 `resolveScopedSlots` 的实现：
@@ -380,8 +383,8 @@ export function resolveScopedSlots(
 ```javascript
 activateCurrentInstance(vm, () => {
   // make props to be fake reactive, this is for `toRefs(props)`
-  binding = setup(props, ctx)
-})
+  binding = setup(props, ctx);
+});
 ```
 
 `activateCurrentInstance` 之前讲过了，就是使组件的 `setup` 内部可以通过 `getCurrentInstance` 访问当前实例，相信真正使用过 `composition-api` 的同学们都知道这个方法的便利性了，但不知道同学们是否遇到过 `getCurrentInstance` 方法返回 `null` 值的情况呢？如果想知道为什么，可以看这篇文章：[《从 Composition API 源码分析 getCurrentInstance() 为何返回 null》](https://4ark.me/post/87ba8d8b.html)。
@@ -401,14 +404,14 @@ activateCurrentInstance(vm, () => {
 ```javascript
 if (isFunction(binding)) {
   // keep typescript happy with the binding type.
-  const bindingFunc = binding
+  const bindingFunc = binding;
   // keep currentInstance accessible for createElement
   vm.$options.render = () => {
     // @ts-expect-error
-    resolveScopedSlots(vm, ctx.slots)
-    return activateCurrentInstance(vm, () => bindingFunc())
-  }
-  return
+    resolveScopedSlots(vm, ctx.slots);
+    return activateCurrentInstance(vm, () => bindingFunc());
+  };
+  return;
 }
 ```
 
