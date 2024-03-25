@@ -24,6 +24,7 @@
     "fuse.js": "^7.0.0",
     "github-slugger": "^2.0.0",
     "markdown-it": "^14.1.0",
+    "rehype-external-links": "^3.0.0",
     "remark-collapse": "^0.1.2",
     "remark-toc": "^9.0.0",
     "sanitize-html": "^2.12.1",
