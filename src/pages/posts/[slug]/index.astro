@@ -40,7 +40,7 @@ export async function getStaticPaths() {
       if (post.data?.permalinks.length) {
         result = [
           ...result,
-          ...post.data?.permalinks
+          ...(post?.data?.permalinks || [])
             .filter(link => link.startsWith("/posts/"))
             .map(link => ({
               params: {

@@ -11,7 +11,8 @@ export async function GET() {
   const sortedPosts = getSortedPosts(posts);
   return rss({
     title: SITE.title,
-    description: SITE.desc,
+    description:
+      SITE.desc + " feedId:41446022334078983+userId:60295286440337408",
     site: SITE.website,
     items: sortedPosts.slice(0, 10).map(({ data, body, slug }) => ({
       link: `posts/${slug}/`,
