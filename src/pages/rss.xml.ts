@@ -12,7 +12,7 @@ export async function GET() {
   return rss({
     title: SITE.title,
     description:
-      SITE.desc + " feedId:41446022334078983+userId:60295286440337408",
+      SITE.desc + " feedId:43152441906443264+userId:60295286440337408",
     site: SITE.website,
     items: sortedPosts.slice(0, 10).map(({ data, body, slug }) => ({
       link: `posts/${slug}/`,
