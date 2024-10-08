@@ -47,4 +47,10 @@ export const SOCIALS: SocialObjects = [
     linkTitle: `${SITE.title} on RSS`,
     active: true,
   },
+  {
+    name: "Follow",
+    href: "https://app.follow.is/feed/41446022334078983",
+    linkTitle: `${SITE.title} on Follow`,
+    active: true,
+  },
 ];

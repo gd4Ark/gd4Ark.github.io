@@ -17,7 +17,7 @@ title: "About"
 
 - [胡涂说](https://hutusi.com/)
 - [Lcomplete](https://codelc.com/)
-- [Airing 的小屋](https://me.ursb.me/)
+- [Airing 的小屋](https://blog.ursb.me/)
 - [HuoJu's BLOG](https://jhuo.ca/)
 - [Huli](https://blog.huli.tw/)
 - [程序员的喵](https://catcoding.me/)
