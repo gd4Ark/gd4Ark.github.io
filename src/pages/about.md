@@ -15,6 +15,7 @@ title: "About"
 
 你可以在这里发现更多志同道合的朋友，排名不分先后：
 
+- [Colmugx](https://blog.colmugx.top/)
 - [胡涂说](https://hutusi.com/)
 - [Lcomplete](https://codelc.com/)
 - [Airing 的小屋](https://blog.ursb.me/)
@@ -23,6 +24,7 @@ title: "About"
 - [程序员的喵](https://catcoding.me/)
 - [Step By Step](https://step-by-step.tech/)
 - [卡瓦邦噶！](https://www.kawabangga.com/)
+- [Innovation for Bytes](https://www.ifb.me/)
 
 如果想要交换友链，麻烦在下面 👇🏻 评论区留言，格式如下：
 
