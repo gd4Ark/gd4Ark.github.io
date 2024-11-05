@@ -42,7 +42,7 @@ export default defineConfig({
         rehypeExternalLinks,
         {
           target: "_blank",
-          rel: ["nofollow, noopener, noreferrer"],
+          // rel: ["nofollow, noopener, noreferrer"],
         },
       ],
     ],
