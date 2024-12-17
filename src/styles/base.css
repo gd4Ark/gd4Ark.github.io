@@ -91,6 +91,7 @@
     @apply mb-2;
   }
   .prose details {
+    max-width: 48rem;
     @apply inline-block cursor-pointer select-none text-skin-base;
   }
   .prose summary {
@@ -195,4 +196,9 @@ html .astro-code .diff.add:before {
 html .astro-code .diff.remove:before {
   content: "-";
   color: var(--color-diff-remove-text-color);
+}
+
+html .toc-list {
+  max-height: 78vh;
+  overflow-y: auto;
 }
