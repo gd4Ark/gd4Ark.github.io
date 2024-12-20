@@ -1,8 +1,8 @@
 ---
-title: 锐捷无线AP学习笔记 - 入门篇
+title: 锐捷无线 AP 学习笔记 - 入门篇
 tags:
   - 网络
-  - 无线AP
+  - 无线 AP
 permalink: /post/d69467be.html
 pubDatetime: 2018-11-05 23:01:43
 ---
@@ -11,9 +11,9 @@ pubDatetime: 2018-11-05 23:01:43
 
 ### 版本说明
 
-我的 AP 型号为： RG-AP220-SE
+我的 AP 型号为：RG-AP220-SE
 
-系统版本为： RGOS 11.1(5)B8
+系统版本为：RGOS 11.1(5)B8
 
 ### 需求
 
@@ -100,7 +100,7 @@ Ruijie(config-if-Dot11radio 1/0)# wlan-id 1 // 对应 wlan-id
 Ruijie(config-if-Dot11radio 1/0)# ex
 ```
 
-> 注： 这时 AP 已经发出了无线信号，你可以在手机上搜索得到。
+> 注：这时 AP 已经发出了无线信号，你可以在手机上搜索得到。
 
 设置 AP 的默认路由（也就是这个局域网的网关）
 
@@ -166,7 +166,7 @@ Ruijie(config-wlansec)# security static-wep-key encryption 40 ascii 1 12345
 Ruijie(config-wlansec)# security static-wep-key authentication  shellare-key
 ```
 
-> 注： 密码长度可选为 （40 | 103），40 = 5 个，103 = 13 个
+> 注：密码长度可选为（40 | 103），40 = 5 个，103 = 13 个
 
 ### PSK 接入认证 (WPA)
 
@@ -203,7 +203,7 @@ Ruijie(config-wlansec)#security wpa ciphers aes enable
 
 在这次实训中，我用到 vlan 1，一切正常。
 
-但是，当我使用另外的 vlan （vlan 10）时，发现在本机并不能 ping 通 AP 的管理地址。
+但是，当我使用另外的 vlan（vlan 10）时，发现在本机并不能 ping 通 AP 的管理地址。
 
 这个时候，AP 不能与网关连通，所以无法正确配置 DHCP 服务器（手动配置静态没有问题）。
 

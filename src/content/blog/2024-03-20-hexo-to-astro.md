@@ -20,7 +20,7 @@ description: 终于还是抵挡不住 Astro 的诱惑，抛弃了 Hexo，开始�
 
 由于 Astro 的页面路径与 Hexo 不同，我需要做一些兼容处理，保证旧链接依然能够正常访问。
 
-以前在 Hexo 中，我可以通过 `permalink` 字段自定义文章路径。然而，Astro 的文章路径是由 md 文件名决定的。例如，我之前一篇名为 “2023 年度总结” 的文章，其 `permalink` 设置为 post/2023-summary.html，但在 Astro 中，它的路径变为 posts/2024-01-01-2023-summary。
+以前在 Hexo 中，我可以通过 `permalink` 字段自定义文章路径。然而，Astro 的文章路径是由 md 文件名决定的。例如，我之前一篇名为“2023 年度总结”的文章，其 `permalink` 设置为 post/2023-summary.html，但在 Astro 中，它的路径变为 posts/2024-01-01-2023-summary。
 
 不过好在 Astro 处理起来并不复杂。只需创建一个名为 `post/[slug]/index.astro` 的页面，并在此页面中处理链接，将其与 md 文件中的 `permalink` 字段进行映射即可。
 

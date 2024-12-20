@@ -2,11 +2,12 @@
 title: 我们如何从 Wxml2Canvas 迁移到 Painter
 pubDatetime: 2022-12-26
 permalink: /post/how-to-migrate-wxml2canvas-to-painter.html
-tags: 
+tags:
   - 前端
 ---
 
 ## 路漫漫其修远兮
+
 糖纸苦 Wxml2Canvas 久矣！
 
 长期以来，糖纸项目使用 [Wxml2Canvas](https://github.com/wg-front/wxml2canvas) 库来生成分享海报。这个库的功能就是将 Wxml 转换成 Canvas，并最终生成一张图片。但是，这个库非常不稳定，经常会出现各种奇怪的 BUG，只能说勉强能用。如果你想了解 Wxml2Canvas 给我们带来的痛苦，可以阅读这篇文章：[《一行 Object.keys() 引发的血案》](https://4ark.me/post/how-object-keys-work.html)。
@@ -32,8 +33,6 @@ Wxml2Canvas 使用方式相对直观，使用 Wxml 和 Wxss 实现，而 Painter
 大致流程如下：
 
 <img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202212272228830.png?imageMogr2/format/webp" alt="image-20221227222820467" style="zoom:50%;" />
-
-
 
 总之，我们需要一个转换器来将 Wxml 转换为符合 Painter 使用的 JSON 配置，我愿称之为 Wxml2Json。
 
@@ -114,9 +113,9 @@ formatNodes(nodes) {
 
 以上这两个页面都有一个共同点，就是生成的分享海报尺寸非常大，比如说这个：1170 × 17259。
 
-我去线上看了一下，发现同一个页面上  Wxml2Canvas  却是稳定的，那这个 Painter 为什么这么拉胯？
+我去线上看了一下，发现同一个页面上 Wxml2Canvas 却是稳定的，那这个 Painter 为什么这么拉胯？
 
-开始找茬，分析两者的实现，终于发现了一些端倪：首先是  `wx.canvasToTempFilePath` 的参数不同：
+开始找茬，分析两者的实现，终于发现了一些端倪：首先是 `wx.canvasToTempFilePath` 的参数不同：
 
 <img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202212282240876.png?imageMogr2/format/webp" alt="image-20221228223957183" style="zoom:50%;" />
 
@@ -132,15 +131,15 @@ formatNodes(nodes) {
 然后再梳理一下这两个库中的参数值是多少：
 
 - Wxml2Canvas
-  - width：与外层容器的宽度、 canvas 宽度一致
-  - height：与外层容器的高度、 canvas 高度一致
+  - width：与外层容器的宽度、canvas 宽度一致
+  - height：与外层容器的高度、canvas 高度一致
   - destWidth，width × dpr
   - destHeight，height × dpr
 - Painter
-  - width：外层容器的宽度 * dpr、 canvas 宽度一致
-  - height：外层容器的宽度 * dpr、 canvas 高度一致
+  - width：外层容器的宽度 \* dpr、canvas 宽度一致
+  - height：外层容器的宽度 \* dpr、canvas 高度一致
   - destWidth，与 canvas 宽度一致
-  - destHeight， 与 canvas 高度一致
+  - destHeight，与 canvas 高度一致
 
 答案呼之欲出了，我来解释一下：
 
@@ -154,8 +153,6 @@ formatNodes(nodes) {
 ## 柳暗花明又一村
 
 既然如此，我们就可以直接将 Wxml2Canvas 的方案移植到 Painter，最终发现这样能 work：
-
-
 
 <img src="https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images202212291328173.png?imageMogr2/format/webp" alt="image-20221229132803803" style="zoom:50%;" />
 
@@ -179,7 +176,7 @@ formatNodes(nodes) {
 既然如此，可以在生成海报之后立即对分享卡片的内存进行回收，最简单的方式就是使用 `wx:if` 控制。
 
 ```diff
-<share-card 
+<share-card
 + wx:if="{{showShareCard}}"
   id='share-card'
 />

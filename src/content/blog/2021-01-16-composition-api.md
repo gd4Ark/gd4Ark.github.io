@@ -24,35 +24,35 @@ pubDatetime: 2021-01-16 22:39:55
   import {
     defineComponent,
     ref,
-    getCurrentInstance
-  } from '@vue/composition-api'
+    getCurrentInstance,
+  } from "@vue/composition-api";
 
   function useIncrease() {
-    const count = ref(0)
+    const count = ref(0);
 
     function increase() {
-      count.value++
+      count.value++;
 
       // 假设我们还要访问当前实例来做些什么
-      getCurrentInstance().doSomething // 但 getCurrentInstance() 返回的是 null
+      getCurrentInstance().doSomething; // 但 getCurrentInstance() 返回的是 null
     }
 
     return {
       count,
-      increase
-    }
+      increase,
+    };
   }
 
   export default defineComponent({
     setup() {
-      const { count, increase } = useIncrease()
+      const { count, increase } = useIncrease();
 
       return {
         count,
-        increase
-      }
-    }
-  })
+        increase,
+      };
+    },
+  });
 </script>
 ```
 
@@ -112,23 +112,23 @@ function useIncrease() {
 
 ```html
 <script>
-  import { defineComponent, getCurrentInstance } from '@vue/composition-api'
+  import { defineComponent, getCurrentInstance } from "@vue/composition-api";
 
   export default defineComponent({
     setup() {
-      debugger
-      console.log(getCurrentInstance())
+      debugger;
+      console.log(getCurrentInstance());
 
       setTimeout(() => {
-        debugger
-        console.log(getCurrentInstance())
-      })
-    }
-  })
+        debugger;
+        console.log(getCurrentInstance());
+      });
+    },
+  });
 </script>
 ```
 
-可以看到，我们在两处调用的地方之前都加了一个断点， 先看看它们执行起来有何不同。
+可以看到，我们在两处调用的地方之前都加了一个断点，先看看它们执行起来有何不同。
 
 第一次调用的内部是这样的，这时候它能够访问：
 

@@ -1,5 +1,5 @@
 ---
-title: PhpStorm 使用 PHPCS 检查代码规范及自动修正和Git提交检查
+title: PhpStorm 使用 PHPCS 检查代码规范及自动修正和 Git 提交检查
 tags:
   - 后端
   - PHP
@@ -74,7 +74,7 @@ Arguments：
 --standard=PSR2 $FileDir$ ## 当前文件夹
 ```
 
-Working directory：`$ProjectFileDir$`
+Working directory:`$ProjectFileDir$`
 
 #### 使用方法
 

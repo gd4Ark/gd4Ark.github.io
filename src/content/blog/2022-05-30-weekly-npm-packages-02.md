@@ -2,11 +2,12 @@
 title: 每周轮子之 husky：统一规范团队 Git Hooks
 pubDatetime: 2022-05-30
 permalink: /post/weekly-npm-packages-02.html
-tags: 
+tags:
   - 每周轮子
 ---
 
 ## 需求
+
 本文是每周轮子计划的第二篇，本周我们来实现一个被广泛使用的工具，那就是鼎鼎大名的 husky，几乎所有现代前端项目、以及 Node.js 项目都会接入这个工具，它的用途主要是统一管理项目中的 Git Hooks 脚本，不熟悉该工具的同学也不要紧，下面我们先来简单介绍一下 husky，它到底解决了什么问题，我们为什么需要使用 husky。
 
 大部分公司都会采用 Git 来对项目进行代码的版本控制，其好处相信大家都知道，这里就不再赘述，通常为了保证项目的代码质量、以及更好地进行团队之间的协作，我们都会在提交代码时做一些额外的工作，包括：检查 commit message 的规范性、统一代码风格、进行单元测试等等。
@@ -16,6 +17,7 @@ tags:
 因此，大部分版本控制系统都会提供一个叫做钩子（Hooks）的东西，Git 自然也不例外，Hooks 可以让我们在特定的重要动作发生时触发自定义脚本，通常分为客户端和服务端，而我们接触的大部分 Hooks 都是客户端的，也就是在我们本机上执行的。
 
 下面我们简单介绍一下如何在 Git 中使用 Hooks，我们只需要在项目的 `.git/hooks` 目录中创建一个**与某个 hook 同名的可执行脚本**即可，比如我们想要阻止一切提交，并将 commit message 打印到终端：
+
 ```bash
 # .git/hooks/commit-msg
 
@@ -37,7 +39,8 @@ exit 1
 讲完如何使用 Git Hooks，那我们就得讲讲这种方式存在哪些不足。
 
 在 [Git 文档](https://git-scm.com/book/zh/v2/%E8%87%AA%E5%AE%9A%E4%B9%89-Git-Git-%E9%92%A9%E5%AD%90)中对客户端钩子有这么一段话：
-> 需要注意的是，克隆某个版本库时，它的客户端钩子并不随同复制。 如果需要靠这些脚本来强制维持某种策略，建议你在服务器端实现这一功能。 
+
+> 需要注意的是，克隆某个版本库时，它的客户端钩子并不随同复制。如果需要靠这些脚本来强制维持某种策略，建议你在服务器端实现这一功能。
 
 简单来说就是，我们上面添加的这个 `commit-msg` Hook，只能在我们自己的机器上，不能被加入到版本控制中推送到远端，也就意味着我们无法同步这些 Hooks 脚本。
 
@@ -62,7 +65,7 @@ npm install husky -D
 }
 ```
 
-以上这种方式是 husky v4 版本之前的配置方式，相信大部分同学都对这种方式很熟悉了，而在最新版本 husky（v7 之后） 已经不支持这样使用，而是采用命令行配置的方式：
+以上这种方式是 husky v4 版本之前的配置方式，相信大部分同学都对这种方式很熟悉了，而在最新版本 husky（v7 之后）已经不支持这样使用，而是采用命令行配置的方式：
 
 ```bash
 npx husky add .husky/pre-commit "lint-staged"
@@ -95,32 +98,32 @@ npx husky add .husky/pre-push "yarn test"
 
 ```js
 // husky.js
-const pkg = require('./package.json')
+const pkg = require("./package.json");
 
 function husky() {
   if (!pkg?.husky?.hooks) {
-    return
+    return;
   }
 
-  if (typeof pkg.husky.hooks !== 'object') {
-    return
+  if (typeof pkg.husky.hooks !== "object") {
+    return;
   }
 
-  const hooks = pkg.husky.hooks
+  const hooks = pkg.husky.hooks;
 
-  console.log(hooks)
+  console.log(hooks);
 }
 
-husky()
+husky();
 ```
 
 现在我们现在已经能拿到 hooks 相关的配置，然后我们把相关的脚本内容写入到对应的 hooks 可执行文件：
 
 ```js
 for (const [name, value] of Object.entries(hooks)) {
-  const script = `#!/bin/sh\n${value}\n`
+  const script = `#!/bin/sh\n${value}\n`;
 
-  fs.writeFileSync(`./.git/hooks/${name}`, script, { mode: '751' })
+  fs.writeFileSync(`./.git/hooks/${name}`, script, { mode: "751" });
 }
 ```
 
@@ -139,7 +142,7 @@ node husky.js
 echo hello husky!
 ```
 
- 这时候进行 commit 也可以看到输出：
+这时候进行 commit 也可以看到输出：
 
 ```bash
 > git commit -m "test"
@@ -147,7 +150,7 @@ echo hello husky!
 hello husky!
 ```
 
-这时候我们已经完成了 husky 大部分的功能，但是这里还存在这么一个问题：**如果现在我去修改 `package.json`  中的 husky 配置，hooks 文件如何同步更新？**
+这时候我们已经完成了 husky 大部分的功能，但是这里还存在这么一个问题：**如果现在我去修改 `package.json` 中的 husky 配置，hooks 文件如何同步更新？**
 
 举个例子，如果现在把 `package.json` 改成这样：
 
@@ -170,7 +173,7 @@ hello husky!
 
 可能有点拗口，换句话说就是我们在一开始就把所有的 hooks 预注册了，然后在每一个 hooks 脚本中做同一件事：寻找 `package.json` 中对应的 hooks 并执行。
 
-可能会觉得有点奇技淫巧 ，但也不失为一种曲线救国的方式，而事实上在 husky v4 之前还真的是这么做的。
+可能会觉得有点奇技淫巧，但也不失为一种曲线救国的方式，而事实上在 husky v4 之前还真的是这么做的。
 
 那我们如何在一开始就注册所有 hooks 呢？
 
@@ -224,111 +227,115 @@ hello husky!
 ```bash
 .
 ├── husky                   // husky 包
-│   ├── package.json     
+│   ├── package.json
 │   ├── husky.js            // install 入口
 │   ├── installer           // 初始化，预注册 hooks
-│   │   └── index.js     
+│   │   └── index.js
 │   ├── runner              // 寻找对应的 hook 并执行
-│   │   └── index.js     
+│   │   └── index.js
 │   └── sh                  // 所有 hooks 统一调用脚本
-│       └── husky.sh     
+│       └── husky.sh
 └── package.json            // 测试
 ```
 
 我们在 `husky.js` 中调用 install 进行初始化操作：
 
 ```js
-const install = require('./installer')
+const install = require("./installer");
 
-install()
+install();
 ```
 
 然后在 `installer/index.js` 中预注册 hooks：
 
 ```js
 // installer/index.js
-const fs = require('fs')
-const cp = require('child_process')
-const path = require('path')
+const fs = require("fs");
+const cp = require("child_process");
+const path = require("path");
 
 const hookList = [
-  'applypatch-msg',
-  'pre-applypatch',
-  'post-applypatch',
-  'pre-commit',
-  'pre-merge-commit',
-  'prepare-commit-msg',
-  'commit-msg',
-  'post-commit',
-  'pre-rebase',
-  'post-checkout',
-  'post-merge',
-  'pre-push',
-  'post-update',
-  'push-to-checkout',
-  'pre-auto-gc',
-  'post-rewrite',
-  'sendemail-validate'
-]
+  "applypatch-msg",
+  "pre-applypatch",
+  "post-applypatch",
+  "pre-commit",
+  "pre-merge-commit",
+  "prepare-commit-msg",
+  "commit-msg",
+  "post-commit",
+  "pre-rebase",
+  "post-checkout",
+  "post-merge",
+  "pre-push",
+  "post-update",
+  "push-to-checkout",
+  "pre-auto-gc",
+  "post-rewrite",
+  "sendemail-validate",
+];
 
 function git(args, cwd = process.cwd()) {
-  return cp.spawnSync('git', args, { stdio: 'pipe', encoding: 'utf-8', cwd })
+  return cp.spawnSync("git", args, { stdio: "pipe", encoding: "utf-8", cwd });
 }
 
 function getGitRoot() {
-  return git(['rev-parse', '--show-toplevel']).stdout.trim()
+  return git(["rev-parse", "--show-toplevel"]).stdout.trim();
 }
 
 function getGitHooksDir() {
-  const root = getGitRoot()
+  const root = getGitRoot();
 
-  return path.join(root, '.git/hooks')
+  return path.join(root, ".git/hooks");
 }
 
 function getHookScript() {
   return `#!/bin/sh
 
 . "$(dirname "$0")/husky.sh"
-`
+`;
 }
 
 function writeHook(filename, script) {
-  fs.writeFileSync(filename, script, 'utf-8')
-  fs.chmodSync(filename, 0o0755)
+  fs.writeFileSync(filename, script, "utf-8");
+  fs.chmodSync(filename, 0o0755);
 }
 
 function createHook(filename) {
-  const hookScript = getHookScript()
+  const hookScript = getHookScript();
 
-  writeHook(filename, hookScript)
+  writeHook(filename, hookScript);
 }
 
 function createHooks(gitHooksDir) {
-  getHooks(gitHooksDir).forEach(createHook)
+  getHooks(gitHooksDir).forEach(createHook);
 }
 
 function getHooks(gitHooksDir) {
-  return hookList.map((hookName) => path.join(gitHooksDir, hookName))
+  return hookList.map(hookName => path.join(gitHooksDir, hookName));
 }
 
 function getMainScript() {
   const mainScript = fs.readFileSync(
-    path.join(__dirname, '../../sh/husky.sh'),
-    'utf-8'
-  )
+    path.join(__dirname, "../../sh/husky.sh"),
+    "utf-8"
+  );
 
-  return mainScript
+  return mainScript;
 }
 
 function createMainScript(gitHooksDir) {
-  fs.writeFileSync(path.join(gitHooksDir, 'husky.sh'), getMainScript(), 'utf-8')
+  fs.writeFileSync(
+    path.join(gitHooksDir, "husky.sh"),
+    getMainScript(),
+    "utf-8"
+  );
 }
 
 export default function install() {
-  const gitHooksDir = getGitHooksDir()
+  const gitHooksDir = getGitHooksDir();
 
-  createHooks(gitHooksDir)
-  createMainScript(gitHooksDir)
+  createHooks(gitHooksDir);
+  createMainScript(gitHooksDir);
 }
 ```
 
@@ -512,21 +519,21 @@ git add .husky/pre-commit
 
 1. husky install：安装，主要是配置 Git 的 core.hooksPath
 2. husky uninstall：卸载，主要是恢复对 Git 的 core.hooksPath 的修改
-4. husky set：新增 hook
+3. husky set：新增 hook
 4. husky add：给已有的 hook 追加命令
 
 因此，它的实现方式并不难，这里我直接张贴核心源码过来，首先是 CLI 的入口：
 
 ```typescript
 // Get CLI arguments
-const [, , cmd, ...args] = process.argv
-const ln = args.length
-const [x, y] = args
+const [, , cmd, ...args] = process.argv;
+const ln = args.length;
+const [x, y] = args;
 
 // Set or add command in hook
 const hook = (fn: (a1: string, a2: string) => void) => (): void =>
   // Show usage if no arguments are provided or more than 2
-  !ln || ln > 2 ? help(2) : fn(x, y)
+  !ln || ln > 2 ? help(2) : fn(x, y);
 
 // CLI commands
 const cmds: { [key: string]: () => void } = {
@@ -534,18 +541,18 @@ const cmds: { [key: string]: () => void } = {
   uninstall: h.uninstall,
   set: hook(h.set),
   add: hook(h.add),
-  ['-v']: () =>
+  ["-v"]: () =>
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-var-requires
-    console.log(require(p.join(__dirname, '../package.json')).version),
-}
+    console.log(require(p.join(__dirname, "../package.json")).version),
+};
 
 // Run CLI
 try {
   // Run command or show usage for unknown command
-  cmds[cmd] ? cmds[cmd]() : help(0)
+  cmds[cmd] ? cmds[cmd]() : help(0);
 } catch (e) {
-  console.error(e instanceof Error ? `husky - ${e.message}` : e)
-  process.exit(1)
+  console.error(e instanceof Error ? `husky - ${e.message}` : e);
+  process.exit(1);
 }
 ```
 
@@ -559,53 +566,56 @@ try {
 ```typescript
 // src/index.ts
 
-export function install(dir = '.husky'): void {
-  if (process.env.HUSKY === '0') {
-    l('HUSKY env variable is set to 0, skipping install')
-    return
+export function install(dir = ".husky"): void {
+  if (process.env.HUSKY === "0") {
+    l("HUSKY env variable is set to 0, skipping install");
+    return;
   }
 
   // Ensure that we're inside a git repository
   // If git command is not found, status is null and we should return.
   // That's why status value needs to be checked explicitly.
-  if (git(['rev-parse']).status !== 0) {
-    return
+  if (git(["rev-parse"]).status !== 0) {
+    return;
   }
 
   // Custom dir help
-  const url = 'https://typicode.github.io/husky/#/?id=custom-directory'
+  const url = "https://typicode.github.io/husky/#/?id=custom-directory";
 
   // Ensure that we're not trying to install outside of cwd
   if (!p.resolve(process.cwd(), dir).startsWith(process.cwd())) {
-    throw new Error(`.. not allowed (see ${url})`)
+    throw new Error(`.. not allowed (see ${url})`);
   }
 
   // Ensure that cwd is git top level
-  if (!fs.existsSync('.git')) {
-    throw new Error(`.git can't be found (see ${url})`)
+  if (!fs.existsSync(".git")) {
+    throw new Error(`.git can't be found (see ${url})`);
   }
 
   try {
     // Create .husky/_
-    fs.mkdirSync(p.join(dir, '_'), { recursive: true })
+    fs.mkdirSync(p.join(dir, "_"), { recursive: true });
 
     // Create .husky/_/.gitignore
-    fs.writeFileSync(p.join(dir, '_/.gitignore'), '*')
+    fs.writeFileSync(p.join(dir, "_/.gitignore"), "*");
 
     // Copy husky.sh to .husky/_/husky.sh
-    fs.copyFileSync(p.join(__dirname, '../husky.sh'), p.join(dir, '_/husky.sh'))
+    fs.copyFileSync(
+      p.join(__dirname, "../husky.sh"),
+      p.join(dir, "_/husky.sh")
+    );
 
     // Configure repo
-    const { error } = git(['config', 'core.hooksPath', dir])
+    const { error } = git(["config", "core.hooksPath", dir]);
     if (error) {
-      throw error
+      throw error;
     }
   } catch (e) {
-    l('Git hooks failed to install')
-    throw e
+    l("Git hooks failed to install");
+    throw e;
   }
 
-  l('Git hooks installed')
+  l("Git hooks installed");
 }
 ```
 
@@ -615,7 +625,7 @@ export function install(dir = '.husky'): void {
 
 ```typescript
 export function uninstall(): void {
-  git(['config', '--unset', 'core.hooksPath'])
+  git(["config", "--unset", "core.hooksPath"]);
 }
 ```
 
@@ -625,11 +635,11 @@ export function uninstall(): void {
 
 ```typescript
 export function set(file: string, cmd: string): void {
-  const dir = p.dirname(file)
+  const dir = p.dirname(file);
   if (!fs.existsSync(dir)) {
     throw new Error(
-      `can't create hook, ${dir} directory doesn't exist (try running husky install)`,
-    )
+      `can't create hook, ${dir} directory doesn't exist (try running husky install)`
+    );
   }
 
   fs.writeFileSync(
@@ -638,10 +648,10 @@ export function set(file: string, cmd: string): void {
 . "$(dirname -- "$0")/_/husky.sh"
 ${cmd}
 `,
-    { mode: 0o0755 },
-  )
+    { mode: 0o0755 }
+  );
 
-  l(`created ${file}`)
+  l(`created ${file}`);
 }
 ```
 
@@ -652,15 +662,14 @@ add 命令是对已有的 hook 文件追加脚本文件，
 ```typescript
 export function add(file: string, cmd: string): void {
   if (fs.existsSync(file)) {
-    fs.appendFileSync(file, `${cmd}\n`)
-    l(`updated ${file}`)
+    fs.appendFileSync(file, `${cmd}\n`);
+    l(`updated ${file}`);
   } else {
-    set(file, cmd)
+    set(file, cmd);
   }
 }
 ```
 
 ## 结语
-
 
 本文带领大家从 0 到 1 实现了 v4 以及最新版本的 husky，相信大家看完后对 husky 的实现方式也有了一定的了解，在以后的工作中使用它将会更加地得心应手，但如果你所在的项目中不是使用 Git，而是其它版本控制工具，也可以尝试基于 husky 改造，比如本人就曾尝试将 husky 改造使其[支持 Mercurial](https://github.com/gd4Ark/husky/pull/1)。

@@ -26,7 +26,7 @@ pubDatetime: 2019-01-09 20:56:32
 下面我们就拿这段代码来讲述 JavaScript 编译到执行的过程。
 
 ```javascript
-var a = 2
+var a = 2;
 ```
 
 首先我们来看一下在这个过程中，几个功臣所需要做的事。
@@ -69,7 +69,7 @@ var a = 2
 
 > 会先询问作用域是否存在变量`a`，如果是，就会使用这个变量进行赋值操作；否则一直往外层嵌套作用域找（详见作用域嵌套），直至到全局作用域都没有时，抛出一个异常。
 
-**总结：**变量的赋值操作会执行两个动作， 首先编译器会在当前作用域中声明一个变量（ 如果之前没有声明过），然后在运行时引擎会在作用域中查找该变量， 如果能够找到就会对它赋值。
+**总结：**变量的赋值操作会执行两个动作，首先编译器会在当前作用域中声明一个变量（如果之前没有声明过），然后在运行时引擎会在作用域中查找该变量，如果能够找到就会对它赋值。
 
 ### 2.2 LHS & RHS 查询
 
@@ -80,16 +80,16 @@ var a = 2
 现在我们把代码改成这样：
 
 ```javascript
-var a = b
+var a = b;
 ```
 
 这时引擎对`a`进行 LHS 查询，对`b`进行 RHS 查询，但是`L`和`R`并不一定指操作符的左右边，而应该这样理解：
 
-> LHS 是为了找到赋值的目标。 RHS 是赋值操作的源头。也就是 LHS 是为了找到变量这个容器本身，给它赋值，而 RHS 是为了取出这个变量的值。
+> LHS 是为了找到赋值的目标。RHS 是赋值操作的源头。也就是 LHS 是为了找到变量这个容器本身，给它赋值，而 RHS 是为了取出这个变量的值。
 
 #### 2.2.1 作用域嵌套
 
-当一个块或函数嵌套在另一个块或函数中时，就发生了作用域的嵌套，进而形成了一条作用域链。因此，在当前作用域中无法找到某个变量时，引擎就会在外层嵌套的作用域中继续查找，直到找到该变量， 或抵达最外层的作用域(也就是全局作用域)为止。
+当一个块或函数嵌套在另一个块或函数中时，就发生了作用域的嵌套，进而形成了一条作用域链。因此，在当前作用域中无法找到某个变量时，引擎就会在外层嵌套的作用域中继续查找，直到找到该变量，或抵达最外层的作用域 (也就是全局作用域) 为止。
 
 ## 3. 词法作用域
 
@@ -103,11 +103,11 @@ var a = b
 看以下代码，这个例子中有三个逐级嵌套的作用域。
 
 ```javascript
-var a = 2 // 作用域1 全局
+var a = 2; // 作用域 1 全局
 function foo() {
-  var b = a * 2 // 作用域2 局部
+  var b = a * 2; // 作用域 2 局部
   function bar() {
-    var c = a * b // 作用域3 局部
+    var c = a * b; // 作用域 3 局部
   }
 }
 ```
@@ -122,14 +122,14 @@ function foo() {
 全局变量（全局作用域下定义的变量）会自动变成全局对象（比如浏览器中的 window 对象）。
 
 ```javascript
-var a = 1
+var a = 1;
 function foo() {
-  var a = 2
-  console.log(a) // 2
+  var a = 2;
+  console.log(a); // 2
   function bar() {
-    var a = 3
-    console.log(a) // 3
-    console.log(window.a) // 1
+    var a = 3;
+    console.log(a); // 3
+    console.log(window.a); // 1
   }
 }
 ```
@@ -147,15 +147,15 @@ function foo() {
 
 ### 5.1 eval
 
-JavaScript 的 `eval`函数可以接受一个字符串参数并作为代码语句来执行， 就好像代码是原本就在那个位置一样，考虑以下代码：
+JavaScript 的 `eval`函数可以接受一个字符串参数并作为代码语句来执行，就好像代码是原本就在那个位置一样，考虑以下代码：
 
 ```javascript
 function foo(str) {
-  eval(str) // 欺骗
-  console.log(a)
+  eval(str); // 欺骗
+  console.log(a);
 }
-var a = 1
-foo('var a = 2;') // 2
+var a = 1;
+foo("var a = 2;"); // 2
 ```
 
 仿佛`eval`中传入的参数语句原本就在那一样，会创建一个变量`a`，并遮蔽了外部作用域的同名变量。
@@ -168,36 +168,36 @@ foo('var a = 2;') // 2
 
 ### 5.2 with
 
-`with`通常被当作重复引用同一个对象中的多个属性的快捷方式， 可以不需要重复引用对象本身。
+`with`通常被当作重复引用同一个对象中的多个属性的快捷方式，可以不需要重复引用对象本身。
 
 使用方法如下：
 
 ```javascript
-var obj1 = { a: 1, b: 2 }
+var obj1 = { a: 1, b: 2 };
 function foo(obj) {
   with (obj) {
-    a = 2
-    b = 3
+    a = 2;
+    b = 3;
   }
 }
-foo(obj1)
-console.log(obj1) // {a: 2, b: 3}
+foo(obj1);
+console.log(obj1); // {a: 2, b: 3}
 ```
 
 然而考虑以下代码：
 
 ```javascript
-var obj2 = { a: 1, b: 2 }
+var obj2 = { a: 1, b: 2 };
 function foo(obj) {
   with (obj) {
-    a = 2
-    b = 3
-    c = 4
+    a = 2;
+    b = 3;
+    c = 4;
   }
 }
-foo(obj2)
-console.log(obj2) // {a: 2, b: 3}
-console.log(c) // 4 不好，c被泄露到全局作用域下
+foo(obj2);
+console.log(obj2); // {a: 2, b: 3}
+console.log(c); // 4 不好，c 被泄露到全局作用域下
 ```
 
 尽管`with`可以将对象处理为词法作用域，但是这样块内部正常的`var`操作并不会限制在这个块的作用域下，而是被添加到`with`所在的函数作用域下，而不通过`var`声明变量将视为声明全局变量。
@@ -226,9 +226,9 @@ console.log(c) // 4 不好，c被泄露到全局作用域下
 
   ```javascript
   try {
-    throw 2
+    throw 2;
   } catch (a) {
-    console.log(a)
+    console.log(a);
   }
   ```
 
@@ -238,9 +238,9 @@ console.log(c) // 4 不好，c被泄露到全局作用域下
 
   ```javascript
   {
-    let a = 2
+    let a = 2;
   }
-  console.log(a) // ReferenceError: a is not defined
+  console.log(a); // ReferenceError: a is not defined
   ```
 
   **注意**：使用 `let`和`const` 进行的声明不会在块作用域中进行提升。
@@ -250,8 +250,8 @@ console.log(c) // 4 不好，c被泄露到全局作用域下
 考虑这段代码：
 
 ```javascript
-console.log(a)
-var a = 2
+console.log(a);
+var a = 2;
 ```
 
 输入结果是`undefined`，而不是`ReferenceError`。
@@ -263,9 +263,9 @@ var a = 2
 所以第二段代码真正的执行顺序是：
 
 ```javascript
-var a // 这时 a 是 undefined
-console.log(a)
-a = 2
+var a; // 这时 a 是 undefined
+console.log(a);
+a = 2;
 ```
 
 > - 编译阶段时会把所有的声明操作提升，而赋值操作原地执行。
@@ -276,26 +276,26 @@ a = 2
 虽然函数和变量都会被提升，但函数声明的优先级高于变量声明，所以：
 
 ```javascript
-foo() // 1
-var foo
+foo(); // 1
+var foo;
 function foo() {
-  console.log(1)
+  console.log(1);
 }
-foo = function() {
-  console.log(2)
-}
+foo = function () {
+  console.log(2);
+};
 ```
 
 因为这个代码片段会被引擎理解为如下形式：
 
 ```javascript
 function foo() {
-  console.log(1)
+  console.log(1);
 }
-foo() // 1
-foo = function() {
-  console.log(2)
-}
+foo(); // 1
+foo = function () {
+  console.log(2);
+};
 ```
 
 这个值得一提的是，尽管`var foo`出现在`function foo()...`之前，但由于函数声明会被优先提升，所以它会被忽略（因为重复声明了）。

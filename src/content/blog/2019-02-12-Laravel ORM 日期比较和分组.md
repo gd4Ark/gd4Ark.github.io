@@ -76,7 +76,7 @@ public function getIncome(Request $request){
 
 > `whereDate`方法只能在 `Laravel 5.0`之后才能使用。
 >
-> 关于更多类似日期方法可以访问: [链接](https://www.cnblogs.com/huangshoushi/p/5875022.html)
+> 关于更多类似日期方法可以访问：[链接](https://www.cnblogs.com/huangshoushi/p/5875022.html)
 
 我们需要接受两个参数：
 

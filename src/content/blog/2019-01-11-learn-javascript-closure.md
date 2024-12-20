@@ -25,13 +25,13 @@ pubDatetime: 2019-01-11 09:47:07
 
 ```javascript
 function foo() {
-  var a = 2
+  var a = 2;
   function bar() {
-    console.log(a) // 2
+    console.log(a); // 2
   }
-  bar()
+  bar();
 }
-foo()
+foo();
 ```
 
 很明显这是一个嵌套作用域，而`bar`的作用域也确实能够访问外部作用域，但这就是闭包吗？
@@ -42,14 +42,14 @@ foo()
 
 ```javascript
 function foo() {
-  var a = 2
+  var a = 2;
   function bar() {
-    console.log(a)
+    console.log(a);
   }
-  return bar
+  return bar;
 }
-var baz = foo()
-baz() // 2 —— 这就是闭包
+var baz = foo();
+baz(); // 2 —— 这就是闭包
 ```
 
 由于`bar`的词法作用域能够访问`foo`的内部作用域，然后我们把`bar`这个函数本身当作返回值，然后在调用`foo`时把`bar`引用的函数赋值给`baz`（其实是两个标识符引用同一个函数），所以`baz`能够访问`foo`的内部作用域。
@@ -68,14 +68,14 @@ baz() // 2 —— 这就是闭包
 
 ```javascript
 function foo() {
-  var a = 2
+  var a = 2;
   function baz() {
-    console.log(a)
+    console.log(a);
   }
-  bar(baz)
+  bar(baz);
 }
 function bar(fn) {
-  fn() // 2 —— 这也是闭包
+  fn(); // 2 —— 这也是闭包
 }
 ```
 
@@ -84,16 +84,16 @@ function bar(fn) {
 传递函数也可以是间接的：
 
 ```javascript
-var fn
+var fn;
 function foo() {
-  var a = 2
+  var a = 2;
   function baz() {
-    console.log(a)
+    console.log(a);
   }
-  fn = baz
+  fn = baz;
 }
-foo()
-fn() // 2 —— 这也是闭包
+foo();
+fn(); // 2 —— 这也是闭包
 ```
 
 所以：
@@ -107,10 +107,10 @@ fn() // 2 —— 这也是闭包
 ```javascript
 function wait(message) {
   setTimeout(function timer() {
-    console.log(message)
-  }, 1000)
+    console.log(message);
+  }, 1000);
 }
-wait('Hello, closure!')
+wait("Hello, closure!");
 ```
 
 将一个内部函数（这里叫做`timer`）作为参数传递给`setTimeout`，而`timer`能够访问`wait`的内部作用域。
@@ -120,22 +120,22 @@ wait('Hello, closure!')
 ```javascript
 function setupBot(name, selector) {
   $(selector).click(function activator() {
-    console.log('Activating:' + name)
-  })
+    console.log("Activating:" + name);
+  });
 }
-setupBot('Closure Bot 1', '#btn_1')
-setupBot('Closure Bot 2', '#btn_2')
+setupBot("Closure Bot 1", "#btn_1");
+setupBot("Closure Bot 2", "#btn_2");
 ```
 
-本质上无论何时何地，如果将函数（ 访问它们各自的词法作用域）当作第一级的值类型并到处传递， 你就会看到闭包在这些函数中的应用。 在定时器、 事件监听器、Ajax 请求、 跨窗口通信、Web Workers 或者任何其他的异步（ 或者同步）任务中， 只要使用了回调函数，实际上就是在使用闭包！
+本质上无论何时何地，如果将函数（访问它们各自的词法作用域）当作第一级的值类型并到处传递，你就会看到闭包在这些函数中的应用。在定时器、事件监听器、Ajax 请求、跨窗口通信、Web Workers 或者任何其他的异步（或者同步）任务中，只要使用了回调函数，实际上就是在使用闭包！
 
 再来看一个很经典的闭包面试题：
 
 ```javascript
 for (var i = 1; i <= 5; i++) {
-  setTimeout(function() {
-    console.log(i)
-  }, i * 1000)
+  setTimeout(function () {
+    console.log(i);
+  }, i * 1000);
 }
 ```
 
@@ -153,11 +153,11 @@ for (var i = 1; i <= 5; i++) {
 
 ```javascript
 for (var i = 1; i <= 5; i++) {
-  ;(function(j) {
-    setTimeout(function() {
-      console.log(j)
-    }, j * 1000)
-  })(i)
+  (function (j) {
+    setTimeout(function () {
+      console.log(j);
+    }, j * 1000);
+  })(i);
 }
 ```
 
@@ -169,9 +169,9 @@ for (var i = 1; i <= 5; i++) {
 
 ```javascript
 for (let i = 1; i <= 5; i++) {
-  setTimeout(function() {
-    console.log(i)
-  }, i * 1000)
+  setTimeout(function () {
+    console.log(i);
+  }, i * 1000);
 }
 ```
 
@@ -186,27 +186,27 @@ for (let i = 1; i <= 5; i++) {
 
 ```javascript
 var box = {
-  age: 18
-}
-console.log(box.age) // 18
+  age: 18,
+};
+console.log(box.age); // 18
 ```
 
 然而这里有一个问题，那就是属性`age`可以随意改变，如果我们使用闭包，就可以实现私有化，将`age`属性保护起来，只做允许的修改。
 
 ```javascript
-var box = (function() {
-  var age = 18
+var box = (function () {
+  var age = 18;
   return {
-    birthday: function() {
-      age++
+    birthday: function () {
+      age++;
     },
-    sayAge: function() {
-      console.log(age)
-    }
-  }
-})()
-box.birthday()
-box.sayAge() // 19
+    sayAge: function () {
+      console.log(age);
+    },
+  };
+})();
+box.birthday();
+box.sayAge(); // 19
 ```
 
 这样我们就保证`age`属性只能增加，而不能减少，毕竟没有人能够越活越年轻。

@@ -125,13 +125,13 @@ Vue.mixin({
 
 然后添加一个全局的 `mixin` ，在每个组件的 `beforeCreate` 生命周期执行一下 `functionApiInit` 方法。
 
-以上就是安装 composition-api 做的事，关于 `functionApiInit` 的内容我们在下一小节中详细讲解 。
+以上就是安装 composition-api 做的事，关于 `functionApiInit` 的内容我们在下一小节中详细讲解。
 
 ## 二、执行 setup
 
 我们知道  composition-api 主要是新增了一个 `setup` 选项，以及一系列 hooks，而 `steup` 也不是简单调用一下就完事，在这之前需要做一些事，比如传入的两个参数： `props` 、 `ctx` 是怎么来的，以及 `setup` 的返回值为何可以在 `template` 中使用等等。
 
-前面讲了 compsition-api 会在每个组件的 `beforeCreate` 时执行一下 `functionApiInit` 方法 ：
+前面讲了 compsition-api 会在每个组件的 `beforeCreate` 时执行一下 `functionApiInit` 方法：
 
 ```javascript
 Vue.mixin({

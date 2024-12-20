@@ -1,5 +1,5 @@
 ---
-title: Window上更方便的软件安装方式 — Chocolatey
+title: Window 上更方便的软件安装方式 — Chocolatey
 tags:
   - 网络
   - Windows

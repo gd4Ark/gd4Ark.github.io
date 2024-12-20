@@ -2,7 +2,7 @@
 title: vue-router 源码解析
 pubDatetime: 2021-07-16
 permalink: /post/vue-router-score-code.html
-tags: 
+tags:
   - 前端
   - Vue
   - 源码解析
@@ -14,7 +14,7 @@ tags:
 
 希望本文能够给那些想阅读 vue-router 源代码却又不知从何上手的同学们给予一些帮助。
 
-## 一、 new Router 时发生了什么？
+## 一、new Router 时发生了什么？
 
 对应源码在 [src/index.js](https://github1s.com/vuejs/vue-router/blob/HEAD/src/index.js)，下面讲一下它做了哪些操作：
 
@@ -22,17 +22,17 @@ tags:
 
 ```jsx
 // 当前实例
-this.app = null
+this.app = null;
 // 存在多实例的话则保存
-this.apps = []
+this.apps = [];
 // 传入的配置
-this.options = options
+this.options = options;
 // 存放已注册的一些导航守卫
-this.beforeHooks = []
-this.resolveHooks = []
-this.afterHooks = []
+this.beforeHooks = [];
+this.resolveHooks = [];
+this.afterHooks = [];
 // 创建 matcher
-this.matcher = createMatcher(options.routes || [], this)
+this.matcher = createMatcher(options.routes || [], this);
 ```
 
 ### 2. 创建 `matcher`
@@ -93,9 +93,9 @@ export function createMatcher(
 我们先不管其它逻辑，只关注它在第一次时是如何生成这三张表的，其核心逻辑是如下：
 
 ```jsx
-routes.forEach((route) => {
-  addRouteRecord(pathList, pathMap, nameMap, route, parentRoute)
-})
+routes.forEach(route => {
+  addRouteRecord(pathList, pathMap, nameMap, route, parentRoute);
+});
 ```
 
 这里给循环调用了 `addRouteRecord` 方法，它就在同一个文件中，总结一下它做了如下操作：
@@ -161,36 +161,36 @@ export function createMatcher(
 
 ```jsx
 // 众所周知，hash 是默认值
-let mode = options.mode || 'hash'
+let mode = options.mode || "hash";
 
 // 如果使用了 history 但不支持 pushState 的情况也需要回退到 hash
 this.fallback =
-  mode === 'history' && !supportsPushState && options.fallback !== false
+  mode === "history" && !supportsPushState && options.fallback !== false;
 if (this.fallback) {
-  mode = 'hash'
+  mode = "hash";
 }
 
-// 非浏览器环境(比如SSR)，则使用 abstract
+// 非浏览器环境 (比如 SSR)，则使用 abstract
 if (!inBrowser) {
-  mode = 'abstract'
+  mode = "abstract";
 }
 
-this.mode = mode
+this.mode = mode;
 
 // 根据不同的 mode 构建不同的 history
 switch (mode) {
-  case 'history':
-    this.history = new HTML5History(this, options.base)
-    break
-  case 'hash':
-    this.history = new HashHistory(this, options.base, this.fallback)
-    break
-  case 'abstract':
-    this.history = new AbstractHistory(this, options.base)
-    break
+  case "history":
+    this.history = new HTML5History(this, options.base);
+    break;
+  case "hash":
+    this.history = new HashHistory(this, options.base, this.fallback);
+    break;
+  case "abstract":
+    this.history = new AbstractHistory(this, options.base);
+    break;
   default:
-    if (process.env.NODE_ENV !== 'production') {
-      assert(false, `invalid mode: ${mode}`)
+    if (process.env.NODE_ENV !== "production") {
+      assert(false, `invalid mode: ${mode}`);
     }
 }
 ```
@@ -199,7 +199,7 @@ switch (mode) {
 
 到这里， `new Router()` 的整个过程就基本讲完了。
 
-## 二、 use Router 时发生了什么？
+## 二、use Router 时发生了什么？
 
 我们知道仅仅通过 `new Router()` 来构造一个 vue-router 实例后，还需要通过 `Vue.use(router)` 才能真正在项目中使用它，下面就来讲讲这过程到底发生了什么？
 
@@ -238,81 +238,81 @@ export function initUse(Vue: GlobalAPI) {
 然后我们看看在 Vue 安装 VueRouter 时，VueRouter 会做哪些操作，它的源码在 [src/install.js](https://github1s.com/vuejs/vue-router/blob/HEAD/src/install.js)：
 
 ```jsx
-import View from './components/view'
-import Link from './components/link'
+import View from "./components/view";
+import Link from "./components/link";
 
-export let _Vue
+export let _Vue;
 
 export function install(Vue) {
   // 防止重复执行
-  if (install.installed && _Vue === Vue) return
-  install.installed = true
+  if (install.installed && _Vue === Vue) return;
+  install.installed = true;
 
   // 把 Vue 存起来并 export 供其它文件使用
-  _Vue = Vue
+  _Vue = Vue;
 
-  const isDef = (v) => v !== undefined
+  const isDef = v => v !== undefined;
 
   const registerInstance = (vm, callVal) => {
-    let i = vm.$options._parentVnode
+    let i = vm.$options._parentVnode;
     // router-view 才有 registerRouteInstance 属性
     if (
       isDef(i) &&
       isDef((i = i.data)) &&
       isDef((i = i.registerRouteInstance))
     ) {
-      i(vm, callVal)
+      i(vm, callVal);
     }
-  }
+  };
 
   // 注册一个全局 mixin
   Vue.mixin({
     beforeCreate() {
       // 初始化
       if (isDef(this.$options.router)) {
-        this._routerRoot = this
-        this._router = this.$options.router
+        this._routerRoot = this;
+        this._router = this.$options.router;
         // 调用 router.init()，后面会讲
-        this._router.init(this)
+        this._router.init(this);
         // 使 _router 变成响应式
-        Vue.util.defineReactive(this, '_route', this._router.history.current)
+        Vue.util.defineReactive(this, "_route", this._router.history.current);
       } else {
         // 如果已经初始化，继承父组件的 _routerRoot
-        this._routerRoot = (this.$parent && this.$parent._routerRoot) || this
+        this._routerRoot = (this.$parent && this.$parent._routerRoot) || this;
       }
       // 注册实例，实际上是挂载 <router-view>
-      registerInstance(this, this)
+      registerInstance(this, this);
     },
     destroyed() {
       // 离开时卸载
-      registerInstance(this)
-    }
-  })
+      registerInstance(this);
+    },
+  });
 
   // 把 $router 和 $route 挂载到 Vue 原型上，这样就能在任意 Vue 实例中访问
-  Object.defineProperty(Vue.prototype, '$router', {
+  Object.defineProperty(Vue.prototype, "$router", {
     get() {
-      return this._routerRoot._router
-    }
-  })
+      return this._routerRoot._router;
+    },
+  });
 
-  Object.defineProperty(Vue.prototype, '$route', {
+  Object.defineProperty(Vue.prototype, "$route", {
     get() {
-      return this._routerRoot._route
-    }
-  })
+      return this._routerRoot._route;
+    },
+  });
 
   // 全局组件
-  Vue.component('RouterView', View)
-  Vue.component('RouterLink', Link)
+  Vue.component("RouterView", View);
+  Vue.component("RouterLink", Link);
 
   // 利用 Vue 合并策略新增几个相关的生命周期
-  const strats = Vue.config.optionMergeStrategies
+  const strats = Vue.config.optionMergeStrategies;
   // use the same hook merging strategy for route hooks
   strats.beforeRouteEnter =
     strats.beforeRouteLeave =
     strats.beforeRouteUpdate =
-      strats.created
+      strats.created;
 }
 ```
 
@@ -388,7 +388,7 @@ init (app: any /* Vue component instance */) {
 
 相信现在对安装 VueRouter 时的大致流程已经很清楚了，我们还看到了它会调用一些很重要的方法，这些方法会从后面的问题中继续深入探讨。
 
-## 三、 切换路由时发生了什么
+## 三、切换路由时发生了什么
 
 下面我们看看 vue-router 在切换路由时做了哪些操作，首先回想一下我们平时使用 vue-router 时有哪些操作可以切换路由？
 
@@ -421,46 +421,46 @@ vue-router 是如何监听这些操作的呢？其实只要监听 `popstate` 或
 
 ```jsx
 // 事件处理，不一定是 click，取决于用户传入的 event
-const handler = (e) => {
+const handler = e => {
   // 判断用户触发该事件时的行为，具体看下面的 guardEvent 方法
   if (guardEvent(e)) {
     // 使用不同的方式来切换路由
     if (this.replace) {
-      router.replace(location, noop)
+      router.replace(location, noop);
     } else {
-      router.push(location, noop)
+      router.push(location, noop);
     }
   }
-}
+};
 
 // 注册事件
-const on = { click: guardEvent }
+const on = { click: guardEvent };
 if (Array.isArray(this.event)) {
-  this.event.forEach((e) => {
-    on[e] = handler
-  })
+  this.event.forEach(e => {
+    on[e] = handler;
+  });
 } else {
-  on[this.event] = handler
+  on[this.event] = handler;
 }
 
 function guardEvent(e) {
   // 不处理有媒体键的情况
   // 比如 a 标签可以通过按住 shift 点击链接在新窗口打开，这时候原本的窗口不做任何处理
-  if (e.metaKey || e.altKey || e.ctrlKey || e.shiftKey) return
+  if (e.metaKey || e.altKey || e.ctrlKey || e.shiftKey) return;
   // 调用了 preventDefault 也不处理
-  if (e.defaultPrevented) return
+  if (e.defaultPrevented) return;
   // 如果是 button，并且不是使用左键单击也不处理
-  if (e.button !== undefined && e.button !== 0) return
+  if (e.button !== undefined && e.button !== 0) return;
   // 如果给 a 标签设置了 _blank 也不处理
   if (e.currentTarget && e.currentTarget.getAttribute) {
-    const target = e.currentTarget.getAttribute('target')
-    if (/\b_blank\b/i.test(target)) return
+    const target = e.currentTarget.getAttribute("target");
+    if (/\b_blank\b/i.test(target)) return;
   }
   // 取消默认行为，这里要判断是因为在诸如 weex 环境中没有该方法
   if (e.preventDefault) {
-    e.preventDefault()
+    e.preventDefault();
   }
-  return true
+  return true;
 }
 ```
 
@@ -546,7 +546,7 @@ transitionTo(location: RawLocation, onComplete ? : Function, onAbort ? : Functio
     () => {
       // 更新到当前路由信息 (current)，下面会讲
       this.updateRoute(route)
-      // 执行用户传入的 onComplete回调
+      // 执行用户传入的 onComplete 回调
       onComplete && onComplete(route)
       // 更新浏览器地址栏上的 URL
       this.ensureURL()
@@ -737,7 +737,7 @@ confirmTransition(route: Route, onComplete: Function, onAbort?: Function) {
     // 报一个重复导航的错误
     return abort(createNavigationDuplicatedError(current, route))
   }
-  // 通过 from 和 to的 matched 数组拿到新增、更新、销毁的部分，以便执行组件的生命周期
+  // 通过 from 和 to 的 matched 数组拿到新增、更新、销毁的部分，以便执行组件的生命周期
   // 该方法下面会仔细讲
   const { updated, deactivated, activated } = resolveQueue(
     this.current.matched,
@@ -857,7 +857,7 @@ const queue: Array<?NavigationGuard> = [].concat(
 const { updated, deactivated, activated } = resolveQueue(
   this.current.matched,
   route.matched
-)
+);
 ```
 
 下面是它的实现：
@@ -922,7 +922,7 @@ function extractUpdateHooks(updated: Array<RouteRecord>): Array<?Function> {
 4. 调用所有激活组件的 `beforeEnter` 生命周期：
 
 ```jsx
-activated.map((m) => m.beforeEnter)
+activated.map(m => m.beforeEnter);
 ```
 
 5. 调用 `resolveAsyncComponents(activated)` 来解析异步组件：
@@ -1071,10 +1071,10 @@ function flatMapComponents(matched, fn) {
   return flatten(
     matched.map(function (m) {
       return Object.keys(m.components).map(function (key) {
-        return fn(m.components[key], m.instances[key], m, key)
-      })
+        return fn(m.components[key], m.instances[key], m, key);
+      });
     })
-  )
+  );
 }
 ```
 
@@ -1121,21 +1121,21 @@ export function runQueue(
 runQueue(queue, iterator, () => {
   // wait until async components are resolved before
   // extracting in-component enter guards
-  const enterGuards = extractEnterGuards(activated)
-  const queue = enterGuards.concat(this.router.resolveHooks)
+  const enterGuards = extractEnterGuards(activated);
+  const queue = enterGuards.concat(this.router.resolveHooks);
   runQueue(queue, iterator, () => {
     if (this.pending !== route) {
-      return abort(createNavigationCancelledError(current, route))
+      return abort(createNavigationCancelledError(current, route));
     }
-    this.pending = null
-    onComplete(route)
+    this.pending = null;
+    onComplete(route);
     if (this.router.app) {
       this.router.app.$nextTick(() => {
-        handleRouteEntered(route)
-      })
+        handleRouteEntered(route);
+      });
     }
-  })
-})
+  });
+});
 ```
 
 `iterator` 的定义在 [1. 调用 transitionTo 方法](#_1-调用-transitionto-方法) 这一小节中已经有提到了，这里拷贝一份过来：
@@ -1196,24 +1196,24 @@ const iterator = (hook: NavigationGuard, next) => {
 ```jsx
 // 这时候异步组件已经解析完成
 // 下面是构造 beforeRouteEnter 和 beforeResolve 守卫的队列
-const enterGuards = extractEnterGuards(activated)
-const queue = enterGuards.concat(this.router.resolveHooks)
+const enterGuards = extractEnterGuards(activated);
+const queue = enterGuards.concat(this.router.resolveHooks);
 runQueue(queue, iterator, () => {
   if (this.pending !== route) {
-    return abort(createNavigationCancelledError(current, route))
+    return abort(createNavigationCancelledError(current, route));
   }
-  this.pending = null
+  this.pending = null;
   // 这里是调用 transitionTo 传入的 onComplete 回调
   // 在这里会做一些更新路由、URL、调用 afterHooks、onReady 等回调，下面就讲
-  onComplete(route)
+  onComplete(route);
   if (this.router.app) {
     // 下次更新 DOM 时触发 handleRouteEntered
     this.router.app.$nextTick(() => {
       // TODO 不太明白这个方法的内部
-      handleRouteEntered(route)
-    })
+      handleRouteEntered(route);
+    });
   }
-})
+});
 ```
 
 ##### 6. 执行 `confirmTransition` 后的操作
@@ -1222,22 +1222,22 @@ runQueue(queue, iterator, () => {
 
 ```jsx
 // 更新到当前路由信息 (current)，下面会讲
-this.updateRoute(route)
-// 执行用户传入的 onComplete回调
-onComplete && onComplete(route)
+this.updateRoute(route);
+// 执行用户传入的 onComplete 回调
+onComplete && onComplete(route);
 // 更新浏览器地址栏上的 URL
-this.ensureURL()
+this.ensureURL();
 // 执行注册的 afterHooks
-this.router.afterHooks.forEach((hook) => {
-  hook && hook(route, prev)
-})
+this.router.afterHooks.forEach(hook => {
+  hook && hook(route, prev);
+});
 
 if (!this.ready) {
-  this.ready = true
+  this.ready = true;
   // 执行用户传入的 onReady 回调
-  this.readyCbs.forEach((cb) => {
-    cb(route)
-  })
+  this.readyCbs.forEach(cb => {
+    cb(route);
+  });
 }
 ```
 
@@ -1247,7 +1247,7 @@ if (!this.ready) {
 
 ```jsx
 if (onAbort) {
-  onAbort(err)
+  onAbort(err);
 }
 if (err && !this.ready) {
   // Initial redirection should not mark the history as ready yet
@@ -1258,10 +1258,10 @@ if (err && !this.ready) {
     !isNavigationFailure(err, NavigationFailureType.redirected) ||
     prev !== START
   ) {
-    this.ready = true
-    this.readyErrorCbs.forEach((cb) => {
-      cb(err)
-    })
+    this.ready = true;
+    this.readyErrorCbs.forEach(cb => {
+      cb(err);
+    });
   }
 }
 ```
@@ -1295,11 +1295,11 @@ listen(cb: Function) {
 ```javascript
 // 监听路由变化，在所有 app 实例中设置当前路由
 // 所以我们一直可以通过 this.$route 拿到当前路由
-history.listen((route) => {
-  this.apps.forEach((app) => {
-    app._route = route
-  })
-})
+history.listen(route => {
+  this.apps.forEach(app => {
+    app._route = route;
+  });
+});
 ```
 
 所以到这里，我们通过 `this.$route` 拿到的路由就已经变成跳转的路由了。
@@ -1310,10 +1310,10 @@ history.listen((route) => {
 接着就是更新 `URL` 了，在 `transitionTo` 这里它是先调用了 `onComplete` 方法，然后再调用 `ensureURL` 方法来更新浏览器上的 `URL` ，对应源码：
 
 ```javascript
-// 执行用户传入的 onComplete回调
-onComplete && onComplete(route)
+// 执行用户传入的 onComplete 回调
+onComplete && onComplete(route);
 // 更新浏览器地址栏上的 URL
-this.ensureURL()
+this.ensureURL();
 ```
 
 由于我们这里是以 `hash` 模式来展开的，所以我们看看它的 `push` 方法里传入的 `onComplete` 方法：
@@ -1393,8 +1393,8 @@ if (
   lastRouteIndex === lastCurrentIndex &&
   route.matched[lastRouteIndex] === current.matched[lastCurrentIndex]
 ) {
-  this.ensureURL()
-  return abort(createNavigationDuplicatedError(current, route))
+  this.ensureURL();
+  return abort(createNavigationDuplicatedError(current, route));
 }
 ```
 
@@ -1529,7 +1529,7 @@ render(_, {
 
 可以看到 `router-view` 是通过 `$route` 变量来获取当前组件的，而在前面 [7. 更新路由信息](#_7-更新路由信息) 时有提到会更新 `_route` 变量，而它在 [2. 安装 Router](#_2-安装-router) 时就已经用 `$route` 包装成响应式了，这里自然也就可以渲染对应的组件了。
 
-## 四、 动态添加路由实现
+## 四、动态添加路由实现
 
 我们在开发时可能会遇到一些比较复杂的场景，需要动态添加路由，最常见的例子就是根据后端返回的不同用户角色去配置不同的前端路由，那下面就讲讲它在 vue-router 内部是如何实现的。
 ​
@@ -1540,23 +1540,23 @@ render(_, {
 function addRoute(parentOrRoute, route) {
   // 判断是否有传入父路由，有则取，无则 undefined
   const parent =
-    typeof parentOrRoute !== 'object' ? nameMap[parentOrRoute] : undefined
+    typeof parentOrRoute !== "object" ? nameMap[parentOrRoute] : undefined;
   // 插入一条路由，由于这里可能只会传入一个参数，所以需要判断一下
-  createRouteMap([route || parentOrRoute], pathList, pathMap, nameMap, parent)
+  createRouteMap([route || parentOrRoute], pathList, pathMap, nameMap, parent);
 
   // 有父路由并且父路由存在别名的情况下，需要给这个别名路由也新增一条子路由
   if (parent) {
     createRouteMap(
       // $flow-disable-line route is defined if parent is
-      parent.alias.map((alias) => ({
+      parent.alias.map(alias => ({
         path: alias,
-        children: [route]
+        children: [route],
       })),
       pathList,
       pathMap,
       nameMap,
       parent
-    )
+    );
   }
 }
 ```
@@ -1572,7 +1572,7 @@ const nameMap: Dictionary<RouteRecord> = oldNameMap || Object.create(null)
 
 好了，可以看到新增一条路由规则十分简单，只需要对 `pathList` 、 `pathMap` 、 `nameMap` 进行改动就好了。
 
-## 五、 三种路由模式的实现
+## 五、三种路由模式的实现
 
 vue-router 的核心逻辑已经讲得差不多了，就剩下三种路由模式之间的差异，这一小节就来仔细讲讲它们各自的内部实现。
 ​
@@ -1638,12 +1638,12 @@ function checkFallback(base) {
   // 这个方法位于 src/history/html5.js，用于获取 URL 中的路径部分
   // http://a.com/user/routes => /user/routes
   // http://a.com/#/user/routes => /#/user/routes
-  const location = getLocation(base)
+  const location = getLocation(base);
   // 检查是否以 /## 开头，如果不是，则重定向至以 /## 开头
   if (!/^\/#/.test(location)) {
     // http://a.com/user/routes => http://a.com/#/user/routes
-    window.location.replace(cleanPath(base + '/#' + location))
-    return true
+    window.location.replace(cleanPath(base + "/#" + location));
+    return true;
   }
 }
 ```
@@ -1692,7 +1692,7 @@ function ensureSlash(): boolean {
 
 ##### push 和 replace
 
-`hash` 模式的 `push` 方法我们在 [三、 切换路由时发生了什么](#三、-切换路由时发生了什么) 这一小节已经提到过了，其实 `replace` 也是大同小异，下面是这两个方法的实现：
+`hash` 模式的 `push` 方法我们在 [三、切换路由时发生了什么](#三、-切换路由时发生了什么) 这一小节已经提到过了，其实 `replace` 也是大同小异，下面是这两个方法的实现：
 
 ```javascript
 push(location: RawLocation, onComplete ? : Function, onAbort ? : Function) {
@@ -1788,30 +1788,30 @@ go(n: number) {
 
 ##### setupListeners
 
-还记得在 [三、 切换路由时发生了什么](#三、-切换路由时发生了什么) 这一小节的 `init` 方法里有这么一段代码：
+还记得在 [三、切换路由时发生了什么](#三、-切换路由时发生了什么) 这一小节的 `init` 方法里有这么一段代码：
 
 ```javascript
 // 在浏览器环境下初始化时根据当前路由位置做路由跳转
 if (history instanceof HTML5History || history instanceof HashHistory) {
-  const handleInitialScroll = (routeOrError) => {
-    const from = history.current
-    const expectScroll = this.options.scrollBehavior
-    const supportsScroll = supportsPushState && expectScroll
+  const handleInitialScroll = routeOrError => {
+    const from = history.current;
+    const expectScroll = this.options.scrollBehavior;
+    const supportsScroll = supportsPushState && expectScroll;
 
-    if (supportsScroll && 'fullPath' in routeOrError) {
-      handleScroll(this, routeOrError, from, false)
+    if (supportsScroll && "fullPath" in routeOrError) {
+      handleScroll(this, routeOrError, from, false);
     }
-  }
-  const setupListeners = (routeOrError) => {
-    history.setupListeners()
-    handleInitialScroll(routeOrError)
-  }
+  };
+  const setupListeners = routeOrError => {
+    history.setupListeners();
+    handleInitialScroll(routeOrError);
+  };
   // 切换路由的方法，这个方法后面会讲
   history.transitionTo(
     history.getCurrentLocation(),
     setupListeners,
     setupListeners
-  )
+  );
 }
 ```
 

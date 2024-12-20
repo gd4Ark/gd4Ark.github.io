@@ -19,7 +19,7 @@ JavaScript 中的原型一直是我很惧怕的一个主题，理由很简单，
 
 ## 什么是原型
 
-首先要说一下为什么会有原型这个东西，那是因为在 JavaScript 中并没有 “类” 的概念，它是靠原型和原型链实现对象属性的继承，即便在 ES6 中新出了`class`的语法，但那也只是一个语法糖，它的底层依然是原型。
+首先要说一下为什么会有原型这个东西，那是因为在 JavaScript 中并没有“类”的概念，它是靠原型和原型链实现对象属性的继承，即便在 ES6 中新出了`class`的语法，但那也只是一个语法糖，它的底层依然是原型。
 
 要理解原型（原型链），最重要的是理解两个属性以及它们之间的关系：
 
@@ -31,37 +31,37 @@ JavaScript 中的原型一直是我很惧怕的一个主题，理由很简单，
 JavaScript 中，万物皆对象，所有的对象都有`__proto__`属性（`null`和`undefined`除外），而且指向创造这个对象的函数对象的`prototype`属性。
 
 ```javascript
-var obj = {}
-console.log(obj.__proto__ === Object.prototype) // true
-var arr = []
-console.log(arr.__proto__ === Array.prototype) // true
-var fn = function() {}
-console.log(fn.__proto__ === Function.prototype) // true
-var str = ''
-console.log(str.__proto__ === String.prototype) // true
-var num = 1
-console.log(num.__proto__ === Number.prototype) // true
+var obj = {};
+console.log(obj.__proto__ === Object.prototype); // true
+var arr = [];
+console.log(arr.__proto__ === Array.prototype); // true
+var fn = function () {};
+console.log(fn.__proto__ === Function.prototype); // true
+var str = "";
+console.log(str.__proto__ === String.prototype); // true
+var num = 1;
+console.log(num.__proto__ === Number.prototype); // true
 ```
 
 前面说了，在 JavaScript 中，一切皆对象（可以理解为它们都是从对象那里继承过来的），所以：
 
 ```javascript
-console.log(Function.prototype.__proto__ === Object.prototype) // true
-console.log(Array.prototype.__proto__ === Object.prototype) // true
-console.log(String.prototype.__proto__ === Object.prototype) // true
+console.log(Function.prototype.__proto__ === Object.prototype); // true
+console.log(Array.prototype.__proto__ === Object.prototype); // true
+console.log(String.prototype.__proto__ === Object.prototype); // true
 ```
 
 而因为`Object.prototype`的`__proto__`已经是终点了，所以它的指向是：
 
 ```javascript
-console.log(Object.prototype.__proto__ === null) // true
+console.log(Object.prototype.__proto__ === null); // true
 ```
 
 **注意**，虽然大多数浏览器都支持通过`__proto__`来访问，但它并不是`ECMAScript`的标准，在 ES5 中可以通过`Object.getPrototypeOf()`来获取这个属性。
 
 ```javascript
-var obj = {}
-console.log(Object.getPrototypeOf(obj) === Object.prototype) // true
+var obj = {};
+console.log(Object.getPrototypeOf(obj) === Object.prototype); // true
 ```
 
 ### `prototype`
@@ -74,17 +74,17 @@ console.log(Object.getPrototypeOf(obj) === Object.prototype) // true
 
 ```javascript
 function Person(name) {
-  this.name = name
-  this.sayName = function() {
-    console.log('我的名字是：' + this.name)
-  }
+  this.name = name;
+  this.sayName = function () {
+    console.log("我的名字是：" + this.name);
+  };
 }
 
-var a = new Person('小明')
-var b = new Person('小红')
+var a = new Person("小明");
+var b = new Person("小红");
 
-a.sayName() // 我的名字是：小明
-b.sayName() // 我的名字是：小红
+a.sayName(); // 我的名字是：小明
+b.sayName(); // 我的名字是：小红
 ```
 
 #### new 运算符的缺点
@@ -105,18 +105,18 @@ b.sayName() // 我的名字是：小红
 
 ```javascript
 function Person(name) {
-  this.name = name
+  this.name = name;
 }
 Person.prototype = {
-  sayName: function() {
-    console.log('我的名字是：' + this.name)
-  }
-}
+  sayName: function () {
+    console.log("我的名字是：" + this.name);
+  },
+};
 
-var a = new Person('小明')
-var b = new Person('小红')
-a.sayName() // 我的名字是：小明
-b.sayName() // 我的名字是：小红
+var a = new Person("小明");
+var b = new Person("小红");
+a.sayName(); // 我的名字是：小明
+b.sayName(); // 我的名字是：小红
 ```
 
 现在无论`Person`被实例化多少次，它的实例对象都共享同一个`sayName`方法，这就是`prototype`最大的用处。
@@ -128,18 +128,18 @@ b.sayName() // 我的名字是：小红
 现在我们以`Person`的例子来讲整个原型链。
 
 ```javascript
-var a = new Person('小明')
+var a = new Person("小明");
 
 // 实例化对象的 __proto__ 指针指向构造函数的原型
-console.log(a.__proto__ === Person.prototype)
+console.log(a.__proto__ === Person.prototype);
 // 构造函数的原型是一个对象，它的 __proto__ 指向对象的原型
-console.log(Person.prototype.__proto__ === Object.prototype)
+console.log(Person.prototype.__proto__ === Object.prototype);
 // 函数也是一个对象，它的 __proto__ 指向 函数的原型
-console.log(Person.__proto__ === Function.prototype)
+console.log(Person.__proto__ === Function.prototype);
 // 函数的原型是一个对象，它的 __proto__ 指向对象的原型
-console.log(Function.prototype.__proto__ === Object.prototype)
+console.log(Function.prototype.__proto__ === Object.prototype);
 // 对象的原型的__proto__ 指向 null
-console.log(Object.prototype.__proto__ === null)
+console.log(Object.prototype.__proto__ === null);
 ```
 
 以上就是`a`对象的整个原型链。

@@ -33,11 +33,11 @@ return [
 
     'guards' => [
         'admin' => [
-            'driver' => 'jwt',                           #### 更改为JWT驱动
+            'driver' => 'jwt',                           #### 更改为 JWT 驱动
             'provider' => 'admins',
         ],
         'user' => [
-            'driver' => 'jwt',                           #### 更改为JWT驱动
+            'driver' => 'jwt',                           #### 更改为 JWT 驱动
             'provider' => 'users',
         ],
     ],
@@ -45,11 +45,11 @@ return [
     'providers' => [
         'admins' => [
             'driver' => 'eloquent',
-            'model'  => \App\Admin::class,        #### 指定用于token验证的模型类
+            'model'  => \App\Admin::class,        #### 指定用于 token 验证的模型类
         ],
         'users' => [
             'driver' => 'eloquent',
-            'model'  => \App\User::class,        #### 指定用于token验证的模型类
+            'model'  => \App\User::class,        #### 指定用于 token 验证的模型类
         ],
     ],
 

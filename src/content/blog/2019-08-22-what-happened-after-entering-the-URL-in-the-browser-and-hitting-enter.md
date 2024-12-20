@@ -315,13 +315,13 @@ TCP/IP 分为四层，在发送数据时，每层都要对数据进行封装：
 
 #### **6. 回流与重绘**
 
-**回流(reflow)**
+**回流 (reflow)**
 
 当浏览器发现某个部分发现变化影响了布局时，需要倒回去重新渲染，会从`html`标签开始递归往下，重新计算位置和大小。
 
 reflow 基本是无法避免的，因为当你滑动一下鼠标、resize 窗口，页面就会产生变化。
 
-**重绘(repaint)**
+**重绘 (repaint)**
 
 改变了某个元素的背景色、文字颜色等等不会影响周围元素的位置变化时，就会发生重绘。
 
@@ -406,20 +406,20 @@ JS 有三种运行环境：
 **代码例子**
 
 ```js
-console.log('1') // 宏任务 同步
+console.log("1"); // 宏任务 同步
 
-setTimeout(function() {
-  console.log('2') // 宏任务 异步
-})
+setTimeout(function () {
+  console.log("2"); // 宏任务 异步
+});
 
-new Promise(function(resolve) {
-  console.log('3') // 宏任务 同步
-  resolve()
-}).then(function() {
-  console.log('4') // 微任务
-})
+new Promise(function (resolve) {
+  console.log("3"); // 宏任务 同步
+  resolve();
+}).then(function () {
+  console.log("4"); // 微任务
+});
 
-console.log('5') // 宏任务 同步
+console.log("5"); // 宏任务 同步
 ```
 
 以上代码输出顺序为：1,3,5,4,2

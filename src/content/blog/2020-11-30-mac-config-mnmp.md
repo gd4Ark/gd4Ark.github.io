@@ -315,7 +315,7 @@ mysql> create DATABASE `wordpress-test`;
 
 然后我们通过浏览器访问 `localhost/wordpress`  ，就可以看到一个 Wordpress 的安装界面，输入数据库相关的信息后，本以为可以像往常一样成功进入下一步，结果我看到了这个错误：**WordPress 建立数据库连接时出错**。
 
-结果再尝试了几次，确保所有表单都已经填写正确，依然无法正常建立数据库连接，意识到事情可能并没有这么简单， 于是我在网上找到了一个解决方案，大概就是说无法使用 root 进行登录，需要新增一个用户：
+结果再尝试了几次，确保所有表单都已经填写正确，依然无法正常建立数据库连接，意识到事情可能并没有这么简单，于是我在网上找到了一个解决方案，大概就是说无法使用 root 进行登录，需要新增一个用户：
 
 ```bash
 grant all on wordpress-test.* to 'wp-test'@'localhost' identified by 'password'
@@ -445,6 +445,6 @@ BY 'your_root_password';
 
 ## 参考链接
 
-* [安装 Nginx + MySQL + PHP 环境（ macOS 篇 ）](https://ismdeep.com/posts/2020-04-22-install-nginx-mysql-php-on-macos.html)
-* [[开发环境]Mac 配置 php-fpm](https://github.com/musicode/test/issues/5)
-* [PHP with MySQL 8.0+ error: The server requested authentication method unknown to the client [duplicate]](https://stackoverflow.com/questions/52364415/php-with-mysql-8-0-error-the-server-requested-authentication-method-unknown-to)
+- [安装 Nginx + MySQL + PHP 环境（macOS 篇）](https://ismdeep.com/posts/2020-04-22-install-nginx-mysql-php-on-macos.html)
+- [[开发环境]Mac 配置 php-fpm](https://github.com/musicode/test/issues/5)
+- [PHP with MySQL 8.0+ error: The server requested authentication method unknown to the client [duplicate]](https://stackoverflow.com/questions/52364415/php-with-mysql-8-0-error-the-server-requested-authentication-method-unknown-to)

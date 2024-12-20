@@ -89,7 +89,7 @@ public function getUser(Request $request) {
 
 这里我们用 `vuex`来管理状态，然后在请求时带上分页数据：
 
-store.js：
+store.js:
 
 > **注意**：
 >
@@ -103,37 +103,37 @@ export default new vuex.Store({
       list: [],
       total: 0,
       pageIndex: 1,
-      pageSize: 10
-    }
+      pageSize: 10,
+    },
   },
   mutations: {
     updateUser(state, data) {
       state.user = {
         ...state.user,
-        ...data
-      }
-    }
+        ...data,
+      };
+    },
   },
   actions: {
     async getUser({ commit, state, getters }) {
       // $axios 只是我自己封装的一个函数 这里并不重要
-      const res = await $axios.get('/user', getters.requestData(state.user))
-      commit('updateUser', res)
-    }
+      const res = await $axios.get("/user", getters.requestData(state.user));
+      commit("updateUser", res);
+    },
   },
   getters: {
     requestData(state) {
-      return (origin) => {
-        const { pageIndex, pageSize } = origin
+      return origin => {
+        const { pageIndex, pageSize } = origin;
         const data = {
           pageIndex,
-          pageSize
-        }
-        return data
-      }
-    }
-  }
-})
+          pageSize,
+        };
+        return data;
+      };
+    },
+  },
+});
 ```
 
 ### 数据持久化
@@ -141,18 +141,18 @@ export default new vuex.Store({
 现在如何获取数据已经搞定了，数据持久化我使用 [vuex-localstorage](https://github.com/crossjs/vuex-localstorage)，安装后，只需要在上面代码的基础上添加：
 
 ```javascript
-import createPersist from 'vuex-localstorage'
+import createPersist from "vuex-localstorage";
 export default new vuex.Store({
   // 接着上面的
   plugins: [
     createPersist({
-      namespace: 'studio-user',
+      namespace: "studio-user",
       initialState: {},
       // ONE_WEEK
-      expires: 7 * 24 * 60 * 60 * 1e3
-    })
-  ]
-})
+      expires: 7 * 24 * 60 * 60 * 1e3,
+    }),
+  ],
+});
 ```
 
 ### 公用分页组件
@@ -174,20 +174,20 @@ export default new vuex.Store({
 <script>
   export default {
     props: {
-      module: Object
+      module: Object,
     },
     methods: {
       getData() {
-        this.$emit('get-data')
+        this.$emit("get-data");
       },
       handleCurrentChange() {
-        this.getData()
+        this.getData();
       },
       handleSizeChange(val) {
-        this.getData()
-      }
-    }
-  }
+        this.getData();
+      },
+    },
+  };
 </script>
 ```
 
@@ -209,40 +209,40 @@ export default new vuex.Store({
   </div>
 </template>
 <script>
-  import Pagination from '@/common/components/Pagination'
-  import { mapActions, mapState } from 'vuex'
+  import Pagination from "@/common/components/Pagination";
+  import { mapActions, mapState } from "vuex";
   export default {
     components: {
-      Pagination
+      Pagination,
     },
     data: () => ({
       columns: [
         {
-          prop: 'name',
-          label: '姓名'
+          prop: "name",
+          label: "姓名",
         },
         {
-          prop: '性别',
-          label: 'sex'
+          prop: "性别",
+          label: "sex",
         },
         {
-          prop: '年龄',
-          label: 'age'
-        }
-      ]
+          prop: "年龄",
+          label: "age",
+        },
+      ],
     }),
     created() {
-      this.getData()
+      this.getData();
     },
     methods: {
       ...mapActions({
-        getData: 'getUser'
-      })
+        getData: "getUser",
+      }),
     },
     computed: {
-      ...mapState(['user'])
-    }
-  }
+      ...mapState(["user"]),
+    },
+  };
 </script>
 ```
 

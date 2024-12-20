@@ -1,5 +1,5 @@
 ---
-title: 如何打造自动化前端项目CLI 工具
+title: 如何打造自动化前端项目 CLI 工具
 tags:
   - 前端
   - CLI

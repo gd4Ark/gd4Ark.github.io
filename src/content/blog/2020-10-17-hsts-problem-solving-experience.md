@@ -19,11 +19,11 @@ pubDatetime: 2020-10-17 12:56:49
 
 ## 先说结论
 
-排查后发现，出现这个报错的原因是：**之前使用过 HTTPS 访问页面，所以也请求了 HTTPS 协议的 API，然后 API 的域名被记录在 `HSTS` 列表中，之后使用 HTTP 访问页面，而 API 请求却被重定向到 HTTPS，而因为预检请求(OPTIONS)不能被重定向，所以导致出现 CORS 错误。**<br />
+排查后发现，出现这个报错的原因是：**之前使用过 HTTPS 访问页面，所以也请求了 HTTPS 协议的 API，然后 API 的域名被记录在 `HSTS` 列表中，之后使用 HTTP 访问页面，而 API 请求却被重定向到 HTTPS，而因为预检请求 (OPTIONS) 不能被重定向，所以导致出现 CORS 错误。**<br />
 <br />关于 CORS 更详细的介绍可以点击查看：[HTTP 访问控制（CORS）](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS)<br />
 <br />总的来说原因在于前后端 HTTP 和 HTTPS 混用导致的，正常的情况下如果统一为 HTTP 或者 HTTPS 则不会出现这个问题。<br />
 <br />所以如果要开启 `HSTS` ，请确保前后端都开启，否则就会出现与本文一样的错误。<br />
-<br />那么前端页面要开启 HSTS 的话，需要做哪些操作呢？需要在 web 服务器添加响应头 ，以 Nginx 为例：
+<br />那么前端页面要开启 HSTS 的话，需要做哪些操作呢？需要在 web 服务器添加响应头，以 Nginx 为例：
 
 ```nginx
 server {
@@ -37,7 +37,7 @@ server {
 <br />这里还要注意：<br />
 
 1. 即便关掉 HSTS 也需要等到 max-age 过期才会从 HSTS 列表清除，所以除非让用户手动清除，否则这段时间内还是会被重定向到 HTTPS。
-1. 如果加了 includeSubDomains ，该网站的所有子域名都会被重定向到 HTTPS ，那会有什么影响呢？假设生产环境为 [http://a.com](http://a.com)，而测试环境为 [http://test.a.com](http://test.a.com)，当访问 [http://a.com](http://a.com) 后，即便在测试环境没有 HTTPS 的情况下也会被重定向
+1. 如果加了 includeSubDomains，该网站的所有子域名都会被重定向到 HTTPS，那会有什么影响呢？假设生产环境为 [http://a.com](http://a.com)，而测试环境为 [http://test.a.com](http://test.a.com)，当访问 [http://a.com](http://a.com) 后，即便在测试环境没有 HTTPS 的情况下也会被重定向
 
 <br />好了，说完结论，那下面来讲讲我是如何使用 Chrome 自带的网络记录工具定位到此问题的。<br />
 
@@ -49,7 +49,7 @@ server {
 <br />这是正常的 👇<br />
 
 ![](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/image_1.png)这是出现跨域的 👇<br />![](https://gd4ark-1258805822.cos.ap-guangzhou.myqcloud.com/images/image_2.png)<br />可以看出下面这个会出现跨域的请求少了很多内容，而猜测会不会是因为缺少 CORS 相关的部分请求头，所以导致跨域呢？<br />
-<br />~~根据关键词「跨域 无痕模式」在搜索引擎找到这篇《~~[~~原來 CORS 沒有我想像中的簡單~~](https://blog.techbridge.cc/2018/08/18/cors-issue/)~~》，其中说到是因为浏览器缓存的问题，使用 `crossorigin="anonymous"` 让每次发出的请求带上 origin header， 但是这个属性只适用于 `<img>` 、 `<script>` 等，于是我去寻找在 axios 请求库对应的属性~~，然并卵。<br />
+<br />~~根据关键词「跨域 无痕模式」在搜索引擎找到这篇《~~[~~原來 CORS 沒有我想像中的簡單~~](https://blog.techbridge.cc/2018/08/18/cors-issue/)~~》，其中说到是因为浏览器缓存的问题，使用 `crossorigin="anonymous"` 让每次发出的请求带上 origin header，但是这个属性只适用于 `<img>` 、 `<script>` 等，于是我去寻找在 axios 请求库对应的属性~~，然并卵。<br />
 <br />那么有没有可能问题根本不是出在前端发送请求上呢？<br />
 
 <a name="8lHSO"></a>
