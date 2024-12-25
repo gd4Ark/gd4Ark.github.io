@@ -4,8 +4,8 @@
   "packageManager": "pnpm@8.15.4",
   "scripts": {
     "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro check && astro build && jampack ./dist",
+    "start": "pnpm run build && pnpm run preview",
+    "build": "astro check && astro build && jampack ./dist && pagefind --verbose --site ./dist --glob \"posts/[0-9]*-*-*/index.html\"",
     "preview": "astro preview",
     "sync": "astro sync",
     "astro": "astro",
@@ -51,6 +51,7 @@
     "eslint-plugin-astro": "^0.31.4",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
+    "pagefind": "^1.3.0",
     "prettier": "^3.2.5",
     "prettier-plugin-astro": "^0.13.0",
     "prettier-plugin-tailwindcss": "^0.5.12",

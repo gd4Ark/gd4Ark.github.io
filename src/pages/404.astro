@@ -26,8 +26,12 @@ import LinkButton from "@components/LinkButton.astro";
           1. 由于本博客作者比较折腾，换过几次博客引擎，也没有兼容文章永久链接
         </p>
         <p class="!text-sm">
-          2.
-          如果是因为以前的文章永久链接已失效，建议通过关键词在博客本地搜索页进行搜索
+          2. 如果是因为以前的文章永久链接已失效，建议通过关键词在博客<LinkButton
+            href="/search"
+            className="underline decoration-dashed underline-offset-8"
+          >
+            搜索页
+          </LinkButton>进行搜索
         </p>
         <p class="!text-sm">3. 为你带来不便，十分抱歉</p>
       </div>

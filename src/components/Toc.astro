@@ -17,7 +17,7 @@ const toc = generateToc(headings);
 <aside
   class="toc lg:block fixed left-[82%] top-32 order-2 -me-32 hidden basis-64"
 >
-  <h2 class="font-semibold">Table of Contents</h2>
+  <h2 class="font-semibold" data-pagefind-ignore="all">Table of Contents</h2>
   <ul class="toc-list mt-4 text-sm">
     {toc.map(heading => <TOCHeading heading={heading} />)}
   </ul>

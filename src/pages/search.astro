@@ -1,30 +1,51 @@
 ---
-import { getCollection } from "astro:content";
 import { SITE } from "@config";
 import Layout from "@layouts/Layout.astro";
 import Main from "@layouts/Main.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
-import SearchBar from "@components/Search";
-import getSortedPosts from "@utils/getSortedPosts";
-
-// Retrieve all published articles
-const posts = await getCollection("blog", ({ data }) => !data.draft);
-const sortedPosts = getSortedPosts(posts);
-
-// List of items to search in
-const searchList = sortedPosts.map(({ data, slug }) => ({
-  title: data.title,
-  description: data.description,
-  data,
-  slug,
-}));
 ---
 
-<Layout title={`Search | ${SITE.title}`}>
+<Layout title={`Search | ${SITE.title}`} hasPagefind={true}>
   <Header activeNav="search" />
   <Main pageTitle="Search" pageDesc="Search any article ...">
-    <SearchBar client:load searchList={searchList} />
+    <div id="search" class="ml-3 p-4 mt-10"></div>
   </Main>
+  <script>
+    document.addEventListener("astro:page-load", () => {
+      /* eslint-disable */
+      // @ts-ignore
+      new PagefindUI({
+        element: "#search",
+        showImages: false,
+        resetStyles: false,
+        pageSize: 10,
+      });
+      /* eslint-enable */
+    });
+
+    window.addEventListener("keydown", event => {
+      if (event.key === "/" || event.key === ".") {
+        console.log("you pressed the slash");
+        event.preventDefault();
+        // @ts-ignore
+        document.querySelector("div#search input").focus();
+      }
+    });
+  </script>
   <Footer />
 </Layout>
+
+<style is:global>
+  html[data-theme="dark"] {
+    --pagefind-ui-primary: #eeeeee;
+    --pagefind-ui-text: #eeeeee;
+    --pagefind-ui-background: #152028;
+    --pagefind-ui-border: #152028;
+    --pagefind-ui-tag: #152028;
+  }
+
+  .pagefind-ui__result-thumb {
+    display: none;
+  }
+</style>
