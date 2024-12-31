@@ -19,6 +19,6 @@ title: "友链"
 
 如果想要交换友链，麻烦发送邮箱，格式如下：
 
-- 博客: 4Ark × Blog
-- 网址: https://4ark.me/
-- RSS 订阅地址: https://4ark.me/rss.xml
+- 博客：4Ark × Blog
+- 网址：https://4ark.me/
+- RSS 订阅地址：https://4ark.me/rss.xml
