@@ -16,6 +16,7 @@ title: "友链"
 - [Step By Step](https://step-by-step.tech/)
 - [卡瓦邦噶！](https://www.kawabangga.com/)
 - [Innovation for Bytes](https://www.ifb.me/)
+- [搬砖日记](https://banzhuanriji.com)
 
 如果想要交换友链，麻烦发送邮箱，格式如下：
 
