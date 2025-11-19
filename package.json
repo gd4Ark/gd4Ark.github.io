@@ -20,7 +20,7 @@
     "@astrojs/partytown": "^2.0.4",
     "@astrojs/rss": "^4.0.5",
     "@resvg/resvg-js": "^2.6.0",
-    "astro": "^4.5.6",
+    "astro": "^5.15.8",
     "fuse.js": "^7.0.0",
     "github-slugger": "^2.0.0",
     "markdown-it": "^14.1.0",
