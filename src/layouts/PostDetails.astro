@@ -36,13 +36,33 @@ const ogUrl = new URL(
   Astro.url.origin
 ).href;
 
+// Ensure canonical URL always points to stable /posts/{post.slug}/ for local pages.
+const primaryCanonicalURL = new URL(
+  `/posts/${post.slug}/`,
+  SITE.website
+).toString();
+
+let normalizedCanonicalURL = primaryCanonicalURL;
+if (canonicalURL) {
+  try {
+    const resolvedCanonicalURL = new URL(canonicalURL, SITE.website);
+    const siteOrigin = new URL(SITE.website).origin;
+    normalizedCanonicalURL =
+      resolvedCanonicalURL.origin === siteOrigin
+        ? primaryCanonicalURL
+        : resolvedCanonicalURL.toString();
+  } catch {
+    normalizedCanonicalURL = primaryCanonicalURL;
+  }
+}
+
 const layoutProps = {
   title: `${title} | ${SITE.title}`,
   author,
   description,
   pubDatetime,
   modDatetime,
-  canonicalURL,
+  canonicalURL: normalizedCanonicalURL,
   ogImage: ogUrl,
   scrollSmooth: true,
 };
@@ -138,110 +158,96 @@ const date = pubDatetime.toLocaleDateString(LOCALE.langTag, {
 </style>
 
 <script is:inline>
-  /** Create a progress indicator
-   *  at the top */
-  function createProgressBar() {
-    // Create the main container div
-    const progressContainer = document.createElement("div");
-    progressContainer.className =
-      "progress-container fixed top-0 z-10 h-1 w-full bg-skin-fill";
+  /** Idempotent DOM enhancements for post pages */
+  (function () {
+    let initialized = false;
+    let scrollHandler = null;
 
-    // Create the progress bar div
-    const progressBar = document.createElement("div");
-    progressBar.className = "progress-bar h-1 w-0 bg-skin-accent";
-    progressBar.id = "myBar";
-
-    // Append the progress bar to the progress container
-    progressContainer.appendChild(progressBar);
-
-    // Append the progress container to the document body or any other desired parent element
-    document.body.appendChild(progressContainer);
-  }
-  createProgressBar();
-
-  /** Update the progress bar
-   *  when user scrolls */
-  function updateScrollProgress() {
-    const winScroll =
-      document.body.scrollTop || document.documentElement.scrollTop;
-    const height =
-      document.documentElement.scrollHeight -
-      document.documentElement.clientHeight;
-    const scrolled = (winScroll / height) * 100;
-    if (document) {
-      const myBar = document.getElementById("myBar");
-      if (myBar) {
-        myBar.style.width = scrolled + "%";
+    function cleanup() {
+      if (scrollHandler) {
+        document.removeEventListener("scroll", scrollHandler);
+        scrollHandler = null;
       }
+      const progressBar = document.getElementById("myBar");
+      progressBar?.closest(".progress-container")?.remove();
     }
-  }
-  document.addEventListener("scroll", updateScrollProgress);
 
-  /** Attaches links to headings in the document,
-   *  allowing sharing of sections easily */
-  function addHeadingLinks() {
-    let headings = Array.from(document.querySelectorAll("h2, h3, h4, h5, h6"));
-    for (let heading of headings) {
-      heading.classList.add("group");
-      let link = document.createElement("a");
-      link.innerText = "#";
-      link.className = "heading-link hidden group-hover:inline-block ml-2";
-      link.href = "#" + heading.id;
-      link.ariaHidden = "true";
-      heading.appendChild(link);
-    }
-  }
-  addHeadingLinks();
+    function init() {
+      if (initialized) return;
+      initialized = true;
 
-  /** Attaches copy buttons to code blocks in the document,
-   * allowing users to copy code easily. */
-  function attachCopyButtons() {
-    let copyButtonLabel = "Copy";
-    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+      // Progress bar
+      const progressContainer = document.createElement("div");
+      progressContainer.className =
+        "progress-container fixed top-0 z-10 h-1 w-full bg-skin-fill";
+      const progressBar = document.createElement("div");
+      progressBar.className = "progress-bar h-1 w-0 bg-skin-accent";
+      progressBar.id = "myBar";
+      progressContainer.appendChild(progressBar);
+      document.body.appendChild(progressContainer);
 
-    for (let codeBlock of codeBlocks) {
-      let wrapper = document.createElement("div");
-      wrapper.style.position = "relative";
+      // Scroll handler
+      scrollHandler = function updateScrollProgress() {
+        const winScroll =
+          document.body.scrollTop || document.documentElement.scrollTop;
+        const height =
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        const bar = document.getElementById("myBar");
+        if (bar) bar.style.width = scrolled + "%";
+      };
+      document.addEventListener("scroll", scrollHandler);
 
-      let copyButton = document.createElement("button");
-      copyButton.className =
-        "copy-code absolute right-3 -top-3 rounded bg-skin-card px-2 py-1 text-xs leading-4 text-skin-base font-medium";
-      copyButton.innerHTML = copyButtonLabel;
-      codeBlock.setAttribute("tabindex", "0");
-      codeBlock.appendChild(copyButton);
+      // Heading links
+      const headings = document.querySelectorAll("h2, h3, h4, h5, h6");
+      headings.forEach(heading => {
+        if (heading.querySelector(".heading-link")) return;
+        heading.classList.add("group");
+        const link = document.createElement("a");
+        link.innerText = "#";
+        link.className = "heading-link hidden group-hover:inline-block ml-2";
+        link.href = "#" + heading.id;
+        link.setAttribute("aria-hidden", "true");
+        heading.appendChild(link);
+      });
 
-      // wrap codebock with relative parent element
-      codeBlock?.parentNode?.insertBefore(wrapper, codeBlock);
-      wrapper.appendChild(codeBlock);
+      // Copy buttons
+      const codeBlocks = document.querySelectorAll("pre");
+      codeBlocks.forEach(codeBlock => {
+        if (codeBlock.querySelector(".copy-code")) return;
+        const wrapper = document.createElement("div");
+        wrapper.style.position = "relative";
+        const copyButton = document.createElement("button");
+        copyButton.className =
+          "copy-code absolute right-3 -top-3 rounded bg-skin-card px-2 py-1 text-xs leading-4 text-skin-base font-medium";
+        copyButton.innerText = "Copy";
+        codeBlock.setAttribute("tabindex", "0");
+        codeBlock.parentNode?.insertBefore(wrapper, codeBlock);
+        wrapper.appendChild(codeBlock);
+        codeBlock.appendChild(copyButton);
+        copyButton.addEventListener("click", async () => {
+          const code = codeBlock.querySelector("code");
+          const text = code?.innerText;
+          await navigator.clipboard.writeText(text ?? "");
+          copyButton.innerText = "Copied";
+          setTimeout(() => {
+            copyButton.innerText = "Copy";
+          }, 700);
+        });
+      });
 
-      copyButton.addEventListener("click", async () => {
-        await copyCode(codeBlock, copyButton);
+      // Back to top
+      document.querySelector("#back-to-top")?.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
       });
     }
 
-    async function copyCode(block, button) {
-      let code = block.querySelector("code");
-      let text = code?.innerText;
-
-      await navigator.clipboard.writeText(text ?? "");
-
-      // visual feedback that task is completed
-      button.innerText = "Copied";
-
-      setTimeout(() => {
-        button.innerText = copyButtonLabel;
-      }, 700);
-    }
-  }
-  attachCopyButtons();
-
-  /** Scrolls the document to the top when
-   * the "Back to Top" button is clicked. */
-  function backToTop() {
-    document.querySelector("#back-to-top")?.addEventListener("click", () => {
-      document.body.scrollTop = 0; // For Safari
-      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    init();
+    document.addEventListener("astro:after-swap", () => {
+      cleanup();
+      initialized = false;
+      init();
     });
-  }
-  backToTop();
+  })();
 </script>

@@ -35,6 +35,7 @@ const {
       aria-label={ariaLabel}
       title={title}
       target={target}
+      rel={target === "_blank" ? "noopener noreferrer" : undefined}
     >
       <slot />
     </a>

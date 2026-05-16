@@ -15,9 +15,12 @@ export interface Props {
 }
 
 const { currentPage, totalPages, paginatedPosts } = Astro.props;
+
+// Ensure canonical URL always points to /posts/* route
+const canonicalURL = Astro.url.toString().replace(/\/post\//, "/posts/");
 ---
 
-<Layout title={`Posts | ${SITE.title}`}>
+<Layout title={`Posts | ${SITE.title}`} canonicalURL={canonicalURL}>
   <Header activeNav="posts" />
   <Main pageTitle="Posts" pageDesc="All the articles I've posted.">
     <ul>

@@ -195,8 +195,12 @@ const { activeNav } = Astro.props;
 </style>
 
 <script>
+  let navInitialized = false;
+
   function toggleNav() {
-    // Toggle menu
+    if (navInitialized) return;
+    navInitialized = true;
+
     const menuBtn = document.querySelector(".hamburger-menu");
     const menuIcon = document.querySelector(".menu-icon");
     const menuItems = document.querySelector("#menu-items");
@@ -215,8 +219,10 @@ const { activeNav } = Astro.props;
 
   toggleNav();
 
-  // Runs on view transitions navigation
-  document.addEventListener("astro:after-swap", toggleNav);
+  document.addEventListener("astro:after-swap", () => {
+    navInitialized = false;
+    toggleNav();
+  });
 </script>
 
 <!-- Google tag (gtag.js) -->

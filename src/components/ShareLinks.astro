@@ -44,7 +44,7 @@ const shareLinks = [
     {
       shareLinks.map(social => (
         <LinkButton
-          href={`${social.href + URL}`}
+          href={`${social.href}${encodeURIComponent(URL.toString())}`}
           className="link-button"
           title={social.linkTitle}
         >
