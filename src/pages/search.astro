@@ -26,10 +26,8 @@ import Footer from "@components/Footer.astro";
 
     window.addEventListener("keydown", event => {
       if (event.key === "/" || event.key === ".") {
-        console.log("you pressed the slash");
         event.preventDefault();
-        // @ts-ignore
-        document.querySelector("div#search input").focus();
+        (document.querySelector("div#search input") as HTMLInputElement).focus();
       }
     });
   </script>

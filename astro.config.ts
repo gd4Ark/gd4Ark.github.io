@@ -1,6 +1,5 @@
 import { defineConfig } from "astro/config";
 import tailwind from "@astrojs/tailwind";
-import react from "@astrojs/react";
 import remarkToc from "remark-toc";
 import rehypeExternalLinks from "rehype-external-links";
 import remarkCollapse from "remark-collapse";
@@ -10,7 +9,6 @@ import {
   transformerNotationDiff,
   transformerNotationHighlight,
 } from "@shikijs/transformers";
-import partytown from "@astrojs/partytown";
 
 // https://astro.build/config
 export default defineConfig({
@@ -19,13 +17,7 @@ export default defineConfig({
     tailwind({
       applyBaseStyles: false,
     }),
-    react(),
     sitemap(),
-    partytown({
-      config: {
-        forward: ["dataLayer.push"],
-      },
-    }),
   ],
   markdown: {
     remarkPlugins: [

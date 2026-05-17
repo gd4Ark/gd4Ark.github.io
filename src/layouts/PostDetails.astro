@@ -10,6 +10,7 @@ import ShareLinks from "@components/ShareLinks.astro";
 import Disqus from "@components/Disqus.astro";
 import TOC from "@components/Toc.astro";
 import { SITE, LOCALE } from "@config";
+import { getReadingTime } from "@utils/getReadingTime";
 
 export interface Props {
   post: CollectionEntry<"blog">;
@@ -29,6 +30,8 @@ const {
 } = post.data;
 
 const { Content, headings } = await post.render();
+
+const readingTime = getReadingTime(post.body ?? "");
 
 const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
 const ogUrl = new URL(
@@ -65,6 +68,19 @@ const layoutProps = {
   canonicalURL: normalizedCanonicalURL,
   ogImage: ogUrl,
   scrollSmooth: true,
+  jsonLd: {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: title,
+    description,
+    image: ogUrl,
+    datePublished: pubDatetime.toISOString(),
+    dateModified: modDatetime?.toISOString() ?? pubDatetime.toISOString(),
+    author: { "@type": "Person", name: author },
+    publisher: { "@type": "Organization", name: SITE.title },
+    mainEntityOfPage: normalizedCanonicalURL,
+    keywords: tags.join(", "),
+  },
 };
 
 const date = pubDatetime.toLocaleDateString(LOCALE.langTag, {
@@ -107,6 +123,7 @@ const date = pubDatetime.toLocaleDateString(LOCALE.langTag, {
       size="lg"
       className="my-2"
     />
+    <p class="reading-time">{readingTime}</p>
     {!!headings.length && <TOC headings={headings} />}
     <article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl">
       <Content />
@@ -154,6 +171,9 @@ const date = pubDatetime.toLocaleDateString(LOCALE.langTag, {
   }
   .post-title {
     @apply text-2xl font-semibold text-skin-accent;
+  }
+  .reading-time {
+    @apply my-2 text-sm italic text-skin-base opacity-70;
   }
 </style>
 
