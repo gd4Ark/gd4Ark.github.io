@@ -1,6 +1,6 @@
 ---
 import { slugifyStr } from "@utils/slugify";
-import Datetime from "./Datetime";
+import Datetime from "./Datetime.astro";
 import type { CollectionEntry } from "astro:content";
 
 export interface Props {
@@ -20,11 +20,17 @@ const { title, pubDatetime, modDatetime, description } = frontmatter;
   >
     {
       secHeading ? (
-        <h2 style={`view-transition-name: ${slugifyStr(title)}`} class="text-lg font-medium decoration-dashed hover:underline">
+        <h2
+          style={`view-transition-name: ${slugifyStr(title)}`}
+          class="text-lg font-medium decoration-dashed hover:underline"
+        >
           {title}
         </h2>
       ) : (
-        <h3 style={`view-transition-name: ${slugifyStr(title)}`} class="text-lg font-medium decoration-dashed hover:underline">
+        <h3
+          style={`view-transition-name: ${slugifyStr(title)}`}
+          class="text-lg font-medium decoration-dashed hover:underline"
+        >
           {title}
         </h3>
       )

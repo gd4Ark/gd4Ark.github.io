@@ -16,7 +16,6 @@ overrides:
   minimatch@3: '>=3.1.4'
   minimatch@9: '>=9.0.7'
   brace-expansion: '>=1.1.13'
-  js-yaml: '>=3.14.2'
   svgo: '>=3.3.3'
 
 dependencies:
@@ -74,8 +73,8 @@ devDependencies:
     specifier: ^0.23.3
     version: 0.23.3(react-dom@16.14.0)(react@18.3.1)
   '@shikijs/transformers':
-    specifier: ^1.2.0
-    version: 1.2.0
+    specifier: ^1.29.2
+    version: 1.29.2
   '@tailwindcss/typography':
     specifier: ^0.5.10
     version: 0.5.10(tailwindcss@3.4.1)
@@ -1853,10 +1852,6 @@ packages:
     requiresBuild: true
     optional: true
 
-  /@shikijs/core@1.2.0:
-    resolution: {integrity: sha512-OlFvx+nyr5C8zpcMBnSGir0YPD6K11uYhouqhNmm1qLiis4GA7SsGtu07r9gKS9omks8RtQqHrJL4S+lqWK01A==}
-    dev: true
-
   /@shikijs/core@1.29.2:
     resolution: {integrity: sha512-vju0lY9r27jJfOY4Z7+Rt/nIOjzJpZ3y+nYpqtUZInVoXQ/TJZcfGnNOGnKjFdVZb8qexiCuSlZRKcGfhhTTZQ==}
     dependencies:
@@ -1890,10 +1885,11 @@ packages:
     dependencies:
       '@shikijs/types': 1.29.2
 
-  /@shikijs/transformers@1.2.0:
-    resolution: {integrity: sha512-xKn7DtA65DQV4FOfYsrvqM80xOy2xuXnxWWKsZmHv1VII/IOuDUDsWDu3KnpeLH6wqNJWp1GRoNUsHR1aw/VhQ==}
+  /@shikijs/transformers@1.29.2:
+    resolution: {integrity: sha512-NHQuA+gM7zGuxGWP9/Ub4vpbwrYCrho9nQCLcCPfOe3Yc7LOYwmSuhElI688oiqIXk9dlZwDiyAG9vPBTuPJMA==}
     dependencies:
-      shiki: 1.2.0
+      '@shikijs/core': 1.29.2
+      '@shikijs/types': 1.29.2
     dev: true
 
   /@shikijs/types@1.29.2:
@@ -3983,7 +3979,7 @@ packages:
     resolution: {integrity: sha512-5v6yZd4JK3eMI3FqqCouswVqwugaA9r4dNZB1wwcmrD02QkV5H0y7XBQW8QwQqEaZY1pM9aqORSORhJRdNK44Q==}
     engines: {node: '>=6.0'}
     dependencies:
-      js-yaml: 4.1.1
+      js-yaml: 3.14.2
       kind-of: 6.0.3
       section-matter: 1.0.0
       strip-bom-string: 1.0.0
@@ -4451,6 +4447,8 @@ packages:
     requiresBuild: true
     dependencies:
       argparse: 2.0.1
+    dev: true
+    optional: true
 
   /jsesc@3.1.0:
     resolution: {integrity: sha512-/sM3dO2FOzXjKQhJuo0Q173wf2KOo8t4I8vHy6lF9poUp7bKT0/NHE8fPX23PwfhnykfqnC2xRxOnVw5XuGIaA==}
@@ -6389,12 +6387,6 @@ packages:
   /shebang-regex@3.0.0:
     resolution: {integrity: sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==}
     engines: {node: '>=8'}
-
-  /shiki@1.2.0:
-    resolution: {integrity: sha512-xLhiTMOIUXCv5DqJ4I70GgQCtdlzsTqFLZWcMHHG3TAieBUbvEGthdrlPDlX4mL/Wszx9C6rEcxU6kMlg4YlxA==}
-    dependencies:
-      '@shikijs/core': 1.2.0
-    dev: true
 
   /shiki@1.29.2:
     resolution: {integrity: sha512-njXuliz/cP+67jU2hukkxCNuH1yUi4QfdZZY+sMr5PPrIyXSu5iTb/qYC4BiWWB0vZ+7TbdvYUCeL23zpwCfbg==}

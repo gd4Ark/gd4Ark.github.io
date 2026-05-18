@@ -5,7 +5,7 @@
 @layer base {
   :root,
   html[data-theme="light"] {
-    --color-fill: 251, 254, 251;
+    --color-fill: 250, 247, 242;
     --color-text-base: 40, 39, 40;
     --color-accent: 0, 108, 172;
     --color-card: 230, 230, 230;
@@ -19,7 +19,7 @@
   }
   html[data-theme="dark"] {
     --color-fill: 33, 39, 55;
-    --color-text-base: 234, 237, 243;
+    --color-text-base: 210, 215, 225;
     --color-accent: 255, 107, 1;
     --color-card: 52, 63, 96;
     --color-card-muted: 138, 51, 2;
@@ -59,8 +59,8 @@
     sm:scale-110;
   }
   .prose {
-    @apply prose-headings:!mb-3 prose-headings:!text-skin-base 
-    prose-h3:italic prose-p:!text-skin-base 
+    @apply prose-headings:!mb-3 prose-headings:!text-skin-base
+    prose-p:!text-skin-base
     prose-a:!text-skin-base prose-a:!decoration-dashed prose-a:underline-offset-8
     hover:prose-a:text-skin-accent prose-blockquote:!border-l-skin-accent
     prose-blockquote:border-opacity-50 prose-blockquote:opacity-80
@@ -78,6 +78,10 @@
     prose-td:border-skin-line prose-img:!my-2 
     prose-img:mx-auto prose-img:border-2 
     prose-img:border-skin-line prose-hr:!border-skin-line;
+  }
+  .prose :is(p, li, blockquote) {
+    line-height: 1.9;
+    letter-spacing: 0.02em;
   }
   .prose a {
     @apply break-words hover:!text-skin-accent;
